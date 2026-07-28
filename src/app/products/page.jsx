@@ -12,6 +12,7 @@ import Badge from '../../components/ui/Badge.jsx';
 import Skeleton from '../../components/ui/Skeleton.jsx';
 import Breadcrumbs from '../../components/ui/Breadcrumbs.jsx';
 import Select from '../../components/ui/Select.jsx';
+import ProductCard from '../../components/products/ProductCard.jsx';
 
 function CatalogueContent() {
   const searchParams = useSearchParams();
@@ -226,58 +227,9 @@ function CatalogueContent() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
           {sortedProducts.map((prod) => (
-            <Card key={prod._id} hover className="flex flex-col overflow-hidden border-slate-200 group">
-              <Link href={`/products/${prod.slug || prod._id}`} className="block aspect-16/10 bg-slate-100 relative overflow-hidden">
-                {prod.images?.[0]?.url || prod.images?.[0] ? (
-                  <img
-                    src={prod.images?.[0]?.url || prod.images[0]}
-                    alt={prod.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-400">
-                    <Package className="w-12 h-12" />
-                  </div>
-                )}
-                <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider text-slate-800 shadow-xs">
-                  {prod.category?.name || 'Commercial Press'}
-                </span>
-                {prod.isFeatured && (
-                  <span className="absolute top-3 right-3 bg-[#D63384] text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider shadow-xs">
-                    Featured
-                  </span>
-                )}
-              </Link>
-
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <Link href={`/products/${prod.slug || prod._id}`}>
-                    <h3 className="text-lg font-black text-slate-900 group-hover:text-[#0A58CA] transition-colors">
-                      {prod.name}
-                    </h3>
-                  </Link>
-                  <p className="text-xs text-slate-600 line-clamp-2 mt-2 font-normal leading-relaxed">
-                    {prod.shortDescription}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">Starting From</span>
-                    <span className="text-xl font-black text-slate-900">₹{prod.basePrice}</span>
-                    <span className="text-[10px] text-slate-500"> / pc</span>
-                  </div>
-                  <Link href={`/products/${prod.slug || prod._id}`}>
-                    <Button variant="primary" size="sm" className="shadow-xs group-hover:bg-[#084298]">
-                      <span>Configure & Price</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </Card>
+            <ProductCard key={prod._id} product={prod} />
           ))}
         </div>
       )}
