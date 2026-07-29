@@ -13,14 +13,14 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
   const standardQuantities = [100, 250, 500, 1000, 2500, 5000];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 sm:p-8 space-y-6 sticky top-24 select-none">
+    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6 sticky top-24 select-none font-sans">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <div>
-          <span className="text-[10px] font-extrabold text-[#0A58CA] uppercase tracking-wider block">
+          <span className="text-[10px] font-extrabold text-[#0082CA] uppercase tracking-wider block">
             Authoritative Calculation
           </span>
-          <h3 className="text-lg font-black text-slate-900 mt-0.5">Order Summary & Pricing</h3>
+          <h3 className="text-lg font-black text-slate-900 mt-0.5">Order Summary &amp; Pricing</h3>
         </div>
         <Badge variant="primary" size="sm">Live Engine</Badge>
       </div>
@@ -45,7 +45,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
                 onClick={() => setQuantity(q)}
                 className={`py-2 px-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center ${
                   isSelected
-                    ? 'bg-[#0A58CA] text-white border-[#0A58CA] shadow-xs scale-102 font-black'
+                    ? 'bg-[#0082CA] text-white border-[#0082CA] shadow-2xs scale-102 font-black'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 font-bold'
                 }`}
               >
@@ -66,30 +66,30 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
             step={50}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(1, Number(e.target.value) || 100))}
-            className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0A58CA]/20 focus:border-[#0A58CA]"
+            className="w-full px-3 py-1.5 bg-[#F7F8FA] border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-1 focus:ring-[#0082CA] focus:border-[#0082CA]"
           />
         </div>
       </div>
 
-      {/* 2. Price Breakdown Box */}
-      <div className="bg-slate-900 text-white p-5 rounded-2xl space-y-4 border border-slate-800 shadow-inner">
-        <div className="flex items-center justify-between text-xs text-slate-400">
-          <span>Authoritative Unit Rate:</span>
-          <span className="font-bold text-slate-200">
+      {/* 2. Price Breakdown Box (Clean Commercial Neutral) */}
+      <div className="bg-[#F7F8FA] text-slate-800 p-5 rounded-2xl space-y-4 border border-slate-200 shadow-2xs">
+        <div className="flex items-center justify-between text-xs text-slate-600">
+          <span className="font-semibold">Authoritative Unit Rate:</span>
+          <span className="font-bold text-slate-900">
             {isCalculating ? '...' : `₹${priceData?.unitPrice || 0} / unit`}
           </span>
         </div>
 
-        <div className="flex items-baseline justify-between pt-2 border-t border-slate-800">
+        <div className="flex items-baseline justify-between pt-2.5 border-t border-slate-200">
           <div>
-            <span className="text-xs font-medium text-slate-300 block">Total Estimated Price</span>
-            <span className="text-[10px] text-slate-500">Excludes GST & shipping</span>
+            <span className="text-xs font-bold text-slate-900 block">Total Estimated Price</span>
+            <span className="text-[10px] font-medium text-slate-500">Excludes GST &amp; shipping</span>
           </div>
           <div className="text-right">
             {isCalculating ? (
-              <div className="w-24 h-8 bg-slate-800 rounded animate-pulse inline-block"></div>
+              <div className="w-24 h-8 bg-slate-200 rounded animate-pulse inline-block"></div>
             ) : (
-              <div className="flex items-center justify-end text-2xl font-black text-amber-400">
+              <div className="flex items-center justify-end text-2xl font-black text-[#0082CA]">
                 <IndianRupee className="w-5 h-5 -mr-0.5" />
                 <span>{(priceData?.totalPrice || 0).toLocaleString('en-IN')}</span>
               </div>
@@ -98,7 +98,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
         </div>
 
         {priceData?.discountPercentage > 0 && (
-          <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold px-3 py-2 rounded-xl flex items-center justify-between">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold px-3 py-2 rounded-xl flex items-center justify-between">
             <span className="flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" /> Volume Savings Applied:
             </span>
@@ -113,7 +113,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
           <Button
             variant="primary"
             size="lg"
-            className="w-full shadow-md text-sm py-4 group"
+            className="w-full shadow-sm text-sm py-4 group"
             onClick={handleProceed}
             disabled={isCalculating}
           >
@@ -124,12 +124,12 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
           <Button
             variant="primary"
             size="lg"
-            className="w-full bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600 shadow-md text-sm py-4 group"
+            className="w-full bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600 shadow-sm text-sm py-4 group"
             onClick={onAddToCart || handleProceed}
             disabled={isCalculating}
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Review & Add to Cart</span>
+            <span>Review &amp; Add to Cart</span>
           </Button>
         )}
 
@@ -145,7 +145,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
           <span>Server-verified quantity price breaks</span>
         </div>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-[#0A58CA] shrink-0" />
+          <ShieldCheck className="w-4 h-4 text-[#0082CA] shrink-0" />
           <span>Standard staff review before production press</span>
         </div>
       </div>

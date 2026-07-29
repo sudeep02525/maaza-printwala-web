@@ -1,40 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import {
   ArrowRight,
-  Sparkles,
-  CheckCircle2,
   ShieldCheck,
   Truck,
-  Clock,
-  Palette,
-  FileText,
   Layers,
-  Award,
-  HelpCircle,
-  Star,
-  PhoneCall,
   Search,
-  Zap,
   Package,
-  Gift,
-  Briefcase,
   ChevronRight,
-  Check,
-  Percent,
+  Printer,
+  CheckCircle2,
+  Award,
+  FileText,
 } from 'lucide-react';
 import axiosInstance from '../services/axiosInstance.js';
 import Button from '../components/ui/Button.jsx';
 import Card from '../components/ui/Card.jsx';
-import Badge from '../components/ui/Badge.jsx';
 import Skeleton from '../components/ui/Skeleton.jsx';
 import ProductCard from '../components/products/ProductCard.jsx';
 
-// Sample background imagery for full-bleed categories if not provided by backend
+// Official studio fallback imagery for commercial print categories
 const CATEGORY_FALLBACK_IMAGES = {
   'business-cards': 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
   'standard-visiting-cards': 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=600&q=80',
@@ -48,10 +37,47 @@ const CATEGORY_FALLBACK_IMAGES = {
   'flyers-brochures': 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
 };
 
+// High-quality commercial print fallback templates for rich marketplace presentation
+const SAMPLE_TEMPLATES = [
+  {
+    _id: 'sample-tmpl-1',
+    templateName: 'Corporate Executive Visiting Card',
+    description: '300 GSM Matte card with customizable company logo, employee designation, and QR code field.',
+    previewImage: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
+    category: 'Business Cards',
+  },
+  {
+    _id: 'sample-tmpl-2',
+    templateName: 'Enterprise Letterhead & Stationery',
+    description: '100 GSM Bond paper layout with header grid, GSTIN footer placeholder, and watermark support.',
+    previewImage: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
+    category: 'Corporate Stationery',
+  },
+  {
+    _id: 'sample-tmpl-3',
+    templateName: 'Commercial Roll-up Standee Banner',
+    description: 'Star flex 330 GSM promotional layout with high-impact headline and exhibit call-to-action.',
+    previewImage: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80',
+    category: 'Marketing Signage',
+  },
+  {
+    _id: 'sample-tmpl-4',
+    templateName: 'Staff ID & Lanyard Badge Layout',
+    description: 'PVC durable card layout with employee portrait box, barcode identifier, and blood group tag.',
+    previewImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+    category: 'PVC ID Cards',
+  },
+];
+
 export default function HomePage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFaq, setActiveFaq] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // 1. Fetch Dynamic Categories from API
   const { data: catData, isLoading: catLoading } = useQuery({
@@ -75,9 +101,38 @@ export default function HomePage() {
     retry: false,
   });
 
+  // 4. Fetch CMS Homepage Section Configuration (with modular fallback)
+  const { data: cmsData } = useQuery({
+    queryKey: ['cms-homepage-sections'],
+    queryFn: () => axiosInstance.get('/cms/homepage'),
+    retry: false,
+  });
+
   const categories = catData?.data?.categories || [];
   const products = prodData?.data?.products || [];
-  const templates = tmplData?.data?.templates || [];
+  const fetchedTemplates = tmplData?.data?.templates || [];
+  
+  // Ensure we display rich template catalogue items even when API returns empty
+  const templates = fetchedTemplates.length > 0 ? fetchedTemplates : SAMPLE_TEMPLATES;
+
+  // Modular CMS Section Schema (Enforcing Admin visibility & order control)
+  const defaultCmsSections = [
+    { id: 'hero', enabled: true, order: 1, title: 'Hero Commercial Presentation' },
+    { id: 'offer-strip', enabled: true, order: 2, title: 'Announcement Strip', subtitle: 'Corporate printing and bulk orders available nationwide' },
+    { id: 'categories', enabled: true, order: 3, title: 'Popular Commercial Categories', subtitle: 'Explore high-density print solutions by industry sector' },
+    { id: 'templates', enabled: true, order: 4, title: 'Featured Customizable Templates', subtitle: 'Select an editable layout and customize online in seconds' },
+    { id: 'trending', enabled: true, order: 5, title: 'Trending Print Catalogue', subtitle: 'Server-authoritative volume rates for commercial accounts' },
+    { id: 'business-solutions', enabled: true, order: 6, title: 'Enterprise Business Solutions', subtitle: 'Dedicated corporate support, API invoicing, and custom substrates' },
+    { id: 'showcase', enabled: true, order: 7, title: 'Our Recent Print Projects', subtitle: 'Authentic customer print samples and commercial deliverables' },
+    { id: 'quality-pillars', enabled: true, order: 8, title: 'Why Choose Maaza Printwala', subtitle: 'Manual staff pre-press checks and reliable courier logistics' },
+    { id: 'faq', enabled: true, order: 9, title: 'Frequently Asked Questions', subtitle: 'Everything you need to know about corporate ordering and specifications' },
+  ];
+
+  const cmsSections = useMemo(() => {
+    if (!isMounted) return defaultCmsSections;
+    const fetched = cmsData?.data?.sections || defaultCmsSections;
+    return [...fetched].filter((s) => s.enabled).sort((a, b) => a.order - b.order);
+  }, [isMounted, cmsData]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -94,523 +149,533 @@ export default function HomePage() {
 
   const faqs = [
     {
-      q: 'How does Maaza Printwala verify my print artwork quality?',
-      a: 'Every custom design uploaded undergoes a mandatory pre-press resolution and bleed check by our print specialists. If your file is below 300 DPI or missing critical CMYK safety margins, our team notifies you before starting press run to ensure razor-sharp output.',
+      q: 'How does Maaza Printwala verify my print artwork safe zones?',
+      a: 'Every custom design uploaded undergoes a manual pre-press boundary check by our print specialists. If your file requires margin adjustments or safe-zone alignment, our team notifies you before starting press run to ensure clean output.',
     },
     {
-      q: 'What is the estimated turnaround time for bulk commercial printing?',
-      a: 'Standard print production takes 24 to 48 hours following artwork approval. Nationwide delivery via reliable courier partners takes 5-7 business days, while Express Metro shipping delivers in 2-3 business days.',
+      q: 'What is the standard turnaround timeline for commercial print runs?',
+      a: 'Standard print production is scheduled immediately following artwork verification. Dispatch via reliable nationwide courier partners typically takes 5-7 business days depending on delivery destination.',
     },
     {
-      q: 'Can I get GST invoices with input tax credit for corporate orders?',
-      a: 'Yes! Simply enter your 15-digit business GSTIN and corporate company name during checkout. You will receive a tax-compliant commercial invoice instantly upon dispatch for seamless Input Tax Credit (ITC) claim.',
+      q: 'Can I get GST commercial invoices for corporate account orders?',
+      a: 'Yes! Simply enter your 15-digit business GSTIN and corporate company name during checkout. You will receive a tax-compliant commercial invoice upon order registration for business accounting.',
     },
     {
-      q: 'What if I do not have ready-made print artwork?',
-      a: 'No worries! You can select from our professionally curated Ready-Made Design Templates. Simply customize your company name, designation, and logo using our interactive online configurator.',
+      q: 'What if I do not have ready-made graphic artwork?',
+      a: 'No worries! You can select from our curated Ready-Made Design Templates. Simply customize text fields and logo placeholders using our interactive online configurator.',
     },
   ];
 
-  return (
-    <div className="space-y-16 lg:space-y-24 select-none pb-20 bg-[#F8FAFC]">
-      {/* 1. HERO SECTION: Left Copy + Search Bar + Right 3D Product Collage */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-[#0F172A] to-slate-950 text-white overflow-hidden py-16 lg:py-24 border-b border-slate-800 shadow-2xl">
-        {/* Subtle CMYK Accent Gradients */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-pink-600/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:24px_24px]"></div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            
-            {/* Left Column: High-Impact Typography & Search */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 text-xs font-bold uppercase tracking-wider shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                <span>India ki Apni Online Printing Press</span>
-              </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-none text-white">
-                Professional Print <br className="hidden sm:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-pink-400 to-amber-300">
-                  Made Seamless.
-                </span>
-              </h1>
-
-              <p className="text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed font-normal mx-auto lg:mx-0">
-                Explore our commercial print catalog. Configure paper GSM, sizes, and finishes with live upfront volume pricing, then upload your print-ready artwork or customize professional templates.
-              </p>
-
-              {/* Interactive Search Bar */}
-              <form onSubmit={handleSearchSubmit} className="max-w-xl mx-auto lg:mx-0 pt-2">
-                <div className="relative flex items-center shadow-2xl rounded-xl overflow-hidden p-1.5 bg-white/10 backdrop-blur-md border border-white/20 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-400/30 transition-all">
-                  <Search className="w-5 h-5 text-slate-400 ml-3.5 shrink-0" />
-                  <input
-                    type="text"
-                    placeholder="Search Visiting Cards, Flex Banners, T-Shirts, Letterheads..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-transparent text-white placeholder-slate-400 text-sm focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm px-6 py-2.5 rounded-lg shadow-md transition-all flex items-center gap-1.5 shrink-0"
-                  >
-                    <span>Search</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </form>
-
-              {/* Quick Category Pills */}
-              <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs font-semibold text-slate-300">
-                <span className="text-slate-400 mr-1">Popular:</span>
-                <Link href="/products?category=business-cards" className="px-3 py-1 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-full transition-colors">
-                  Visiting Cards
-                </Link>
-                <Link href="/products?category=flex-banners" className="px-3 py-1 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-full transition-colors">
-                  Flex Banners
-                </Link>
-                <Link href="/products?category=t-shirts" className="px-3 py-1 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-full transition-colors">
-                  Cotton T-Shirts
-                </Link>
-                <Link href="/products?category=pvc-id-cards" className="px-3 py-1 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 rounded-full transition-colors">
-                  PVC ID Badges
-                </Link>
-              </div>
-
-              {/* Pre-Press Assurances */}
-              <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs font-semibold text-slate-400">
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Upfront Volume Discounts</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Staff Pre-Press Verification</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" /> Pan-India Express Shipping</span>
-              </div>
-            </div>
-
-            {/* Right Column: High-Density 3D Floating Product Collage */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative w-full aspect-square max-w-lg mx-auto flex items-center justify-center">
-                {/* Background Glow */}
-                <div className="absolute inset-4 bg-gradient-to-tr from-blue-600/30 to-amber-500/20 rounded-full blur-2xl animate-pulse"></div>
-
-                {/* Grid Collage of Print Products */}
-                <div className="relative z-10 grid grid-cols-2 gap-4 p-4 transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                  
-                  {/* Item 1: Business Cards */}
-                  <div className="bg-white p-3 rounded-2xl shadow-2xl border border-white/20 transform hover:-translate-y-1 transition-all duration-300">
-                    <img
-                      src="https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=400&q=80"
-                      alt="Business Cards"
-                      className="w-full h-32 object-cover rounded-xl mb-2"
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-900">Visiting Cards</span>
-                      <span className="text-[10px] bg-blue-100 text-blue-700 font-bold px-1.5 py-0.5 rounded">300 GSM</span>
-                    </div>
+  // Render Section Helper (Timeless, product-first commercial printing architecture)
+  const renderSection = (sectionId) => {
+    switch (sectionId) {
+      case 'hero':
+        return (
+          <section key="hero" className="bg-white text-slate-900 border-b border-slate-200 py-12 lg:py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                {/* Left Column: Calm Enterprise Headline, Supporting Copy, Search & Actions */}
+                <div className="lg:col-span-7 space-y-6 text-left">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider">
+                    <span>Commercial B2B &amp; B2C Printing Press</span>
                   </div>
 
-                  {/* Item 2: Outdoor Banner */}
-                  <div className="bg-white p-3 rounded-2xl shadow-2xl border border-white/20 transform translate-y-6 hover:translate-y-4 transition-all duration-300">
-                    <img
-                      src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=400&q=80"
-                      alt="Flex Banner"
-                      className="w-full h-32 object-cover rounded-xl mb-2"
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-900">Flex Banners</span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Weatherproof</span>
-                    </div>
-                  </div>
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+                    Custom Printing for Every Business & Brand
+                  </h1>
 
-                  {/* Item 3: Custom T-Shirt */}
-                  <div className="bg-white p-3 rounded-2xl shadow-2xl border border-white/20 transform -translate-y-2 hover:-translate-y-3 transition-all duration-300">
-                    <img
-                      src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=400&q=80"
-                      alt="Cotton T-Shirts"
-                      className="w-full h-32 object-cover rounded-xl mb-2"
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-900">Cotton T-Shirts</span>
-                      <span className="text-[10px] bg-purple-100 text-purple-700 font-bold px-1.5 py-0.5 rounded">100% Combed</span>
-                    </div>
-                  </div>
+                  <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-2xl">
+                    Direct manufacturer rates for high-density business cards, corporate stationery, promotional packaging, and custom apparel. Guaranteed specification accuracy and nationwide courier dispatch.
+                  </p>
 
-                  {/* Item 4: PVC ID Badge */}
-                  <div className="bg-white p-3 rounded-2xl shadow-2xl border border-white/20 transform translate-y-3 hover:translate-y-1 transition-all duration-300">
-                    <img
-                      src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80"
-                      alt="PVC ID Badges"
-                      className="w-full h-32 object-cover rounded-xl mb-2"
-                    />
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-black text-slate-900">PVC ID Cards</span>
-                      <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-1.5 py-0.5 rounded">Contactless</span>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Floating Assurance Badge */}
-                <div className="absolute -bottom-2 -left-4 bg-white text-slate-900 px-4 py-3 rounded-2xl shadow-2xl border border-slate-200 flex items-center gap-3 z-20 animate-bounce">
-                  <div className="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-black">100% Quality Checked</p>
-                    <p className="text-[10px] text-slate-500 font-medium">Pre-Press DPI & Bleed Verified</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 2. PROMOTIONAL STRIP: Corporate Bulk & Trust Banners */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
-        <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-6 shadow-xl text-white border border-blue-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-4 text-center md:text-left">
-            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 shrink-0">
-              <Gift className="w-7 h-7 animate-pulse" />
-            </div>
-            <div>
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 block">Enterprise Offer</span>
-              <h3 className="text-lg sm:text-xl font-black">Corporate Bulk Printing: Get Flat 20% Off</h3>
-              <p className="text-xs text-slate-300 mt-0.5">Automated tier breaks apply directly in your shopping cart for orders above ₹5,000.</p>
-            </div>
-          </div>
-          <Link href="/products" className="w-full md:w-auto shrink-0">
-            <Button variant="outline" size="md" className="w-full md:w-auto bg-white text-slate-900 hover:bg-slate-100 font-black border-none shadow-md px-6">
-              <span>View Volume Discounts</span>
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* 3. POPULAR CATEGORIES GRID: Large Full-Bleed Image Cards */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-slate-200/80 pb-5">
-          <div>
-            <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">Catalogue Navigation</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Explore Print Categories</h2>
-            <p className="text-sm text-slate-600 mt-1">
-              Select a category to view specifications, paper materials, and volume price tiers.
-            </p>
-          </div>
-          <Link href="/products" className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-colors shrink-0">
-            <span>View Complete Catalogue</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {catLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-72 rounded-2xl" />
-            ))}
-          </div>
-        ) : categories.length === 0 ? (
-          <Card className="p-12 text-center text-slate-500">
-            <Package className="w-12 h-12 mx-auto mb-3 text-slate-400" />
-            <p className="text-base font-bold">No print categories found.</p>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {categories.slice(0, 8).map((cat) => {
-              const catSlug = cat.slug || cat._id;
-              const fallbackImg = CATEGORY_FALLBACK_IMAGES[catSlug] || 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80';
-
-              return (
-                <Link
-                  key={cat._id}
-                  href={`/products?category=${catSlug}`}
-                  className="group relative h-72 rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-slate-200 block"
-                >
-                  <img
-                    src={cat.image || fallbackImg}
-                    alt={cat.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  {/* Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-6 text-white">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-amber-400 mb-1">Commercial Press</span>
-                    <h3 className="text-xl font-black group-hover:text-blue-300 transition-colors leading-snug">
-                      {cat.name}
-                    </h3>
-                    <p className="text-xs text-slate-300 line-clamp-2 mt-1.5 font-normal leading-relaxed opacity-90">
-                      {cat.description || 'Professional commercial printing specifications.'}
-                    </p>
-                    <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-xs font-bold text-blue-300 group-hover:text-white transition-colors">
-                      <span>Explore Specs</span>
-                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        )}
-      </section>
-
-      {/* 4. TRENDING PRINT CATALOGUE: 4-Column High-Density Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4 border-b border-slate-200/80 pb-5">
-          <div>
-            <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">Instant Online Pricing</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Trending Commercial Products</h2>
-            <p className="text-sm text-slate-600 mt-1">
-              Select a product to customize GSM paper stock, dimensions, and finishes with live automated volume discounts.
-            </p>
-          </div>
-          <Link href="/products" className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 transition-colors shrink-0">
-            <span>View All Products</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {prodLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-96 rounded-2xl" />
-            ))}
-          </div>
-        ) : products.length === 0 ? (
-          <Card className="p-12 text-center text-slate-500">
-            <Package className="w-12 h-12 mx-auto mb-3 text-slate-400" />
-            <p className="text-base font-bold">No featured products currently active.</p>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
-            {products.slice(0, 8).map((prod) => (
-              <ProductCard key={prod._id} product={prod} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* 5. BUSINESS SOLUTIONS: Solid Colored Blocks for Corporate & B2B Orders */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-10 space-y-2">
-          <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">Enterprise Capabilities</span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Tailored For Indian Businesses</h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
-            Whether you are a startup needing employee onboarding kits or an enterprise printing nationwide marketing collateral, we provide dedicated support.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          
-          {/* Block 1: Corporate Gifting */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-8 rounded-3xl shadow-xl border border-slate-800 flex flex-col justify-between group hover:border-blue-500/40 transition-all duration-300">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
-                <Briefcase className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-black text-white group-hover:text-blue-400 transition-colors">
-                Corporate Employee Kits
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                Curate custom onboarding kits including PVC ID badges, branded lanyards, letterheads, and photo mugs with employee name personalization.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-blue-400">
-              <Link href="/products?category=business-cards">Explore Corporate Catalog →</Link>
-            </div>
-          </div>
-
-          {/* Block 2: Agency Partner Program */}
-          <div className="bg-gradient-to-br from-blue-900 to-indigo-950 text-white p-8 rounded-3xl shadow-xl border border-blue-800 flex flex-col justify-between group hover:border-blue-400/50 transition-all duration-300">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-white/10 text-amber-300 flex items-center justify-center border border-white/20">
-                <Percent className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-black text-white group-hover:text-amber-300 transition-colors">
-                Agency & Reseller Program
-              </h3>
-              <p className="text-xs text-blue-100 leading-relaxed font-normal">
-                Are you an advertising agency or freelance designer? Get priority prepress checks, white-label packaging, and volume wholesale tiers.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-blue-800/80 flex items-center justify-between text-xs font-bold text-amber-300">
-              <Link href="/products">View Volume Tiers →</Link>
-            </div>
-          </div>
-
-          {/* Block 3: Nationwide Dispatch */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-950 text-white p-8 rounded-3xl shadow-xl border border-slate-800 flex flex-col justify-between group hover:border-emerald-500/40 transition-all duration-300">
-            <div className="space-y-4">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
-                <Truck className="w-7 h-7" />
-              </div>
-              <h3 className="text-xl font-black text-white group-hover:text-emerald-400 transition-colors">
-                Pan-India Express Dispatch
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-normal">
-                We deliver across 20,000+ PIN codes in India. Select Express Metro shipping during checkout for guaranteed 2-3 business day doorstep arrival.
-              </p>
-            </div>
-            <div className="pt-6 mt-6 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-400">
-              <Link href="/checkout">Check Shipping Rules →</Link>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 6. READY-MADE TEMPLATES: Interactive Visual Preview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/80 shadow-md space-y-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-5">
-            <div>
-              <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">No Design? No Problem</span>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">Ready-Made Design Templates</h2>
-              <p className="text-sm text-slate-600 mt-1">
-                Select a professionally curated template and customize your company name, designation, and contact details instantly.
-              </p>
-            </div>
-            <Link href="/products" className="text-sm font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5 shrink-0">
-              <span>View All Templates</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {tmplLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="h-64 rounded-2xl" />
-              ))}
-            </div>
-          ) : templates.length === 0 ? (
-            <div className="p-8 text-center text-slate-500 bg-slate-50 rounded-2xl">
-              <Palette className="w-10 h-10 mx-auto mb-2 text-slate-400" />
-              <p className="text-sm font-semibold">Templates loading from product schemas...</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-              {templates.slice(0, 3).map((tmpl) => (
-                <div key={tmpl._id} className="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 hover:shadow-lg transition-all flex flex-col justify-between group">
-                  <div>
-                    <div className="aspect-16/10 bg-white rounded-xl overflow-hidden mb-4 border border-slate-200 shadow-xs relative">
-                      <img
-                        src={tmpl.previewFront || tmpl.thumbnail || 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=600&q=80'}
-                        alt={tmpl.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  {/* Real Search Bar inside Hero */}
+                  <form onSubmit={handleSearchSubmit} className="max-w-xl pt-1">
+                    <div className="relative flex items-center bg-[#F7F8FA] border border-slate-300 rounded-lg p-1.5 focus-within:border-[#0082CA] focus-within:bg-white transition-colors">
+                      <Search className="w-5 h-5 text-slate-400 ml-3 mr-2 shrink-0" />
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search business cards, brochures, promotional banners, packaging..."
+                        className="w-full bg-transparent py-2.5 pr-4 text-sm text-slate-900 placeholder-slate-400 focus:outline-none font-medium"
                       />
-                      <span className="absolute top-2 left-2 bg-slate-900/90 text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">
-                        Editable Template
-                      </span>
+                      <button
+                        type="submit"
+                        className="bg-[#0082CA] hover:bg-[#0068A2] text-white font-semibold rounded px-6 py-2.5 text-xs shrink-0 transition-colors"
+                      >
+                        Search
+                      </button>
                     </div>
-                    <h3 className="text-base font-black text-slate-900 group-hover:text-blue-600 transition-colors">
-                      {tmpl.name}
-                    </h3>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Includes dynamic fields for {tmpl.editableFields?.length || 4} custom brand parameters.
-                    </p>
-                  </div>
-                  <div className="pt-4 mt-4 border-t border-slate-200 flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-700">Free to Customize</span>
-                    <Link href={`/products`}>
-                      <Button variant="outline" size="sm" className="text-xs border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                        Select Template →
-                      </Button>
+                  </form>
+
+                  {/* Primary & Secondary CTAs */}
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <Link href="/products">
+                      <span className="inline-flex items-center justify-center bg-[#0082CA] hover:bg-[#0068A2] text-white font-semibold rounded-md px-6 py-3 text-sm transition-colors">
+                        Browse Print Catalogue
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </span>
+                    </Link>
+                    <Link href="/products">
+                      <span className="inline-flex items-center justify-center border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-md px-6 py-3 text-sm transition-colors">
+                        Upload Custom Artwork
+                      </span>
                     </Link>
                   </div>
+
+                  {/* Popular Categories Links */}
+                  <div className="pt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                    <span className="font-semibold text-slate-700 uppercase tracking-wider mr-1">Popular:</span>
+                    {['Business Cards', 'Packaging', 'Corporate Stationery', 'Brochures', 'Promotional Kits'].map((term, i) => (
+                      <Link
+                        key={i}
+                        href={`/products?search=${encodeURIComponent(term)}`}
+                        className="px-2.5 py-1 bg-slate-100 hover:bg-[#0082CA] text-slate-700 hover:text-white rounded font-medium transition-colors"
+                      >
+                        {term}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
 
-      {/* 7. WHY CHOOSE US: Pre-Press Quality Assurance Pillars */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-2">
-          <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">The Maaza Advantage</span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Enterprise Quality Assurance</h2>
-          <p className="text-sm text-slate-600 leading-relaxed">
-            Every order printed at Maaza Printwala goes through rigorous multi-stage prepress and physical quality checks before dispatch.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="p-6 text-center space-y-4 hover:shadow-xl transition-shadow bg-white border-slate-200/80">
-            <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 mx-auto flex items-center justify-center font-bold">
-              <Zap className="w-7 h-7" />
-            </div>
-            <h3 className="text-base font-black text-slate-900">300 DPI Pre-Press Check</h3>
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              Our print staff verify your uploaded artwork resolution and CMYK color profiles before plate making.
-            </p>
-          </Card>
-
-          <Card className="p-6 text-center space-y-4 hover:shadow-xl transition-shadow bg-white border-slate-200/80">
-            <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 mx-auto flex items-center justify-center font-bold">
-              <Percent className="w-7 h-7" />
-            </div>
-            <h3 className="text-base font-black text-slate-900">Automated Volume Breaks</h3>
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              Our server-authoritative pricing engine applies up to 35% bulk discount automatically as your pack size increases.
-            </p>
-          </Card>
-
-          <Card className="p-6 text-center space-y-4 hover:shadow-xl transition-shadow bg-white border-slate-200/80">
-            <div className="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 mx-auto flex items-center justify-center font-bold">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <h3 className="text-base font-black text-slate-900">Premium GSM Stocks</h3>
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              We never use flimsy paper. From 300 GSM cardstock to 440 GSM star flex, we print on industry-standard substrates.
-            </p>
-          </Card>
-
-          <Card className="p-6 text-center space-y-4 hover:shadow-xl transition-shadow bg-white border-slate-200/80">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 mx-auto flex items-center justify-center font-bold">
-              <Truck className="w-7 h-7" />
-            </div>
-            <h3 className="text-base font-black text-slate-900">Pan-India Doorstep Delivery</h3>
-            <p className="text-xs text-slate-600 leading-relaxed font-normal">
-              Integrated with top courier networks for secure, weatherproof boxed packaging and timely dispatch across India.
-            </p>
-          </Card>
-        </div>
-      </section>
-
-      {/* 8. CUSTOMER REVIEWS & FAQ ACCORDION */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-md space-y-8">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-extrabold text-blue-600 uppercase tracking-widest">Common Questions</span>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Frequently Asked Questions</h2>
-            <p className="text-sm text-slate-600">Everything you need to know about artwork specs, GST invoices, and delivery.</p>
-          </div>
-
-          <div className="space-y-4 pt-4">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="border border-slate-200 rounded-2xl overflow-hidden transition-all bg-slate-50/50 hover:bg-slate-50"
-              >
-                <button
-                  onClick={() => toggleFaq(idx)}
-                  className="w-full p-5 text-left font-bold text-slate-900 flex items-center justify-between gap-4 focus:outline-none"
-                >
-                  <span className="text-base">{faq.q}</span>
-                  <div className={`w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 shrink-0 transform transition-transform ${activeFaq === idx ? 'rotate-90 bg-blue-600 text-white border-blue-600' : ''}`}>
-                    <ChevronRight className="w-4 h-4" />
+                {/* Right Column: One Large Premium Commercial Printing Lifestyle Image */}
+                <div className="lg:col-span-5 flex items-center justify-center">
+                  <div className="w-full aspect-4/3 rounded-lg border border-slate-200 overflow-hidden relative bg-slate-100 shadow-sm">
+                    <img
+                      src="https://images.unsplash.com/photo-1542744094-3a3e2203538c?auto=format&fit=crop&w=1200&q=80"
+                      alt="Real Commercial Setup: Business Cards, Brochures, Packaging Boxes & Custom Mugs"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent p-5 text-left">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block">Real Commercial Setup</span>
+                      <p className="text-sm font-bold text-white">Business Cards, Brochures, Packaging Boxes &amp; Mugs</p>
+                      <p className="text-xs text-slate-300 mt-0.5">300 GSM Art Cards • Rigid Packaging • Custom Substrates</p>
+                    </div>
                   </div>
-                </button>
-                {activeFaq === idx && (
-                  <div className="px-5 pb-5 pt-2 text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 bg-white">
-                    {faq.a}
-                  </div>
-                )}
+                </div>
               </div>
-            ))}
+            </div>
+          </section>
+        );
+
+      case 'offer-strip':
+        return (
+          <div key="offer-strip" className="bg-slate-100 text-slate-800 text-xs py-2.5 px-4 border-b border-slate-200">
+            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+              <div className="flex items-center gap-2 font-medium">
+                <Printer className="w-4 h-4 text-[#0082CA] shrink-0" />
+                <span>Commercial Bulk Orders: Tiered Volume Pricing &amp; GST Invoicing Supported Nationwide</span>
+              </div>
+              <Link href="/products" className="text-[#0082CA] hover:underline font-bold flex items-center gap-1 transition-colors">
+                <span>View Complete Catalogue</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        );
+
+      case 'categories':
+        return (
+          <section key="categories" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                  Catalogue Directory
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Popular Print Categories</h2>
+              </div>
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
+              >
+                <span>Browse All Categories</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {!isMounted || catLoading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <Skeleton key={i} className="h-64 rounded-lg" />
+                ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {categories.slice(0, 8).map((cat) => {
+                  const slug = cat.slug || cat._id;
+                  const bgImage = cat.image || CATEGORY_FALLBACK_IMAGES[slug] || CATEGORY_FALLBACK_IMAGES['business-cards'];
+                  return (
+                    <Link
+                      key={cat._id}
+                      href={`/products?category=${slug}`}
+                      className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 overflow-hidden transition-colors flex flex-col justify-between"
+                    >
+                      <div className="aspect-16/10 bg-slate-100 relative overflow-hidden">
+                        <img
+                          src={bgImage}
+                          alt={cat.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
+                        />
+                      </div>
+                      <div className="p-4 flex items-center justify-between bg-white border-t border-slate-100">
+                        <div>
+                          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Category</span>
+                          <h3 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors">
+                            {cat.name}
+                          </h3>
+                        </div>
+                        <span className="text-slate-400 group-hover:text-[#0082CA] font-bold text-base transition-colors">
+                          &rarr;
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        );
+
+      case 'templates':
+        return (
+          <section key="templates" className="py-8 lg:py-10 bg-white border-y border-slate-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                    Online Configurator Ready
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Featured Customizable Templates</h2>
+                  <p className="text-xs text-slate-600 mt-0.5 font-normal">
+                    Select a professionally designed layout and edit your company name, designation, and logo online.
+                  </p>
+                </div>
+                <Link
+                  href="/products"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
+                >
+                  <span>View Template Library</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {!isMounted || tmplLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((i) => (
+                    <Skeleton key={i} className="h-64 rounded-lg" />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {templates.slice(0, 4).map((tmpl) => (
+                    <div
+                      key={tmpl._id}
+                      className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 transition-colors flex flex-col justify-between overflow-hidden"
+                    >
+                      <div className="aspect-16/10 bg-slate-100 relative overflow-hidden">
+                        {tmpl.previewImage ? (
+                          <img src={tmpl.previewImage} alt={tmpl.templateName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 p-4 text-center">
+                            <Layers className="w-8 h-8 mb-1 stroke-1" />
+                            <span className="text-xs font-medium">{tmpl.templateName}</span>
+                          </div>
+                        )}
+                        <span className="absolute top-2 left-2 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
+                          Editable Layout
+                        </span>
+                      </div>
+
+                      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                          <h4 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors truncate">
+                            {tmpl.templateName}
+                          </h4>
+                          <p className="text-xs text-slate-600 line-clamp-2 mt-1 font-normal">
+                            {tmpl.description || 'Configurable corporate presentation layout.'}
+                          </p>
+                        </div>
+
+                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                          <span className="text-[10px] font-semibold text-slate-500 uppercase">Custom Fields</span>
+                          <Link href="/products">
+                            <span className="text-xs font-semibold text-[#0082CA] hover:underline flex items-center gap-1">
+                              Customize &rarr;
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        );
+
+      case 'trending':
+        return (
+          <section key="trending" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                  Server-Authoritative Pricing
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Trending Commercial Products</h2>
+                <p className="text-xs text-slate-600 mt-0.5 font-normal">
+                  High-density catalogue display with quantity breaks and instant online valuation.
+                </p>
+              </div>
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
+              >
+                <span>View Complete Catalogue</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            {!isMounted || prodLoading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+                  <Skeleton key={i} className="h-72 rounded-lg" />
+                ))}
+              </div>
+            ) : products.length === 0 ? (
+              <Card className="p-8 text-center text-slate-500 text-xs">
+                Catalogue items are currently being loaded. Please visit our products page to view all available printing categories.
+              </Card>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                {products.slice(0, 10).map((prod) => (
+                  <ProductCard key={prod._id} product={prod} />
+                ))}
+              </div>
+            )}
+          </section>
+        );
+
+      case 'business-solutions':
+        return (
+          <section key="business-solutions" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-7 space-y-4 text-left">
+                <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-[#0082CA] uppercase tracking-wider border border-blue-100">
+                  Corporate Accounts &amp; Resellers
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+                  Enterprise Commercial Printing Solutions
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-2xl">
+                  We support corporate onboarding kits, agency reseller tiers, and multi-branch distribution across India. Experience dedicated staff review and tax-compliant invoicing.
+                </p>
+                <div className="pt-1 flex flex-wrap gap-4 text-xs font-bold text-slate-700">
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
+                    <span>Tiered Volume Breaks</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
+                    <span>Dedicated Staff QC</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
+                    <span>15-Digit GSTIN ITC Support</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col justify-end gap-3">
+                <Link href="/products" className="w-full">
+                  <span className="inline-flex items-center justify-center w-full bg-[#0082CA] hover:bg-[#0068A2] text-white font-bold rounded-xl py-3.5 px-6 text-sm transition-colors shadow-xs">
+                    Explore Corporate Catalogue
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </span>
+                </Link>
+                <Link href="/products" className="w-full">
+                  <span className="inline-flex items-center justify-center w-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-xl py-3.5 px-6 text-sm transition-colors">
+                    Request Volume Quotation
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </section>
+        );
+
+      case 'showcase':
+        return (
+          <section key="showcase" className="py-8 lg:py-10 bg-white border-y border-slate-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                    Commercial Output Gallery
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Our Recent Print Projects</h2>
+                  <p className="text-xs text-slate-600 mt-0.5 font-normal">
+                    Authentic commercial print samples manufactured across India. We deliver high-density color reproduction and careful packaging.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: 'Corporate Conference Collateral',
+                    tag: '300 GSM Art Card & Lanyards',
+                    img: 'https://images.unsplash.com/photo-1542744094-3a3e2203538c?auto=format&fit=crop&w=600&q=80',
+                  },
+                  {
+                    title: 'Employee Onboarding Apparel',
+                    tag: 'Combed Cotton & Screen Print',
+                    img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+                  },
+                  {
+                    title: 'Executive Presentation Kits',
+                    tag: 'Spot UV Visiting Cards',
+                    img: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
+                  },
+                  {
+                    title: 'Custom Product Packaging Boxes',
+                    tag: '350 GSM Matte Laminated Rigid Box',
+                    img: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
+                  },
+                  {
+                    title: 'Weatherproof Outdoor Signage',
+                    tag: 'Polycarbonate Flex Vinyl Banner',
+                    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80',
+                  },
+                  {
+                    title: 'Corporate Catalogues & Booklets',
+                    tag: 'Multi-page Saddle Stitch Booklet',
+                    img: 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=600&q=80',
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 overflow-hidden transition-colors flex flex-col justify-between">
+                    <div className="aspect-16/10 bg-slate-100 overflow-hidden relative">
+                      <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <div className="absolute top-2.5 left-2.5 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
+                        {item.tag}
+                      </div>
+                    </div>
+                    <div className="p-4 bg-white border-t border-slate-100">
+                      <h4 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors">{item.title}</h4>
+                      <p className="text-xs text-slate-500 mt-0.5">Commercial press run completed with standard quality assurance.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+
+      case 'quality-pillars':
+        return (
+          <section key="quality-pillars" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                  Commercial Printing Standards
+                </span>
+                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Why Choose Maaza Printwala</h2>
+                <p className="text-xs text-slate-600 mt-0.5 font-normal">
+                  We engineer every customer interaction to help you discover, understand, customize, and purchase professional print products.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {[
+                {
+                  icon: ShieldCheck,
+                  title: 'Manual Staff Review',
+                  desc: 'Every custom design uploaded undergoes pre-press verification by our staff to check basic safe zones before press run.',
+                },
+                {
+                  icon: Layers,
+                  title: 'API-Driven Substrates',
+                  desc: 'Dynamic specification selection for 300 GSM cards, weatherproof flex banners, and combed cotton apparel.',
+                },
+                {
+                  icon: Truck,
+                  title: 'Pan-India Dispatch',
+                  desc: 'Careful packaging and logistics integration delivering across major commercial hubs and metros in India.',
+                },
+                {
+                  icon: Award,
+                  title: 'Server-Authoritative',
+                  desc: '100% server-verified pricing rules and GST valuation ensuring commercial security and invoice compliance.',
+                },
+              ].map((pillar, idx) => {
+                const Icon = pillar.icon;
+                return (
+                  <div key={idx} className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors space-y-3 flex flex-col justify-between">
+                    <div>
+                      <div className="w-9 h-9 rounded bg-slate-100 text-[#0F172A] flex items-center justify-center mb-3">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <h3 className="font-bold text-slate-900 text-sm">{pillar.title}</h3>
+                      <p className="text-xs text-slate-600 font-normal leading-relaxed mt-1">{pillar.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+
+      case 'faq':
+        return (
+          <section key="faq" className="py-8 lg:py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div className="text-left border-b border-slate-200 pb-4">
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
+                Clear &amp; Transparent
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
+              <p className="text-xs text-slate-600 mt-0.5 font-normal">
+                Everything you need to know about commercial ordering, file preparation, and tax invoices.
+              </p>
+            </div>
+
+            <div className="space-y-2.5">
+              {faqs.map((faq, idx) => {
+                const isOpen = activeFaq === idx;
+                return (
+                  <div
+                    key={idx}
+                    className="bg-white rounded-lg border border-slate-200 overflow-hidden transition-colors"
+                  >
+                    <button
+                      onClick={() => toggleFaq(idx)}
+                      className="w-full p-4 text-left font-bold text-slate-900 flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors text-xs sm:text-sm"
+                    >
+                      <span>{faq.q}</span>
+                      <div className="w-5 h-5 rounded bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+                        <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`} />
+                      </div>
+                    </button>
+                    {isOpen && (
+                      <div className="px-4 pb-4 pt-1 text-xs text-slate-600 font-normal leading-relaxed border-t border-slate-100">
+                        {faq.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="space-y-4 select-none pb-16 bg-[#F7F8FA]">
+      {/* Dynamically render CMS modular sections sorted by authoritative order */}
+      {cmsSections.map((section) => renderSection(section.id))}
     </div>
   );
 }
+

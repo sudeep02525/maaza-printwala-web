@@ -85,7 +85,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
               type="checkbox"
               checked={isBusinessPurchase}
               onChange={(e) => setIsBusinessPurchase(e.target.checked)}
-              className="mt-1 w-5 h-5 text-[#0A58CA] rounded border-slate-300 focus:ring-[#0A58CA]"
+              className="mt-1 w-5 h-5 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA]"
             />
             <div>
               <span className="text-base font-bold text-slate-900">I am buying for my business (Claim GST Input Tax Credit)</span>
@@ -105,7 +105,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="e.g. Maaza Enterprises Pvt Ltd"
                   className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                    errors.companyName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                    errors.companyName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
                 {errors.companyName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.companyName}</p>}
@@ -120,7 +120,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   onChange={(e) => setGstin(e.target.value.toUpperCase())}
                   placeholder="e.g. 27AAAAA0000A1Z5"
                   className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all font-mono uppercase text-sm font-bold text-slate-900 ${
-                    errors.gstin ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                    errors.gstin ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
                 {errors.gstin && <p className="text-xs font-semibold text-red-600 mt-1">{errors.gstin}</p>}
@@ -133,7 +133,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   value={purchaseOrderNumber}
                   onChange={(e) => setPurchaseOrderNumber(e.target.value)}
                   placeholder="e.g. PO-2026-8891"
-                  className="w-full px-4 py-3 rounded-xl border bg-white border-slate-300 focus:border-[#0A58CA] focus:ring-2 focus:ring-[#0A58CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900"
+                  className="w-full px-4 py-3 rounded-xl border bg-white border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900"
                 />
               </div>
             </div>
@@ -147,7 +147,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
               type="checkbox"
               checked={sameAsDelivery}
               onChange={(e) => setSameAsDelivery(e.target.checked)}
-              className="w-5 h-5 text-[#0A58CA] rounded border-slate-300 focus:ring-[#0A58CA]"
+              className="w-5 h-5 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA]"
             />
             <span className="text-sm font-bold text-slate-800">My billing address is the same as my delivery address</span>
           </label>

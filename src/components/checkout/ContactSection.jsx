@@ -52,7 +52,7 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
             placeholder="e.g. Rahul Sharma"
             className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-              errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+              errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
             }`}
           />
           {errors.fullName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.fullName}</p>}
@@ -67,7 +67,7 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="rahul@example.com"
               className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                errors.email ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                errors.email ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.email && <p className="text-xs font-semibold text-red-600 mt-1">{errors.email}</p>}
@@ -86,7 +86,7 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
                 placeholder="9876543210"
                 className={`w-full px-4 py-3 rounded-r-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                 }`}
               />
             </div>

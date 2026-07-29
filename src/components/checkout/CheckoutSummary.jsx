@@ -19,7 +19,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
     <Card className="p-6 sm:p-8 space-y-6 sticky top-24 border-slate-200 select-none">
       <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <div>
-          <span className="text-[10px] font-bold text-[#0A58CA] uppercase tracking-wider block">
+          <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-wider block">
             Order Valuation
           </span>
           <h3 className="text-lg font-black text-slate-900 mt-0.5">Order Summary</h3>
@@ -37,7 +37,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
                 Qty: <strong className="text-slate-800">{item.quantity}</strong> • Type: <strong className="text-slate-800 uppercase">{item.designType}</strong>
               </p>
               {item.template?.templateName && (
-                <p className="text-[11px] text-[#0A58CA] font-semibold truncate mt-0.5">Layout: {item.template.templateName}</p>
+                <p className="text-[11px] text-[#0082CA] font-semibold truncate mt-0.5">Layout: {item.template.templateName}</p>
               )}
             </div>
             <div className="text-right font-black text-slate-900 shrink-0">
@@ -93,7 +93,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
       <div className="py-2">
         <div className="flex justify-between items-baseline mb-1">
           <span className="text-base font-black text-slate-900">Total Estimated Payable</span>
-          <span className="text-2xl font-black text-[#0A58CA]">₹{total.toLocaleString('en-IN')}</span>
+          <span className="text-2xl font-black text-[#0082CA]">₹{total.toLocaleString('en-IN')}</span>
         </div>
         <p className="text-[11px] text-slate-500 font-normal">
           * Final invoice with applicable commercial taxes will be provided upon dispatch.
@@ -118,21 +118,21 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
 
       {/* Production Payment Readiness Safety Guard (Commercial Messaging Compliance) */}
       {isReady && (
-        <div className="mt-6 p-6 rounded-2xl bg-slate-900 text-white space-y-4 border border-slate-800 shadow-xl">
-          <div className="flex items-center space-x-2 text-emerald-400 font-black text-sm">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <div className="mt-6 p-6 rounded-2xl bg-emerald-50 text-slate-900 space-y-4 border border-emerald-300 shadow-sm">
+          <div className="flex items-center space-x-2 text-emerald-800 font-black text-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
             <span>Order Successfully Registered</span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed font-normal">
+          <p className="text-xs text-slate-700 leading-relaxed font-normal">
             Your commercial printing specifications, Indian delivery address, and logistics method have been validated and recorded on our production server.
           </p>
 
-          <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700 text-xs space-y-2 font-normal">
-            <div className="flex items-center gap-2 text-blue-300 font-bold">
+          <div className="p-4 rounded-xl bg-white border border-emerald-200 text-xs space-y-2 font-normal shadow-2xs">
+            <div className="flex items-center gap-2 text-[#0082CA] font-bold">
               <Lock className="w-4 h-4 shrink-0" />
               <span>Online Payment Processing Notice</span>
             </div>
-            <p className="text-slate-300 text-[11px] leading-relaxed">
+            <p className="text-slate-600 text-[11px] leading-relaxed">
               Online payment gateway processing is temporarily undergoing scheduled banking integration. Your order has been securely captured in our system. A commercial representative will reach out shortly with customized billing instructions and dispatch scheduling.
             </p>
           </div>
@@ -140,9 +140,9 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
           <div className="pt-2">
             <button
               disabled
-              className="w-full py-3.5 bg-slate-800 text-emerald-400 font-bold rounded-xl text-xs cursor-not-allowed border border-emerald-500/30 flex items-center justify-center gap-2 shadow-inner"
+              className="w-full py-3.5 bg-emerald-600 text-white font-bold rounded-xl text-xs cursor-not-allowed border border-emerald-600 flex items-center justify-center gap-2 shadow-xs opacity-90"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 text-white" />
               <span>Order Captured - Payment Pending Offline</span>
             </button>
           </div>

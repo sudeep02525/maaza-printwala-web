@@ -91,7 +91,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
       {/* Artwork Requirements Banner */}
       <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
         <div className="flex items-center gap-1.5 font-bold text-slate-900">
-          <ShieldCheck className="w-4 h-4 text-[#0A58CA]" />
+          <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
           <span>Artwork Submission Guidelines:</span>
         </div>
         <ul className="list-disc list-inside text-slate-600 space-y-1 font-normal pl-1">
@@ -114,11 +114,11 @@ export default function ArtworkUploader({ product, onCloseModal }) {
             }}
             className={`p-8 rounded-2xl border-2 border-dashed text-center transition-all flex flex-col items-center justify-center space-y-4 ${
               isDragging
-                ? 'border-[#0A58CA] bg-blue-50/50 scale-[1.01]'
+                ? 'border-[#0082CA] bg-blue-50/50 scale-[1.01]'
                 : 'border-slate-300 hover:border-slate-400 bg-slate-50/50'
             }`}
           >
-            <div className="w-14 h-14 rounded-full bg-white shadow-sm flex items-center justify-center text-[#0A58CA] border border-slate-200">
+            <div className="w-14 h-14 rounded-full bg-white shadow-sm flex items-center justify-center text-[#0082CA] border border-slate-200">
               <Upload className="w-6 h-6" />
             </div>
             <div>
@@ -141,7 +141,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
           {file && (
             <div className="p-4 bg-white border border-slate-200 rounded-xl flex items-center justify-between shadow-xs">
               <div className="flex items-center gap-3 overflow-hidden">
-                <FileText className="w-8 h-8 text-[#0A58CA] shrink-0" />
+                <FileText className="w-8 h-8 text-[#0082CA] shrink-0" />
                 <div className="overflow-hidden">
                   <p className="text-xs font-bold text-slate-900 truncate">{file.name}</p>
                   <p className="text-[10px] text-slate-400 font-normal">
@@ -176,7 +176,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
               </div>
               <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#0A58CA] transition-all duration-300"
+                  className="h-full bg-[#0082CA] transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>

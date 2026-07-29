@@ -49,7 +49,7 @@ export default function CheckoutPage() {
             <span className="text-slate-900 font-extrabold">Order Checkout</span>
           </div>
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-800 text-xs font-bold border border-slate-200">
-            <ShieldCheck className="w-4 h-4 text-[#0A58CA]" />
+            <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
             <span>Secure Commercial Order Processing</span>
           </div>
         </div>
@@ -70,12 +70,12 @@ export default function CheckoutPage() {
         {/* Loading Skeleton */}
         {isLoading && !draft ? (
           <Card className="py-24 text-center space-y-4 border-slate-200">
-            <RefreshCw className="w-10 h-10 text-[#0A58CA] animate-spin mx-auto" />
+            <RefreshCw className="w-10 h-10 text-[#0082CA] animate-spin mx-auto" />
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Verifying cart specifications and calculating pricing...</p>
           </Card>
         ) : !draft ? (
           <Card className="p-12 text-center max-w-lg mx-auto space-y-6 border-slate-200">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-[#0A58CA]">
+            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-[#0082CA]">
               <ShoppingBag className="w-8 h-8" />
             </div>
             <div className="space-y-2">
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Contact Details</span>
-                        <button onClick={() => setStep(1)} className="text-xs text-[#0A58CA] font-bold hover:underline cursor-pointer">Edit</button>
+                        <button onClick={() => setStep(1)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
                       <p className="text-slate-900 font-bold">{draft.contactDetails?.fullName}</p>
                       <p className="text-slate-600">{draft.contactDetails?.email}</p>
@@ -156,7 +156,7 @@ export default function CheckoutPage() {
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Delivery Address</span>
-                        <button onClick={() => setStep(2)} className="text-xs text-[#0A58CA] font-bold hover:underline cursor-pointer">Edit</button>
+                        <button onClick={() => setStep(2)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
                       <p className="text-slate-900 font-bold">{draft.deliveryAddress?.fullName}</p>
                       <p className="text-slate-600">{draft.deliveryAddress?.streetAddress}</p>
@@ -166,7 +166,7 @@ export default function CheckoutPage() {
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Billing & GST</span>
-                        <button onClick={() => setStep(3)} className="text-xs text-[#0A58CA] font-bold hover:underline cursor-pointer">Edit</button>
+                        <button onClick={() => setStep(3)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
                       <p className="text-slate-900 font-bold">{draft.billingDetails?.sameAsDelivery ? 'Same as Delivery Address' : draft.billingDetails?.address?.fullName}</p>
                       {draft.billingDetails?.isBusinessPurchase && (
@@ -180,7 +180,7 @@ export default function CheckoutPage() {
                     <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Delivery Method</span>
-                        <button onClick={() => setStep(4)} className="text-xs text-[#0A58CA] font-bold hover:underline cursor-pointer">Edit</button>
+                        <button onClick={() => setStep(4)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
                       <p className="text-slate-900 font-bold">{draft.deliveryMethodSnapshot?.name}</p>
                       <p className="text-xs text-slate-500 mt-1 font-normal">Est. timeline: {draft.deliveryMethodSnapshot?.estimatedDaysMin}–{draft.deliveryMethodSnapshot?.estimatedDaysMax} working days</p>

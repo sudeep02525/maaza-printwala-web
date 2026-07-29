@@ -61,7 +61,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
               placeholder="e.g. Rahul Sharma"
               className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.fullName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.fullName}</p>}
@@ -80,7 +80,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
                 placeholder="9876543210"
                 className={`w-full px-4 py-3 rounded-r-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                 }`}
               />
             </div>
@@ -96,7 +96,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
             onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
             placeholder="e.g. Flat 101, Print Towers, MG Road"
             className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-              errors.streetAddress ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+              errors.streetAddress ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
             }`}
           />
           {errors.streetAddress && <p className="text-xs font-semibold text-red-600 mt-1">{errors.streetAddress}</p>}
@@ -110,7 +110,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               value={formData.addressLine2}
               onChange={(e) => setFormData({ ...formData, addressLine2: e.target.value })}
               placeholder="e.g. Near HDFC Bank, Andheri West"
-              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A58CA] focus:ring-2 focus:ring-[#0A58CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900 bg-white"
             />
           </div>
           <div>
@@ -120,7 +120,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               value={formData.landmark}
               onChange={(e) => setFormData({ ...formData, landmark: e.target.value })}
               placeholder="e.g. Behind Metro Station"
-              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0A58CA] focus:ring-2 focus:ring-[#0A58CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900 bg-white"
+              className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900 bg-white"
             />
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               onChange={(e) => setFormData({ ...formData, pinCode: e.target.value.replace(/\D/g, '') })}
               placeholder="e.g. 400001"
               className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all font-mono text-sm font-bold text-slate-900 ${
-                errors.pinCode ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                errors.pinCode ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.pinCode && <p className="text-xs font-semibold text-red-600 mt-1">{errors.pinCode}</p>}
@@ -149,7 +149,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               onChange={(e) => setFormData({ ...formData, city: e.target.value })}
               placeholder="e.g. Mumbai"
               className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                errors.city ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                errors.city ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.city && <p className="text-xs font-semibold text-red-600 mt-1">{errors.city}</p>}
@@ -163,7 +163,7 @@ export default function AddressSection({ initialData, contactData, onSubmit, isL
               onChange={(e) => setFormData({ ...formData, state: e.target.value })}
               placeholder="e.g. Maharashtra"
               className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                errors.state ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0A58CA] focus:ring-[#0A58CA]/20'
+                errors.state ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.state && <p className="text-xs font-semibold text-red-600 mt-1">{errors.state}</p>}

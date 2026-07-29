@@ -38,10 +38,10 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option A: Upload Own Design */}
               <button
                 onClick={() => setSelectedExp('UPLOAD')}
-                className="p-6 rounded-2xl border border-slate-200 hover:border-[#0A58CA] bg-white hover:bg-blue-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
+                className="p-6 rounded-2xl border border-slate-200 hover:border-[#0082CA] bg-white hover:bg-blue-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0A58CA] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-100">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0082CA] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-100">
                     <UploadCloud className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-black text-slate-900">Upload Your Own Design</h3>
@@ -49,7 +49,7 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
                     Upload your artwork file (PDF, AI, EPS, PNG, or WEBP). Our staff will review your file resolution and bleed margin boundaries before press.
                   </p>
                 </div>
-                <div className="pt-2 flex items-center text-xs font-bold text-[#0A58CA] group-hover:translate-x-1 transition-transform">
+                <div className="pt-2 flex items-center text-xs font-bold text-[#0082CA] group-hover:translate-x-1 transition-transform">
                   <span>Upload Artwork File</span>
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </div>
@@ -58,10 +58,10 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option B: Choose a Template */}
               <button
                 onClick={handleSelectTemplate}
-                className="p-6 rounded-2xl border border-slate-200 hover:border-[#D63384] bg-white hover:bg-pink-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
+                className="p-6 rounded-2xl border border-slate-200 hover:border-[#C71578] bg-white hover:bg-pink-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-xl bg-pink-50 text-[#D63384] flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-100">
+                  <div className="w-12 h-12 rounded-xl bg-pink-50 text-[#C71578] flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-100">
                     <LayoutTemplate className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-black text-slate-900">Customise Ready-Made Template</h3>
@@ -69,7 +69,7 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
                     Browse our structured layout library for {product.name} and fill in personalized text details directly in your browser.
                   </p>
                 </div>
-                <div className="pt-2 flex items-center text-xs font-bold text-[#D63384] group-hover:translate-x-1 transition-transform">
+                <div className="pt-2 flex items-center text-xs font-bold text-[#C71578] group-hover:translate-x-1 transition-transform">
                   <span>Browse Template Library</span>
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </div>
@@ -80,7 +80,7 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
           <div className="space-y-4">
             <button
               onClick={() => setSelectedExp(null)}
-              className="text-xs font-bold text-[#0A58CA] hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-bold text-[#0082CA] hover:underline flex items-center gap-1 cursor-pointer"
             >
               ← Back to Design Options
             </button>
@@ -90,7 +90,7 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
 
         <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
           <span className="flex items-center gap-1.5 font-semibold text-slate-600">
-            <ShieldCheck className="w-4 h-4 text-[#0A58CA]" />
+            <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
             <span>Standard commercial printing file submission</span>
           </span>
           <span className="text-[11px] text-slate-400 font-normal">Secure server storage</span>

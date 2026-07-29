@@ -44,7 +44,7 @@ export default function DeliveryMethodSection({
 
       {isLoading && methods.length === 0 ? (
         <div className="py-12 flex justify-center items-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0A58CA]"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0082CA]"></div>
         </div>
       ) : methods.length === 0 ? (
         <Alert variant="error" title="Delivery Unavailable">
@@ -64,7 +64,7 @@ export default function DeliveryMethodSection({
                   onClick={() => setSelected(method._id)}
                   className={`flex items-center justify-between p-5 rounded-2xl border transition-all cursor-pointer ${
                     isSelected
-                      ? 'border-[#0A58CA] bg-blue-50/30 shadow-xs'
+                      ? 'border-[#0082CA] bg-blue-50/30 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 bg-white'
                   }`}
                 >
@@ -74,7 +74,7 @@ export default function DeliveryMethodSection({
                       name="deliveryMethod"
                       checked={isSelected}
                       onChange={() => setSelected(method._id)}
-                      className="mt-1 w-5 h-5 text-[#0A58CA] border-slate-300 focus:ring-[#0A58CA]"
+                      className="mt-1 w-5 h-5 text-[#0082CA] border-slate-300 focus:ring-[#0082CA]"
                     />
                     <div>
                       <div className="flex items-center space-x-2">

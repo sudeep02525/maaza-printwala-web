@@ -13,8 +13,10 @@ export default function CartPage() {
   const { items, cartTotal, isLoading, error, fetchCart, updateItemQuantity, removeItem, clearCart } = useCartStore();
   const [updatingId, setUpdatingId] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     fetchCart();
   }, [fetchCart]);
 
@@ -61,13 +63,13 @@ export default function CartPage() {
           <div>
             <Badge variant="primary" size="sm" className="mb-2">Shopping Cart</Badge>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-              <ShoppingBag className="w-7 h-7 text-[#0A58CA]" />
+              <ShoppingBag className="w-7 h-7 text-[#0082CA]" />
               <span>Your Print Orders</span>
             </h1>
           </div>
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#0A58CA] transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#0082CA] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
           </Link>
@@ -81,15 +83,15 @@ export default function CartPage() {
         )}
 
         {/* Loading State for Initial Fetch */}
-        {isLoading && items.length === 0 ? (
+        {!isMounted || (isLoading && items.length === 0) ? (
           <Card className="p-16 text-center space-y-4 border-slate-200">
-            <RefreshCw className="w-10 h-10 text-[#0A58CA] animate-spin mx-auto" />
+            <RefreshCw className="w-10 h-10 text-[#0082CA] animate-spin mx-auto" />
             <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Syncing shopping cart items...</p>
           </Card>
         ) : items.length === 0 ? (
           /* Empty Cart State */
           <Card className="p-16 text-center max-w-2xl mx-auto space-y-6 border-slate-200">
-            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-[#0A58CA] border border-blue-100">
+            <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-[#0082CA] border border-blue-100">
               <ShoppingBag className="w-10 h-10" />
             </div>
             <div className="space-y-2">
@@ -146,7 +148,7 @@ export default function CartPage() {
                       <div className="space-y-2 flex-1 min-w-0">
                         <Link
                           href={`/products/${item.product?.slug || ''}`}
-                          className="text-base font-black text-slate-900 hover:text-[#0A58CA] transition-colors block truncate"
+                          className="text-base font-black text-slate-900 hover:text-[#0082CA] transition-colors block truncate"
                         >
                           {prodName}
                         </Link>
@@ -165,7 +167,7 @@ export default function CartPage() {
                             );
                           })}
                           {dims && dims.width && dims.height && (
-                            <span className="px-2 py-0.5 rounded bg-blue-50 text-[#0A58CA] text-[10px] font-bold uppercase border border-blue-200">
+                            <span className="px-2 py-0.5 rounded bg-blue-50 text-[#0082CA] text-[10px] font-bold uppercase border border-blue-200">
                               Size: {dims.width} × {dims.height} {dims.unit || 'ft'}
                             </span>
                           )}
@@ -175,7 +177,7 @@ export default function CartPage() {
                         <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-200 text-xs space-y-1">
                           {item.designType === 'UPLOAD' ? (
                             <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
-                              <FileText className="w-3.5 h-3.5 text-[#0A58CA] shrink-0" />
+                              <FileText className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
                               <span className="truncate">
                                 Artwork File: <strong className="text-slate-900">{item.artwork?.originalName || item.artwork?.fileId || 'Custom File'}</strong>
                               </span>
@@ -183,7 +185,7 @@ export default function CartPage() {
                           ) : (
                             <div className="space-y-1">
                               <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
-                                <LayoutTemplate className="w-3.5 h-3.5 text-[#D63384] shrink-0" />
+                                <LayoutTemplate className="w-3.5 h-3.5 text-[#C71578] shrink-0" />
                                 <span className="truncate">
                                   Template Layout: <strong className="text-slate-900">{item.template?.templateName || 'Predefined Template'}</strong>
                                 </span>
@@ -252,7 +254,7 @@ export default function CartPage() {
             {/* Order Summary Sidebar (4 cols) */}
             <div className="lg:col-span-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6 sticky top-24">
               <div className="border-b border-slate-100 pb-4">
-                <span className="text-[10px] font-bold text-[#0A58CA] uppercase tracking-widest block">Order Calculation</span>
+                <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-widest block">Order Calculation</span>
                 <h2 className="text-xl font-black text-slate-900 mt-0.5">Order Summary</h2>
               </div>
 
@@ -271,20 +273,24 @@ export default function CartPage() {
                   <span>Subtotal Amount</span>
                   <span className="font-bold text-slate-900">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
                 </div>
+                <div className="flex justify-between text-slate-600 font-semibold">
+                  <span>Est. GST (18% commercial rate)</span>
+                  <span className="font-bold text-slate-900">₹{Math.round((cartTotal || 0) * 0.18).toLocaleString('en-IN')}</span>
+                </div>
                 <div className="flex justify-between text-slate-400 text-xs font-normal">
-                  <span>Shipping & Applicable Taxes</span>
+                  <span>Shipping & Logistics</span>
                   <span>Calculated during checkout</span>
                 </div>
               </div>
 
               <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline">
                 <span className="text-base font-black text-slate-900">Estimated Total</span>
-                <span className="text-2xl font-black text-[#0A58CA]">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
+                <span className="text-2xl font-black text-[#0082CA]">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
               </div>
 
               {/* Verified Pricing Trust Badge */}
               <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex items-start gap-3">
-                <ShieldCheck className="w-5 h-5 text-[#0A58CA] shrink-0 mt-0.5" />
+                <ShieldCheck className="w-5 h-5 text-[#0082CA] shrink-0 mt-0.5" />
                 <div className="text-xs text-slate-700 space-y-1">
                   <span className="font-bold text-slate-900 block">Verified Server Valuation</span>
                   <p className="text-slate-600 font-normal leading-relaxed">

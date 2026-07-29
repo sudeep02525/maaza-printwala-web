@@ -5,8 +5,8 @@ export default function Card({ children, className, hover = false, ...props }) {
   return (
     <div
       className={cn(
-        'bg-white rounded-xl border border-slate-200 shadow-xs transition-all duration-200',
-        hover && 'hover:shadow-md hover:border-slate-300',
+        'bg-white rounded-lg border border-slate-200 transition-colors duration-150',
+        hover && 'hover:border-slate-400',
         className
       )}
       {...props}
@@ -15,3 +15,4 @@ export default function Card({ children, className, hover = false, ...props }) {
     </div>
   );
 }
+

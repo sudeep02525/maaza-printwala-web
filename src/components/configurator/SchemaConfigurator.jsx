@@ -36,7 +36,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
     <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6 select-none">
       <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-          <Package className="w-5 h-5 text-[#0A58CA]" />
+          <Package className="w-5 h-5 text-[#0082CA]" />
           <span>1. Select Custom Specifications</span>
         </h3>
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200">
@@ -53,11 +53,11 @@ export default function SchemaConfigurator({ schema, isLoading }) {
             <div key={attr.key} className="space-y-2">
               <div className="flex items-center justify-between">
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  {attr.label} {attr.required && <span className="text-[#D63384]">*</span>}
+                  {attr.label} {attr.required && <span className="text-[#C71578]">*</span>}
                 </label>
                 {attr.description && (
                   <span className="text-[10px] text-slate-400 flex items-center gap-1 cursor-help" title={attr.description}>
-                    <Info className="w-3 h-3 text-[#0A58CA]" /> Info
+                    <Info className="w-3 h-3 text-[#0082CA]" /> Info
                   </span>
                 )}
               </div>
@@ -99,7 +99,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                       onChange={(e) => updateConfiguration(attr.key, e.target.value)}
                       className={cn(
                         'w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-semibold text-slate-800 transition-all cursor-pointer',
-                        'focus:outline-none focus:ring-2 focus:ring-[#0A58CA]/20 focus:border-[#0A58CA]',
+                        'focus:outline-none focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA]',
                         isMissing ? 'border-amber-300 bg-amber-50/30' : 'border-slate-300'
                       )}
                     >
@@ -166,7 +166,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.width !== undefined ? configuration.width : 3}
                         onChange={(e) => updateConfiguration('width', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0A58CA]/20 focus:border-[#0A58CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -180,7 +180,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.height !== undefined ? configuration.height : 2}
                         onChange={(e) => updateConfiguration('height', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0A58CA]/20 focus:border-[#0A58CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                   </div>
@@ -188,7 +188,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                     configuration.width > (attr.maxRange || 50) ||
                     configuration.height < (attr.minRange || 1) ||
                     configuration.height > (attr.maxRange || 50)) && (
-                    <p className="text-[11px] font-semibold text-[#D63384] flex items-center gap-1">
+                    <p className="text-[11px] font-semibold text-[#C71578] flex items-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>Dimensions must be between {attr.minRange || 1} and {attr.maxRange || 50} {attr.unit || 'ft'}.</span>
                     </p>

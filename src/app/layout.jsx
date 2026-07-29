@@ -6,6 +6,9 @@ import Footer from '../components/common/Footer.jsx';
 export const metadata = {
   title: 'Maaza Printwala — India ki Apni Online Printing Press | Commercial B2B & B2C Printing',
   description: 'India\'s premier online printing platform for Business Cards, Flex Banners, Letterheads, Brochures, Apparel, and Corporate Gift Packaging with instant pricing and custom design tools.',
+  icons: {
+    icon: '/logo-maaza.png',
+  },
 };
 
 export default function RootLayout({ children }) {

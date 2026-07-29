@@ -54,7 +54,7 @@ function ProductDetailContent({ slug }) {
   if (prodLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-4">
-        <div className="w-12 h-12 border-4 border-[#0A58CA] border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="w-12 h-12 border-4 border-[#0082CA] border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className="text-sm font-bold text-slate-500">Loading print specifications...</p>
       </div>
     );
@@ -67,7 +67,7 @@ function ProductDetailContent({ slug }) {
         <p className="text-sm text-slate-500">We couldn&apos;t locate the requested product in our catalogue.</p>
         <Link
           href="/products"
-          className="inline-block px-6 py-2.5 bg-[#0A58CA] text-white font-bold text-xs rounded-xl shadow-xs hover:bg-[#084298]"
+          className="inline-block px-6 py-2.5 bg-[#0082CA] text-white font-bold text-xs rounded-xl shadow-xs hover:bg-[#0068A2]"
         >
           Return to Catalogue
         </Link>
@@ -104,7 +104,7 @@ function ProductDetailContent({ slug }) {
         {/* Left Col: Product Gallery & Highlights (7 cols) */}
         <div className="lg:col-span-7 space-y-8">
           <div className="border-b border-slate-200 pb-6">
-            <span className="inline-block px-3 py-1 rounded-md text-xs font-black bg-blue-50 text-[#0A58CA] uppercase tracking-wider mb-3 border border-blue-200">
+            <span className="inline-block px-3 py-1 rounded-md text-xs font-black bg-blue-50 text-[#0082CA] uppercase tracking-wider mb-3 border border-blue-200">
               {product.category?.name || 'Commercial Press'}
             </span>
             <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">{product.name}</h1>
@@ -116,7 +116,7 @@ function ProductDetailContent({ slug }) {
           {/* Delivery & Architecture Placeholders (Strict Neutral Compliance) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 flex items-start gap-3 shadow-xs">
-              <Truck className="w-5 h-5 text-[#0A58CA] shrink-0 mt-0.5" />
+              <Truck className="w-5 h-5 text-[#0082CA] shrink-0 mt-0.5" />
               <div>
                 <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">Standard Dispatch</h4>
                 <p className="text-xs text-slate-600 mt-0.5 font-normal leading-relaxed">
@@ -150,7 +150,7 @@ function ProductDetailContent({ slug }) {
       <div className="pt-12 border-t border-slate-200 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="space-y-3">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#0A58CA]" />
+            <FileText className="w-5 h-5 text-[#0082CA]" />
             <span>Print Specifications</span>
           </h3>
           <p className="text-xs text-slate-600 leading-relaxed font-normal">
@@ -166,10 +166,10 @@ function ProductDetailContent({ slug }) {
         <div className="space-y-3">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-            <span>Artwork Requirements</span>
+            <span>Artwork Requirements for This Product</span>
           </h3>
           <p className="text-xs text-slate-600 leading-relaxed font-normal">
-            To ensure your print results match your expectations without clipping important text, please review the guidelines for this item:
+            To ensure your print results match your expectations without clipping important text, please review the specific artwork requirements for this product:
           </p>
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2 font-normal text-slate-700 shadow-xs">
             {schema?.artworkRequirements || product?.artworkRequirements ? (
@@ -191,7 +191,7 @@ function ProductDetailContent({ slug }) {
 
         <div className="space-y-3">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-[#D63384]" />
+            <HelpCircle className="w-5 h-5 text-[#C71578]" />
             <span>Frequently Asked Questions</span>
           </h3>
           <div className="space-y-2.5">
@@ -232,7 +232,7 @@ export default function ProductDetailPage({ params }) {
   return (
     <Suspense fallback={
       <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-4">
-        <div className="w-10 h-10 border-4 border-[#0A58CA] border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div className="w-10 h-10 border-4 border-[#0082CA] border-t-transparent rounded-full animate-spin mx-auto"></div>
         <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading product specifications...</p>
       </div>
     }>
