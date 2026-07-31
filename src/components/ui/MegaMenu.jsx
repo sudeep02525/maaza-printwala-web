@@ -31,7 +31,7 @@ export default function MegaMenu({ categories = [], isLoading = false }) {
   if (isLoading) {
     return (
       <nav className="bg-[#F7F8FA] border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-6 h-12 animate-pulse">
+        <div className="max-w-[1560px] mx-auto px-5 flex items-center gap-6 h-12 animate-pulse">
           <div className="h-4 w-24 bg-slate-200 rounded"></div>
           <div className="h-4 w-28 bg-slate-200 rounded"></div>
           <div className="h-4 w-32 bg-slate-200 rounded"></div>
@@ -42,114 +42,182 @@ export default function MegaMenu({ categories = [], isLoading = false }) {
   }
 
   return (
-    <nav className="bg-[#F7F8FA] text-slate-800 text-xs font-semibold border-b border-slate-200 relative select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-12">
+    <nav className="bg-slate-50 text-slate-800 text-sm border-t border-b border-slate-200/50 relative select-none">
+      <div className="max-w-[1550px] mx-auto w-full px-4 md:px-8">
         {/* Category Items */}
-        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto no-scrollbar h-full py-1">
+        <div className="flex items-center justify-between overflow-x-auto no-scrollbar h-14 w-full">
           <Link
             href="/products"
-            className="flex items-center gap-1.5 px-3 py-2 rounded-md hover:bg-white text-slate-700 hover:text-[#0082CA] font-bold transition-colors shrink-0 border border-transparent hover:border-slate-200 hover:shadow-2xs"
+            className={`flex items-center h-full px-2 transition-colors shrink-0 ${
+              activeCategory === 'view-all'
+                ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
+                : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent hover:border-slate-800'
+            }`}
+            onMouseEnter={() => setActiveCategory('view-all')}
+            onMouseLeave={() => setActiveCategory(null)}
           >
-            <Grid className="w-3.5 h-3.5 text-[#0082CA]" />
-            <span>All Products</span>
+            <span>View All</span>
           </Link>
 
           {categories.slice(0, 8).map((cat) => {
-            const catImg = cat.image || getCategoryImage(cat.name);
+            const isHovered = activeCategory === cat._id;
             return (
               <div
                 key={cat._id}
-                className="relative h-full flex items-center shrink-0"
+                className="h-full flex items-center shrink-0 group"
                 onMouseEnter={() => setActiveCategory(cat._id)}
                 onMouseLeave={() => setActiveCategory(null)}
               >
                 <Link
                   href={`/products?category=${cat.slug || cat._id}`}
-                  className={`flex items-center gap-1 px-3 py-2 rounded-md transition-all font-semibold ${
-                    activeCategory === cat._id
-                      ? 'bg-white text-[#0082CA] border border-slate-200 shadow-2xs'
-                      : 'text-slate-700 hover:bg-white/70 hover:text-slate-900'
+                  className={`flex items-center h-full px-2 transition-all ${
+                    isHovered
+                      ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
+                      : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent'
                   }`}
                 >
-                  <span>{cat.name}</span>
-                  <ChevronDown className={`w-3 h-3 transition-transform duration-150 ${activeCategory === cat._id ? 'rotate-180 text-[#0082CA]' : 'text-slate-400'}`} />
+                  <span className="whitespace-nowrap">{cat.name}</span>
                 </Link>
-
-                {/* Rich Image-Enriched Dropdown Panel */}
-                {activeCategory === cat._id && (
-                  <div className="absolute top-full left-0 w-96 bg-white text-slate-900 rounded-b-lg shadow-xl border border-slate-200 p-4 z-megamenu animate-fade-in">
-                    <div className="grid grid-cols-3 gap-3.5 pb-3 border-b border-slate-100 items-center">
-                      {/* Thumbnail Image */}
-                      <div className="col-span-1 aspect-4/3 rounded-md bg-slate-100 overflow-hidden relative border border-slate-200">
-                        <img
-                          src={catImg}
-                          alt={cat.name}
-                          className="w-full h-full object-cover"
-                        />
-                        <span className="absolute bottom-1 left-1 bg-slate-900/80 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
-                          300 GSM+
-                        </span>
-                      </div>
-
-                      {/* Info & Sub-specs */}
-                      <div className="col-span-2 space-y-1">
-                        <h4 className="font-bold text-slate-900 text-sm flex items-center justify-between">
-                          <span>{cat.name}</span>
-                          <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
-                            Pan-India
-                          </span>
-                        </h4>
-                        <p className="text-[11px] text-slate-500 line-clamp-2 font-normal leading-tight">
-                          {cat.description || 'Custom commercial print specification with instant server-calculated bulk pricing.'}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Quick Config Pills / Sub-Links */}
-                    <div className="py-2.5 border-b border-slate-100 space-y-1.5">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                        Popular Specifications
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {['Standard Art Card', 'Premium UV Coated', 'Spot UV & Embossed', 'Volume Packs', 'Eco-Friendly'].map((spec, idx) => (
-                          <Link
-                            key={idx}
-                            href={`/products?category=${cat.slug || cat._id}&search=${encodeURIComponent(spec)}`}
-                            onClick={() => setActiveCategory(null)}
-                            className="text-[11px] px-2 py-1 rounded bg-slate-50 hover:bg-[#0082CA] text-slate-700 hover:text-white transition-colors border border-slate-200 hover:border-[#0082CA]"
-                          >
-                            {spec}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-3">
-                      <Link
-                        href={`/products?category=${cat.slug || cat._id}`}
-                        onClick={() => setActiveCategory(null)}
-                        className="flex items-center justify-between px-3.5 py-2.5 rounded-md bg-[#0082CA] hover:bg-[#0068A2] text-white text-xs font-bold transition-colors shadow-xs group"
-                      >
-                        <span className="flex items-center gap-1.5">
-                          <Layers className="w-3.5 h-3.5" />
-                          <span>Explore {cat.name} Catalogue</span>
-                        </span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </div>
-                  </div>
-                )}
               </div>
             );
           })}
         </div>
-
-        {/* Right Feature Link */}
-        <div className="hidden lg:flex items-center gap-2 text-xs font-bold text-slate-600 pl-4 border-l border-slate-200">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-          <span>GST Invoicing &amp; Volume Pricing</span>
-        </div>
       </div>
+
+      {/* FULL WIDTH MEGA MENU DROP-DOWN PANEL */}
+      {activeCategory && (
+        <div 
+          className="absolute top-full left-0 w-full bg-white shadow-xl border-b border-slate-200 z-[9998] animate-fade-in"
+          onMouseEnter={() => setActiveCategory(activeCategory)}
+          onMouseLeave={() => setActiveCategory(null)}
+        >
+          {(() => {
+            const isViewAll = activeCategory === 'view-all';
+            const cat = categories.find(c => c._id === activeCategory);
+            
+            if (!cat && !isViewAll) return null;
+            
+            if (isViewAll) {
+              return (
+                <div>
+                  <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 py-10">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+                      {/* Column 1 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Business Essentials</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Visiting Cards</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Signs, Posters & Marketing</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Stationery, Letterheads</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Labels, Stickers & Packaging</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Stamps & Ink</Link></li>
+                        </ul>
+                      </div>
+  
+                      {/* Column 2 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Love your new look</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Clothing, Caps & Bags</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Custom Polo T-Shirts</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Printed T-Shirts</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Custom Office Shirts</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Bags</Link></li>
+                        </ul>
+                      </div>
+  
+                      {/* Column 3 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Made by You</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Photo Albums</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Personalised Pens</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Magnets</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Notebooks & Diaries</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Calendars</Link></li>
+                        </ul>
+                      </div>
+  
+                      {/* Column 4 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Home & Gifts</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Mugs, Albums & Gifts</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Drinkware</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Mugs</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Gift Hampers</Link></li>
+                        </ul>
+                      </div>
+  
+                      {/* Column 5 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Design & Logo</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Design Services</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Logo Maker</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">QR Code Generator</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Ideas and Advice</Link></li>
+                        </ul>
+                      </div>
+  
+                      {/* Column 6 */}
+                      <div className="space-y-4">
+                        <h4 className="text-sm font-semibold text-slate-600 mb-2">Looking for more?</h4>
+                        <ul className="space-y-3">
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Technology</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Invitations & Announcements</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Awards & Plaques</Link></li>
+                          <li><Link href="/products" className="text-slate-900 hover:underline text-[13px]">Face Masks</Link></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
+            // Specific Category Rendering
+            return (
+              <div>
+                <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 py-8">
+                  <div className="flex gap-12">
+                    <div className="w-1/4">
+                      <h4 className="text-lg font-bold text-slate-900 mb-4">{cat.name}</h4>
+                      <p className="text-sm text-slate-500 mb-6">Explore our wide range of premium {cat.name.toLowerCase()} options tailored for your brand.</p>
+                      <Link href={`/products?category=${cat.slug || cat._id}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0082CA] hover:underline">
+                        Shop All {cat.name} <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                    
+                    <div className="w-1/4">
+                      <h4 className="text-sm font-semibold text-slate-600 mb-3">Popular Options</h4>
+                      <ul className="space-y-3">
+                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Standard {cat.name}</Link></li>
+                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Premium Quality {cat.name}</Link></li>
+                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Eco-Friendly {cat.name}</Link></li>
+                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Custom Printed {cat.name}</Link></li>
+                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Bulk {cat.name} Orders</Link></li>
+                      </ul>
+                    </div>
+  
+                    <div className="w-1/2 rounded-xl overflow-hidden relative h-[220px]">
+                      <img 
+                        src={getCategoryImage(cat.name)} 
+                        alt={cat.name} 
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent p-6 flex flex-col justify-end">
+                        <h3 className="text-white font-bold text-2xl mb-1">{cat.name} Showcase</h3>
+                        <p className="text-white/90 text-sm">Design exactly what you need.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
     </nav>
   );
 }

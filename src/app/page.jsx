@@ -1,85 +1,91 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import {
-  ArrowRight,
-  ShieldCheck,
-  Truck,
-  Layers,
-  Search,
-  Package,
-  ChevronRight,
-  Printer,
-  CheckCircle2,
-  Award,
-  FileText,
-} from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Heart, ChevronRight, ChevronLeft, Search } from 'lucide-react';
+
 import axiosInstance from '../services/axiosInstance.js';
-import Button from '../components/ui/Button.jsx';
-import Card from '../components/ui/Card.jsx';
-import Skeleton from '../components/ui/Skeleton.jsx';
 import ProductCard from '../components/products/ProductCard.jsx';
+import HeroBanner from '../components/home/HeroBanner.jsx';
+import TestimonialCarousel from '../components/home/TestimonialCarousel.jsx';
+import { 
+  FeaturedSlider, 
+  CorporateSection, 
+  WeddingSection, 
+  CustomMerchSection, 
+  TopRatedSection 
+} from '../components/home/HomeSections.jsx';
 
-// Official studio fallback imagery for commercial print categories
-const CATEGORY_FALLBACK_IMAGES = {
-  'business-cards': 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
-  'standard-visiting-cards': 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=600&q=80',
-  'pvc-id-cards': 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-  'marketing-signage': 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80',
-  'flex-banners': 'https://images.unsplash.com/photo-1542744094-3a3e2203538c?auto=format&fit=crop&w=600&q=80',
-  'roll-up-standees': 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80',
-  'custom-apparel': 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
-  't-shirts': 'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80',
-  'ceramic-mugs': 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
-  'flyers-brochures': 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
-};
-
-// High-quality commercial print fallback templates for rich marketplace presentation
-const SAMPLE_TEMPLATES = [
-  {
-    _id: 'sample-tmpl-1',
-    templateName: 'Corporate Executive Visiting Card',
-    description: '300 GSM Matte card with customizable company logo, employee designation, and QR code field.',
-    previewImage: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
-    category: 'Business Cards',
-  },
-  {
-    _id: 'sample-tmpl-2',
-    templateName: 'Enterprise Letterhead & Stationery',
-    description: '100 GSM Bond paper layout with header grid, GSTIN footer placeholder, and watermark support.',
-    previewImage: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
-    category: 'Corporate Stationery',
-  },
-  {
-    _id: 'sample-tmpl-3',
-    templateName: 'Commercial Roll-up Standee Banner',
-    description: 'Star flex 330 GSM promotional layout with high-impact headline and exhibit call-to-action.',
-    previewImage: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80',
-    category: 'Marketing Signage',
-  },
-  {
-    _id: 'sample-tmpl-4',
-    templateName: 'Staff ID & Lanyard Badge Layout',
-    description: 'PVC durable card layout with employee portrait box, barcode identifier, and blood group tag.',
-    previewImage: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
-    category: 'PVC ID Cards',
-  },
+// --- MOCK DATA ---
+const SHOP_BY_PRODUCT = [
+  { name: 'Visiting Cards', image: '/images/cat_flyers_brochures_1785433655247.png' },
+  { name: 'Flyers', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Brochure', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Letterhead', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Envelope', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Sticker', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Labels', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Packaging Box', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Mug', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Bottle', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'T-Shirt', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Hoodie', image: '/images/cat_visiting_cards_1785433645262.png' },
 ];
 
+const INDUSTRIES = [
+  { name: 'Restaurant', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'School', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Hospital', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Real Estate', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Manufacturing', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Startup', image: '/images/cat_visiting_cards_1785433645262.png' },
+];
+
+const OCCASIONS = [
+  { name: 'Wedding', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Festival', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Corporate Events', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Exhibition', image: '/images/cat_visiting_cards_1785433645262.png' },
+];
+
+const BRANDS = ['HP', 'Dell', 'Puma', 'Adidas', 'Samsung', 'Boat', 'Reliance', 'Tata'];
+
+const POPULAR_SEARCHES = [
+  'Business Cards', 'Custom Tshirt', 'Sticker Printing', 'Packaging', 'Mug Printing', 'Standee', 'Letterhead', 'ID Cards', 'Lanyards', 'Flyers', 'Brochure Design', 'Corporate Gifts'
+];
+
+const INSTAGRAM_POSTS = [
+  '/images/cat_visiting_cards_1785433645262.png',
+  '/images/cat_visiting_cards_1785433645262.png',
+  '/images/cat_visiting_cards_1785433645262.png',
+  '/images/cat_visiting_cards_1785433645262.png',
+  '/images/cat_visiting_cards_1785433645262.png',
+  '/images/cat_visiting_cards_1785433645262.png',
+];
+
+const BLOGS = [
+  { title: 'Understanding Paper GSM for Business Cards', date: 'Jul 24, 2026', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { title: 'Top 5 Corporate Gifting Trends this Year', date: 'Jul 18, 2026', image: '/images/cat_visiting_cards_1785433645262.png' },
+];
+
+// --- HELPER COMPONENT FOR SECTION TITLES ---
+const SectionHeader = ({ title }) => (
+  <div className="flex justify-between items-end mb-8">
+    <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">{title}</h2>
+  </div>
+);
+
 export default function HomePage() {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFaq, setActiveFaq] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [activeFaq, setActiveFaq] = useState(null);
+  const [canScrollExploreLeft, setCanScrollExploreLeft] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // 1. Fetch Dynamic Categories from API
   const { data: catData, isLoading: catLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: () => axiosInstance.get('/categories'),
@@ -87,595 +93,257 @@ export default function HomePage() {
     staleTime: 5 * 60 * 1000,
   });
 
-  // 2. Fetch Featured Products from API
   const { data: prodData, isLoading: prodLoading } = useQuery({
     queryKey: ['products-featured'],
     queryFn: () => axiosInstance.get('/products?featured=true'),
     retry: false,
   });
 
-  // 3. Fetch Ready-Made Templates from API
-  const { data: tmplData, isLoading: tmplLoading } = useQuery({
-    queryKey: ['templates-featured'],
-    queryFn: () => axiosInstance.get('/templates'),
-    retry: false,
-  });
-
-  // 4. Fetch CMS Homepage Section Configuration (with modular fallback)
-  const { data: cmsData } = useQuery({
-    queryKey: ['cms-homepage-sections'],
-    queryFn: () => axiosInstance.get('/cms/homepage'),
-    retry: false,
-  });
-
   const categories = catData?.data?.categories || [];
-  const products = prodData?.data?.products || [];
-  const fetchedTemplates = tmplData?.data?.templates || [];
   
-  // Ensure we display rich template catalogue items even when API returns empty
-  const templates = fetchedTemplates.length > 0 ? fetchedTemplates : SAMPLE_TEMPLATES;
-
-  // Modular CMS Section Schema (Enforcing Admin visibility & order control)
-  const defaultCmsSections = [
-    { id: 'hero', enabled: true, order: 1, title: 'Hero Commercial Presentation' },
-    { id: 'offer-strip', enabled: true, order: 2, title: 'Announcement Strip', subtitle: 'Corporate printing and bulk orders available nationwide' },
-    { id: 'categories', enabled: true, order: 3, title: 'Popular Commercial Categories', subtitle: 'Explore high-density print solutions by industry sector' },
-    { id: 'templates', enabled: true, order: 4, title: 'Featured Customizable Templates', subtitle: 'Select an editable layout and customize online in seconds' },
-    { id: 'trending', enabled: true, order: 5, title: 'Trending Print Catalogue', subtitle: 'Server-authoritative volume rates for commercial accounts' },
-    { id: 'business-solutions', enabled: true, order: 6, title: 'Enterprise Business Solutions', subtitle: 'Dedicated corporate support, API invoicing, and custom substrates' },
-    { id: 'showcase', enabled: true, order: 7, title: 'Our Recent Print Projects', subtitle: 'Authentic customer print samples and commercial deliverables' },
-    { id: 'quality-pillars', enabled: true, order: 8, title: 'Why Choose Maaza Printwala', subtitle: 'Manual staff pre-press checks and reliable courier logistics' },
-    { id: 'faq', enabled: true, order: 9, title: 'Frequently Asked Questions', subtitle: 'Everything you need to know about corporate ordering and specifications' },
-  ];
-
-  const cmsSections = useMemo(() => {
-    if (!isMounted) return defaultCmsSections;
-    const fetched = cmsData?.data?.sections || defaultCmsSections;
-    return [...fetched].filter((s) => s.enabled).sort((a, b) => a.order - b.order);
-  }, [isMounted, cmsData]);
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-    } else {
-      router.push('/products');
+  // Create mock arrays for the vast number of sections by slicing the main products array
+  // If the array is too short, we'll repeat it for visual completeness.
+  const baseProducts = prodData?.data?.products || [];
+  const getSlice = (start, length = 6) => {
+    if (baseProducts.length === 0) return [];
+    const result = [];
+    for (let i = 0; i < length; i++) {
+      result.push(baseProducts[(start + i) % baseProducts.length]);
     }
+    return result;
   };
 
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
+  const bestSellers = getSlice(0, 6);
+  const newArrivals = getSlice(6, 6);
+  const businessEssentials = getSlice(12, 6);
+  const customClothing = getSlice(18, 6);
+  const packaging = getSlice(24, 6);
+  const marketingMaterials = getSlice(30, 6);
+  const corporateGifts = getSlice(36, 6);
+  const trendingProducts = getSlice(42, 6);
+  const recentlyViewed = getSlice(48, 6);
 
-  const faqs = [
-    {
-      q: 'How does Maaza Printwala verify my print artwork safe zones?',
-      a: 'Every custom design uploaded undergoes a manual pre-press boundary check by our print specialists. If your file requires margin adjustments or safe-zone alignment, our team notifies you before starting press run to ensure clean output.',
-    },
-    {
-      q: 'What is the standard turnaround timeline for commercial print runs?',
-      a: 'Standard print production is scheduled immediately following artwork verification. Dispatch via reliable nationwide courier partners typically takes 5-7 business days depending on delivery destination.',
-    },
-    {
-      q: 'Can I get GST commercial invoices for corporate account orders?',
-      a: 'Yes! Simply enter your 15-digit business GSTIN and corporate company name during checkout. You will receive a tax-compliant commercial invoice upon order registration for business accounting.',
-    },
-    {
-      q: 'What if I do not have ready-made graphic artwork?',
-      a: 'No worries! You can select from our curated Ready-Made Design Templates. Simply customize text fields and logo placeholders using our interactive online configurator.',
-    },
-  ];
+  return (
+    <div className="bg-[#fafafa] min-h-screen font-sans overflow-x-hidden">
+      
+      {/* 3. HERO & TRUST STRIP */}
+      <HeroBanner />
 
-  // Render Section Helper (Timeless, product-first commercial printing architecture)
-  const renderSection = (sectionId) => {
-    switch (sectionId) {
-      case 'hero':
-        return (
-          <section key="hero" className="bg-white text-slate-900 border-b border-slate-200 py-12 lg:py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                {/* Left Column: Calm Enterprise Headline, Supporting Copy, Search & Actions */}
-                <div className="lg:col-span-7 space-y-6 text-left">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider">
-                    <span>Commercial B2B &amp; B2C Printing Press</span>
-                  </div>
-
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
-                    Custom Printing for Every Business & Brand
-                  </h1>
-
-                  <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed max-w-2xl">
-                    Direct manufacturer rates for high-density business cards, corporate stationery, promotional packaging, and custom apparel. Guaranteed specification accuracy and nationwide courier dispatch.
-                  </p>
-
-                  {/* Real Search Bar inside Hero */}
-                  <form onSubmit={handleSearchSubmit} className="max-w-xl pt-1">
-                    <div className="relative flex items-center bg-[#F7F8FA] border border-slate-300 rounded-lg p-1.5 focus-within:border-[#0082CA] focus-within:bg-white transition-colors">
-                      <Search className="w-5 h-5 text-slate-400 ml-3 mr-2 shrink-0" />
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search business cards, brochures, promotional banners, packaging..."
-                        className="w-full bg-transparent py-2.5 pr-4 text-sm text-slate-900 placeholder-slate-400 focus:outline-none font-medium"
-                      />
-                      <button
-                        type="submit"
-                        className="bg-[#0082CA] hover:bg-[#0068A2] text-white font-semibold rounded px-6 py-2.5 text-xs shrink-0 transition-colors"
-                      >
-                        Search
-                      </button>
-                    </div>
-                  </form>
-
-                  {/* Primary & Secondary CTAs */}
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <Link href="/products">
-                      <span className="inline-flex items-center justify-center bg-[#0082CA] hover:bg-[#0068A2] text-white font-semibold rounded-md px-6 py-3 text-sm transition-colors">
-                        Browse Print Catalogue
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </span>
-                    </Link>
-                    <Link href="/products">
-                      <span className="inline-flex items-center justify-center border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold rounded-md px-6 py-3 text-sm transition-colors">
-                        Upload Custom Artwork
-                      </span>
-                    </Link>
-                  </div>
-
-                  {/* Popular Categories Links */}
-                  <div className="pt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                    <span className="font-semibold text-slate-700 uppercase tracking-wider mr-1">Popular:</span>
-                    {['Business Cards', 'Packaging', 'Corporate Stationery', 'Brochures', 'Promotional Kits'].map((term, i) => (
-                      <Link
-                        key={i}
-                        href={`/products?search=${encodeURIComponent(term)}`}
-                        className="px-2.5 py-1 bg-slate-100 hover:bg-[#0082CA] text-slate-700 hover:text-white rounded font-medium transition-colors"
-                      >
-                        {term}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right Column: One Large Premium Commercial Printing Lifestyle Image */}
-                <div className="lg:col-span-5 flex items-center justify-center">
-                  <div className="w-full aspect-4/3 rounded-lg border border-slate-200 overflow-hidden relative bg-slate-100 shadow-sm">
-                    <img
-                      src="https://images.unsplash.com/photo-1542744094-3a3e2203538c?auto=format&fit=crop&w=1200&q=80"
-                      alt="Real Commercial Setup: Business Cards, Brochures, Packaging Boxes & Custom Mugs"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent p-5 text-left">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300 block">Real Commercial Setup</span>
-                      <p className="text-sm font-bold text-white">Business Cards, Brochures, Packaging Boxes &amp; Mugs</p>
-                      <p className="text-xs text-slate-300 mt-0.5">300 GSM Art Cards • Rigid Packaging • Custom Substrates</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'offer-strip':
-        return (
-          <div key="offer-strip" className="bg-slate-100 text-slate-800 text-xs py-2.5 px-4 border-b border-slate-200">
-            <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-              <div className="flex items-center gap-2 font-medium">
-                <Printer className="w-4 h-4 text-[#0082CA] shrink-0" />
-                <span>Commercial Bulk Orders: Tiered Volume Pricing &amp; GST Invoicing Supported Nationwide</span>
-              </div>
-              <Link href="/products" className="text-[#0082CA] hover:underline font-bold flex items-center gap-1 transition-colors">
-                <span>View Complete Catalogue</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          </div>
-        );
-
-      case 'categories':
-        return (
-          <section key="categories" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                  Catalogue Directory
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Popular Print Categories</h2>
-              </div>
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
+      {/* 4. EXPLORE ALL CATEGORIES (PrintVenue Circular Style) */}
+      <section className="py-14 bg-white border-b border-slate-100">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+          <SectionHeader title="Explore all categories" />
+          <div className="relative group/slider mt-10">
+            {canScrollExploreLeft && (
+              <button 
+                onClick={() => document.getElementById('explore-categories-scroll')?.scrollBy({ left: -300, behavior: 'smooth' })} 
+                className="absolute -left-4 top-[40%] -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50"
               >
-                <span>Browse All Categories</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {!isMounted || catLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-64 rounded-lg" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {categories.slice(0, 8).map((cat) => {
-                  const slug = cat.slug || cat._id;
-                  const bgImage = cat.image || CATEGORY_FALLBACK_IMAGES[slug] || CATEGORY_FALLBACK_IMAGES['business-cards'];
-                  return (
-                    <Link
-                      key={cat._id}
-                      href={`/products?category=${slug}`}
-                      className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 overflow-hidden transition-colors flex flex-col justify-between"
-                    >
-                      <div className="aspect-16/10 bg-slate-100 relative overflow-hidden">
-                        <img
-                          src={bgImage}
-                          alt={cat.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
-                        />
-                      </div>
-                      <div className="p-4 flex items-center justify-between bg-white border-t border-slate-100">
-                        <div>
-                          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block">Category</span>
-                          <h3 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors">
-                            {cat.name}
-                          </h3>
-                        </div>
-                        <span className="text-slate-400 group-hover:text-[#0082CA] font-bold text-base transition-colors">
-                          &rarr;
-                        </span>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+                <ChevronLeft className="w-6 h-6 text-slate-800" />
+              </button>
             )}
-          </section>
-        );
 
-      case 'templates':
-        return (
-          <section key="templates" className="py-8 lg:py-10 bg-white border-y border-slate-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                    Online Configurator Ready
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Featured Customizable Templates</h2>
-                  <p className="text-xs text-slate-600 mt-0.5 font-normal">
-                    Select a professionally designed layout and edit your company name, designation, and logo online.
-                  </p>
-                </div>
-                <Link
-                  href="/products"
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
-                >
-                  <span>View Template Library</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+            <div 
+              id="explore-categories-scroll" 
+              className="flex gap-4 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth hide-scrollbar pb-4" 
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              onScroll={(e) => setCanScrollExploreLeft(e.currentTarget.scrollLeft > 0)}
+            >
+              {categories.slice(0, 10).map((cat, index) => {
+                const exploreImages = [
+                  '/images/explore_business_cards_1785478383406.png',
+                  '/images/explore_tshirts_1785478392413.png',
+                  '/images/cat_visiting_cards_new_1785478123231.png',
+                  '/images/cat_notebooks_new_1785478132458.png',
+                  '/images/cat_clothing_new_1785478162007.png',
+                  '/images/cat_mugs_new_1785478141544.png'
+                ];
+                const displayImage = exploreImages[index % exploreImages.length];
 
-              {!isMounted || tmplLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[1, 2, 3, 4].map((i) => (
-                    <Skeleton key={i} className="h-64 rounded-lg" />
-                  ))}
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {templates.slice(0, 4).map((tmpl) => (
-                    <div
-                      key={tmpl._id}
-                      className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 transition-colors flex flex-col justify-between overflow-hidden"
-                    >
-                      <div className="aspect-16/10 bg-slate-100 relative overflow-hidden">
-                        {tmpl.previewImage ? (
-                          <img src={tmpl.previewImage} alt={tmpl.templateName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 p-4 text-center">
-                            <Layers className="w-8 h-8 mb-1 stroke-1" />
-                            <span className="text-xs font-medium">{tmpl.templateName}</span>
-                          </div>
-                        )}
-                        <span className="absolute top-2 left-2 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-                          Editable Layout
-                        </span>
-                      </div>
-
-                      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                        <div>
-                          <h4 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors truncate">
-                            {tmpl.templateName}
-                          </h4>
-                          <p className="text-xs text-slate-600 line-clamp-2 mt-1 font-normal">
-                            {tmpl.description || 'Configurable corporate presentation layout.'}
-                          </p>
-                        </div>
-
-                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
-                          <span className="text-[10px] font-semibold text-slate-500 uppercase">Custom Fields</span>
-                          <Link href="/products">
-                            <span className="text-xs font-semibold text-[#0082CA] hover:underline flex items-center gap-1">
-                              Customize &rarr;
-                            </span>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </section>
-        );
-
-      case 'trending':
-        return (
-          <section key="trending" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                  Server-Authoritative Pricing
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Trending Commercial Products</h2>
-                <p className="text-xs text-slate-600 mt-0.5 font-normal">
-                  High-density catalogue display with quantity breaks and instant online valuation.
-                </p>
-              </div>
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-1 text-xs font-semibold text-[#0082CA] hover:underline"
-              >
-                <span>View Complete Catalogue</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            {!isMounted || prodLoading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                  <Skeleton key={i} className="h-72 rounded-lg" />
-                ))}
-              </div>
-            ) : products.length === 0 ? (
-              <Card className="p-8 text-center text-slate-500 text-xs">
-                Catalogue items are currently being loaded. Please visit our products page to view all available printing categories.
-              </Card>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                {products.slice(0, 10).map((prod) => (
-                  <ProductCard key={prod._id} product={prod} />
-                ))}
-              </div>
-            )}
-          </section>
-        );
-
-      case 'business-solutions':
-        return (
-          <section key="business-solutions" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white text-slate-900 rounded-2xl p-8 sm:p-12 border border-slate-200 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-4 text-left">
-                <span className="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-[#0082CA] uppercase tracking-wider border border-blue-100">
-                  Corporate Accounts &amp; Resellers
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
-                  Enterprise Commercial Printing Solutions
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal max-w-2xl">
-                  We support corporate onboarding kits, agency reseller tiers, and multi-branch distribution across India. Experience dedicated staff review and tax-compliant invoicing.
-                </p>
-                <div className="pt-1 flex flex-wrap gap-4 text-xs font-bold text-slate-700">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
-                    <span>Tiered Volume Breaks</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
-                    <span>Dedicated Staff QC</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#0082CA]" />
-                    <span>15-Digit GSTIN ITC Support</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col justify-end gap-3">
-                <Link href="/products" className="w-full">
-                  <span className="inline-flex items-center justify-center w-full bg-[#0082CA] hover:bg-[#0068A2] text-white font-bold rounded-xl py-3.5 px-6 text-sm transition-colors shadow-xs">
-                    Explore Corporate Catalogue
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </span>
-                </Link>
-                <Link href="/products" className="w-full">
-                  <span className="inline-flex items-center justify-center w-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-xl py-3.5 px-6 text-sm transition-colors">
-                    Request Volume Quotation
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'showcase':
-        return (
-          <section key="showcase" className="py-8 lg:py-10 bg-white border-y border-slate-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                    Commercial Output Gallery
-                  </span>
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Our Recent Print Projects</h2>
-                  <p className="text-xs text-slate-600 mt-0.5 font-normal">
-                    Authentic commercial print samples manufactured across India. We deliver high-density color reproduction and careful packaging.
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  {
-                    title: 'Corporate Conference Collateral',
-                    tag: '300 GSM Art Card & Lanyards',
-                    img: 'https://images.unsplash.com/photo-1542744094-3a3e2203538c?auto=format&fit=crop&w=600&q=80',
-                  },
-                  {
-                    title: 'Employee Onboarding Apparel',
-                    tag: 'Combed Cotton & Screen Print',
-                    img: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
-                  },
-                  {
-                    title: 'Executive Presentation Kits',
-                    tag: 'Spot UV Visiting Cards',
-                    img: 'https://images.unsplash.com/photo-1594980596870-8aa52a78d8cd?auto=format&fit=crop&w=600&q=80',
-                  },
-                  {
-                    title: 'Custom Product Packaging Boxes',
-                    tag: '350 GSM Matte Laminated Rigid Box',
-                    img: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80',
-                  },
-                  {
-                    title: 'Weatherproof Outdoor Signage',
-                    tag: 'Polycarbonate Flex Vinyl Banner',
-                    img: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=600&q=80',
-                  },
-                  {
-                    title: 'Corporate Catalogues & Booklets',
-                    tag: 'Multi-page Saddle Stitch Booklet',
-                    img: 'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=600&q=80',
-                  },
-                ].map((item, idx) => (
-                  <div key={idx} className="group bg-white rounded-lg border border-slate-200 hover:border-slate-400 overflow-hidden transition-colors flex flex-col justify-between">
-                    <div className="aspect-16/10 bg-slate-100 overflow-hidden relative">
-                      <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                      <div className="absolute top-2.5 left-2.5 bg-slate-900 text-white text-[10px] font-semibold px-2 py-0.5 rounded">
-                        {item.tag}
-                      </div>
-                    </div>
-                    <div className="p-4 bg-white border-t border-slate-100">
-                      <h4 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors">{item.title}</h4>
-                      <p className="text-xs text-slate-500 mt-0.5">Commercial press run completed with standard quality assurance.</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-
-      case 'quality-pillars':
-        return (
-          <section key="quality-pillars" className="py-8 lg:py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                  Commercial Printing Standards
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Why Choose Maaza Printwala</h2>
-                <p className="text-xs text-slate-600 mt-0.5 font-normal">
-                  We engineer every customer interaction to help you discover, understand, customize, and purchase professional print products.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  icon: ShieldCheck,
-                  title: 'Manual Staff Review',
-                  desc: 'Every custom design uploaded undergoes pre-press verification by our staff to check basic safe zones before press run.',
-                },
-                {
-                  icon: Layers,
-                  title: 'API-Driven Substrates',
-                  desc: 'Dynamic specification selection for 300 GSM cards, weatherproof flex banners, and combed cotton apparel.',
-                },
-                {
-                  icon: Truck,
-                  title: 'Pan-India Dispatch',
-                  desc: 'Careful packaging and logistics integration delivering across major commercial hubs and metros in India.',
-                },
-                {
-                  icon: Award,
-                  title: 'Server-Authoritative',
-                  desc: '100% server-verified pricing rules and GST valuation ensuring commercial security and invoice compliance.',
-                },
-              ].map((pillar, idx) => {
-                const Icon = pillar.icon;
                 return (
-                  <div key={idx} className="bg-white p-4 sm:p-5 rounded-lg border border-slate-200 hover:border-slate-400 transition-colors space-y-3 flex flex-col justify-between">
-                    <div>
-                      <div className="w-9 h-9 rounded bg-slate-100 text-[#0F172A] flex items-center justify-center mb-3">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <h3 className="font-bold text-slate-900 text-sm">{pillar.title}</h3>
-                      <p className="text-xs text-slate-600 font-normal leading-relaxed mt-1">{pillar.desc}</p>
+                  <Link key={cat._id} href={`/products?category=${cat.slug || cat._id}`} className="snap-start shrink-0 group flex flex-col items-center gap-4 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] md:w-[calc(20%-1.2rem)]">
+                    <div className="w-full aspect-square max-w-[280px] rounded-full border border-slate-200 overflow-hidden shadow-sm group-hover:border-[#0082CA] transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
+                      <img src={displayImage} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     </div>
-                  </div>
+                    <span className="text-sm sm:text-base font-bold text-slate-700 text-center leading-tight group-hover:text-[#0082CA]">{cat.name}</span>
+                  </Link>
                 );
               })}
             </div>
-          </section>
-        );
 
-      case 'faq':
-        return (
-          <section key="faq" className="py-8 lg:py-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            <div className="text-left border-b border-slate-200 pb-4">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#0082CA] block mb-1">
-                Clear &amp; Transparent
-              </span>
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
-              <p className="text-xs text-slate-600 mt-0.5 font-normal">
-                Everything you need to know about commercial ordering, file preparation, and tax invoices.
-              </p>
+            <button 
+              onClick={() => document.getElementById('explore-categories-scroll')?.scrollBy({ left: 300, behavior: 'smooth' })} 
+              className="absolute -right-4 top-[40%] -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-lg border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50"
+            >
+              <ChevronRight className="w-6 h-6 text-slate-800" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. VISUAL CATEGORY BLOCKS (VistaPrint Square Style) */}
+      <section className="py-14 bg-[#fafafa]">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 space-y-16">
+          
+          {/* Business Essentials Block */}
+          <div>
+            <SectionHeader title="Business Essentials" linkText="" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
+              {[
+                { name: 'Visiting Cards', img: '/images/cat_visiting_cards_new_1785478123231.png' },
+                { name: 'Notebooks', img: '/images/cat_notebooks_new_1785478132458.png' },
+                { name: 'Custom Mugs', img: '/images/cat_mugs_new_1785478141544.png' },
+                { name: 'Custom Clothing, Bags & Caps', img: '/images/cat_clothing_new_1785478162007.png' }
+              ].map((item, i) => (
+                <Link key={i} href="/products" className="group flex flex-col gap-3">
+                  <div className="aspect-square bg-slate-100 rounded-xl overflow-hidden shadow-sm border border-slate-200 relative">
+                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-sm">{item.name}</h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Love your new look Block */}
+          <div>
+            <SectionHeader title="Love your new look" linkText="" />
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
+              {[
+                { name: 'Custom Polo T-shirts', img: '/images/cat_polo_new_1785478171451.png' },
+                { name: 'Custom T-shirts', img: '/images/cat_tshirt_new_1785478181285.png' },
+                { name: 'Custom Formal Shirts', img: '/images/cat_formal_new_1785478190948.png' },
+                { name: 'Custom Caps', img: '/images/cat_caps_new_1785478209032.png' }
+              ].map((item, i) => (
+                <Link key={i} href="/products" className="group flex flex-col gap-3">
+                  <div className="aspect-square bg-slate-100 rounded-xl overflow-hidden shadow-sm border border-slate-200 relative">
+                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-sm">{item.name}</h3>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <FeaturedSlider products={bestSellers} />
+      
+      {/* BEST SELLING (Standard Grid) */}
+      <section className="py-14 bg-[#fafafa]">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+          <SectionHeader title="Best Selling Prints" linkText="View All Best Sellers" />
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {newArrivals.map((p, i) => <ProductCard key={`bs-${p._id || 'x'}-${i}`} product={p} />)}
+          </div>
+        </div>
+      </section>
+
+      <CorporateSection products={businessEssentials} />
+      <WeddingSection />
+      <CustomMerchSection />
+      
+      {/* RECENTLY ADDED (Standard Grid with 'New' implication) */}
+      <section className="py-14 bg-[#fafafa]">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+          <SectionHeader title="Recently Added" subtitle="Fresh new templates and products" linkText="View All New" />
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+            {recentlyViewed.map((p, i) => <ProductCard key={`new-${p._id || 'x'}-${i}`} product={p} />)}
+          </div>
+        </div>
+      </section>
+
+      <TopRatedSection products={trendingProducts} />
+
+      {/* 17. POPULAR SEARCHES (SEO) */}
+      <section className="py-14 bg-[#fafafa]">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+          <SectionHeader title="Popular Searches" />
+          <div className="flex flex-wrap gap-3">
+            {POPULAR_SEARCHES.map((search, i) => (
+              <Link key={i} href={`/products?search=${encodeURIComponent(search)}`} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm rounded-full hover:border-[#0082CA] hover:text-[#0082CA] hover:shadow-sm transition-all">
+                <Search className="w-3 h-3 inline-block mr-1.5 -mt-0.5" />
+                {search}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 18. CUSTOMER GALLERY */}
+      <section className="py-14 bg-white border-y border-slate-100">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 text-center">
+          <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight mb-2">Customer Gallery</h2>
+          <p className="text-sm text-slate-500 mb-8 font-medium">Tag us on Instagram <span className="font-bold text-[#0082CA]">@MaazaPrintwala</span> to get featured.</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {INSTAGRAM_POSTS.map((img, i) => (
+              <div key={i} className="relative aspect-square rounded-xl overflow-hidden group border border-slate-200">
+                <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Gallery" />
+                <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <Heart className="w-8 h-8 text-white fill-white shadow-sm" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 19. WHY CHOOSE US & PROCESS (Testimonials) */}
+      <TestimonialCarousel />
+
+      {/* 20. BLOG & FAQ */}
+      <section className="py-14 bg-white">
+        <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Blog */}
+            <div>
+              <h2 className="text-[28px] font-extrabold text-slate-900 mb-8 tracking-tight">Print Knowledge Base</h2>
+              <div className="space-y-6">
+                {BLOGS.map((blog, idx) => (
+                  <Link key={idx} href="#" className="flex gap-4 group">
+                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden shrink-0 border border-slate-200">
+                      <img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform" alt="Blog" />
+                    </div>
+                    <div className="flex flex-col justify-center">
+                      <span className="text-[10px] font-extrabold text-[#0082CA] uppercase tracking-wider">{blog.date}</span>
+                      <h3 className="text-sm sm:text-base font-bold text-slate-900 mt-1 group-hover:text-[#0082CA] transition-colors leading-tight">{blog.title}</h3>
+                      <p className="text-xs text-slate-500 mt-2 line-clamp-2 font-medium">Learn the best practices for commercial printing and ensure your brand looks professional.</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <button className="mt-8 text-sm font-bold text-[#0082CA] hover:underline flex items-center gap-1">Read All Articles <ChevronRight className="w-4 h-4" /></button>
             </div>
 
-            <div className="space-y-2.5">
-              {faqs.map((faq, idx) => {
-                const isOpen = activeFaq === idx;
-                return (
-                  <div
-                    key={idx}
-                    className="bg-white rounded-lg border border-slate-200 overflow-hidden transition-colors"
-                  >
-                    <button
-                      onClick={() => toggleFaq(idx)}
-                      className="w-full p-4 text-left font-bold text-slate-900 flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors text-xs sm:text-sm"
-                    >
-                      <span>{faq.q}</span>
-                      <div className="w-5 h-5 rounded bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
-                        <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-150 ${isOpen ? 'rotate-180' : ''}`} />
-                      </div>
+            {/* FAQ */}
+            <div>
+              <h2 className="text-[28px] font-extrabold text-slate-900 mb-8 tracking-tight">Frequently Asked Questions</h2>
+              <div className="space-y-3">
+                {[
+                  { q: 'What is the standard delivery time?', a: 'Standard production takes 2-3 days, followed by 3-4 days of shipping depending on your location.' },
+                  { q: 'Can I get a GST invoice for my business?', a: 'Yes, you can enter your company GSTIN during checkout to receive a B2B tax invoice.' },
+                  { q: 'Do you verify artwork before printing?', a: 'Yes! Our pre-press team manually reviews all uploaded files for bleed, safe zones, and resolution.' },
+                  { q: 'What if I need bulk corporate ordering?', a: 'We offer tiered volume pricing. Please contact our corporate sales team for orders exceeding ₹50,000.' },
+                ].map((faq, idx) => (
+                  <div key={idx} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+                    <button onClick={() => setActiveFaq(activeFaq === idx ? null : idx)} className="w-full p-5 text-left font-bold text-slate-900 flex justify-between items-center text-sm hover:bg-slate-50 transition-colors">
+                      {faq.q}
+                      <ChevronRight className={`w-4 h-4 transition-transform ${activeFaq === idx ? 'rotate-90 text-[#0082CA]' : 'text-slate-400'}`} />
                     </button>
-                    {isOpen && (
-                      <div className="px-4 pb-4 pt-1 text-xs text-slate-600 font-normal leading-relaxed border-t border-slate-100">
+                    {activeFaq === idx && (
+                      <div className="px-5 pb-5 text-sm text-slate-600 font-medium leading-relaxed border-t border-slate-100 pt-4 bg-slate-50">
                         {faq.a}
                       </div>
                     )}
                   </div>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </section>
-        );
+          </div>
+        </div>
+      </section>
 
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="space-y-4 select-none pb-16 bg-[#F7F8FA]">
-      {/* Dynamically render CMS modular sections sorted by authoritative order */}
-      {cmsSections.map((section) => renderSection(section.id))}
     </div>
   );
 }
-

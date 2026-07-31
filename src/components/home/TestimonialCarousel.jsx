@@ -1,0 +1,124 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Star, BadgeCheck } from 'lucide-react';
+
+const TESTIMONIALS = [
+  { 
+    id: 1,
+    name: 'Rajesh K.', 
+    company: 'TechNova Solutions', 
+    role: 'Operations Head',
+    text: 'Maaza Printwala delivered our corporate onboarding kits 2 days early. The premium boxes were flawless, and the GST invoicing was completely seamless.',
+    avatar: 'https://i.pravatar.cc/150?img=11',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg'
+  },
+  { 
+    id: 2,
+    name: 'Sneha P.', 
+    company: 'Creative Studio', 
+    role: 'Art Director',
+    text: 'The spot UV business cards are the best we have seen in India. The print accuracy and paper quality make us look incredibly professional.',
+    avatar: 'https://i.pravatar.cc/150?img=9',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'
+  },
+  { 
+    id: 3,
+    name: 'Amit M.', 
+    company: 'Real Estate Builders', 
+    role: 'Marketing Manager',
+    text: 'Ordered 5,000 brochures for our new launch. Consistent colors, exact GSM as promised, and their pre-press team caught a bleed error before printing!',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg'
+  }
+];
+
+export default function TestimonialCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="py-16 bg-slate-900 relative overflow-hidden">
+      {/* Background Glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white">Loved by Businesses</h2>
+        <p className="text-slate-400 mb-16 text-sm font-medium">Join 10,000+ companies that trust Maaza Printwala for their commercial printing.</p>
+
+        <div className="relative h-[320px] sm:h-[280px] w-full max-w-3xl mx-auto">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentIndex}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 sm:p-10 rounded-[32px] shadow-2xl flex flex-col items-center text-center h-full">
+                
+                {/* Rating & Verified */}
+                <div className="flex items-center justify-between w-full mb-6">
+                  <div className="flex gap-1 bg-white/10 px-3 py-1.5 rounded-full">
+                    {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400"/>)}
+                  </div>
+                  <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold bg-emerald-400/10 px-3 py-1.5 rounded-full">
+                    <BadgeCheck className="w-4 h-4" />
+                    <span>Verified Buyer</span>
+                  </div>
+                </div>
+
+                {/* Text */}
+                <p className="text-lg sm:text-xl text-white font-medium leading-relaxed mb-8 italic flex-1">
+                  &quot;{TESTIMONIALS[currentIndex].text}&quot;
+                </p>
+
+                {/* User Info & Logo */}
+                <div className="flex items-center justify-between w-full border-t border-white/10 pt-6">
+                  <div className="flex items-center gap-4">
+                    <img src={TESTIMONIALS[currentIndex].avatar} alt={TESTIMONIALS[currentIndex].name} className="w-12 h-12 rounded-full border-2 border-white/20" />
+                    <div className="text-left">
+                      <p className="font-bold text-white text-base">{TESTIMONIALS[currentIndex].name}</p>
+                      <p className="text-xs text-slate-400">{TESTIMONIALS[currentIndex].role}, <span className="text-white">{TESTIMONIALS[currentIndex].company}</span></p>
+                    </div>
+                  </div>
+                  
+                  {/* Company Logo (Grayscale with white tint) */}
+                  <div className="hidden sm:block">
+                    <img src={TESTIMONIALS[currentIndex].logo} alt="Company Logo" className="h-6 opacity-50 grayscale contrast-200 brightness-200" />
+                  </div>
+                </div>
+
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Dots indicator */}
+        <div className="flex justify-center gap-2 mt-8">
+          {TESTIMONIALS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                currentIndex === i ? 'bg-white w-8' : 'bg-white/30 hover:bg-white/50'
+              }`}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
