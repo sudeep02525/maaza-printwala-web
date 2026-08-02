@@ -37,7 +37,7 @@ export default function ProductGrids() {
         <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-6">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Curated for You</h2>
           
-          <div className="flex p-1 bg-slate-100 rounded-xl max-w-full overflow-x-auto no-scrollbar">
+          <div className="flex p-1 bg-slate-100 rounded-lg max-w-full overflow-x-auto no-scrollbar">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
@@ -63,7 +63,7 @@ export default function ProductGrids() {
         <div className="min-h-[400px]">
           {isLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[1,2,3,4].map(i => <Skeleton key={i} className="h-96 rounded-[18px]" />)}
+              {[1,2,3,4].map(i => <Skeleton key={i} className="h-96 rounded-lg" />)}
             </div>
           ) : (
             <AnimatePresence mode="wait">

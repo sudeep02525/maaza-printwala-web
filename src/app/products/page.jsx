@@ -27,7 +27,7 @@ function QuickViewModal({ product, onClose }) {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white rounded-3xl overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row shadow-2xl relative"
+          className="bg-white rounded-lg overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row shadow-2xl relative"
         >
           <button 
             onClick={onClose} 
@@ -68,11 +68,11 @@ function QuickViewModal({ product, onClose }) {
 
             <div className="space-y-4">
               <Link href={`/products/${product._id}`} className="block w-full">
-                <button className="w-full py-3.5 bg-[#0082CA] text-white font-bold rounded-xl hover:bg-[#0068A2] transition-colors flex items-center justify-center gap-2 shadow-sm">
+                <button className="w-full py-3.5 bg-[#0082CA] text-white font-bold rounded-lg hover:bg-[#0068A2] transition-colors flex items-center justify-center gap-2 shadow-sm">
                   Customize & Buy <ArrowUpDown className="w-4 h-4 rotate-90" />
                 </button>
               </Link>
-              <button onClick={onClose} className="w-full py-3.5 bg-white border border-slate-200 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-colors">
+              <button onClick={onClose} className="w-full py-3.5 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors">
                 Continue Shopping
               </button>
             </div>
@@ -168,7 +168,6 @@ function CatalogueContent() {
   };
 
   const breadcrumbItems = [
-    { label: 'Products', href: '/products' },
     ...(activeCatObj ? [{ label: activeCatObj.name }] : searchTerm ? [{ label: `Search: ${searchTerm}` }] : [])
   ];
 
@@ -179,32 +178,30 @@ function CatalogueContent() {
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* Dynamic Premium Hero Section */}
-        <div className="mt-6 mb-8 w-full rounded-3xl overflow-hidden relative min-h-[300px] flex items-center shadow-2xl">
-          {/* Gradient Mesh Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#0082CA] via-indigo-600 to-purple-600 opacity-90"></div>
-          <div className="absolute inset-0 opacity-30 mix-blend-overlay" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/carbon-fibre.png")' }}></div>
-          
-          {/* Animated decorative circles */}
-          <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 8, repeat: Infinity }} className="absolute -top-32 -left-32 w-96 h-96 bg-white/20 rounded-full blur-3xl"></motion.div>
-          <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }} transition={{ duration: 10, repeat: Infinity, delay: 1 }} className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-[#00e5ff]/20 rounded-full blur-3xl"></motion.div>
+        <div className="mt-6 mb-8 w-full rounded-lg overflow-hidden relative min-h-[250px] sm:min-h-[300px] flex items-center shadow-2xl bg-slate-900">
+          {/* Banner Image */}
+          <img 
+            src={activeCatObj?.image || '/images/outdoor_banner.png'} 
+            alt={activeCatObj?.name || 'Category'} 
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-transparent"></div>
 
           <div className="relative z-10 px-8 md:px-16 w-full max-w-3xl">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
-              className="text-4xl md:text-6xl font-extrabold tracking-tight text-white capitalize leading-tight mb-4 drop-shadow-lg"
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white capitalize leading-tight mb-4 drop-shadow-md"
             >
               {activeCatObj ? activeCatObj.name : searchTerm ? `Results for "${searchTerm}"` : 'Premium Print Catalogue'}
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-lg text-white/90 font-medium max-w-xl"
+              className="text-base sm:text-lg text-slate-200 font-medium max-w-xl drop-shadow-sm"
             >
               {activeCatObj?.description || 'Discover our exclusive collection of high-quality, customizable commercial printing products designed to elevate your brand.'}
             </motion.p>
           </div>
         </div>
-
-        <CategoryNav categories={isMounted ? categories : []} currentCategorySlug={selectedCategory} />
 
         {/* Active Filters Pill Bar */}
         {(selectedCategory || searchTerm) && (
@@ -223,7 +220,7 @@ function CatalogueContent() {
           
           {/* LEFT SIDEBAR: MINIMAL FILTERS */}
           <div className="w-full lg:w-64 shrink-0 space-y-6 lg:sticky lg:top-24 lg:z-20">
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
               <div className="flex items-center gap-2 mb-6 text-[#0082CA]">
                 <Filter className="w-5 h-5" />
                 <h3 className="font-extrabold text-slate-900 text-lg">Filters</h3>
@@ -244,7 +241,7 @@ function CatalogueContent() {
               </div>
             </div>
             
-            <div className="bg-[#0082CA]/5 p-5 rounded-2xl border border-[#0082CA]/10">
+            <div className="bg-[#0082CA]/5 p-5 rounded-lg border border-[#0082CA]/10">
                <h4 className="font-bold text-sm text-[#0082CA] mb-3 uppercase tracking-wider">Quick Links</h4>
                <ul className="space-y-3 text-sm font-bold text-slate-600">
                   <li className="hover:text-[#0082CA] cursor-pointer transition-colors flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#0082CA]/50"></div> Same Day Delivery</li>
@@ -258,7 +255,7 @@ function CatalogueContent() {
           <div className="flex-1 min-w-0">
             
             {/* Minimal Toolbar */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mb-6 bg-white/60 backdrop-blur-md p-3 rounded-2xl border border-white/50 shadow-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mb-6 bg-white/60 backdrop-blur-md p-3 rounded-lg border border-white/50 shadow-sm">
                <p className="text-sm text-slate-500 font-bold hidden sm:block px-3">
                  Showing <span className="text-[#0082CA]">{filteredAndSortedProducts.length}</span> Products
                </p>
@@ -299,16 +296,16 @@ function CatalogueContent() {
             {/* Product Grid / List */}
             {!isMounted || prodLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-[24px]" />)}
+                {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
               </div>
             ) : filteredAndSortedProducts.length === 0 ? (
-              <div className="bg-white rounded-[24px] border border-slate-200 border-dashed p-16 text-center shadow-sm">
+              <div className="bg-white rounded-lg border border-slate-200 border-dashed p-16 text-center shadow-sm">
                 <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
                   <Search className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-extrabold text-slate-900 mb-2">No exact matches found</h3>
                 <p className="text-sm text-slate-500 max-w-sm mx-auto mb-6">Try adjusting your filters, removing search terms, or exploring our best sellers.</p>
-                <button onClick={clearAllFilters} className="bg-[#0082CA] text-white px-6 py-3 rounded-xl font-bold hover:bg-[#0068A2] transition-colors">
+                <button onClick={clearAllFilters} className="bg-[#0082CA] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#0068A2] transition-colors">
                   Clear All Filters
                 </button>
               </div>
@@ -343,8 +340,8 @@ function CatalogueContent() {
                         </div>
                       ) : (
                         /* LIST VIEW CARD */
-                        <div className="bg-white p-4 rounded-[24px] border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
-                          <div className="w-full sm:w-48 aspect-[4/3] rounded-xl overflow-hidden shrink-0 relative">
+                        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
+                          <div className="w-full sm:w-48 aspect-[4/3] rounded-lg overflow-hidden shrink-0 relative">
                             <img src={prod.images?.[0] || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
                             {prod.featured && <div className="absolute top-2 left-2 bg-amber-400 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-sm">Top Rated</div>}
                           </div>
@@ -362,13 +359,13 @@ function CatalogueContent() {
                             <p className="text-sm text-slate-500 font-medium line-clamp-2 mb-6">{prod.description || 'Premium quality print material offering exceptional durability and professional finish.'}</p>
                             <div className="mt-auto flex items-center gap-3">
                               <Link href={`/products/${prod._id}`} className="flex-1">
-                                <button className="w-full bg-[#0082CA] hover:bg-[#0068A2] text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                                <button className="w-full bg-[#0082CA] hover:bg-[#0068A2] text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2">
                                   <ShoppingCart className="w-4 h-4" /> Customize Now
                                 </button>
                               </Link>
                               <button 
                                 onClick={() => setQuickViewProduct(prod)}
-                                className="bg-slate-100 text-slate-600 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-200 transition-colors"
+                                className="bg-slate-100 text-slate-600 px-4 py-2.5 rounded-lg font-bold text-sm hover:bg-slate-200 transition-colors"
                               >
                                 <Eye className="w-4 h-4" />
                               </button>
@@ -385,11 +382,11 @@ function CatalogueContent() {
             {/* Pagination Mock */}
             {!prodLoading && filteredAndSortedProducts.length > 0 && (
               <div className="mt-12 flex items-center justify-center gap-2">
-                <button className="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">1</button>
-                <button className="w-10 h-10 rounded-xl bg-[#0082CA] flex items-center justify-center text-white font-bold shadow-sm">2</button>
-                <button className="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">3</button>
+                <button className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">1</button>
+                <button className="w-10 h-10 rounded-lg bg-[#0082CA] flex items-center justify-center text-white font-bold shadow-sm">2</button>
+                <button className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">3</button>
                 <span className="text-slate-400 font-bold mx-1">...</span>
-                <button className="w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">Next &rarr;</button>
+                <button className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors">Next &rarr;</button>
               </div>
             )}
 

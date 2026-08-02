@@ -27,7 +27,7 @@ export default function Modal({ isOpen, onClose, title, children, className, max
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
       <div
         className={cn(
-          'bg-white rounded-2xl border border-slate-200 shadow-xl w-full overflow-hidden max-h-[90vh] flex flex-col',
+          'bg-white rounded-lg border border-slate-200 shadow-xl w-full overflow-hidden max-h-[90vh] flex flex-col',
           maxWidth,
           className
         )}

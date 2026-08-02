@@ -38,10 +38,10 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option A: Upload Own Design */}
               <button
                 onClick={() => setSelectedExp('UPLOAD')}
-                className="p-6 rounded-2xl border border-slate-200 hover:border-[#0082CA] bg-white hover:bg-blue-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
+                className="p-6 rounded-lg border border-slate-200 hover:border-[#0082CA] bg-white hover:bg-blue-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#0082CA] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-100">
+                  <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#0082CA] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-100">
                     <UploadCloud className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-black text-slate-900">Upload Your Own Design</h3>
@@ -58,10 +58,10 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option B: Choose a Template */}
               <button
                 onClick={handleSelectTemplate}
-                className="p-6 rounded-2xl border border-slate-200 hover:border-[#C71578] bg-white hover:bg-pink-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
+                className="p-6 rounded-lg border border-slate-200 hover:border-[#C71578] bg-white hover:bg-pink-50/20 text-left transition-all group flex flex-col justify-between space-y-4 shadow-xs hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
-                  <div className="w-12 h-12 rounded-xl bg-pink-50 text-[#C71578] flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-100">
+                  <div className="w-12 h-12 rounded-lg bg-pink-50 text-[#C71578] flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-100">
                     <LayoutTemplate className="w-6 h-6" />
                   </div>
                   <h3 className="text-base font-black text-slate-900">Customise Ready-Made Template</h3>

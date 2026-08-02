@@ -79,7 +79,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Business Purchase / GST Toggle */}
-        <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+        <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
           <label className="flex items-start space-x-3 cursor-pointer">
             <input
               type="checkbox"
@@ -104,7 +104,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="e.g. Maaza Enterprises Pvt Ltd"
-                  className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
                     errors.companyName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
@@ -119,7 +119,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   value={gstin}
                   onChange={(e) => setGstin(e.target.value.toUpperCase())}
                   placeholder="e.g. 27AAAAA0000A1Z5"
-                  className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none transition-all font-mono uppercase text-sm font-bold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all font-mono uppercase text-sm font-bold text-slate-900 ${
                     errors.gstin ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
@@ -133,7 +133,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   value={purchaseOrderNumber}
                   onChange={(e) => setPurchaseOrderNumber(e.target.value)}
                   placeholder="e.g. PO-2026-8891"
-                  className="w-full px-4 py-3 rounded-xl border bg-white border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900"
+                  className="w-full px-4 py-3 rounded-lg border bg-white border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900"
                 />
               </div>
             </div>
@@ -155,7 +155,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
 
         {/* Separate billing address fields */}
         {!sameAsDelivery && (
-          <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200 space-y-4">
+          <div className="p-5 bg-slate-50 rounded-lg border border-slate-200 space-y-4">
             <h3 className="text-sm font-bold text-slate-900">Separate Billing Address</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -164,7 +164,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   type="text"
                   value={billingAddr.fullName}
                   onChange={(e) => setBillingAddr({ ...billingAddr, fullName: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border bg-white focus:ring-2 focus:outline-none text-sm font-semibold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none text-sm font-semibold text-slate-900 ${
                     errors.billingFullName ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
@@ -177,7 +177,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   maxLength="10"
                   value={billingAddr.phone}
                   onChange={(e) => setBillingAddr({ ...billingAddr, phone: e.target.value.replace(/\D/g, '') })}
-                  className="w-full px-4 py-3 rounded-xl border bg-white border-slate-300 text-sm font-semibold text-slate-900"
+                  className="w-full px-4 py-3 rounded-lg border bg-white border-slate-300 text-sm font-semibold text-slate-900"
                 />
               </div>
             </div>
@@ -187,7 +187,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                 type="text"
                 value={billingAddr.streetAddress}
                 onChange={(e) => setBillingAddr({ ...billingAddr, streetAddress: e.target.value })}
-                className={`w-full px-4 py-3 rounded-xl border bg-white text-sm font-semibold text-slate-900 ${
+                className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
                   errors.billingStreet ? 'border-red-500' : 'border-slate-300'
                 }`}
               />
@@ -201,7 +201,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   maxLength="6"
                   value={billingAddr.pinCode}
                   onChange={(e) => setBillingAddr({ ...billingAddr, pinCode: e.target.value.replace(/\D/g, '') })}
-                  className={`w-full px-4 py-3 rounded-xl border bg-white font-mono text-sm font-bold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white font-mono text-sm font-bold text-slate-900 ${
                     errors.billingPin ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
@@ -213,7 +213,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   type="text"
                   value={billingAddr.city}
                   onChange={(e) => setBillingAddr({ ...billingAddr, city: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border bg-white text-sm font-semibold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
                     errors.billingCity ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />
@@ -225,7 +225,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
                   type="text"
                   value={billingAddr.state}
                   onChange={(e) => setBillingAddr({ ...billingAddr, state: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border bg-white text-sm font-semibold text-slate-900 ${
+                  className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
                     errors.billingState ? 'border-red-500' : 'border-slate-300'
                   }`}
                 />

@@ -68,7 +68,7 @@ export default function CartPage() {
             </h1>
           </div>
           <Link
-            href="/products"
+            href="/category/all"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#0082CA] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
@@ -100,7 +100,7 @@ export default function CartPage() {
                 Ready to prepare custom commercial printing? Explore our product catalogue and configure your specifications.
               </p>
             </div>
-            <Link href="/products">
+            <Link href="/category/all">
               <Button variant="primary" size="lg" className="px-8 py-3.5">
                 <span>Explore Products</span>
                 <ArrowRight className="w-4 h-4" />
@@ -138,7 +138,7 @@ export default function CartPage() {
                   >
                     {/* Item Image & Info */}
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      <div className="w-24 h-24 rounded-xl bg-slate-100 overflow-hidden shrink-0 border border-slate-200 relative">
+                      <div className="w-24 h-24 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 relative">
                         <img src={prodImg} alt={prodName} className="w-full h-full object-cover" />
                         <div className="absolute top-1 left-1 bg-slate-900/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
                           {item.designType}
@@ -174,7 +174,7 @@ export default function CartPage() {
                         </div>
 
                         {/* Design Experience Breakdown */}
-                        <div className="bg-slate-50 rounded-xl p-2.5 border border-slate-200 text-xs space-y-1">
+                        <div className="bg-slate-50 rounded-lg p-2.5 border border-slate-200 text-xs space-y-1">
                           {item.designType === 'UPLOAD' ? (
                             <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
                               <FileText className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
@@ -216,7 +216,7 @@ export default function CartPage() {
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <div className="inline-flex items-center bg-slate-50 rounded-xl p-1 border border-slate-200">
+                        <div className="inline-flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200">
                           <button
                             onClick={() => handleQuantityChange(item._id, item.quantity, -50)}
                             disabled={item.quantity <= 50 || isItemUpdating}
@@ -239,7 +239,7 @@ export default function CartPage() {
                         <button
                           onClick={() => handleRemove(item._id)}
                           disabled={isItemUpdating}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
                           title="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -252,7 +252,7 @@ export default function CartPage() {
             </div>
 
             {/* Order Summary Sidebar (4 cols) */}
-            <div className="lg:col-span-4 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6 sticky top-24">
+            <div className="lg:col-span-4 bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6 sticky top-24">
               <div className="border-b border-slate-100 pb-4">
                 <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-widest block">Order Calculation</span>
                 <h2 className="text-xl font-black text-slate-900 mt-0.5">Order Summary</h2>
@@ -289,7 +289,7 @@ export default function CartPage() {
               </div>
 
               {/* Verified Pricing Trust Badge */}
-              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200 flex items-start gap-3">
+              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex items-start gap-3">
                 <ShieldCheck className="w-5 h-5 text-[#0082CA] shrink-0 mt-0.5" />
                 <div className="text-xs text-slate-700 space-y-1">
                   <span className="font-bold text-slate-900 block">Verified Server Valuation</span>

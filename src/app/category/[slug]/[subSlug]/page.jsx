@@ -6,16 +6,16 @@ import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Package, Filter, Search, X, SlidersHorizontal, ArrowUpDown, 
-  LayoutGrid, List as ListIcon, Star, Eye, ShoppingCart, ChevronDown, ChevronRight, CheckCircle2, ShieldCheck
+  Filter, Search, X, SlidersHorizontal, ArrowUpDown, 
+  LayoutGrid, List as ListIcon, ShieldCheck, Eye, ShoppingCart, ChevronDown
 } from 'lucide-react';
-import axiosInstance from '../../../services/axiosInstance.js';
-import Breadcrumbs from '../../../components/ui/Breadcrumbs.jsx';
-import ProductCard from '../../../components/products/ProductCard.jsx';
-import Skeleton from '../../../components/ui/Skeleton.jsx';
-import { categoryData } from '../../../config/categoryData.js';
+import axiosInstance from '../../../../services/axiosInstance.js';
+import Breadcrumbs from '../../../../components/ui/Breadcrumbs.jsx';
+import ProductCard from '../../../../components/products/ProductCard.jsx';
+import Skeleton from '../../../../components/ui/Skeleton.jsx';
+import { categoryData } from '../../../../config/categoryData.js';
 
-// ---- QUICK VIEW MODAL COMPONENT ----
+// ---- QUICK VIEW MODAL COMPONENT (Duplicated for standalone subcategory page) ----
 function QuickViewModal({ product, onClose }) {
   if (!product) return null;
 
@@ -44,21 +44,10 @@ function QuickViewModal({ product, onClose }) {
           </div>
           
           <div className="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">In Stock</span>
-              {product.featured && <span className="bg-amber-50 text-amber-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Best Seller</span>}
-            </div>
-            
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">{product.name}</h2>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-sm font-bold text-slate-900">4.9</span>
-                <span className="text-xs text-slate-500">(128 Reviews)</span>
-              </div>
-              <div className="w-1 h-1 rounded-full bg-slate-300" />
-              <span className="text-sm font-bold text-[#0082CA]">From ₹{product.basePrice}</span>
+              <span className="text-lg font-bold text-[#0082CA]">₹{product.basePrice}</span>
             </div>
 
             <p className="text-sm text-slate-600 mb-8 leading-relaxed">
@@ -66,14 +55,11 @@ function QuickViewModal({ product, onClose }) {
             </p>
 
             <div className="space-y-4">
-              <Link href={`/products/${product._id}`} className="block w-full">
+              <Link href={`/products/${product._id || product.slug}`} className="block w-full">
                 <button className="w-full py-3.5 bg-[#0082CA] text-white font-bold rounded-lg hover:bg-[#0068A2] transition-colors flex items-center justify-center gap-2 shadow-sm">
                   Customize & Buy <ArrowUpDown className="w-4 h-4 rotate-90" />
                 </button>
               </Link>
-              <button onClick={onClose} className="w-full py-3.5 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors">
-                Continue Shopping
-              </button>
             </div>
           </div>
         </motion.div>
@@ -82,44 +68,7 @@ function QuickViewModal({ product, onClose }) {
   );
 }
 
-// ---- FAQ ACCORDION COMPONENT ----
-function FaqAccordion({ faqs = [] }) {
-  const [openIndex, setOpenIndex] = useState(null);
-  
-  if (faqs.length === 0) return null;
-
-  return (
-    <div className="w-full max-w-4xl mx-auto space-y-4">
-      {faqs.map((faq, index) => (
-        <div key={index} className="bg-white border border-slate-200 rounded-lg overflow-hidden transition-all shadow-sm">
-          <button 
-            className="w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none"
-            onClick={() => setOpenIndex(openIndex === index ? null : index)}
-          >
-            <span className="font-bold text-slate-900 text-sm md:text-base pr-8">{faq.question}</span>
-            <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
-          </button>
-          <AnimatePresence>
-            {openIndex === index && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                  {faq.answer}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CategoryContent() {
+function SubcategoryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = useParams();
@@ -132,21 +81,20 @@ function CategoryContent() {
   useEffect(() => { setIsMounted(true); }, []);
 
   const selectedCategorySlug = params?.slug || '';
-  const activeSubcategory = searchParams.get('sub') || '';
+  const selectedSubSlug = params?.subSlug || '';
   const searchTerm = searchParams.get('search') || '';
 
   // Retrieve active category from static config
   const activeCatObj = categoryData[selectedCategorySlug] || null;
+  const activeSubObj = activeCatObj?.subcategories?.find(s => s.slug === selectedSubSlug) || null;
 
-  // We still fetch products generically for now (DB might not match the new slugs perfectly yet, but this sets the foundation)
+  // We still fetch products generically for now
   const { data: prodData, isLoading: prodLoading } = useQuery({
-    queryKey: ['products', selectedCategorySlug, activeSubcategory, searchTerm],
+    queryKey: ['products', selectedCategorySlug, selectedSubSlug, searchTerm],
     queryFn: () => {
       const p = new URLSearchParams();
-      // For now, if activeCatObj is null (legacy category), pass it. If not, don't break the backend if it doesn't exist, just fetch all and we'll show UI.
-      // In a real scenario we'd pass category=activeCatObj.slug
       if (selectedCategorySlug) p.append('category', selectedCategorySlug);
-      if (activeSubcategory) p.append('sub', activeSubcategory);
+      if (selectedSubSlug) p.append('sub', selectedSubSlug);
       if (searchTerm) p.append('search', searchTerm);
       return axiosInstance.get(p.toString() ? `/products?${p.toString()}` : '/products');
     },
@@ -166,15 +114,14 @@ function CategoryContent() {
     return list.sort((a, b) => (b.featured === a.featured ? 0 : b.featured ? 1 : -1));
   }, [rawProducts, sortBy]);
 
-  const handleSubcategoryClick = (subSlug) => {
-    router.push(`/category/${selectedCategorySlug}/${subSlug}`);
-  };
-
   const breadcrumbItems = [
     ...(activeCatObj ? [{ label: activeCatObj.name, href: `/category/${activeCatObj.slug}` }] : []),
-    ...(activeSubcategory && activeCatObj ? [{ label: activeCatObj.subcategories.find(s => s.slug === activeSubcategory)?.name || activeSubcategory }] : []),
+    ...(activeSubObj ? [{ label: activeSubObj.name }] : [{ label: selectedSubSlug }]),
     ...(searchTerm ? [{ label: `Search: ${searchTerm}` }] : [])
   ];
+
+  const pageTitle = activeSubObj?.name || 'Products';
+  const pageImage = activeSubObj?.image || activeCatObj?.banner || '/images/outdoor_banner.png';
 
   return (
     <div className="bg-[#FAFCFF] min-h-screen">
@@ -185,49 +132,18 @@ function CategoryContent() {
         {/* 1. HERO SECTION */}
         <div className="mt-6 mb-12 w-full rounded-lg overflow-hidden relative shadow-sm">
           <img 
-            src={activeCatObj?.banner || '/images/outdoor_banner.png'} 
-            alt={activeCatObj?.name || 'Category'} 
+            src={pageImage} 
+            alt={pageTitle} 
             className="w-full object-cover aspect-[21/5] max-h-[350px]"
           />
         </div>
-
-        {/* 2. SHOP BY SUBCATEGORY GRID */}
-        {activeCatObj?.subcategories && activeCatObj.subcategories.length > 0 && !activeSubcategory && !searchTerm && (
-          <div className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-8">Shop by Subcategory</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-              {activeCatObj.subcategories.map((sub, i) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.05 }}
-                  key={sub.slug}
-                  onClick={() => handleSubcategoryClick(sub.slug)}
-                  className="group cursor-pointer flex flex-col bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-xl hover:border-[#0082CA]/30 transition-all duration-300 overflow-hidden"
-                >
-                  <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 relative">
-                    <img src={sub.image} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                  </div>
-                  <div className="p-4 text-center">
-                    <h3 className="font-bold text-slate-900 text-sm md:text-base group-hover:text-[#0082CA] transition-colors truncate">{sub.name}</h3>
-                    <p className="text-xs font-medium text-slate-500 mt-1">{sub.count} Products</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* 3. PRODUCT GRID SECTION */}
         <div className="mb-16">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-              {activeSubcategory ? `${activeCatObj?.subcategories.find(s=>s.slug===activeSubcategory)?.name || 'Products'}` : 'All Products'}
+              {pageTitle}
             </h2>
-            {activeSubcategory && (
-              <button onClick={() => handleSubcategoryClick(activeSubcategory)} className="text-sm font-bold text-[#0082CA] hover:underline flex items-center gap-1">
-                View All {activeCatObj?.name} <X className="w-4 h-4" />
-              </button>
-            )}
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">
@@ -254,23 +170,6 @@ function CategoryContent() {
                           <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">{opt}</span>
                         </label>
                       ))}
-                    </div>
-                  </div>
-
-                  <div className="border-t border-slate-100 pt-5">
-                    <div className="flex items-center justify-between cursor-pointer group mb-4">
-                      <span className="text-sm font-bold text-slate-700 group-hover:text-[#0082CA] transition-colors">Availability</span>
-                      <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-[#0082CA] transition-colors" />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" className="w-4 h-4 rounded text-[#0082CA] focus:ring-[#0082CA] border-slate-300" />
-                        <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">In Stock (Fast Dispatch)</span>
-                      </label>
-                      <label className="flex items-center gap-3 cursor-pointer group">
-                        <input type="checkbox" className="w-4 h-4 rounded text-[#0082CA] focus:ring-[#0082CA] border-slate-300" />
-                        <span className="text-sm font-medium text-slate-600 group-hover:text-slate-900 transition-colors">Exclude Out of Stock</span>
-                      </label>
                     </div>
                   </div>
                 </div>
@@ -322,7 +221,7 @@ function CategoryContent() {
                     <Search className="w-10 h-10" />
                   </div>
                   <h3 className="text-2xl font-extrabold text-slate-800 mb-3">No products found here</h3>
-                  <p className="text-base text-slate-500 max-w-md mx-auto mb-8 font-medium">We couldn't find any products in this specific category right now. Check back later or explore our other offerings.</p>
+                  <p className="text-base text-slate-500 max-w-md mx-auto mb-8 font-medium">We couldn't find any products in {pageTitle} right now. Check back later or explore our other offerings.</p>
                   <Link href="/products" className="bg-[#0082CA] hover:bg-[#0068A2] text-white px-8 py-3 rounded-lg font-bold transition-all shadow-md shadow-[#0082CA]/20">
                     Explore All Products
                   </Link>
@@ -390,28 +289,6 @@ function CategoryContent() {
             </div>
           </div>
         </div>
-
-        {/* 4. INFORMATION / SEO SECTION */}
-        {activeCatObj?.seoContent && (
-          <div className="mb-16 bg-white border border-slate-200 rounded-lg p-8 md:p-12 shadow-sm">
-            <div 
-              className="prose prose-slate prose-lg max-w-5xl mx-auto prose-h2:text-3xl prose-h2:font-extrabold prose-h2:text-slate-900 prose-h2:mb-6 prose-p:text-slate-600 prose-p:leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: activeCatObj.seoContent }}
-            />
-          </div>
-        )}
-
-        {/* 5. FAQ SECTION */}
-        {activeCatObj?.faqs && activeCatObj.faqs.length > 0 && (
-          <div className="mb-20">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Frequently Asked Questions</h2>
-              <p className="text-slate-500 font-medium">Everything you need to know about our {activeCatObj.name.toLowerCase()} services.</p>
-            </div>
-            <FaqAccordion faqs={activeCatObj.faqs} />
-          </div>
-        )}
-
       </div>
       
       {quickViewProduct && <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />}
@@ -419,7 +296,7 @@ function CategoryContent() {
   );
 }
 
-export default function CategoryPage({ params }) {
+export default function SubcategoryPage({ params }) {
   const unwrappedParams = use(params);
   return (
     <Suspense fallback={
@@ -427,7 +304,7 @@ export default function CategoryPage({ params }) {
         <div className="w-12 h-12 border-4 border-[#0082CA]/20 border-t-[#0082CA] rounded-full animate-spin"></div>
       </div>
     }>
-      <CategoryContent key={unwrappedParams?.slug} />
+      <SubcategoryContent key={unwrappedParams?.subSlug} />
     </Suspense>
   );
 }

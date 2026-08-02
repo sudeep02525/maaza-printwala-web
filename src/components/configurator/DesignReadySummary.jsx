@@ -61,7 +61,7 @@ export default function DesignReadySummary({ product }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0">
+          <div className="w-12 h-12 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-sm shrink-0">
             <CheckCircle2 className="w-7 h-7" />
           </div>
           <div>
@@ -84,14 +84,14 @@ export default function DesignReadySummary({ product }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Product & Design Snapshot (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
-          <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200 space-y-4 shadow-2xs">
+          <div className="bg-[#F7F8FA] p-6 rounded-lg border border-slate-200 space-y-4 shadow-2xs">
             <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
               <Layers className="w-4 h-4 text-[#0082CA]" />
               <span>Product Specifications ({product.name})</span>
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {Object.entries(configuration).map(([k, v]) => (
-                <div key={k} className="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                <div key={k} className="bg-white p-3 rounded-lg border border-slate-200 shadow-2xs">
                   <span className="text-[10px] font-bold text-slate-400 uppercase block">{k}</span>
                   <span className="text-sm font-black text-slate-900 capitalize mt-0.5 block truncate" title={String(v)}>{String(v)}</span>
                 </div>
@@ -99,7 +99,7 @@ export default function DesignReadySummary({ product }) {
             </div>
           </div>
 
-          <div className="bg-[#F7F8FA] p-6 rounded-2xl border border-slate-200 space-y-4 shadow-2xs">
+          <div className="bg-[#F7F8FA] p-6 rounded-lg border border-slate-200 space-y-4 shadow-2xs">
             <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
               {designReadyState.type === 'UPLOAD' ? (
                 <FileText className="w-4 h-4 text-[#0082CA]" />
@@ -108,7 +108,7 @@ export default function DesignReadySummary({ product }) {
               )}
               <span>Attached Artwork Experience ({designReadyState.type === 'UPLOAD' ? 'Uploaded Custom Artwork' : 'Customised Template Layout'})</span>
             </h3>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-center justify-between shadow-2xs">
+            <div className="bg-white p-4 rounded-lg border border-slate-200 flex items-center justify-between shadow-2xs">
               <div className="overflow-hidden pr-3">
                 <p className="text-xs font-black text-slate-900 truncate">
                   {designReadyState.type === 'UPLOAD'
@@ -127,7 +127,7 @@ export default function DesignReadySummary({ product }) {
         </div>
 
         {/* Right: Authoritative Price Snapshot & CTA Button (5 cols) */}
-        <div className="lg:col-span-5 bg-[#F7F8FA] p-6 sm:p-8 rounded-2xl border border-slate-200 space-y-6 shadow-2xs">
+        <div className="lg:col-span-5 bg-[#F7F8FA] p-6 sm:p-8 rounded-lg border border-slate-200 space-y-6 shadow-2xs">
           <div>
             <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-widest block">
               Server Authoritative Summary
@@ -152,7 +152,7 @@ export default function DesignReadySummary({ product }) {
             </div>
           </div>
 
-          <div className="p-4 bg-white rounded-xl border border-slate-200 text-xs space-y-1 shadow-2xs">
+          <div className="p-4 bg-white rounded-lg border border-slate-200 text-xs space-y-1 shadow-2xs">
             <div className="flex items-center gap-1.5 font-bold text-[#0082CA]">
               <ShieldCheck className="w-4 h-4 text-[#0082CA] shrink-0" />
               <span>Price Protection Guarantee:</span>
@@ -163,7 +163,7 @@ export default function DesignReadySummary({ product }) {
           </div>
 
           {cartError && (
-            <div className="bg-red-50 border border-red-200 p-3 rounded-xl text-red-700 text-xs flex items-center gap-2">
+            <div className="bg-red-50 border border-red-200 p-3 rounded-lg text-red-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
               <span className="font-semibold">{cartError}</span>
             </div>

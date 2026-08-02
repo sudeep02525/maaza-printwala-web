@@ -30,9 +30,9 @@ export default function LiveStats() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1, duration: 0.6, ease: "easeOut" }}
-              className="bg-white/10 backdrop-blur-md p-8 rounded-[24px] border border-white/10 text-center shadow-2xl hover:bg-white/15 transition-colors"
+              className="bg-white/10 backdrop-blur-md p-8 rounded-lg border border-white/10 text-center shadow-2xl hover:bg-white/15 transition-colors"
             >
-              <div className={`w-14 h-14 mx-auto rounded-2xl ${stat.bg} flex items-center justify-center mb-6`}>
+              <div className={`w-14 h-14 mx-auto rounded-lg ${stat.bg} flex items-center justify-center mb-6`}>
                 <stat.icon className={`w-7 h-7 ${stat.color}`} />
               </div>
               <motion.h3 

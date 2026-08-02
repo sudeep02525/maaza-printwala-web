@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -21,11 +22,10 @@ import {
 } from "lucide-react";
 import { useCartStore } from "../../store/cartStore.js";
 import { useAuthStore } from "../../store/authStore.js";
-import axiosInstance from "../../services/axiosInstance.js";
-import MegaMenu from "../ui/MegaMenu.jsx";
-import Drawer from "../ui/Drawer.jsx";
-import { motion, AnimatePresence } from "framer-motion";
-
+import { motion, AnimatePresence } from 'framer-motion';
+import MegaMenu from '../ui/MegaMenu.jsx';
+import Drawer from '../ui/Drawer.jsx';
+import { categoryData } from '../../config/categoryData.js';
 const ANNOUNCEMENTS = [
   <div key="1" className="flex items-center gap-1.5 justify-center">
     <Tag className="w-4 h-4 text-amber-400 shrink-0" />
@@ -94,7 +94,7 @@ export default function Header() {
   return (
     <>
       <header 
-        className={`w-full z-50 transition-all duration-300 ease-in-out ${
+        className={`w-full z-50 transition-all duration-300 ease-in-out border-b border-slate-200 ${
           scrolled 
             ? 'sticky top-0 left-0 bg-white/85 backdrop-blur-xs shadow-xl animate-in slide-in-from-top-4' 
             : 'relative bg-white'
@@ -112,11 +112,31 @@ export default function Header() {
               <Menu className="w-6 h-6" />
             </button>
 
-            <Link href="/" className="flex items-center shrink-0">
-              <img
+            {/* Desktop Logo */}
+            <Link href="/" className="hidden md:flex items-center shrink-0">
+              <Image
                 src="/logo-maaza.png"
-                alt="Maaza Printwala — Official Logo"
-                className="h-9 sm:h-10 w-auto object-contain"
+                alt="Maaza Printwala"
+                width={150}
+                height={40}
+                priority
+                className="h-10 w-auto object-contain"
+                style={{ width: 'auto', height: 'auto' }}
+              />
+            </Link>
+          </div>
+
+          {/* Mobile Logo (Centered) */}
+          <div className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/logo-maaza.png"
+                alt="Maaza Printwala"
+                width={120}
+                height={30}
+                priority
+                className="h-6 w-auto object-contain"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
           </div>
@@ -240,10 +260,7 @@ export default function Header() {
 
         {/* Desktop Mega Menu Bar */}
         <div className="hidden md:block">
-          <MegaMenu
-            categories={isMounted ? categories : []}
-            isLoading={!isMounted || catLoading}
-          />
+          <MegaMenu />
         </div>
       </header>
 
@@ -287,7 +304,7 @@ export default function Header() {
             </span>
             <div className="space-y-1">
               <Link
-                href="/products"
+                href="/category/all"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center justify-between p-3 rounded bg-slate-100 hover:bg-[#0082CA] text-slate-900 hover:text-white font-bold text-sm transition-colors group"
               >
@@ -298,10 +315,10 @@ export default function Header() {
                 <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-white" />
               </Link>
 
-              {categories.map((cat) => (
+              {Object.values(categoryData).map((cat) => (
                 <Link
-                  key={cat._id}
-                  href={`/category/${cat.slug || cat._id}`}
+                  key={cat.slug}
+                  href={`/category/${cat.slug}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-between p-3 rounded hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-semibold text-sm transition-colors"
                 >

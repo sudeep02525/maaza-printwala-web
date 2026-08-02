@@ -89,7 +89,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
   return (
     <div className="space-y-6 select-none">
       {/* Artwork Requirements Banner */}
-      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2">
+      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs space-y-2">
         <div className="flex items-center gap-1.5 font-bold text-slate-900">
           <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
           <span>Artwork Submission Guidelines:</span>
@@ -112,7 +112,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
               setIsDragging(false);
               handleFileSelect(e.dataTransfer.files?.[0]);
             }}
-            className={`p-8 rounded-2xl border-2 border-dashed text-center transition-all flex flex-col items-center justify-center space-y-4 ${
+            className={`p-8 rounded-lg border-2 border-dashed text-center transition-all flex flex-col items-center justify-center space-y-4 ${
               isDragging
                 ? 'border-[#0082CA] bg-blue-50/50 scale-[1.01]'
                 : 'border-slate-300 hover:border-slate-400 bg-slate-50/50'
@@ -127,7 +127,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
               </p>
               <p className="text-xs text-slate-500 mt-1">or browse files from your local drive</p>
             </div>
-            <label className="px-6 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs rounded-xl shadow-xs cursor-pointer transition-all">
+            <label className="px-6 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs rounded-lg shadow-xs cursor-pointer transition-all">
               Browse Artwork File
               <input
                 type="file"
@@ -139,7 +139,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
 
           {/* Selected File Details */}
           {file && (
-            <div className="p-4 bg-white border border-slate-200 rounded-xl flex items-center justify-between shadow-xs">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg flex items-center justify-between shadow-xs">
               <div className="flex items-center gap-3 overflow-hidden">
                 <FileText className="w-8 h-8 text-[#0082CA] shrink-0" />
                 <div className="overflow-hidden">
@@ -206,7 +206,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
         </div>
       ) : (
         /* Upload Success Box */
-        <div className="p-6 bg-emerald-50/80 border border-emerald-300 rounded-2xl text-center space-y-4 shadow-xs">
+        <div className="p-6 bg-emerald-50/80 border border-emerald-300 rounded-lg text-center space-y-4 shadow-xs">
           <div className="w-12 h-12 rounded-full bg-emerald-500 text-white mx-auto flex items-center justify-center shadow-sm">
             <CheckCircle2 className="w-6 h-6" />
           </div>

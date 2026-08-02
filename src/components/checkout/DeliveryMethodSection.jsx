@@ -62,7 +62,7 @@ export default function DeliveryMethodSection({
                 <label
                   key={method._id}
                   onClick={() => setSelected(method._id)}
-                  className={`flex items-center justify-between p-5 rounded-2xl border transition-all cursor-pointer ${
+                  className={`flex items-center justify-between p-5 rounded-lg border transition-all cursor-pointer ${
                     isSelected
                       ? 'border-[#0082CA] bg-blue-50/30 shadow-xs'
                       : 'border-slate-200 hover:border-slate-300 bg-white'

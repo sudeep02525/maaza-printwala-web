@@ -2,7 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ShieldCheck, Star, Zap, CreditCard } from 'lucide-react';
+import heroBannerMain from '../../../public/images/hero_banner_main.png';
+import corpGiftingBanner from '../../../public/images/corp_gifting_banner.png';
+import visitingCardsBanner from '../../../public/images/visiting_cards_banner.png';
 
 export default function HeroBanner() {
 
@@ -14,11 +18,15 @@ export default function HeroBanner() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             
             {/* Left Large Banner (65%) */}
-            <Link href="/products" className="lg:col-span-2 relative block rounded-xl overflow-hidden group aspect-[2/1] lg:aspect-auto h-[250px] sm:h-[350px] lg:h-[420px]">
-              <img 
-                src="/images/hero_banner_main.png" 
+            <Link href="/category/all" className="lg:col-span-2 relative block rounded-lg overflow-hidden group aspect-[2/1] lg:aspect-auto h-[250px] sm:h-[350px] lg:h-[420px]">
+              <Image 
+                src={heroBannerMain} 
                 alt="Main Promotion" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                fill
+                priority
+                placeholder="blur"
+                sizes="(max-width: 1024px) 100vw, 66vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/10 to-transparent p-8 sm:p-12 flex flex-col justify-center">
                 <h2 className="text-3xl sm:text-[34px] font-extrabold text-white leading-tight tracking-tight mb-2 max-w-md drop-shadow-md">
@@ -34,11 +42,15 @@ export default function HeroBanner() {
             {/* Right Stacked Banners (35%) */}
             <div className="lg:col-span-1 flex flex-col gap-4 h-[250px] sm:h-[350px] lg:h-[420px]">
               {/* Top Right Banner */}
-              <Link href="/products?category=corporate-gifts" className="relative flex-1 rounded-xl overflow-hidden group block">
-                <img 
-                  src="/images/corp_gifting_banner.png" 
+              <Link href="/category/corporate-gifts" className="relative flex-1 rounded-lg overflow-hidden group block">
+                <Image 
+                  src={corpGiftingBanner} 
                   alt="Corporate Gifting" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  priority
+                  placeholder="blur"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent p-6 flex flex-col justify-end items-center text-center">
                   <h3 className="text-white font-bold text-xl mb-1 drop-shadow-md">Corporate Gifting</h3>
@@ -50,11 +62,15 @@ export default function HeroBanner() {
               </Link>
               
               {/* Bottom Right Banner */}
-              <Link href="/products?category=business-cards" className="relative flex-1 rounded-xl overflow-hidden group block">
-                <img 
-                  src="/images/visiting_cards_banner.png" 
+              <Link href="/category/business-cards" className="relative flex-1 rounded-lg overflow-hidden group block">
+                <Image 
+                  src={visitingCardsBanner} 
                   alt="Business Cards" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  fill
+                  priority
+                  placeholder="blur"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end items-center text-center">
                   <h3 className="text-white font-bold text-xl mb-1 drop-shadow-md">Premium Visiting Cards</h3>

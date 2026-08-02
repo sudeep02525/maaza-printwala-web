@@ -23,7 +23,7 @@ export default function DesignTemplates() {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Customizable Templates</h2>
             <p className="text-sm text-slate-500 mt-2">Pick a premium template and customize it in our browser editor.</p>
           </div>
-          <Link href="/products" className="hidden sm:flex items-center gap-1 text-[#0082CA] font-bold hover:underline">
+          <Link href="/category/all" className="hidden sm:flex items-center gap-1 text-[#0082CA] font-bold hover:underline">
             View All Templates <ArrowRight className="w-4 h-4"/>
           </Link>
         </div>
@@ -37,7 +37,7 @@ export default function DesignTemplates() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               whileHover={{ y: -5 }}
-              className="group bg-white rounded-[20px] overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300"
+              className="group bg-white rounded-lg overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300"
             >
               {/* Image Container with Editor Overlay */}
               <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">

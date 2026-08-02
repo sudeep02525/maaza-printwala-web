@@ -66,8 +66,8 @@ function ProductDetailContent({ slug }) {
         <h1 className="text-2xl font-bold text-slate-900">Product Not Found</h1>
         <p className="text-sm text-slate-500">We couldn&apos;t locate the requested product in our catalogue.</p>
         <Link
-          href="/products"
-          className="inline-block px-6 py-2.5 bg-[#0082CA] text-white font-bold text-xs rounded-xl shadow-xs hover:bg-[#0068A2]"
+          href="/category/all"
+          className="inline-block px-6 py-2.5 bg-[#0082CA] text-white font-bold text-xs rounded-lg shadow-xs hover:bg-[#0068A2]"
         >
           Return to Catalogue
         </Link>
@@ -81,10 +81,10 @@ function ProductDetailContent({ slug }) {
       {/* 1. Breadcrumbs */}
       <nav className="flex items-center text-xs font-semibold text-slate-500 space-x-2 overflow-x-auto py-1">
         <Link href="/" className="hover:text-slate-900 flex items-center gap-1 shrink-0">
-          <Home className="w-3.5 h-3.5" /> Home
+          Home
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-        <Link href="/products" className="hover:text-slate-900 shrink-0">
+        <Link href="/category/all" className="hover:text-slate-900 shrink-0">
           Catalogue
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -121,12 +121,12 @@ function ProductDetailContent({ slug }) {
           </div>
 
           {/* Gallery Component */}
-          <div className="bg-white p-2 rounded-[24px] border border-slate-200 shadow-sm">
+          <div className="bg-white p-2 rounded-lg border border-slate-200 shadow-sm">
             <ProductGallery product={product} />
           </div>
 
           {/* Customer Reviews Summary (Mock) */}
-          <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm hidden lg:block">
+          <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm hidden lg:block">
             <h3 className="text-lg font-extrabold text-slate-900 mb-4">Customer Reviews</h3>
             <div className="flex items-center gap-4 border-b border-slate-100 pb-4 mb-4">
               <div className="text-center">
@@ -161,39 +161,39 @@ function ProductDetailContent({ slug }) {
           
           {/* Trust Badges */}
           <div className="grid grid-cols-3 gap-2">
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1">
               <RotateCcw className="w-5 h-5 text-slate-600"/>
               <span className="text-[10px] font-bold text-slate-700 uppercase leading-tight">Free<br/>Reprints</span>
             </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1">
               <ShieldCheck className="w-5 h-5 text-slate-600"/>
               <span className="text-[10px] font-bold text-slate-700 uppercase leading-tight">Quality<br/>Checked</span>
             </div>
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 flex flex-col items-center justify-center text-center gap-1">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1">
               <CheckCircle2 className="w-5 h-5 text-slate-600"/>
               <span className="text-[10px] font-bold text-slate-700 uppercase leading-tight">100%<br/>Secure</span>
             </div>
           </div>
 
           {/* Configurator */}
-          <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
             <h3 className="text-lg font-extrabold text-slate-900 mb-4">Product Options</h3>
             <SchemaConfigurator schema={schema} isLoading={schemaLoading} />
           </div>
 
           {/* Delivery Estimator UI */}
-          <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm">
+          <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
             <h3 className="text-base font-extrabold text-slate-900 flex items-center gap-2 mb-3">
               <Truck className="w-5 h-5 text-[#0082CA]" /> Delivery Estimate
             </h3>
             <div className="flex gap-2">
               <div className="relative flex-1">
                 <MapPin className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input type="text" placeholder="Enter PIN Code" className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0082CA] focus:ring-1 focus:ring-[#0082CA]" />
+                <input type="text" placeholder="Enter PIN Code" className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:border-[#0082CA] focus:ring-1 focus:ring-[#0082CA]" />
               </div>
-              <button className="bg-slate-900 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-slate-800 transition-colors">Check</button>
+              <button className="bg-slate-900 text-white px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-slate-800 transition-colors">Check</button>
             </div>
-            <div className="mt-3 text-xs font-medium text-slate-500 bg-emerald-50 text-emerald-700 p-3 rounded-xl border border-emerald-100 flex items-start gap-2">
+            <div className="mt-3 text-xs font-medium text-slate-500 bg-emerald-50 text-emerald-700 p-3 rounded-lg border border-emerald-100 flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
               <p>Standard delivery to most pin codes takes <strong>3-4 business days</strong> after artwork approval.</p>
             </div>
@@ -211,7 +211,7 @@ function ProductDetailContent({ slug }) {
 
       {/* 4. Below-the-Fold: Product Info, Guidelines & FAQ */}
       <div className="pt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm space-y-4">
+        <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm space-y-4">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <FileText className="w-5 h-5 text-[#0082CA]" />
             <span>Print Specifications</span>
@@ -226,7 +226,7 @@ function ProductDetailContent({ slug }) {
           </ul>
         </div>
 
-        <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm space-y-4">
+        <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm space-y-4">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <AlertCircle className="w-5 h-5 text-amber-500" />
             <span>Artwork Requirements</span>
@@ -234,7 +234,7 @@ function ProductDetailContent({ slug }) {
           <p className="text-sm text-slate-600 leading-relaxed font-medium">
             To ensure your print results match your expectations without clipping important text, please review the specific artwork requirements for this product:
           </p>
-          <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 text-sm space-y-2 font-medium text-amber-900 shadow-sm">
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-100 text-sm space-y-2 font-medium text-amber-900 shadow-sm">
             {schema?.artworkRequirements || product?.artworkRequirements ? (
               <div className="space-y-1 font-bold">
                 {String(schema?.artworkRequirements || product?.artworkRequirements)}
@@ -252,13 +252,13 @@ function ProductDetailContent({ slug }) {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-[24px] border border-slate-200 shadow-sm space-y-4">
+        <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm space-y-4">
           <h3 className="text-base font-black text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
             <HelpCircle className="w-5 h-5 text-indigo-500" />
             <span>FAQ</span>
           </h3>
           <div className="space-y-3">
-            <details className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm group cursor-pointer shadow-sm">
+            <details className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm group cursor-pointer shadow-sm">
               <summary className="font-bold text-slate-900 flex items-center justify-between">
                 Can I order a custom quantity?
               </summary>
@@ -266,7 +266,7 @@ function ProductDetailContent({ slug }) {
                 Yes! For high-volume enterprise requirements exceeding 5,000 units, please contact our commercial support team for dedicated volume pricing.
               </p>
             </details>
-            <details className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm group cursor-pointer shadow-sm">
+            <details className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-sm group cursor-pointer shadow-sm">
               <summary className="font-bold text-slate-900 flex items-center justify-between">
                 Formatting issues?
               </summary>

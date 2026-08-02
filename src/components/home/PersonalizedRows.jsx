@@ -63,9 +63,9 @@ export default function PersonalizedRows() {
                 <motion.div 
                   key={item.id}
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white rounded-[18px] p-3 flex gap-4 items-center border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
+                  className="bg-white rounded-lg p-3 flex gap-4 items-center border border-slate-200 shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
                 >
-                  <img src={item.image} alt={item.name} className="w-16 h-16 rounded-xl object-cover" />
+                  <img src={item.image} alt={item.name} className="w-16 h-16 rounded-lg object-cover" />
                   <div>
                     <h4 className="font-bold text-slate-900 text-sm group-hover:text-[#0082CA] transition-colors">{item.name}</h4>
                     <p className="text-[10px] uppercase font-bold text-slate-400 mt-1">{item.category}</p>
@@ -74,7 +74,7 @@ export default function PersonalizedRows() {
                 </motion.div>
               ))}
               
-              <button className="w-full mt-2 py-3 bg-white border-2 border-slate-200 border-dashed rounded-[18px] text-sm font-bold text-slate-500 hover:text-[#0082CA] hover:border-[#0082CA] transition-colors flex items-center justify-center gap-2">
+              <button className="w-full mt-2 py-3 bg-white border-2 border-slate-200 border-dashed rounded-lg text-sm font-bold text-slate-500 hover:text-[#0082CA] hover:border-[#0082CA] transition-colors flex items-center justify-center gap-2">
                 View All Designs &rarr;
               </button>
             </div>

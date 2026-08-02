@@ -13,7 +13,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
   const standardQuantities = [100, 250, 500, 1000, 2500, 5000];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6 sticky top-24 select-none font-sans">
+    <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6 sticky top-24 select-none font-sans">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <div>
@@ -43,7 +43,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
                 key={q}
                 type="button"
                 onClick={() => setQuantity(q)}
-                className={`py-2 px-2.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center ${
+                className={`py-2 px-2.5 rounded-lg border text-center transition-all flex flex-col items-center justify-center ${
                   isSelected
                     ? 'bg-[#0082CA] text-white border-[#0082CA] shadow-2xs scale-102 font-black'
                     : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 font-bold'
@@ -72,7 +72,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
       </div>
 
       {/* 2. Price Breakdown Box (Clean Commercial Neutral) */}
-      <div className="bg-[#F7F8FA] text-slate-800 p-5 rounded-2xl space-y-4 border border-slate-200 shadow-2xs">
+      <div className="bg-[#F7F8FA] text-slate-800 p-5 rounded-lg space-y-4 border border-slate-200 shadow-2xs">
         <div className="flex items-center justify-between text-xs text-slate-600">
           <span className="font-semibold">Authoritative Unit Rate:</span>
           <span className="font-bold text-slate-900">
@@ -98,7 +98,7 @@ export default function PriceSummaryBox({ onProceedToDesign, onOpenExperienceMod
         </div>
 
         {priceData?.discountPercentage > 0 && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold px-3 py-2 rounded-xl flex items-center justify-between">
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-bold px-3 py-2 rounded-lg flex items-center justify-between">
             <span className="flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5" /> Volume Savings Applied:
             </span>

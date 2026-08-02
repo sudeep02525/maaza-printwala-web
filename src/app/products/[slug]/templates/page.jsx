@@ -185,7 +185,7 @@ function TemplateCustomizerContent({ slug }) {
         /* Template Customizer Editor (Strictly Data-Driven!) */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left: Template Preview Card (6 cols) */}
-          <div className="lg:col-span-6 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6 sticky top-24">
+          <div className="lg:col-span-6 bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6 sticky top-24">
             <div className="border-b border-slate-100 pb-4 flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-bold text-[#C71578] uppercase tracking-widest block">
@@ -196,7 +196,7 @@ function TemplateCustomizerContent({ slug }) {
               <Badge variant="accent" size="sm">Dynamic Form</Badge>
             </div>
 
-            <div className="relative aspect-16/10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-inner flex items-center justify-center">
+            <div className="relative aspect-16/10 rounded-lg overflow-hidden border border-slate-200 bg-slate-50 shadow-inner flex items-center justify-center">
               <img
                 src={selectedTemplate.previewUrl || 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&w=800&q=80'}
                 alt={selectedTemplate.name}
@@ -204,7 +204,7 @@ function TemplateCustomizerContent({ slug }) {
               />
             </div>
 
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2 font-normal text-slate-700 shadow-xs">
+            <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs space-y-2 font-normal text-slate-700 shadow-xs">
               <p className="font-bold text-slate-900 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
                 <span>Live Customisation Data Preview:</span>
@@ -221,7 +221,7 @@ function TemplateCustomizerContent({ slug }) {
           </div>
 
           {/* Right: Editable Fields Form (6 cols) */}
-          <div className="lg:col-span-6 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6">
+          <div className="lg:col-span-6 bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
                 <Edit3 className="w-5 h-5 text-[#C71578]" />
@@ -248,7 +248,7 @@ function TemplateCustomizerContent({ slug }) {
                       placeholder={`Enter ${field.label || field.key}...`}
                       value={customFields[field.key] || ''}
                       onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#C71578]/20 focus:border-[#C71578] transition-all"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#C71578]/20 focus:border-[#C71578] transition-all"
                     />
                   </div>
                 ))
@@ -265,7 +265,7 @@ function TemplateCustomizerContent({ slug }) {
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               ) : (
-                <div className="p-6 bg-emerald-50 border border-emerald-300 rounded-2xl space-y-4 text-center shadow-xs">
+                <div className="p-6 bg-emerald-50 border border-emerald-300 rounded-lg space-y-4 text-center shadow-xs">
                   <div className="w-12 h-12 rounded-full bg-emerald-500 text-white mx-auto flex items-center justify-center shadow-sm">
                     <CheckCircle2 className="w-6 h-6" />
                   </div>

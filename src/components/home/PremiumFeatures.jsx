@@ -21,12 +21,12 @@ export default function PremiumFeatures() {
             { icon: Headset, title: "24x7 Support", desc: "Dedicated human support for critical corporate printing deadlines." },
             { icon: Palette, title: "Design Help", desc: "Expert pre-press checks on every file to ensure perfect safe zones." }
           ].map((feature, idx) => (
-            <motion.div key={idx} whileHover={{ y: -8, scale: 1.02 }} className="group bg-white p-8 rounded-[24px] border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,130,202,0.1)] transition-all duration-300 relative overflow-hidden text-left">
+            <motion.div key={idx} whileHover={{ y: -8, scale: 1.02 }} className="group bg-white p-8 rounded-lg border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(0,130,202,0.1)] transition-all duration-300 relative overflow-hidden text-left">
               {/* Subtle hover gradient background */}
               <div className="absolute inset-0 bg-gradient-to-br from-blue-50/0 to-[#0082CA]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center mb-6 shadow-sm border border-blue-200/50 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-14 h-14 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center mb-6 shadow-sm border border-blue-200/50 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="w-7 h-7 text-[#0082CA]" />
                 </div>
                 <h3 className="text-lg font-extrabold text-slate-900 mb-2 group-hover:text-[#0082CA] transition-colors">{feature.title}</h3>

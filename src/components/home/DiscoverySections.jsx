@@ -39,7 +39,7 @@ export default function DiscoverySections() {
                 <Link key={i} href={need.link}>
                   <motion.div 
                     whileHover={{ scale: 1.03, y: -2 }}
-                    className="flex flex-col items-center justify-center p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-[#0082CA] hover:bg-blue-50/50 transition-colors cursor-pointer group shadow-sm text-center"
+                    className="flex flex-col items-center justify-center p-6 rounded-lg bg-slate-50 border border-slate-100 hover:border-[#0082CA] hover:bg-blue-50/50 transition-colors cursor-pointer group shadow-sm text-center"
                   >
                     <span className="text-3xl mb-3 group-hover:scale-110 transition-transform">{need.icon}</span>
                     <span className="font-bold text-sm text-slate-700 group-hover:text-[#0082CA] transition-colors">{need.name}</span>
@@ -71,7 +71,7 @@ export default function DiscoverySections() {
             </div>
             
             {/* Promo block in sidebar */}
-            <div className="mt-8 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl border border-blue-100">
+            <div className="mt-8 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg border border-blue-100">
               <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Pro Tip</span>
               <h4 className="font-bold text-slate-900 mt-3 text-sm">Need help finding something?</h4>
               <p className="text-xs text-slate-500 mt-2 leading-relaxed">Our print experts are available 24/7 to help you choose the right paper GSM and finish.</p>

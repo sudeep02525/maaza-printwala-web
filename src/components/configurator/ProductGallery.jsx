@@ -29,7 +29,7 @@ export default function ProductGallery({ product }) {
   return (
     <div className="space-y-4 select-none">
       {/* Main Studio Preview Box */}
-      <div className="relative bg-slate-100 rounded-2xl border border-slate-200 overflow-hidden aspect-4/3 flex items-center justify-center group shadow-sm">
+      <div className="relative bg-slate-100 rounded-lg border border-slate-200 overflow-hidden aspect-4/3 flex items-center justify-center group shadow-sm">
         {images.length > 0 ? (
           <img
             src={images[activeIdx]?.url || images[0]?.url}
@@ -74,7 +74,7 @@ export default function ProductGallery({ product }) {
               key={idx}
               onClick={() => setActiveIdx(idx)}
               className={cn(
-                'relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-slate-50 group/thumb',
+                'relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all shrink-0 bg-slate-50 group/thumb',
                 activeIdx === idx
                   ? 'border-[#0082CA] ring-2 ring-[#0082CA]/20 scale-95 shadow-sm'
                   : 'border-slate-200 opacity-75 hover:opacity-100 hover:border-slate-300'
@@ -90,7 +90,7 @@ export default function ProductGallery({ product }) {
       )}
 
       {/* Commercial Pre-Press Quality Notice */}
-      <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex items-start gap-3 shadow-xs">
+      <div className="p-4 bg-slate-50 rounded-lg border border-slate-200 flex items-start gap-3 shadow-xs">
         <ShieldCheck className="w-5 h-5 text-[#0082CA] shrink-0 mt-0.5" />
         <div className="text-xs text-slate-700 leading-relaxed font-normal">
           <span className="font-bold text-slate-900">Commercial Print Standards:</span> Manufactured using high-density offset and digital press reproduction with manual staff verification of submitted artwork safe zones.

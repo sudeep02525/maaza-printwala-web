@@ -49,7 +49,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
 
       {/* Warning Banners */}
       {draft.priceChangeWarning && (
-        <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs font-normal flex items-start gap-2.5">
+        <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-normal flex items-start gap-2.5">
           <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div>
             <p className="font-bold mb-0.5">Price Valuation Update</p>
@@ -80,7 +80,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
           </span>
         </div>
 
-        <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-xs">
+        <div className="flex justify-between items-center p-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs">
           <div>
             <span className="font-bold text-slate-900 block">Applicable Taxes:</span>
             <span className="text-[11px] text-slate-500 font-normal">Standard commercial GST invoiced separately</span>
@@ -118,7 +118,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
 
       {/* Production Payment Readiness Safety Guard (Commercial Messaging Compliance) */}
       {isReady && (
-        <div className="mt-6 p-6 rounded-2xl bg-emerald-50 text-slate-900 space-y-4 border border-emerald-300 shadow-sm">
+        <div className="mt-6 p-6 rounded-lg bg-emerald-50 text-slate-900 space-y-4 border border-emerald-300 shadow-sm">
           <div className="flex items-center space-x-2 text-emerald-800 font-black text-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
             <span>Order Successfully Registered</span>
@@ -127,7 +127,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
             Your commercial printing specifications, Indian delivery address, and logistics method have been validated and recorded on our production server.
           </p>
 
-          <div className="p-4 rounded-xl bg-white border border-emerald-200 text-xs space-y-2 font-normal shadow-2xs">
+          <div className="p-4 rounded-lg bg-white border border-emerald-200 text-xs space-y-2 font-normal shadow-2xs">
             <div className="flex items-center gap-2 text-[#0082CA] font-bold">
               <Lock className="w-4 h-4 shrink-0" />
               <span>Online Payment Processing Notice</span>
@@ -140,7 +140,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
           <div className="pt-2">
             <button
               disabled
-              className="w-full py-3.5 bg-emerald-600 text-white font-bold rounded-xl text-xs cursor-not-allowed border border-emerald-600 flex items-center justify-center gap-2 shadow-xs opacity-90"
+              className="w-full py-3.5 bg-emerald-600 text-white font-bold rounded-lg text-xs cursor-not-allowed border border-emerald-600 flex items-center justify-center gap-2 shadow-xs opacity-90"
             >
               <CheckCircle2 className="w-4 h-4 text-white" />
               <span>Order Captured - Payment Pending Offline</span>

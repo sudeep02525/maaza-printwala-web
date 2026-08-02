@@ -20,10 +20,10 @@ export default function PromoBanners() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Banner 1 */}
-          <Link href="/products">
+          <Link href="/category/all">
             <motion.div 
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative overflow-hidden rounded-[24px] bg-gradient-to-br from-indigo-500 to-purple-600 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
             >
               {/* Background abstract shapes */}
               <div className="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-all" />
@@ -52,10 +52,10 @@ export default function PromoBanners() {
           </Link>
 
           {/* Banner 2 */}
-          <Link href="/products">
+          <Link href="/category/all">
             <motion.div 
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative overflow-hidden rounded-[24px] bg-gradient-to-br from-[#0082CA] to-blue-800 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
+              className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-[#0082CA] to-blue-800 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
             >
               {/* Background Image / Texture */}
               <div className="absolute inset-0 opacity-20 mix-blend-overlay group-hover:scale-110 transition-transform duration-700">

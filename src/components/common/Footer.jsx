@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, MapPin, Phone, Share2, Globe, MessageCircle, AtSign, CheckCircle2, CreditCard, ShieldCheck, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -11,7 +12,7 @@ export default function Footer() {
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         
         {/* Pre-Footer Newsletter Section */}
-        <div className="bg-[#1F2937] rounded-2xl p-8 mb-16 flex flex-col md:flex-row items-center justify-between gap-8 border border-[#374151] shadow-2xl relative overflow-hidden">
+        <div className="bg-[#1F2937] rounded-lg p-8 mb-16 flex flex-col md:flex-row items-center justify-between gap-8 border border-[#374151] shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-[80px] pointer-events-none" />
           
           <div className="text-center md:text-left max-w-lg relative z-10">
@@ -43,10 +44,13 @@ export default function Footer() {
           {/* Column 1: About & Social (Takes up 2 cols on Large screens) */}
           <div className="col-span-2 space-y-6 lg:pr-8">
             <div className="inline-block bg-white px-4 py-2 rounded-lg shadow-sm">
-              <img
+              <Image
                 src="/logo-maaza.png"
                 alt="Maaza Printwala"
+                width={150}
+                height={40}
                 className="h-10 w-auto object-contain"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <p className="text-sm text-[#94A3B8] leading-relaxed font-medium">
@@ -77,11 +81,12 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Products</h4>
             <ul className="space-y-3 text-sm text-[#94A3B8] font-medium">
-              <li><Link href="/products?category=business-cards" className="hover:text-[#0082CA] transition-colors">Business Cards</Link></li>
-              <li><Link href="/products?category=corporate-gifts" className="hover:text-[#0082CA] transition-colors">Corporate Gifting</Link></li>
-              <li><Link href="/products?category=custom-apparel" className="hover:text-[#0082CA] transition-colors">Custom Apparel</Link></li>
-              <li><Link href="/products?category=marketing-signage" className="hover:text-[#0082CA] transition-colors">Marketing & Signage</Link></li>
-              <li><Link href="/products?category=packaging" className="hover:text-[#0082CA] transition-colors">Packaging Boxes</Link></li>
+              <li><Link href="/category/business-printing" className="hover:text-[#0082CA] transition-colors">Business Printing</Link></li>
+              <li><Link href="/category/packaging" className="hover:text-[#0082CA] transition-colors">Packaging</Link></li>
+              <li><Link href="/category/corporate-gifts" className="hover:text-[#0082CA] transition-colors">Corporate Gifts</Link></li>
+              <li><Link href="/category/custom-apparel" className="hover:text-[#0082CA] transition-colors">Custom Apparel</Link></li>
+              <li><Link href="/category/drinkware" className="hover:text-[#0082CA] transition-colors">Drinkware</Link></li>
+              <li><Link href="/category/office-essentials" className="hover:text-[#0082CA] transition-colors">Office Essentials</Link></li>
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors text-[#0082CA]">View All Products &rarr;</Link></li>
             </ul>
           </div>
@@ -90,11 +95,11 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Resources</h4>
             <ul className="space-y-3 text-sm text-[#94A3B8] font-medium">
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Design Templates</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Artwork Guidelines</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Paper Quality Guide</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Printing Blog</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Developer API</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Design Templates</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Artwork Guidelines</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Paper Quality Guide</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Printing Blog</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Developer API</Link></li>
             </ul>
           </div>
 
@@ -102,10 +107,10 @@ export default function Footer() {
           <div className="space-y-6">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Support</h4>
             <ul className="space-y-3 text-sm text-[#94A3B8] font-medium">
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Help Center / FAQs</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Track Your Order</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Return Policy</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Shipping Information</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Help Center / FAQs</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Track Your Order</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Return Policy</Link></li>
+              <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Shipping Information</Link></li>
               <li>
                 <div className="pt-2 flex items-center gap-2">
                   <Phone className="w-4 h-4 text-[#0082CA]" />
@@ -126,18 +131,18 @@ export default function Footer() {
             <div className="space-y-6">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider">Company</h4>
               <ul className="space-y-3 text-sm text-[#94A3B8] font-medium">
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">About Us</Link></li>
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Careers</Link></li>
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Press & Media</Link></li>
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Partner Program</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">About Us</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Careers</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Press & Media</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Partner Program</Link></li>
               </ul>
             </div>
             
             <div className="space-y-4">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider">Legal</h4>
               <ul className="space-y-3 text-sm text-[#94A3B8] font-medium">
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Terms of Service</Link></li>
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/category/all" className="hover:text-[#0082CA] transition-colors">Privacy Policy</Link></li>
               </ul>
             </div>
           </div>

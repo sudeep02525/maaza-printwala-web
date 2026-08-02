@@ -55,7 +55,7 @@ export default function TestimonialCarousel() {
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white">Loved by Businesses</h2>
         <p className="text-slate-400 mb-16 text-sm font-medium">Join 10,000+ companies that trust Maaza Printwala for their commercial printing.</p>
 
-        <div className="relative h-[320px] sm:h-[280px] w-full max-w-3xl mx-auto">
+        <div className="relative w-full max-w-3xl mx-auto min-h-[350px] sm:min-h-[280px] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -63,9 +63,9 @@ export default function TestimonialCarousel() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="absolute inset-0"
+              className="w-full"
             >
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 sm:p-10 rounded-[32px] shadow-2xl flex flex-col items-center text-center h-full">
+              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 sm:p-10 rounded-lg shadow-2xl flex flex-col items-center text-center">
                 
                 {/* Rating & Verified */}
                 <div className="flex items-center justify-between w-full mb-6">

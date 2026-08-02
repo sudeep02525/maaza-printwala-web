@@ -18,7 +18,7 @@ export default function Alert({ title, children, variant = 'info', className, ic
   };
 
   return (
-    <div className={cn('p-4 rounded-xl border flex items-start gap-3 shadow-xs', variants[variant], className)}>
+    <div className={cn('p-4 rounded-lg border flex items-start gap-3 shadow-xs', variants[variant], className)}>
       {icon !== false && (icon || icons[variant])}
       <div className="flex-1 text-xs md:text-sm">
         {title && <h4 className="font-bold mb-1">{title}</h4>}

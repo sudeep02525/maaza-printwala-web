@@ -7,7 +7,6 @@ export default function Breadcrumbs({ items, className }) {
   return (
     <nav aria-label="Breadcrumb" className={cn('flex items-center text-xs font-semibold text-slate-500 space-x-1.5 overflow-x-auto py-1', className)}>
       <Link href="/" className="hover:text-slate-900 flex items-center gap-1 shrink-0 transition-colors">
-        <Home className="w-3.5 h-3.5" />
         <span>Home</span>
       </Link>
       {items.map((item, idx) => (

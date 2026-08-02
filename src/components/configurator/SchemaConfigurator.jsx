@@ -10,13 +10,13 @@ export default function SchemaConfigurator({ schema, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 space-y-6 animate-pulse shadow-xs">
+      <div className="bg-white p-6 sm:p-8 rounded-lg border border-slate-200 space-y-6 animate-pulse shadow-xs">
         <div className="h-6 bg-slate-200 rounded-lg w-1/3"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="space-y-2">
               <div className="h-4 bg-slate-200 rounded w-1/4"></div>
-              <div className="h-11 bg-slate-100 rounded-xl"></div>
+              <div className="h-11 bg-slate-100 rounded-lg"></div>
             </div>
           ))}
         </div>
@@ -26,14 +26,14 @@ export default function SchemaConfigurator({ schema, isLoading }) {
 
   if (!schema || !schema.attributes || schema.attributes.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm shadow-xs">
+      <div className="bg-white p-6 rounded-lg border border-slate-200 text-center text-slate-500 text-sm shadow-xs">
         No specification schema found for this product. Standard configuration applies.
       </div>
     );
   }
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs space-y-6 select-none">
+    <div className="bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6 select-none">
       <div className="flex items-center justify-between border-b border-slate-100 pb-4">
         <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
           <Package className="w-5 h-5 text-[#0082CA]" />
@@ -76,7 +76,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                             type="button"
                             onClick={() => updateConfiguration(attr.key, opt.value)}
                             className={cn(
-                              'px-3.5 py-2.5 rounded-xl border text-xs font-bold transition-all flex items-center justify-between text-left',
+                              'px-3.5 py-2.5 rounded-lg border text-xs font-bold transition-all flex items-center justify-between text-left',
                               isSelected
                                 ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
                                 : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
@@ -98,7 +98,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                       value={val || ''}
                       onChange={(e) => updateConfiguration(attr.key, e.target.value)}
                       className={cn(
-                        'w-full px-3.5 py-2.5 bg-slate-50 border rounded-xl text-sm font-semibold text-slate-800 transition-all cursor-pointer',
+                        'w-full px-3.5 py-2.5 bg-slate-50 border rounded-lg text-sm font-semibold text-slate-800 transition-all cursor-pointer',
                         'focus:outline-none focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA]',
                         isMissing ? 'border-amber-300 bg-amber-50/30' : 'border-slate-300'
                       )}
@@ -127,7 +127,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         type="button"
                         onClick={() => updateConfiguration(attr.key, opt.value)}
                         className={cn(
-                          'px-3.5 py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-2',
+                          'px-3.5 py-2 rounded-lg border text-xs font-bold transition-all flex items-center gap-2',
                           isSelected
                             ? 'bg-slate-900 text-white border-slate-900 shadow-xs scale-102'
                             : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
@@ -166,7 +166,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.width !== undefined ? configuration.width : 3}
                         onChange={(e) => updateConfiguration('width', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                     <div>
@@ -180,7 +180,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.height !== undefined ? configuration.height : 2}
                         onChange={(e) => updateConfiguration('height', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                   </div>

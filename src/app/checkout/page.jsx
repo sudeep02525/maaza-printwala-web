@@ -82,7 +82,7 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-black text-slate-900">Cart Session Expired</h2>
               <p className="text-xs text-slate-500 font-normal leading-relaxed">We could not initialize a checkout session. Your shopping cart may be empty or your session expired.</p>
             </div>
-            <Link href="/products">
+            <Link href="/category/all">
               <Button variant="primary" size="md">Browse Catalogue</Button>
             </Link>
           </Card>
@@ -143,7 +143,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Contact Details</span>
                         <button onClick={() => setStep(1)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
@@ -153,7 +153,7 @@ export default function CheckoutPage() {
                       <p className="text-slate-600">+91 {draft.contactDetails?.phone}</p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Delivery Address</span>
                         <button onClick={() => setStep(2)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
@@ -163,7 +163,7 @@ export default function CheckoutPage() {
                       <p className="text-slate-600">{draft.deliveryAddress?.city}, {draft.deliveryAddress?.state} - <span className="font-mono font-bold">{draft.deliveryAddress?.pinCode}</span></p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Billing & GST</span>
                         <button onClick={() => setStep(3)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
@@ -177,7 +177,7 @@ export default function CheckoutPage() {
                       )}
                     </div>
 
-                    <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
                         <span className="font-extrabold text-slate-900">Delivery Method</span>
                         <button onClick={() => setStep(4)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
