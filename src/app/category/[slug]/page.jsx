@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -10,11 +10,11 @@ import {
   Layers, LayoutGrid, List as ListIcon, Star, Eye, ShoppingCart,
   CheckCircle2, ShieldCheck, ChevronDown
 } from 'lucide-react';
-import axiosInstance from '../../services/axiosInstance.js';
-import Breadcrumbs from '../../components/ui/Breadcrumbs.jsx';
-import ProductCard from '../../components/products/ProductCard.jsx';
-import Skeleton from '../../components/ui/Skeleton.jsx';
-import CategoryNav from '../../components/ui/CategoryNav.jsx';
+import axiosInstance from '../../../services/axiosInstance.js';
+import Breadcrumbs from '../../../components/ui/Breadcrumbs.jsx';
+import ProductCard from '../../../components/products/ProductCard.jsx';
+import Skeleton from '../../../components/ui/Skeleton.jsx';
+import CategoryNav from '../../../components/ui/CategoryNav.jsx';
 
 // ---- QUICK VIEW MODAL COMPONENT ----
 function QuickViewModal({ product, onClose }) {
@@ -90,25 +90,20 @@ function QuickViewModal({ product, onClose }) {
   );
 }
 
-// ---- MAIN PAGE COMPONENT ----
-function CatalogueContent() {
-  const searchParams = useSearchParams();
+function CategoryContent() {
   const router = useRouter();
-
-  const categoryParam = searchParams.get('category') || '';
-  const searchParam = searchParams.get('search') || '';
-
-  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
-  const [searchTerm, setSearchTerm] = useState(searchParam);
-  const [sortBy, setSortBy] = useState('popular');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
-  const [isMounted, setIsMounted] = useState(false);
+  const searchParams = useSearchParams();
+  const params = useParams();
   
+  const [isMounted, setIsMounted] = useState(false);
+  const [viewMode, setViewMode] = useState('grid');
+  const [sortBy, setSortBy] = useState('popular');
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  useEffect(() => setIsMounted(true), []);
-  useEffect(() => setSelectedCategory(categoryParam), [categoryParam]);
-  useEffect(() => setSearchTerm(searchParam), [searchParam]);
+  useEffect(() => { setIsMounted(true); }, []);
+
+  const selectedCategory = params?.slug || '';
+  const searchTerm = searchParams.get('search') || '';
 
   // Fetching
   const { data: catData, isLoading: catLoading } = useQuery({
@@ -151,11 +146,7 @@ function CatalogueContent() {
   }, [rawProducts, sortBy]);
 
   const handleCategoryChange = (slugOrId) => {
-    setSelectedCategory(slugOrId);
-    const params = new URLSearchParams(searchParams.toString());
-    if (slugOrId) params.set('category', slugOrId);
-    else params.delete('category');
-    router.push(`/products?${params.toString()}`);
+    router.push(slugOrId ? `/category/${slugOrId}` : '/products');
   };
 
   const clearAllFilters = () => {
@@ -163,7 +154,7 @@ function CatalogueContent() {
     if (searchTerm) {
       const params = new URLSearchParams(searchParams.toString());
       params.delete('search');
-      router.push(`/products?${params.toString()}`);
+      router.push(`/products${selectedCategory ? `/${selectedCategory}` : ''}${params.toString() ? `?${params.toString()}` : ''}`);
     }
   };
 
@@ -212,7 +203,7 @@ function CatalogueContent() {
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Active:</span>
             {searchTerm && (
               <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 border border-indigo-100">
-                "{searchTerm}" <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => { const p = new URLSearchParams(searchParams); p.delete('search'); router.push(`/products?${p.toString()}`) }}/>
+                "{searchTerm}" <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => { const p = new URLSearchParams(searchParams); p.delete('search'); router.push(`/products${selectedCategory ? `/${selectedCategory}` : ''}${p.toString() ? `?${p.toString()}` : ''}`) }}/>
               </span>
             )}
             <button onClick={clearAllFilters} className="text-xs font-bold text-slate-500 hover:text-red-500 transition-colors">Clear All</button>
@@ -403,7 +394,7 @@ function CatalogueContent() {
   );
 }
 
-export default function CataloguePage() {
+export default function CategoryPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-[#FAFCFF] flex items-center justify-center">
@@ -413,7 +404,7 @@ export default function CataloguePage() {
         </div>
       </div>
     }>
-      <CatalogueContent />
+      <CategoryContent />
     </Suspense>
   );
 }

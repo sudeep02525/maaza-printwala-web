@@ -3,7 +3,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { Package, Star, Info, PenTool, UploadCloud } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export default function ProductCard({ product }) {
   if (!product) return null;
@@ -25,12 +24,8 @@ export default function ProductCard({ product }) {
   const hasMoreColors = colors.length > 6;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full border border-slate-100"
+    <div
+      className="group relative flex flex-col bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 h-full border border-slate-100"
     >
       {/* Image Container */}
       <div className="relative aspect-square bg-slate-50 overflow-hidden">
@@ -60,12 +55,10 @@ export default function ProductCard({ product }) {
 
         <Link href={`/products/${id}`} className="block w-full h-full">
           {image ? (
-            <motion.img
+            <img
               src={image}
               alt={name}
-              className="w-full h-full object-cover mix-blend-multiply"
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.5 }}
+              className="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-slate-300">
@@ -127,6 +120,6 @@ export default function ProductCard({ product }) {
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

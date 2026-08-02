@@ -63,13 +63,16 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: transparent;
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
+  *:hover::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+  }
+  *:hover::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
 }

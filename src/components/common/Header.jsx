@@ -247,21 +247,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Bottom Announcement Strip (Scrolls away natively) */}
-      <div className="bg-slate-900 text-white text-[11px] sm:text-xs py-2 px-4 text-center font-semibold tracking-wide flex items-center justify-center overflow-hidden h-15">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={announcementIdx}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="absolute"
-          >
-            {ANNOUNCEMENTS[announcementIdx]}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+
 
       {/* Mobile Drawer Navigation */}
       <Drawer
@@ -315,7 +301,7 @@ export default function Header() {
               {categories.map((cat) => (
                 <Link
                   key={cat._id}
-                  href={`/products?category=${cat.slug || cat._id}`}
+                  href={`/category/${cat.slug || cat._id}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-between p-3 rounded hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-semibold text-sm transition-colors"
                 >

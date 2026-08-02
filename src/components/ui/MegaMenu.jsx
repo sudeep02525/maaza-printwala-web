@@ -69,7 +69,7 @@ export default function MegaMenu({ categories = [], isLoading = false }) {
                 onMouseLeave={() => setActiveCategory(null)}
               >
                 <Link
-                  href={`/products?category=${cat.slug || cat._id}`}
+                  href={`/category/${cat.slug || cat._id}`}
                   className={`flex items-center h-full px-2 transition-all ${
                     isHovered
                       ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
@@ -184,7 +184,7 @@ export default function MegaMenu({ categories = [], isLoading = false }) {
                     <div className="w-1/4">
                       <h4 className="text-lg font-bold text-slate-900 mb-4">{cat.name}</h4>
                       <p className="text-sm text-slate-500 mb-6">Explore our wide range of premium {cat.name.toLowerCase()} options tailored for your brand.</p>
-                      <Link href={`/products?category=${cat.slug || cat._id}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0082CA] hover:underline">
+                      <Link href={`/category/${cat.slug || cat._id}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0082CA] hover:underline">
                         Shop All {cat.name} <ArrowRight className="w-4 h-4" />
                       </Link>
                     </div>
@@ -192,11 +192,11 @@ export default function MegaMenu({ categories = [], isLoading = false }) {
                     <div className="w-1/4">
                       <h4 className="text-sm font-semibold text-slate-600 mb-3">Popular Options</h4>
                       <ul className="space-y-3">
-                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Standard {cat.name}</Link></li>
-                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Premium Quality {cat.name}</Link></li>
-                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Eco-Friendly {cat.name}</Link></li>
-                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Custom Printed {cat.name}</Link></li>
-                        <li><Link href={`/products?category=${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Bulk {cat.name} Orders</Link></li>
+                        <li><Link href={`/category/${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Standard {cat.name}</Link></li>
+                        <li><Link href={`/category/${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Premium Quality {cat.name}</Link></li>
+                        <li><Link href={`/category/${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Eco-Friendly {cat.name}</Link></li>
+                        <li><Link href={`/category/${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Custom Printed {cat.name}</Link></li>
+                        <li><Link href={`/category/${cat.slug || cat._id}`} className="text-slate-900 hover:underline text-[13px]">Bulk {cat.name} Orders</Link></li>
                       </ul>
                     </div>
   
