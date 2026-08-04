@@ -1,6 +1,6 @@
 import React from 'react';
 import { AlertCircle, CheckCircle2, Info, AlertTriangle } from 'lucide-react';
-import { cn } from '../../lib/utils.js';
+import { cn } from '@/lib/utils.js';
 
 export default function Alert({ title, children, variant = 'info', className, icon }) {
   const variants = {

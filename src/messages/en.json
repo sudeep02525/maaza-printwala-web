@@ -1,0 +1,229 @@
+{
+  "header": {
+    "login": "Log In",
+    "trackOrder": "Track Order",
+    "customerAssistance": "Customer Assistance",
+    "standardBusinessHours": "Standard Business Hours",
+    "searchPlaceholder": "Search products...",
+    "account": "Account",
+    "navigation": "Maza Printwala Navigation",
+    "searchCatalogue": "Search Catalogue",
+    "go": "Go",
+    "printCategories": "Print Categories",
+    "allProducts": "All Products",
+    "customerSupport": "Customer Support",
+    "supportNote": "Standard commercial printing assistance available during normal working hours."
+  },
+  "hero": {
+    "heading1": "Design the perfect piece with our custom-ized prints.",
+    "subheading1": "Select style according to your choice",
+    "explore": "Explore",
+    "corpGifting": "Corporate Gifting",
+    "corpDiscount": "Upto 40% Off on Bulk",
+    "visitingCards": "Premium Visiting Cards",
+    "cardsPrice": "Starting at ₹199"
+  },
+  "trustStrip": {
+    "qualityTitle": "Premium Quality",
+    "qualityDesc": "Advanced printing technology for best colors and durability.",
+    "fastTitle": "Fast Turnaround",
+    "fastDesc": "Pan-India express delivery directly to your doorstep.",
+    "satisfactionTitle": "100% Satisfaction",
+    "satisfactionDesc": "Over 5 Lakh+ happy customers trust our quality.",
+    "secureTitle": "Secure Payments",
+    "secureDesc": "100% safe checkout with SSL encryption."
+  },
+  "homeSections": {
+    "shopByCategory": "Shop by Category",
+    "businessEssentials": "Business Essentials",
+    "customApparel": "Custom Apparel",
+    "featuredProducts": "Featured Products",
+    "bestSellers": "Best Sellers",
+    "corporateGifting": "Corporate Printing & Gifting",
+    "weddingBoutique": "The Wedding Boutique",
+    "customMerchandise": "Custom Merchandise",
+    "newArrivals": "New Arrivals",
+    "topRated": "Top Rated Products",
+    "popularSearches": "Popular Searches",
+    "customerGallery": "Customer Gallery",
+    "lovedByBusinesses": "Loved by Businesses",
+    "helpCenter": "Help Center",
+    "faq": "Frequently Asked Questions"
+  },
+  "buttons": {
+    "viewAll": "View All",
+    "shopNow": "Shop Now",
+    "explore": "Explore",
+    "learnMore": "Learn More",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now",
+    "goToCart": "Go to Cart",
+    "checkout": "Checkout",
+    "remove": "Remove",
+    "exploreCollection": "Explore Collection",
+    "browseCategories": "Browse Categories",
+    "viewProduct": "View Product",
+    "customizeNow": "Customize Now",
+    "requestQuote": "Request Quote",
+    "startDesigning": "Start Designing"
+  },
+  "productCard": {
+    "new": "New",
+    "sale": "Sale",
+    "bestseller": "Bestseller",
+    "quickView": "Quick View",
+    "startingFrom": "Starting from",
+    "reviews": "{count, plural, =0 {No reviews} =1 {1 Review} other {# Reviews}}"
+  },
+  "cart": {
+    "quantity": "Quantity",
+    "emptyCart": "Your cart is empty",
+    "addToWishlist": "Add to Wishlist",
+    "removeFromWishlist": "Remove from Wishlist"
+  },
+  "emptyStates": {
+    "noProductsFound": "No products found",
+    "noProductsDesc": "We couldn't find any products right now."
+  },
+  "states": {
+    "loading": "Loading...",
+    "somethingWentWrong": "Something went wrong"
+  },
+  "pagination": {
+    "next": "Next",
+    "previous": "Previous",
+    "showing": "Showing {start}-{end} of {total}"
+  },
+  "forms": {
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Submit",
+    "emailRequired": "Email is required",
+    "invalidPhone": "Invalid phone number",
+    "messageRequired": "Message is required"
+  },
+  "footer": {
+    "about": "About Us",
+    "contact": "Contact",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "returnPolicy": "Return Policy",
+    "subscribeTitle": "Subscribe to our Newsletter",
+    "subscribeDesc": "Get exclusive corporate discounts, printing tips, and early access to new customizable products.",
+    "enterEmail": "Enter your email address",
+    "subscribeBtn": "Subscribe",
+    "companyDesc": "India ki Apni Online Printing Press. Premium commercial printing marketplace with fast delivery and guaranteed quality for B2B and individuals.",
+    "connectWithUs": "Connect With Us",
+    "products": "Products",
+    "viewAllProducts": "View All Products",
+    "resources": "Resources",
+    "support": "Support",
+    "company": "Company",
+    "legal": "Legal"
+  },
+  "navigation": {
+    "viewAll": "View All"
+  },
+  "categories": {
+    "business-printing": "Visiting Cards",
+    "stationery": "Stationery",
+    "flyers-brochures": "Flyers & Brochures",
+    "packaging": "Packaging",
+    "labels-stickers": "Labels & Stickers",
+    "signage-banners": "Signage & Banners",
+    "custom-apparel": "Custom Apparel",
+    "corporate-gifts": "Corporate Gifts",
+    "drinkware": "Drinkware",
+    "photo-prints": "Photo Prints",
+    "invitations": "Invitations",
+    "caps": "Caps",
+    "clothing": "Clothing",
+    "office-products": "Office Products",
+    "paper-printing-products": "Paper Printing Products",
+    "pens": "Pens",
+    "personalise-products": "Personalise Products",
+    "promotional-items": "Promotional Items",
+    "sublimation-gifting-products": "Sublimation Gifting Products",
+    "wooden-products": "Wooden Products",
+    "canvas": "Canvas",
+    "business-essentials": "Business Essentials",
+    "visiting-cards": "Visiting Cards",
+    "notebooks": "Notebooks",
+    "custom-mugs": "Custom Mugs",
+    "custom-clothing-bags-caps": "Custom Clothing, Bags & Caps",
+    "custom-polo-tshirts": "Custom Polo T-shirts",
+    "custom-tshirts": "Custom T-shirts",
+    "custom-formal-shirts": "Custom Formal Shirts",
+    "desc-business-printing": "Professional visiting cards to make a lasting impression.",
+    "desc-stationery": "Custom stationery items for your office and personal needs.",
+    "desc-flyers-brochures": "Promotional materials to help your business stand out.",
+    "desc-packaging": "Custom packaging solutions to protect your products and promote your brand.",
+    "desc-labels-stickers": "Custom labels and stickers for all your packaging and branding needs.",
+    "desc-signage-banners": "High-impact indoor and outdoor signage, banners, and boards to capture attention.",
+    "desc-custom-apparel": "High-quality custom printed and embroidered clothing for teams, events, and branding.",
+    "desc-corporate-gifts": "Premium corporate gifting options to appreciate employees, welcome new hires, and impress clients.",
+    "desc-drinkware": "Personalized mugs, bottles, and sippers for everyday use and promotional gifting.",
+    "desc-photo-prints": "Turn your cherished memories into beautiful, personalized photo prints.",
+    "desc-invitations": "Custom invitations for weddings, parties, and corporate events."
+  },
+  "categoryPage": {
+    "noProductsTitle": "No products found here",
+    "noProductsDesc": "We couldn't find any products in {category} right now. Check back later or explore our other offerings.",
+    "exploreAll": "Explore All Products",
+    "showing": "Showing",
+    "products": "Products",
+    "shopBySub": "Shop by Subcategory",
+    "allProducts": "All Products",
+    "viewAll": "View All",
+    "faqTitle": "Frequently Asked Questions",
+    "faqDesc": "Everything you need to know about our {category} services."
+  },
+  "filters": {
+    "title": "Filters",
+    "sortBy": "Sort By",
+    "sort": "Sort",
+    "availability": "Availability",
+    "inStock": "In Stock (Fast Dispatch)",
+    "excludeOutOfStock": "Exclude Out of Stock",
+    "popularity": "Popularity",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "alpha": "Alphabetical (A-Z)"
+  },
+  "common": {
+    "quickView": "Quick View",
+    "search": "Search",
+    "customize": "Customize Now"
+  },
+  "product": {
+    "fastDispatch": "Fast Dispatch Available"
+  },
+  "metadata": {
+    "title": "Best Online Printing Services in India | Custom T-Shirts, Business Cards & Gifts | Maza Printwala",
+    "description": "India's premier online printing platform for Business Cards, Flex Banners, Letterheads, Brochures, Apparel, and Corporate Gift Packaging with instant pricing and custom design tools.",
+    "homeTitle": "Custom Printing Services",
+    "homeDesc": "Premium commercial printing marketplace with fast delivery and guaranteed quality for B2B and individuals."
+  },
+  "badges": {
+    "new": "NEW",
+    "sale": "SALE",
+    "hot": "HOT"
+  },
+  "products": {
+    "embroidered-polo-shirt": "Embroidered Polo Shirt",
+    "executive-letterhead": "Executive Letterhead",
+    "outdoor-vinyl-banner": "Outdoor Vinyl Banner",
+    "custom-printed-cotton-t-shirt": "Custom Printed Cotton T-Shirt",
+    "custom-cotton-tshirt": "Custom Printed Cotton T-Shirt",
+    "personalized-coffee-mug": "Personalized Coffee Mug",
+    "corporate-welcome-kit": "Corporate Welcome Kit",
+    "custom-corrugated-boxes": "Custom Corrugated Boxes",
+    "premium-standard-business-cards": "Premium Standard Business Cards"
+  },
+  "megaMenu": {
+    "shopAll": "Shop All {category}",
+    "explore": "Explore {category}"
+  }
+}

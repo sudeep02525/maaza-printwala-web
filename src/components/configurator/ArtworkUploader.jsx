@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Upload, FileText, CheckCircle2, AlertCircle, Trash2, ArrowRight, ShieldCheck, Loader2 } from 'lucide-react';
 import axiosInstance from '../../services/axiosInstance.js';
-import { useConfiguratorStore } from '../../store/configuratorStore.js';
+import { useConfiguratorStore } from '@/store/configuratorStore.js';
 import Button from '../ui/Button.jsx';
 import Alert from '../ui/Alert.jsx';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing.js';
 import { ChevronRight, Home } from 'lucide-react';
-import { cn } from '../../lib/utils.js';
+import { cn } from '@/lib/utils.js';
 
 export default function Breadcrumbs({ items, className }) {
   return (

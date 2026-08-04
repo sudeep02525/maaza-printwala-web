@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '../../lib/utils.js';
+import { cn } from '@/lib/utils.js';
 
 export default function Input({ label, error, helperText, className, id, ...props }) {
   const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);

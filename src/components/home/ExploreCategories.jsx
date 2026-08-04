@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing.js';
 import { motion } from 'framer-motion';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const SectionHeader = ({ title }) => (
   <div className="flex justify-between items-end mb-8">
@@ -13,11 +14,13 @@ const SectionHeader = ({ title }) => (
 
 export default function ExploreCategories({ categories = [] }) {
   const [canScrollExploreLeft, setCanScrollExploreLeft] = useState(false);
+  const tHome = useTranslations('homeSections');
+  const t = useTranslations();
 
   return (
     <section className="py-14 bg-white border-b border-slate-100">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-        <SectionHeader title="Shop by Category" />
+        <SectionHeader title={tHome('shopByCategory')} />
         <div className="relative group/slider mt-10">
           {canScrollExploreLeft && (
             <button 
@@ -66,7 +69,7 @@ export default function ExploreCategories({ categories = [] }) {
                       <div className="w-full aspect-square max-w-[280px] rounded-full border border-slate-200 overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
                         <img src={displayImage} alt={cat.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                       </div>
-                      <span className="text-sm sm:text-base font-bold text-slate-700 text-center leading-tight group-hover:text-[#0082CA]">{cat.name}</span>
+                      <span className="text-sm sm:text-base font-bold text-slate-700 text-center leading-tight group-hover:text-[#0082CA]">{t(`categories.${cat.slug}`) || cat.name}</span>
                     </Link>
                   </motion.div>
                 );

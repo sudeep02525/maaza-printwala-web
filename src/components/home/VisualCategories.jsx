@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing.js';
 import { motion } from 'framer-motion';
+
+import { useTranslations } from 'next-intl';
 
 const SectionHeader = ({ title, linkText }) => (
   <div className="flex justify-between items-end mb-8">
@@ -12,19 +14,21 @@ const SectionHeader = ({ title, linkText }) => (
 );
 
 export default function VisualCategories() {
+  const t = useTranslations();
+
   return (
     <section className="py-14 bg-[#fafafa]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 space-y-16">
         
         {/* Business Essentials Block */}
         <div>
-          <SectionHeader title="Business Essentials" linkText="" />
+          <SectionHeader title={t.has('categories.business-essentials') ? t('categories.business-essentials') : 'Business Essentials'} linkText="" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
             {[
-              { name: 'Visiting Cards', img: '/images/cat_visiting_cards_new_1785478123231.png' },
-              { name: 'Notebooks', img: '/images/cat_notebooks_new_1785478132458.png' },
-              { name: 'Custom Mugs', img: '/images/cat_mugs_new_1785478141544.png' },
-              { name: 'Custom Clothing, Bags & Caps', img: '/images/cat_clothing_new_1785478162007.png' }
+              { name: t.has('categories.visiting-cards') ? t('categories.visiting-cards') : 'Visiting Cards', img: '/images/cat_visiting_cards_new_1785478123231.png' },
+              { name: t.has('categories.notebooks') ? t('categories.notebooks') : 'Notebooks', img: '/images/cat_notebooks_new_1785478132458.png' },
+              { name: t.has('categories.custom-mugs') ? t('categories.custom-mugs') : 'Custom Mugs', img: '/images/cat_mugs_new_1785478141544.png' },
+              { name: t.has('categories.custom-clothing-bags-caps') ? t('categories.custom-clothing-bags-caps') : 'Custom Clothing, Bags & Caps', img: '/images/cat_clothing_new_1785478162007.png' }
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -46,13 +50,13 @@ export default function VisualCategories() {
 
         {/* Love your new look Block */}
         <div>
-          <SectionHeader title="Custom Apparel" linkText="" />
+          <SectionHeader title={t.has('categories.custom-apparel') ? t('categories.custom-apparel') : 'Custom Apparel'} linkText="" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
             {[
-              { name: 'Custom Polo T-shirts', img: '/images/cat_polo_new_1785478171451.png' },
-              { name: 'Custom T-shirts', img: '/images/cat_tshirt_new_1785478181285.png' },
-              { name: 'Custom Formal Shirts', img: '/images/cat_formal_new_1785478190948.png' },
-              { name: 'Caps', img: '/images/cat_caps_new_1785478209032.png' }
+              { name: t.has('categories.custom-polo-tshirts') ? t('categories.custom-polo-tshirts') : 'Custom Polo T-shirts', img: '/images/cat_polo_new_1785478171451.png' },
+              { name: t.has('categories.custom-tshirts') ? t('categories.custom-tshirts') : 'Custom T-shirts', img: '/images/cat_tshirt_new_1785478181285.png' },
+              { name: t.has('categories.custom-formal-shirts') ? t('categories.custom-formal-shirts') : 'Custom Formal Shirts', img: '/images/cat_formal_new_1785478190948.png' },
+              { name: t.has('categories.caps') ? t('categories.caps') : 'Caps', img: '/images/cat_caps_new_1785478209032.png' }
             ].map((item, i) => (
               <motion.div 
                 key={i}

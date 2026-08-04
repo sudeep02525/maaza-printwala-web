@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, ShieldCheck, ArrowRight, RefreshCw, FileText, LayoutTemplate, Layers, ShoppingBag, AlertCircle } from 'lucide-react';
-import { useConfiguratorStore } from '../../store/configuratorStore.js';
-import { useCartStore } from '../../store/cartStore.js';
+import { useConfiguratorStore } from '@/store/configuratorStore.js';
+import { useCartStore } from '@/store/cartStore.js';
 import Button from '../ui/Button.jsx';
 import Card from '../ui/Card.jsx';
 import Badge from '../ui/Badge.jsx';

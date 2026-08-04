@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Tag, Percent } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing.js';
 
 export default function PromoBanners() {
   return (

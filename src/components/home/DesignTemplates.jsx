@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Edit3, Download, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing.js';
 
 const TEMPLATES = [
   { id: 1, title: 'Modern Corporate', category: 'Business Card', image: 'https://images.unsplash.com/photo-1574751508226-f40445d31599?auto=format&fit=crop&w=600&q=80' },

@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { Package, AlertCircle, Info, Check } from 'lucide-react';
-import { useConfiguratorStore } from '../../store/configuratorStore.js';
-import { cn } from '../../lib/utils.js';
+import { useConfiguratorStore } from '@/store/configuratorStore.js';
+import { cn } from '@/lib/utils.js';
 
 export default function SchemaConfigurator({ schema, isLoading }) {
   const { configuration, updateConfiguration } = useConfiguratorStore();

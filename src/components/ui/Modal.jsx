@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
-import { cn } from '../../lib/utils.js';
+import { cn } from '@/lib/utils.js';
 
 export default function Modal({ isOpen, onClose, title, children, className, maxWidth = 'max-w-xl' }) {
   useEffect(() => {

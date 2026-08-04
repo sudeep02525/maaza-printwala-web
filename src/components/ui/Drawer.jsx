@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
-import { cn } from '../../lib/utils.js';
+import { cn } from '@/lib/utils.js';
 
 export default function Drawer({ isOpen, onClose, title, children, side = 'left', className }) {
   useEffect(() => {

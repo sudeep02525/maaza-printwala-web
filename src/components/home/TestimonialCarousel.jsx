@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, BadgeCheck } from 'lucide-react';
+import { useLocale } from 'next-intl';
 
 const TESTIMONIALS = [
   { 
@@ -10,7 +11,7 @@ const TESTIMONIALS = [
     name: 'Rajesh K.', 
     company: 'TechNova Solutions', 
     role: 'Operations Head',
-    text: 'Maaza Printwala delivered our corporate onboarding kits 2 days early. The premium boxes were flawless, and the GST invoicing was completely seamless.',
+    text: 'Maza Printwala delivered our corporate onboarding kits 2 days early. The premium boxes were flawless, and the GST invoicing was completely seamless.',
     avatar: 'https://i.pravatar.cc/150?img=11',
     logo: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg'
   },
@@ -36,6 +37,7 @@ const TESTIMONIALS = [
 
 export default function TestimonialCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const locale = useLocale();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -45,15 +47,19 @@ export default function TestimonialCarousel() {
   }, []);
 
   return (
-    <section className="py-16 bg-slate-900 relative overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+    <section className="py-10 bg-slate-50 relative overflow-hidden border-t border-slate-100">
+      {/* Background Decor */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-white">Loved by Businesses</h2>
-        <p className="text-slate-400 mb-16 text-sm font-medium">Join 10,000+ companies that trust Maaza Printwala for their commercial printing.</p>
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-slate-900">
+          {locale === 'hi' ? 'व्यवसायों द्वारा पसंद किया गया' : locale === 'mr' ? 'व्यवसायांची पसंती' : 'Loved by Businesses'}
+        </h2>
+        <p className="text-slate-500 mb-16 text-base font-medium">
+          {locale === 'hi' ? '10,000+ कंपनियों से जुड़ें जो अपनी कमर्शियल प्रिंटिंग के लिए Maza Printwala पर भरोसा करती हैं।' : locale === 'mr' ? '10,000+ कंपन्यांमध्ये सामील व्हा ज्या त्यांच्या व्यावसायिक छपाईसाठी Maza Printwala वर विश्वास ठेवतात.' : 'Join 10,000+ companies that trust Maza Printwala for their commercial printing.'}
+        </p>
 
         <div className="relative w-full max-w-3xl mx-auto min-h-[350px] sm:min-h-[280px] flex items-center justify-center">
           <AnimatePresence mode="wait">
@@ -65,37 +71,37 @@ export default function TestimonialCarousel() {
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className="w-full"
             >
-              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-8 sm:p-10 rounded-lg shadow-2xl flex flex-col items-center text-center">
+              <div className="bg-white border border-slate-100 p-8 sm:p-10 rounded-2xl shadow-xl shadow-slate-200/50 flex flex-col items-center text-center">
                 
                 {/* Rating & Verified */}
-                <div className="flex items-center justify-between w-full mb-6">
-                  <div className="flex gap-1 bg-white/10 px-3 py-1.5 rounded-full">
+                <div className="flex items-center justify-between w-full mb-8">
+                  <div className="flex gap-1 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-full">
                     {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400"/>)}
                   </div>
-                  <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold bg-emerald-400/10 px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-bold bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
                     <BadgeCheck className="w-4 h-4" />
                     <span>Verified Buyer</span>
                   </div>
                 </div>
 
                 {/* Text */}
-                <p className="text-lg sm:text-xl text-white font-medium leading-relaxed mb-8 italic flex-1">
+                <p className="text-lg sm:text-2xl text-slate-700 font-semibold leading-relaxed mb-10 italic flex-1">
                   &quot;{TESTIMONIALS[currentIndex].text}&quot;
                 </p>
 
                 {/* User Info & Logo */}
-                <div className="flex items-center justify-between w-full border-t border-white/10 pt-6">
+                <div className="flex items-center justify-between w-full border-t border-slate-100 pt-6">
                   <div className="flex items-center gap-4">
-                    <img src={TESTIMONIALS[currentIndex].avatar} alt={TESTIMONIALS[currentIndex].name} className="w-12 h-12 rounded-full border-2 border-white/20" />
+                    <img src={TESTIMONIALS[currentIndex].avatar} alt={TESTIMONIALS[currentIndex].name} className="w-12 h-12 rounded-full border-2 border-slate-100" />
                     <div className="text-left">
-                      <p className="font-bold text-white text-base">{TESTIMONIALS[currentIndex].name}</p>
-                      <p className="text-xs text-slate-400">{TESTIMONIALS[currentIndex].role}, <span className="text-white">{TESTIMONIALS[currentIndex].company}</span></p>
+                      <p className="font-bold text-slate-900 text-base">{TESTIMONIALS[currentIndex].name}</p>
+                      <p className="text-xs text-slate-500">{TESTIMONIALS[currentIndex].role}, <span className="text-slate-700 font-medium">{TESTIMONIALS[currentIndex].company}</span></p>
                     </div>
                   </div>
                   
-                  {/* Company Logo (Grayscale with white tint) */}
+                  {/* Company Logo */}
                   <div className="hidden sm:block">
-                    <img src={TESTIMONIALS[currentIndex].logo} alt="Company Logo" className="h-6 opacity-50 grayscale contrast-200 brightness-200" />
+                    <img src={TESTIMONIALS[currentIndex].logo} alt="Company Logo" className="h-6 opacity-40 grayscale" />
                   </div>
                 </div>
 
@@ -110,8 +116,8 @@ export default function TestimonialCarousel() {
             <button
               key={i}
               onClick={() => setCurrentIndex(i)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === i ? 'bg-white w-8' : 'bg-white/30 hover:bg-white/50'
+              className={`h-2.5 rounded-full transition-all duration-300 ${
+                currentIndex === i ? 'bg-[#0082CA] w-8' : 'bg-slate-300 w-2.5 hover:bg-slate-400'
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />

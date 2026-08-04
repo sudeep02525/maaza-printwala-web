@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import { Link, useRouter, usePathname } from '@/i18n/routing.js';
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations, useLocale } from "next-intl";
 import {
   ShoppingBag,
   User,
@@ -19,13 +19,15 @@ import {
   Tag,
   Package,
   Sparkles,
+  Truck,
 } from "lucide-react";
-import { useCartStore } from "../../store/cartStore.js";
-import { useAuthStore } from "../../store/authStore.js";
+import { useCartStore } from '@/store/cartStore.js';
+import { useAuthStore } from '@/store/authStore.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import MegaMenu from '../ui/MegaMenu.jsx';
 import Drawer from '../ui/Drawer.jsx';
-import { categoryData } from '../../config/categoryData.js';
+import { categoryData } from '@/config/categoryData.js';
+
 const ANNOUNCEMENTS = [
   <div key="1" className="flex items-center gap-1.5 justify-center">
     <Tag className="w-4 h-4 text-amber-400 shrink-0" />
@@ -42,7 +44,15 @@ const ANNOUNCEMENTS = [
 ];
 
 export default function Header() {
+  const t = useTranslations();
+  const locale = useLocale();
+  const pathname = usePathname();
   const router = useRouter();
+
+  const changeLanguage = (nextLocale) => {
+    router.replace(pathname, { locale: nextLocale });
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -51,7 +61,6 @@ export default function Header() {
 
   const [announcementIdx, setAnnouncementIdx] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("EN");
 
   useEffect(() => {
     setIsMounted(true);
@@ -85,7 +94,7 @@ export default function Header() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(`/category/all?search=${encodeURIComponent(searchQuery.trim())}`);
     setIsMobileMenuOpen(false);
   };
 
@@ -116,7 +125,7 @@ export default function Header() {
             <Link href="/" className="hidden md:flex items-center shrink-0">
               <Image
                 src="/logo-maaza.png"
-                alt="Maaza Printwala"
+                alt="Maza Printwala"
                 width={150}
                 height={40}
                 priority
@@ -131,7 +140,7 @@ export default function Header() {
             <Link href="/" className="flex items-center">
               <Image
                 src="/logo-maaza.png"
-                alt="Maaza Printwala"
+                alt="Maza Printwala"
                 width={120}
                 height={30}
                 priority
@@ -151,7 +160,7 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search business cards, banners, apparel, stationery, brochures..."
+                placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-4 pr-12 py-3 bg-white border border-slate-300 focus:border-[#0082CA] rounded-md text-sm text-slate-900 outline-none ring-0 focus:ring-1 focus:ring-[#0082CA] transition-all shadow-none"
               />
               <button
@@ -167,31 +176,31 @@ export default function Header() {
           {/* User Actions & Support */}
           <div className="flex items-center gap-5 sm:gap-8 shrink-0">
             {/* Language Selector */}
-            <div className="relative hidden lg:block group">
-              <div className="flex items-center gap-1.5 text-slate-700 hover:text-slate-900 transition-colors cursor-pointer p-2 rounded-lg hover:bg-slate-50 font-bold text-sm">
-                <Globe className="w-4 h-4 text-slate-600" />
-                <span>{selectedLang}</span>
-                <ChevronDown className="w-3 h-3 text-slate-500" />
+            <div className="relative hidden lg:block group w-[90px]">
+              <div className="flex items-center justify-between gap-1 text-slate-700 hover:text-slate-900 transition-colors cursor-pointer p-2 rounded-lg hover:bg-slate-50 font-bold text-sm">
+                <Globe className="w-4 h-4 text-slate-600 shrink-0" />
+                <span className="text-center flex-1 w-[30px]">{locale.toUpperCase()}</span>
+                <ChevronDown className="w-3 h-3 text-slate-500 shrink-0" />
               </div>
               
               {/* Dropdown Menu */}
               <div className="absolute top-full right-0 mt-1 w-32 bg-white rounded-lg shadow-lg border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="py-2">
                   <button 
-                    onClick={() => setSelectedLang("EN")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${selectedLang === "EN" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
+                    onClick={() => changeLanguage("en")}
+                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${locale === "en" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
                   >
                     English (EN)
                   </button>
                   <button 
-                    onClick={() => setSelectedLang("HI")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${selectedLang === "HI" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
+                    onClick={() => changeLanguage("hi")}
+                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${locale === "hi" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
                   >
                     हिंदी (HI)
                   </button>
                   <button 
-                    onClick={() => setSelectedLang("MR")}
-                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${selectedLang === "MR" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
+                    onClick={() => changeLanguage("mr")}
+                    className={`w-full text-left px-4 py-2 text-sm font-medium transition-colors ${locale === "mr" ? "text-[#0082CA] bg-slate-50" : "text-slate-700 hover:bg-slate-50 hover:text-[#0082CA]"}`}
                   >
                     मराठी (MR)
                   </button>
@@ -200,13 +209,13 @@ export default function Header() {
             </div>
 
             <div className="hidden lg:flex items-center gap-3 text-slate-700 hover:text-[#0082CA] transition-colors cursor-pointer p-2 rounded-lg hover:bg-slate-50">
-              <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center">
+              <div className="w-9 h-9 shrink-0 rounded-full bg-slate-100 flex items-center justify-center">
                 <PhoneCall className="w-4 h-4 text-slate-600" />
               </div>
-              <div>
-                <p className="font-bold text-slate-900">Customer Assistance</p>
-                <p className="text-[11px] text-slate-500 font-medium">
-                  Standard Business Hours
+              <div className="w-[155px]">
+                <p className="font-bold text-slate-900 truncate">{t('header.customerAssistance')}</p>
+                <p className="text-[11px] text-slate-500 font-medium truncate">
+                  {t('header.standardBusinessHours')}
                 </p>
               </div>
             </div>
@@ -216,17 +225,17 @@ export default function Header() {
               <div className="w-20 h-9 rounded animate-pulse bg-slate-100" />
             ) : isAuthenticated ? (
               <div className="flex items-center gap-2.5">
-                <div className="flex flex-col items-end hidden sm:flex">
-                  <span className="text-xs font-bold text-slate-900">
+                <div className="flex flex-col items-end hidden sm:flex w-[110px]">
+                  <span className="text-xs font-bold text-slate-900 truncate w-full text-right">
                     {user?.name}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-medium">
+                  <span className="text-[10px] text-slate-500 font-medium truncate w-full text-right">
                     {user?.email || "Active Account"}
                   </span>
                 </div>
                 <button
                   onClick={logout}
-                  className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-slate-200 text-slate-700 hover:text-red-600 transition-colors"
+                  className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full hover:bg-slate-200 text-slate-700 hover:text-red-600 transition-colors"
                   aria-label="Logout"
                 >
                   <LogOut className="w-5 h-5" />
@@ -235,10 +244,10 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 text-slate-700 hover:text-[#0082CA] transition-colors font-bold text-sm"
+                className="flex items-center gap-2 text-slate-700 hover:text-[#0082CA] transition-colors font-bold text-sm w-[90px]"
               >
-                <User className="w-5 h-5" />
-                <span className="hidden sm:inline">Account</span>
+                <User className="w-5 h-5 shrink-0" />
+                <span className="hidden sm:inline truncate">{t('header.account')}</span>
               </Link>
             )}
 
@@ -270,14 +279,14 @@ export default function Header() {
       <Drawer
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        title="Maaza Printwala Navigation"
+        title={t('header.navigation')}
         side="left"
       >
         <div className="space-y-6">
           {/* Mobile Search */}
           <form onSubmit={handleSearchSubmit} className="space-y-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              Search Catalogue
+              {t('header.searchCatalogue')}
             </label>
             <div className="relative flex items-center">
               <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
@@ -285,14 +294,14 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search printing items..."
+                placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-9 pr-16 py-2.5 bg-white border border-slate-300 rounded text-sm text-slate-900 focus:outline-none focus:border-[#0082CA]"
               />
               <button
                 type="submit"
                 className="absolute right-1 px-3 py-1.5 bg-[#0082CA] text-white text-xs font-semibold rounded"
               >
-                Go
+                {t('header.go')}
               </button>
             </div>
           </form>
@@ -300,7 +309,7 @@ export default function Header() {
           {/* Mobile Categories List */}
           <div className="space-y-2">
             <span className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              Print Categories
+              {t('header.printCategories')}
             </span>
             <div className="space-y-1">
               <Link
@@ -310,9 +319,14 @@ export default function Header() {
               >
                 <div className="flex items-center gap-2.5">
                   <Grid className="w-4 h-4 text-[#0082CA] group-hover:text-white" />
-                  <span>All Products</span>
+                  <span>{t('header.allProducts')}</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-white" />
+              </Link>
+              
+              <Link href="/track-order" className="flex items-center gap-2 p-3 text-slate-700 hover:bg-slate-50 rounded font-semibold text-sm transition-colors group">
+                <Truck className="w-4 h-4 text-amber-500" />
+                <span>{t('header.trackOrder')}</span>
               </Link>
 
               {Object.values(categoryData).map((cat) => (
@@ -332,11 +346,10 @@ export default function Header() {
           {/* Mobile Support Note */}
           <div className="pt-4 border-t border-slate-200 space-y-2">
             <span className="block text-xs font-bold uppercase tracking-wider text-slate-500">
-              Customer Support
+              {t.has('header.customerSupport') ? t('header.customerSupport') : 'Customer Support'}
             </span>
             <div className="p-3 bg-slate-50 rounded text-xs text-slate-700 font-medium">
-              Standard commercial printing assistance available during normal
-              working hours.
+              {t.has('header.supportNote') ? t('header.supportNote') : 'Standard commercial printing assistance available during normal working hours.'}
             </div>
           </div>
         </div>
