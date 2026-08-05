@@ -1,6 +1,6 @@
-import { categoryData } from '@/config/categoryData.js';
+import { serverApi } from '@/lib/server-api.js';
 
-export default function sitemap() {
+export default async function sitemap() {
   const baseUrl = 'https://maazaprintwala.in';
   
   // Create language alternates helper
@@ -26,33 +26,39 @@ export default function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
-      alternates: getAlternates("/category/all")
+      alternates: getAlternates("/all")
     }
   ];
 
-  // Category Routes
-  Object.values(categoryData).forEach((cat) => {
-    routes.push({
-      url: `${baseUrl}/category/${cat.slug}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-      alternates: getAlternates(`/category/${cat.slug}`)
-    });
+  try {
+    const res = await serverApi.getCategories();
+    const categories = res?.data?.categories || [];
 
-    // Subcategory Routes
-    if (cat.subcategories) {
-      cat.subcategories.forEach((sub) => {
+    // Category Routes
+    categories.forEach((cat) => {
+      routes.push({
+        url: `${baseUrl}/${cat.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+        alternates: getAlternates(`/${cat.slug}`)
+      });
+
+      // Subcategory Routes
+      const allSubs = cat.subcategoryGroups?.flatMap(g => g.items) || [];
+      allSubs.forEach((sub) => {
         routes.push({
-          url: `${baseUrl}/category/${cat.slug}/${sub.slug}`,
+          url: `${baseUrl}/${cat.slug}/${sub.slug}`,
           lastModified: new Date(),
           changeFrequency: 'weekly',
           priority: 0.7,
-          alternates: getAlternates(`/category/${cat.slug}/${sub.slug}`)
+          alternates: getAlternates(`/${cat.slug}/${sub.slug}`)
         });
       });
-    }
-  });
+    });
+  } catch (error) {
+    console.error('Failed to fetch categories for sitemap:', error);
+  }
 
   return routes;
 }

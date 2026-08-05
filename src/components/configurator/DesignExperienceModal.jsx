@@ -16,7 +16,7 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
 
   const handleSelectTemplate = () => {
     onClose();
-    router.push(`/products/${product.slug || product._id}/templates`);
+    router.push(`/products/${product.slug || product._id}/design`);
   };
 
   return (

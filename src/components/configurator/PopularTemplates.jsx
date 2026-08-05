@@ -155,7 +155,7 @@ export default function PopularTemplates({ slug }) {
         {templates.map((template) => (
           <div 
             key={template.id}
-            onClick={() => router.push(`/products/${slug}/templates?templateId=${template.id}`)}
+            onClick={() => router.push(`/products/${slug}/design?templateId=${template.id}`)}
             className="group cursor-pointer rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[280px] min-w-[280px] sm:min-w-[300px] snap-start"
           >
             {/* Image Container */}

@@ -6,12 +6,12 @@ import { Link } from '@/i18n/routing.js';
 import { Search, ChevronRight } from 'lucide-react';
 
 const PRINTING_NEEDS = [
-  { name: 'Marketing Events', icon: '🎪', link: '/category/all?need=marketing' },
-  { name: 'Office Stationery', icon: '📎', link: '/category/all?need=office' },
-  { name: 'Product Packaging', icon: '📦', link: '/category/all?need=packaging' },
-  { name: 'Restaurant Menus', icon: '🍔', link: '/category/all?need=restaurant' },
-  { name: 'Corporate Gifting', icon: '🎁', link: '/category/all?need=corporate' },
-  { name: 'Wedding Invites', icon: '💌', link: '/category/all?need=wedding' },
+  { name: 'Marketing Events', icon: '🎪', link: '/all?need=marketing' },
+  { name: 'Office Stationery', icon: '📎', link: '/all?need=office' },
+  { name: 'Product Packaging', icon: '📦', link: '/all?need=packaging' },
+  { name: 'Restaurant Menus', icon: '🍔', link: '/all?need=restaurant' },
+  { name: 'Corporate Gifting', icon: '🎁', link: '/all?need=corporate' },
+  { name: 'Wedding Invites', icon: '💌', link: '/all?need=wedding' },
 ];
 
 const POPULAR_SEARCHES = [
@@ -58,7 +58,7 @@ export default function DiscoverySections() {
             
             <div className="flex flex-wrap gap-2">
               {POPULAR_SEARCHES.map((term, i) => (
-                <Link key={i} href={`/category/all?search=${encodeURIComponent(term)}`}>
+                <Link key={i} href={`/all?search=${encodeURIComponent(term)}`}>
                   <motion.div 
                     whileHover={{ scale: 1.05 }}
                     className="px-4 py-2 bg-slate-100 rounded-full text-xs font-semibold text-slate-600 hover:bg-[#0082CA] hover:text-white transition-colors cursor-pointer flex items-center gap-1 group"

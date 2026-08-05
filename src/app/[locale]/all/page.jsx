@@ -164,7 +164,7 @@ function CatalogueContent() {
     const params = new URLSearchParams(searchParams.toString());
     if (slugOrId) params.set('category', slugOrId);
     else params.delete('category');
-    router.push(`/category/all?${params.toString()}`);
+    router.push(`/all?${params.toString()}`);
   };
 
   const clearAllFilters = () => {
@@ -172,7 +172,7 @@ function CatalogueContent() {
     if (searchTerm) {
       const params = new URLSearchParams(searchParams.toString());
       params.delete('search');
-      router.push(`/category/all?${params.toString()}`);
+      router.push(`/all?${params.toString()}`);
     }
   };
 
@@ -191,7 +191,7 @@ function CatalogueContent() {
           {/* Banner Image */}
           <img 
             src={activeCatObj?.image || '/images/all_products_banner.png'} 
-            alt={activeCatObj?.name || 'Category'} 
+            alt={activeCatObj?.name || 'category'} 
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
@@ -202,7 +202,7 @@ function CatalogueContent() {
             <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Active:</span>
             {searchTerm && (
               <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 border border-indigo-100">
-                "{searchTerm}" <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => { const p = new URLSearchParams(searchParams); p.delete('search'); router.push(`/category/all?${p.toString()}`) }}/>
+                "{searchTerm}" <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => { const p = new URLSearchParams(searchParams); p.delete('search'); router.push(`/all?${p.toString()}`) }}/>
               </span>
             )}
             <button onClick={clearAllFilters} className="text-xs font-bold text-slate-500 hover:text-red-500 transition-colors">Clear All</button>

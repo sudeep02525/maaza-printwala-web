@@ -28,7 +28,7 @@ export default function HeroBanner() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-2 relative block rounded-lg overflow-hidden group aspect-[2/1] lg:aspect-auto h-[250px] sm:h-[350px] lg:h-[420px]"
             >
-              <Link href="/category/all" className="relative w-full h-full block">
+              <Link href="/all" className="relative w-full h-full block">
                 <Image 
                   src={heroBannerMain} 
                   alt="Main Promotion" 
@@ -59,7 +59,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/category/corporate-gifts" className="relative w-full h-full block">
+                <Link href="/corporate-gifts" className="relative w-full h-full block">
                   <Image 
                     src={corpGiftingBanner} 
                     alt="Corporate Gifting" 
@@ -86,7 +86,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/category/business-cards" className="relative w-full h-full block">
+                <Link href="/business-cards" className="relative w-full h-full block">
                   <Image 
                     src={visitingCardsBanner} 
                     alt="Business Cards" 

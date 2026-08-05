@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils.js';
 
 export default function Breadcrumbs({ items, className }) {
   return (
-    <nav aria-label="Breadcrumb" className={cn('flex items-center text-xs font-semibold text-slate-500 space-x-1.5 overflow-x-auto py-1', className)}>
-      <Link href="/" className="hover:text-slate-900 flex items-center gap-1 shrink-0 transition-colors">
-        <span>Home</span>
+    <nav aria-label="Breadcrumb" className={cn('flex items-center text-sm font-medium text-slate-500 space-x-2 overflow-x-auto py-1 mb-4', className)}>
+      <Link href="/" className="hover:text-slate-900 flex items-center shrink-0 transition-colors">
+        Home
       </Link>
       {items.map((item, idx) => (
         <React.Fragment key={idx}>

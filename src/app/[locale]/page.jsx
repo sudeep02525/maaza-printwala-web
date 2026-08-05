@@ -85,7 +85,7 @@ const SectionHeader = ({ title, linkText, subtitle, tButtons }) => {
         {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
       </div>
       {text && (
-        <Link href="/category/all" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
+        <Link href="/all" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
           {text} <ChevronRight className="w-4 h-4" />
         </Link>
       )}
@@ -173,7 +173,7 @@ export default async function HomePage({ params }) {
           <div className="flex flex-wrap gap-3">
             {getPopularSearches(locale).map((search, i) => (
               <FadeIn key={i} delay={i * 0.05} y={10}>
-                <Link href={`/category/all?search=${encodeURIComponent(search)}`} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm rounded-full hover:border-[#0082CA] hover:text-[#0082CA] hover:shadow-sm transition-all block">
+                <Link href={`/all?search=${encodeURIComponent(search)}`} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm rounded-full hover:border-[#0082CA] hover:text-[#0082CA] hover:shadow-sm transition-all block">
                   <Search className="w-3 h-3 inline-block mr-1.5 -mt-0.5" />
                   {search}
                 </Link>

@@ -68,7 +68,7 @@ export default function CartPage() {
             </h1>
           </div>
           <Link
-            href="/category/all"
+            href="/all"
             className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#0082CA] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
@@ -100,7 +100,7 @@ export default function CartPage() {
                 Ready to prepare custom commercial printing? Explore our product catalogue and configure your specifications.
               </p>
             </div>
-            <Link href="/category/all">
+            <Link href="/all">
               <Button variant="primary" size="lg" className="px-8 py-3.5">
                 <span>Explore Products</span>
                 <ArrowRight className="w-4 h-4" />

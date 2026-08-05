@@ -37,7 +37,7 @@ export default function VisualCategories() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <Link href="/category/all" className="group flex flex-col gap-3">
+                <Link href="/all" className="group flex flex-col gap-3">
                   <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden shadow-sm border border-slate-200 relative">
                     <img src={item.img} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
                   </div>
@@ -65,7 +65,7 @@ export default function VisualCategories() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <Link href="/category/all" className="group flex flex-col gap-3">
+                <Link href="/all" className="group flex flex-col gap-3">
                   <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden shadow-sm border border-slate-200 relative">
                     <img src={item.img} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
                   </div>

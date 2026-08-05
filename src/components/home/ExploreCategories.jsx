@@ -65,7 +65,7 @@ export default function ExploreCategories({ categories = [] }) {
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     className="snap-start shrink-0 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] md:w-[calc(20%-1.2rem)]"
                   >
-                    <Link href={`/category/${cat.slug || cat._id}`} className="group flex flex-col items-center gap-4 w-full">
+                    <Link href={`/${cat.slug || cat._id}`} className="group flex flex-col items-center gap-4 w-full">
                       <div className="w-full aspect-square max-w-[280px] rounded-full border border-slate-200 overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
                         <img src={displayImage} alt={cat.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                       </div>

@@ -13,8 +13,9 @@ import SchemaConfigurator from '@/components/configurator/SchemaConfigurator.jsx
 import DesignExperienceModal from '@/components/configurator/DesignExperienceModal.jsx';
 import DesignReadySummary from '@/components/configurator/DesignReadySummary.jsx';
 import PopularTemplates from '@/components/configurator/PopularTemplates.jsx';
+import RecentlyViewedProducts from '@/components/products/RecentlyViewedProducts.jsx';
 
-function ProductDetailContent({ slug }) {
+export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCategoryName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { setProductContext, designReadyState, quantity, setQuantity, priceData, isCalculating } = useConfiguratorStore();
@@ -49,13 +50,34 @@ function ProductDetailContent({ slug }) {
     }
     return mockUnit.toFixed(2);
   };
+
+  const getDisplayQuantity = () => {
+    return priceData?.quantity || quantity;
+  };
+
+  // Demo fallback to fix missing category in DB
+  const demoProductToCategory = {
+    'premium-matte-visiting-card-30': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-standard-business-cards': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-glossy-visiting-card-11': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-spot-uv-visiting-card-2': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-gold-foil-visiting-card-23': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-textured-visiting-card-5': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-velvet-touch-visiting-card-24': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-transparent-visiting-card-6': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-square-visiting-card-7': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-rounded-corners-visiting-card-8': { slug: 'visiting-cards', name: 'Visiting Cards' },
+    'premium-die-cut-visiting-card-9': { slug: 'visiting-cards', name: 'Visiting Cards' },
+  };
+
   const productTranslations = {
     'Premium Matte Visiting Card 30': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 30', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 30' },
     'Premium Matte Visiting Card 10': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 10', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 10' },
     'Premium Textured Visiting Card 15': { hi: 'प्रीमियम टेक्सचर्ड विजिटिंग कार्ड 15', mr: 'प्रीमियम टेक्स्चर्ड व्हिजिटिंग कार्ड 15' },
     'Premium Matte Visiting Card 20': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 20', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 20' },
     'Premium Die-Cut Visiting Card 29': { hi: 'प्रीमियम डाई-कट विजिटिंग कार्ड 29', mr: 'प्रीमियम डाय-कट व्हिजिटिंग कार्ड 29' },
-    'Standard Visiting Cards': { hi: 'स्टैंडर्ड विजिटिंग कार्ड्स', mr: 'स्टँडर्ड व्हिजिटिंग कार्ड्स' }
+    'Standard Visiting Cards': { hi: 'स्टैंडर्ड विजिटिंग कार्ड्स', mr: 'स्टँडर्ड व्हिजिटिंग कार्ड्स' },
+    'Premium Standard Business Cards': { en: 'Standard Visiting Cards', hi: 'स्टैंडर्ड विजिटिंग कार्ड्स', mr: 'स्टँडर्ड व्हिजिटिंग कार्ड्स' }
   };
   const getProductName = (name) => {
     if (!name) return 'Premium Print Item';
@@ -70,6 +92,8 @@ function ProductDetailContent({ slug }) {
   });
 
   const product = prodData?.data?.product || null;
+
+  const actualCategory = product?.category || demoProductToCategory[slug];
 
   // 2. Fetch Schema
   const { data: schemaData, isLoading: schemaLoading } = useQuery({
@@ -97,6 +121,39 @@ function ProductDetailContent({ slug }) {
     }
   }, [product, schema, setProductContext]);
 
+  // Save to recently viewed
+  useEffect(() => {
+    if (product) {
+      try {
+        const stored = localStorage.getItem('recentlyViewedProducts');
+        let viewed = stored ? JSON.parse(stored) : [];
+        
+        // Remove if already exists
+        viewed = viewed.filter(p => p._id !== product._id);
+        
+        // Create a lightweight version of the product to save storage space
+        const lightProduct = {
+          _id: product._id,
+          slug: product.slug,
+          name: product.name,
+          category: product.category,
+          basePrice: product.basePrice,
+          images: product.images?.slice(0, 1) || []
+        };
+        
+        // Add to front
+        viewed.unshift(lightProduct);
+        
+        // Keep only top 8
+        if (viewed.length > 8) viewed = viewed.slice(0, 8);
+        
+        localStorage.setItem('recentlyViewedProducts', JSON.stringify(viewed));
+      } catch (e) {
+        console.error("Error saving recently viewed", e);
+      }
+    }
+  }, [product]);
+
   if (prodLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-4">
@@ -112,7 +169,7 @@ function ProductDetailContent({ slug }) {
         <h1 className="text-2xl font-bold text-slate-900">Product Not Found</h1>
         <p className="text-sm text-slate-500">We couldn&apos;t locate the requested product in our catalogue.</p>
         <Link
-          href="/category/all"
+          href="/all"
           className="inline-block px-6 py-2.5 bg-[#0082CA] text-white font-bold text-xs rounded-lg shadow-xs hover:bg-[#0068A2]"
         >
           Return to Catalogue
@@ -130,7 +187,9 @@ function ProductDetailContent({ slug }) {
           Home
         </Link>
         <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
-        <span className="shrink-0 cursor-pointer hover:text-slate-700 transition-colors">{product.category?.slug ? tCategory(product.category.slug) : (product.category?.name || 'Print Item')}</span>
+        <Link href={`/${actualCategory?.slug || fallbackCategorySlug || 'all'}`} className="shrink-0 hover:text-slate-700 transition-colors">
+          {(actualCategory?.slug || fallbackCategorySlug) ? tCategory(actualCategory?.slug || fallbackCategorySlug) : (actualCategory?.name || fallbackCategoryName || 'Print Item')}
+        </Link>
         <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
         <span className="text-slate-900 shrink-0">{getProductName(product.name)}</span>
       </nav>
@@ -329,6 +388,8 @@ function ProductDetailContent({ slug }) {
       </div>
 
       <PopularTemplates slug={slug} />
+      
+      <RecentlyViewedProducts />
 
     </div>
 

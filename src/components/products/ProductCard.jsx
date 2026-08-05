@@ -63,7 +63,7 @@ export default function ProductCard({ product }) {
           )}
         </div>
 
-        <Link href={`/products/${id}`} className="block w-full h-full" draggable={false}>
+        <Link href={`/${product.category?.slug || 'products'}/${id}`} className="block w-full h-full" draggable={false}>
           {image ? (
             <img
               src={image}
@@ -88,7 +88,7 @@ export default function ProductCard({ product }) {
         </span>
 
         {/* Product Name */}
-        <Link href={`/products/${id}`} draggable={false}>
+        <Link href={`/${product.category?.slug || 'products'}/${id}`} draggable={false}>
           <h3 className="text-[14px] font-bold text-black leading-snug line-clamp-2 hover:text-[#0082CA] transition-colors">
             {name}
           </h3>

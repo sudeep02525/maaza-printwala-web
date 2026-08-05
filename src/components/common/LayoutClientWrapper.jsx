@@ -6,7 +6,7 @@ import Footer from '@/components/common/Footer.jsx';
 
 export default function LayoutClientWrapper({ children }) {
   const pathname = usePathname();
-  const isCustomizer = pathname.includes('/templates');
+  const isCustomizer = pathname.includes('/design');
 
   if (isCustomizer) {
     return <main className="flex-1 h-screen flex flex-col">{children}</main>;

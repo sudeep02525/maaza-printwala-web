@@ -18,7 +18,7 @@ const SectionHeader = ({ title, subtitle, linkText }) => {
         {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
       </div>
       {text && (
-        <Link href="/category/all" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
+        <Link href="/all" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
           {text} <ArrowRight className="w-4 h-4" />
         </Link>
       )}
@@ -75,7 +75,7 @@ export const CorporateSection = ({ products = [] }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent p-8 flex flex-col justify-end">
               <h3 className="text-3xl font-extrabold text-white mb-3">{title}</h3>
               <p className="text-white/80 text-sm mb-6">{desc}</p>
-              <Link href="/category/corporate-gifts" className="w-fit px-6 py-2.5 bg-white text-slate-900 font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
+              <Link href="/corporate-gifts" className="w-fit px-6 py-2.5 bg-white text-slate-900 font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
                 {btn}
               </Link>
             </div>
@@ -107,9 +107,9 @@ export const WeddingSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'सुंदर निमंत्रण, सेव-द-डेट्स, और व्यक्तिगत रिटर्न गिफ़्ट्स।' : locale === 'mr' ? 'सुंदर आमंत्रणे, सेव-द-डेट्स आणि वैयक्तिकृत रिटर्न गिफ्ट्स.' : 'Elegant invitations, save-the-dates, and personalized return gifts.';
   const cards = [
-    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80", link: "/category/business-printing/visiting-cards" },
-    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80", link: "/category/signage/foam-boards" },
-    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80", link: "/category/photo-gifts/personalized-gifts" }
+    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80", link: "/business-printing/visiting-cards" },
+    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80", link: "/signage/foam-boards" },
+    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80", link: "/photo-gifts/personalized-gifts" }
   ];
 
   return (
@@ -149,10 +149,10 @@ export const CustomMerchSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'गर्व के साथ अपना ब्रांड पहनें' : locale === 'mr' ? 'अभिमानाने तुमचा ब्रँड परिधान करा' : 'Wear your brand with pride';
   const merch = [
-    { name: locale === 'hi' ? "पोलो टी-शर्ट" : locale === 'mr' ? "पोलो टी-शर्ट" : "Polo T-Shirts", img: "/images/cat_polo_new_1785478171451.png", link: "/category/custom-apparel/polo-t-shirts" },
-    { name: locale === 'hi' ? "कॉटन टीज़" : locale === 'mr' ? "कॉटन टीज़" : "Cotton Tees", img: "/images/cat_tshirt_new_1785478181285.png", link: "/category/custom-apparel/t-shirts" },
-    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: "/images/cat_mugs_new_1785478141544.png", link: "/category/drinkware/coffee-mugs" },
-    { name: locale === 'hi' ? "इको पैकेजिंग" : locale === 'mr' ? "इको पॅकेजिंग" : "Eco Packaging", img: "/images/cat_packaging_1785433687115.png", link: "/category/packaging" }
+    { name: locale === 'hi' ? "पोलो टी-शर्ट" : locale === 'mr' ? "पोलो टी-शर्ट" : "Polo T-Shirts", img: "/images/cat_polo_new_1785478171451.png", link: "/custom-apparel/polo-t-shirts" },
+    { name: locale === 'hi' ? "कॉटन टीज़" : locale === 'mr' ? "कॉटन टीज़" : "Cotton Tees", img: "/images/cat_tshirt_new_1785478181285.png", link: "/custom-apparel/t-shirts" },
+    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: "/images/cat_mugs_new_1785478141544.png", link: "/drinkware/coffee-mugs" },
+    { name: locale === 'hi' ? "इको पैकेजिंग" : locale === 'mr' ? "इको पॅकेजिंग" : "Eco Packaging", img: "/images/cat_packaging_1785433687115.png", link: "/packaging" }
   ];
 
   return (
@@ -211,7 +211,7 @@ export const TopRatedSection = ({ products = [] }) => {
             <h2 className="text-3xl sm:text-[36px] font-extrabold text-slate-900 tracking-tight mb-2">{tHome('topRated')}</h2>
             <p className="text-base text-slate-500">{sub}</p>
           </div>
-          <Link href="/category/all" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow">
+          <Link href="/all" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow">
             {tButtons('viewAll')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -228,7 +228,7 @@ export const TopRatedSection = ({ products = [] }) => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <Link href={`/products/${p.slug || p._id}`} className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+                <Link href={`/${p.category?.slug || 'products'}/${p.slug || p._id}`} className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
                   <div className="w-full sm:w-40 h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden bg-white relative border border-slate-100 flex items-center justify-center p-2">
                     <img loading="lazy" src={image} className="w-full h-full object-contain" alt={p.name} />
                   </div>

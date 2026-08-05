@@ -20,14 +20,14 @@ import {
   Package,
   Sparkles,
   Truck,
+  TrendingUp,
 } from "lucide-react";
 import { useCartStore } from '@/store/cartStore.js';
 import { useAuthStore } from '@/store/authStore.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import MegaMenu from '../ui/MegaMenu.jsx';
 import Drawer from '../ui/Drawer.jsx';
-import { categoryData } from '@/config/categoryData.js';
-
+import axiosInstance from '@/services/axiosInstance.js';
 const ANNOUNCEMENTS = [
   <div key="1" className="flex items-center gap-1.5 justify-center">
     <Tag className="w-4 h-4 text-amber-400 shrink-0" />
@@ -43,18 +43,51 @@ const ANNOUNCEMENTS = [
   </div>,
 ];
 
+const POPULAR_SEARCHES = [
+  "Visiting Cards",
+  "Flyers",
+  "Custom T-Shirts",
+  "Coffee Mugs",
+  "Letterheads",
+];
+
 export default function Header() {
   const t = useTranslations();
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
 
+  const { data: categories = [] } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/categories');
+      return res.data?.categories || [];
+    }
+  });
+
   const changeLanguage = (nextLocale) => {
     router.replace(pathname, { locale: nextLocale });
   };
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const { data: searchResults = [], isFetching: isSearching } = useQuery({
+    queryKey: ['searchResults', debouncedSearch],
+    queryFn: async () => {
+      if (!debouncedSearch.trim()) return [];
+      const res = await axiosInstance.get(`/products?search=${encodeURIComponent(debouncedSearch.trim())}`);
+      return res.data?.products || [];
+    },
+    enabled: debouncedSearch.trim().length > 0
+  });
   const [isMounted, setIsMounted] = useState(false);
   const { items, fetchCart } = useCartStore();
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -81,20 +114,12 @@ export default function Header() {
     };
   }, [fetchCart]);
 
-  const { data: catData, isLoading: catLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: () => axiosInstance.get("/categories"),
-    retry: false,
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const categories = catData?.data?.categories || [];
   const cartCount = items?.length || 0;
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    router.push(`/category/all?search=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(`/all?search=${encodeURIComponent(searchQuery.trim())}`);
     setIsMobileMenuOpen(false);
   };
 
@@ -160,6 +185,8 @@ export default function Header() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchFocused(true)}
+                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
                 placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-4 pr-12 py-3 bg-white border border-slate-300 focus:border-[#0082CA] rounded-md text-sm text-slate-900 outline-none ring-0 focus:ring-1 focus:ring-[#0082CA] transition-all shadow-none"
               />
@@ -170,6 +197,77 @@ export default function Header() {
               >
                 <Search className="w-5 h-5" />
               </button>
+
+              <AnimatePresence>
+                {isSearchFocused && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 overflow-hidden z-[9999]"
+                  >
+                    {!searchQuery.trim() ? (
+                      <div className="p-1.5">
+                        <div className="flex items-center gap-1.5 mb-1.5 px-2.5 pt-2">
+                          <TrendingUp className="w-3.5 h-3.5 text-slate-400" />
+                          <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Popular Searches</h4>
+                        </div>
+                        <ul className="space-y-0.5">
+                          {POPULAR_SEARCHES.map(term => (
+                            <li key={term}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setSearchQuery(term);
+                                  router.push(`/all?search=${encodeURIComponent(term)}`);
+                                  setIsSearchFocused(false);
+                                }}
+                                className="w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg"
+                              >
+                                <Search className="w-4 h-4 text-slate-400 shrink-0" />
+                                <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term}</span>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <div className="p-1.5">
+                        {isSearching ? (
+                          <div className="p-4 text-center text-[13px] font-medium text-slate-400">Searching...</div>
+                        ) : searchResults.length > 0 ? (
+                          <ul className="space-y-0.5">
+                            {searchResults.slice(0, 5).map(product => (
+                              <li key={product._id}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    router.push(`/${product.category?.slug || 'products'}/${product.slug}`);
+                                    setIsSearchFocused(false);
+                                    setSearchQuery("");
+                                  }}
+                                  className="w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg"
+                                >
+                                  <Search className="w-4 h-4 text-slate-400 shrink-0" />
+                                  <div className="flex flex-col flex-1 overflow-hidden">
+                                    <span className="text-[13px] font-semibold text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{product.name}</span>
+                                    {product.category && <span className="text-[11px] text-slate-400 truncate">{product.category.name}</span>}
+                                  </div>
+                                </button>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <div className="p-4 text-center text-[13px] font-medium text-slate-400">
+                            No products found for "{searchQuery}"
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </form>
 
@@ -213,9 +311,9 @@ export default function Header() {
                 <PhoneCall className="w-4 h-4 text-slate-600" />
               </div>
               <div className="w-[155px]">
-                <p className="font-bold text-slate-900 truncate">{t('header.customerAssistance')}</p>
+                <p className="font-bold text-slate-900 truncate">{t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}</p>
                 <p className="text-[11px] text-slate-500 font-medium truncate">
-                  {t('header.standardBusinessHours')}
+                  {t.has('header.standardBusinessHours') ? t('header.standardBusinessHours') : 'Mon-Sat 10am-7pm'}
                 </p>
               </div>
             </div>
@@ -313,7 +411,7 @@ export default function Header() {
             </span>
             <div className="space-y-1">
               <Link
-                href="/category/all"
+                href="/all"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center justify-between p-3 rounded bg-slate-100 hover:bg-[#0082CA] text-slate-900 hover:text-white font-bold text-sm transition-colors group"
               >
@@ -329,10 +427,10 @@ export default function Header() {
                 <span>{t('header.trackOrder')}</span>
               </Link>
 
-              {Object.values(categoryData).map((cat) => (
+              {categories.map((cat) => (
                 <Link
                   key={cat.slug}
-                  href={`/category/${cat.slug}`}
+                  href={`/${cat.slug}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-between p-3 rounded hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-semibold text-sm transition-colors"
                 >
