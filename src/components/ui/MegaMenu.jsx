@@ -51,51 +51,57 @@ export default function MegaMenu() {
   return (
     <nav className="bg-slate-50 text-slate-800 text-sm border-t border-b border-slate-200/50 relative select-none">
       <div className="max-w-[1550px] mx-auto w-full px-4 md:px-8">
-        {/* DEBUG INFO */}
-        {isError && <div className="p-2 bg-red-100 text-red-600 text-xs">Error: {error?.message}</div>}
-        {isLoading && <div className="p-2 bg-blue-100 text-blue-600 text-xs">Loading categories...</div>}
-        {categories.length === 0 && !isLoading && !isError && <div className="p-2 bg-yellow-100 text-yellow-600 text-xs">Categories array is empty!</div>}
         {/* Category Items */}
         <div className="flex items-center justify-between overflow-x-auto no-scrollbar h-14 w-full">
-          <Link
-            href="/all"
-            onClick={() => setActiveCategory(null)}
-            className={`flex items-center h-full px-2 transition-colors shrink-0 ${
-              activeCategory === 'view-all' || pathname === "/all"
-                ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
-                : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent hover:border-slate-800'
-            }`}
-            onMouseEnter={() => setActiveCategory('view-all')}
-            onMouseLeave={() => setActiveCategory(null)}
-          >
-            <span>{t('navigation.viewAll')}</span>
-          </Link>
-
-          {categories.map((cat) => {
-            const isHovered = activeCategory === cat.slug;
-            const isCurrentPage = pathname.startsWith(`/${cat.slug}`);
-            const isActive = isHovered || isCurrentPage;
-            return (
-              <div
-                key={cat.slug}
-                className="h-full flex items-center shrink-0 group"
-                onMouseEnter={() => setActiveCategory(cat.slug)}
+          {isLoading ? (
+            <div className="flex items-center space-x-6 px-2 w-full">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="h-4 w-24 bg-slate-200/60 animate-pulse rounded"></div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <Link
+                href="/all"
+                onClick={() => setActiveCategory(null)}
+                className={`flex items-center h-full px-2 transition-colors shrink-0 ${
+                  activeCategory === 'view-all' || pathname === "/all"
+                    ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
+                    : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent hover:border-slate-800'
+                }`}
+                onMouseEnter={() => setActiveCategory('view-all')}
                 onMouseLeave={() => setActiveCategory(null)}
               >
-                <Link
-                  href={`/${cat.slug}`}
-                  onClick={() => setActiveCategory(null)}
-                  className={`flex items-center h-full px-2 transition-all ${
-                    isActive
-                      ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
-                      : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent'
-                  }`}
-                >
-                  <span className="whitespace-nowrap">{t.has(`categories.${cat.slug}`) ? t(`categories.${cat.slug}`) : cat.name}</span>
-                </Link>
-              </div>
-            );
-          })}
+                <span>{t('navigation.viewAll')}</span>
+              </Link>
+
+              {categories.map((cat) => {
+                const isHovered = activeCategory === cat.slug;
+                const isCurrentPage = pathname.startsWith(`/${cat.slug}`);
+                const isActive = isHovered || isCurrentPage;
+                return (
+                  <div
+                    key={cat.slug}
+                    className="h-full flex items-center shrink-0 group"
+                    onMouseEnter={() => setActiveCategory(cat.slug)}
+                    onMouseLeave={() => setActiveCategory(null)}
+                  >
+                    <Link
+                      href={`/${cat.slug}`}
+                      onClick={() => setActiveCategory(null)}
+                      className={`flex items-center h-full px-2 transition-all ${
+                        isActive
+                          ? 'text-slate-900 border-b-[3px] border-slate-900 font-bold'
+                          : 'text-slate-700 hover:text-slate-900 border-b-[3px] border-transparent'
+                      }`}
+                    >
+                      <span className="whitespace-nowrap">{t.has(`categories.${cat.slug}`) ? t(`categories.${cat.slug}`) : cat.name}</span>
+                    </Link>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
 
