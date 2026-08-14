@@ -25,5 +25,6 @@ export default function Input({ label, error, helperText, className, id, ...prop
       {error && <p className="text-xs font-semibold text-red-600 mt-1">{error}</p>}
       {helperText && !error && <p className="text-xs text-slate-500 mt-1">{helperText}</p>}
     </div>
+    
   );
 }

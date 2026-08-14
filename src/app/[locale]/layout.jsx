@@ -19,9 +19,6 @@ export async function generateMetadata({ params }) {
       metadataBase: new URL('https://maazaprintwala.in'),
       title: title,
       description: description,
-      icons: {
-        icon: '/logo-maaza.png',
-      },
       openGraph: {
         title: title,
         description: description,

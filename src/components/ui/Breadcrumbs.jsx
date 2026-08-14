@@ -19,7 +19,8 @@ export default function Breadcrumbs({ items, className }) {
           ) : (
             <span className="text-slate-900 font-bold truncate max-w-[200px] sm:max-w-xs">{item.label}</span>
           )}
-        </React.Fragment>
+        </React.Fragment>  
+        
       ))}
     </nav>
   );

@@ -21,8 +21,8 @@ const demoFallbackProducts = {
   'transparent-visiting-cards': 'premium-transparent-visiting-card-6',
   'velvet-touch-visiting-cards': 'premium-velvet-touch-visiting-card-24',
   'pearl-visiting-cards': 'premium-glossy-visiting-card-11',
-  'kraft-visiting-cards': 'premium-textured-visiting-card-5',
-  'diamond-visiting-cards': 'premium-die-cut-visiting-card-9',
+  'kraft-visiting-cards': 'kraft_visiting_card',
+  'diamond-visiting-cards': 'diamond_visiting_card',
 };
 
 const getDirectLink = (catSlug, subSlug) => {
