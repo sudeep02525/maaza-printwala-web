@@ -20,7 +20,7 @@ export default function PromoBanners() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Banner 1 */}
-          <Link href="/all">
+          <Link href="/products">
             <motion.div 
               whileHover={{ y: -8, scale: 1.02 }}
               className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"
@@ -52,7 +52,7 @@ export default function PromoBanners() {
           </Link>
 
           {/* Banner 2 */}
-          <Link href="/all">
+          <Link href="/products">
             <motion.div 
               whileHover={{ y: -8, scale: 1.02 }}
               className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-[#0082CA] to-blue-800 p-8 sm:p-10 shadow-lg hover:shadow-2xl transition-all duration-300"

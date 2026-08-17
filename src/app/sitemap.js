@@ -26,7 +26,7 @@ export default async function sitemap() {
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
-      alternates: getAlternates("/all")
+      alternates: getAlternates("/products")
     }
   ];
 

@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/utils/getImageUrl.js';
 import React from 'react';
 import { Link } from '@/i18n/routing.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -21,34 +22,34 @@ import FadeIn from '@/components/ui/FadeIn.jsx';
 
 // --- MOCK DATA ---
 const SHOP_BY_PRODUCT = [
-  { name: 'Visiting Cards', image: '/images/cat_flyers_brochures_1785433655247.png' },
-  { name: 'Flyers', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Brochure', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Letterhead', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Envelope', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Sticker', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Labels', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Packaging Box', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Mug', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Bottle', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'T-Shirt', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Hoodie', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Visiting Cards', image: getImageUrl('/images/cat_flyers_brochures_1785433655247.png') },
+  { name: 'Flyers', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Brochure', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Letterhead', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Envelope', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Sticker', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Labels', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Packaging Box', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Mug', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Bottle', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'T-Shirt', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Hoodie', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
 ];
 
 const INDUSTRIES = [
-  { name: 'Restaurant', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'School', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Hospital', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Real Estate', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Manufacturing', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Startup', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Restaurant', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'School', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Hospital', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Real Estate', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Manufacturing', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Startup', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
 ];
 
 const OCCASIONS = [
-  { name: 'Wedding', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Festival', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Corporate Events', image: '/images/cat_visiting_cards_1785433645262.png' },
-  { name: 'Exhibition', image: '/images/cat_visiting_cards_1785433645262.png' },
+  { name: 'Wedding', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Festival', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Corporate Events', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
+  { name: 'Exhibition', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
 ];
 
 const BRANDS = ['HP', 'Dell', 'Puma', 'Adidas', 'Samsung', 'Boat', 'Reliance', 'Tata'];
@@ -64,12 +65,12 @@ const getPopularSearches = (locale) => {
 };
 
 const INSTAGRAM_POSTS = [
-  '/images/cat_visiting_cards_1785433645262.png',
-  '/images/cat_visiting_cards_1785433645262.png',
-  '/images/cat_visiting_cards_1785433645262.png',
-  '/images/cat_visiting_cards_1785433645262.png',
-  '/images/cat_visiting_cards_1785433645262.png',
-  '/images/cat_visiting_cards_1785433645262.png',
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
+  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
 ];
 
 
@@ -85,7 +86,7 @@ const SectionHeader = ({ title, linkText, subtitle, tButtons }) => {
         {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
       </div>
       {text && (
-        <Link href="/all" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
+        <Link href="/products" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
           {text} <ChevronRight className="w-4 h-4" />
         </Link>
       )}

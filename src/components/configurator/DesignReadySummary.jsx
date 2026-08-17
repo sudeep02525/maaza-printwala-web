@@ -169,30 +169,84 @@ export default function DesignReadySummary({ product }) {
             </div>
           )}
 
-          {/* Add to Cart CTA */}
+          {/* Quick Order Form */}
+          <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm space-y-4">
+            <h4 className="text-sm font-bold text-slate-800">Delivery Details</h4>
+            <div className="space-y-3">
+              <input type="text" id="qo-name" placeholder="Full Name" className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm outline-none focus:border-[#0082CA]" />
+              <input type="email" id="qo-email" placeholder="Email Address" className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm outline-none focus:border-[#0082CA]" />
+              <input type="tel" id="qo-phone" placeholder="Phone Number" className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm outline-none focus:border-[#0082CA]" />
+              <textarea id="qo-address" placeholder="Delivery Address" rows="2" className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm outline-none focus:border-[#0082CA]"></textarea>
+            </div>
+          </div>
+
+          {/* Direct Order CTA */}
           <div className="space-y-2 pt-2">
             <Button
               variant="primary"
               size="lg"
-              onClick={handleAddToCart}
+              onClick={async () => {
+                const name = document.getElementById('qo-name').value;
+                const email = document.getElementById('qo-email').value;
+                const phone = document.getElementById('qo-phone').value;
+                const address = document.getElementById('qo-address').value;
+                
+                if(!name || !email || !phone || !address) {
+                   setCartError('Please fill all delivery details');
+                   return;
+                }
+
+                setIsAddingToCart(true);
+                setCartError(null);
+
+                const payload = {
+                  productId: product._id,
+                  configuration,
+                  quantity,
+                  customerInfo: { fullName: name, email, phone, address },
+                  artworkRef: designReadyState.type === 'UPLOAD' ? {
+                    fileId: designReadyState.payload.artwork?.fileId || designReadyState.payload.fileId,
+                    fileUrl: designReadyState.payload.artwork?.fileUrl,
+                    originalName: designReadyState.payload.originalName || designReadyState.payload.artwork?.originalName,
+                  } : {}
+                };
+
+                try {
+                  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                  });
+                  const data = await res.json();
+                  if(data.success) {
+                     alert(`Order placed successfully! Order ID: ${data.data.order.orderNumber}`);
+                     window.location.href = '/en/orders'; // redirect to orders page
+                  } else {
+                     setCartError(data.message || 'Order failed');
+                  }
+                } catch(e) {
+                  setCartError('Network error while placing order');
+                }
+                setIsAddingToCart(false);
+              }}
               disabled={isAddingToCart}
-              className="w-full bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-600 shadow-sm text-sm py-4"
+              className="w-full bg-[#0082CA] hover:bg-[#0068A2] focus:ring-[#0082CA] shadow-sm text-sm py-4"
             >
               {isAddingToCart ? (
                 <>
                   <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Verifying with Server...</span>
+                  <span>Placing Order...</span>
                 </>
               ) : (
                 <>
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Add to Shopping Cart</span>
+                  <span>Order Now (COD)</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </Button>
             <p className="text-[10px] text-center text-slate-500 font-medium">
-              * Cart items are saved securely to your session.
+              * By ordering, you agree to our terms and conditions.
             </p>
           </div>
         </div>

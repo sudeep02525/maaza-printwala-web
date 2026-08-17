@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState, useEffect, Suspense, useMemo } from 'react';
 import { Link } from '@/i18n/routing.js';
@@ -38,7 +39,7 @@ function QuickViewModal({ product, onClose }) {
           
           <div className="w-full md:w-1/2 bg-slate-50 aspect-square md:aspect-auto">
             <img 
-              src={product.images?.[0] || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'} 
+              src={getImageUrl(product.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'} 
               alt={product.name} 
               className="w-full h-full object-cover mix-blend-multiply"
             />
@@ -247,7 +248,7 @@ function CatalogueContent() {
 
             {/* Product Grid / List */}
             {!isMounted || prodLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
               </div>
             ) : filteredAndSortedProducts.length === 0 ? (
@@ -286,7 +287,7 @@ function CatalogueContent() {
                         /* LIST VIEW CARD */
                         <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
                           <div className="w-full sm:w-48 aspect-[4/3] rounded-lg overflow-hidden shrink-0 relative">
-                            <img src={prod.images?.[0] || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
+                            <img src={getImageUrl(prod.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
                             {prod.featured && <div className="absolute top-2 left-2 bg-amber-400 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-sm">Top Rated</div>}
                           </div>
                           <div className="flex-1 flex flex-col py-2">

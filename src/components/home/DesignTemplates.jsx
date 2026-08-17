@@ -23,7 +23,7 @@ export default function DesignTemplates() {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Customizable Templates</h2>
             <p className="text-sm text-slate-500 mt-2">Pick a premium template and customize it in our browser editor.</p>
           </div>
-          <Link href="/all" className="hidden sm:flex items-center gap-1 text-[#0082CA] font-bold hover:underline">
+          <Link href="/products" className="hidden sm:flex items-center gap-1 text-[#0082CA] font-bold hover:underline">
             View All Templates <ArrowRight className="w-4 h-4"/>
           </Link>
         </div>

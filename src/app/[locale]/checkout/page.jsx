@@ -82,7 +82,7 @@ export default function CheckoutPage() {
               <h2 className="text-xl font-black text-slate-900">Cart Session Expired</h2>
               <p className="text-xs text-slate-500 font-normal leading-relaxed">We could not initialize a checkout session. Your shopping cart may be empty or your session expired.</p>
             </div>
-            <Link href="/all">
+            <Link href="/products">
               <Button variant="primary" size="md">Browse Catalogue</Button>
             </Link>
           </Card>

@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState, useEffect, Suspense, useMemo, use } from 'react';
 import { Link, useRouter, usePathname } from '@/i18n/routing.js';
@@ -13,6 +14,7 @@ import axiosInstance from '@/services/axiosInstance.js';
 import Breadcrumbs from '@/components/ui/Breadcrumbs.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import Skeleton from '@/components/ui/Skeleton.jsx';
+import PageSkeleton from '@/components/ui/PageSkeleton.jsx';
 // removed categoryData import
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -38,7 +40,7 @@ function QuickViewModal({ product, onClose }) {
           
           <div className="w-full md:w-1/2 bg-slate-50 aspect-square md:aspect-auto">
             <img 
-              src={product.images?.[0] || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'} 
+              src={getImageUrl(product.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'} 
               alt={product.name} 
               className="w-full h-full object-cover mix-blend-multiply"
             />
@@ -136,7 +138,7 @@ function FaqAccordion({ faqs = [] }) {
   );
 }
 
-function CategoryContent() {
+export function CategoryContent({ subSlug }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = useParams();
@@ -221,46 +223,11 @@ function CategoryContent() {
         
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* 1. HERO SECTION */}
-        <div className="mt-6 mb-12 w-full rounded-lg overflow-hidden relative shadow-sm">
-          <img 
-            src={activeCatObj?.banner || '/images/outdoor_banner.png'} 
-            alt={activeCatObj?.name || 'Category'} 
-            className="w-full object-cover aspect-[21/5] max-h-[350px]"
-          />
-        </div>
 
-        {/* 2. SHOP BY SUBCATEGORY GRID */}
-        {activeCatSubs && activeCatSubs.length > 0 && !activeSubcategory && !searchTerm && (
-          <div className="mb-16">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-8">{t('categoryPage.shopBySub')}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-              {activeCatSubs.map((sub, i) => (
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.05 }}
-                  key={sub.slug}
-                  onClick={() => handleSubcategoryClick(sub.slug)}
-                  className="group cursor-pointer flex flex-col bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-xl hover:border-[#0082CA]/30 transition-all duration-300 overflow-hidden"
-                >
-                  <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 relative">
-                    <img src={sub.image || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=400&q=80'} alt={sub.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                  </div>
-                  <div className="p-4 text-center">
-                    <h3 className="font-bold text-slate-900 text-sm md:text-base group-hover:text-[#0082CA] transition-colors truncate">{sub.name}</h3>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* 3. PRODUCT GRID SECTION */}
         <div className="mb-16">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900">
-              {activeSubcategory ? `${activeCatSubs.find(s=>s.slug===activeSubcategory)?.name || 'Products'}` : t('categoryPage.allProducts')}
-            </h2>
+          <div className="flex items-center justify-end mb-8">
             {activeSubcategory && (
               <button onClick={() => handleSubcategoryClick(activeSubcategory)} className="text-sm font-bold text-[#0082CA] hover:underline flex items-center gap-1">
                 {t('categoryPage.viewAll')} {activeCatObj?.name} <X className="w-4 h-4" />
@@ -273,10 +240,6 @@ function CategoryContent() {
             {/* LEFT SIDEBAR: FILTERS */}
             <div className="w-full lg:w-72 shrink-0 space-y-6">
                             <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <div className="flex items-center gap-2 mb-6 text-[#0082CA]">
-                  <SlidersHorizontal className="w-5 h-5" />
-                  <h3 className="font-extrabold text-slate-900 text-lg">Filters</h3>
-                </div>
                 <div className="space-y-2">
                   {[
                     { name: 'Availability', options: ['In Stock', 'Pre-order', 'Out of Stock'] },
@@ -309,40 +272,11 @@ function CategoryContent() {
             {/* RIGHT SIDE: PRODUCTS */}
             <div className="flex-1 min-w-0">
               
-              {/* Toolbar */}
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mb-6 bg-white p-3 px-4 rounded-lg border border-slate-200 shadow-sm">
-                 <p className="text-sm text-slate-600 font-bold">
-                   {t('categoryPage.showing')} <span className="text-[#0082CA]">{filteredAndSortedProducts.length}</span> {t('categoryPage.products')}
-                 </p>
-                 
-                 <div className="flex items-center gap-4">
-                   <div className="flex items-center gap-2 cursor-pointer group relative bg-slate-50 px-3 py-1.5 rounded border border-slate-200">
-                     <span className="text-xs font-bold text-slate-600">{t('filters.sort')}:</span>
-                     <select 
-                       value={sortBy} 
-                       onChange={(e) => setSortBy(e.target.value)}
-                       className="text-sm font-bold text-slate-900 bg-transparent border-none p-0 focus:ring-0 cursor-pointer outline-none"
-                     >
-                       <option value="popular">{t('filters.popularity')}</option>
-                       <option value="price_asc">{t('filters.priceLowHigh')}</option>
-                       <option value="price_desc">{t('filters.priceHighLow')}</option>
-                       <option value="name_asc">{t('filters.alpha')}</option>
-                     </select>
-                   </div>
-                   <div className="flex items-center bg-slate-100 rounded p-1 border border-slate-200">
-                     <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-white shadow-sm text-[#0082CA]' : 'text-slate-400 hover:text-slate-600'}`}>
-                       <LayoutGrid className="w-4 h-4" />
-                     </button>
-                     <button onClick={() => setViewMode('list')} className={`p-1.5 rounded transition-colors ${viewMode === 'list' ? 'bg-white shadow-sm text-[#0082CA]' : 'text-slate-400 hover:text-slate-600'}`}>
-                       <ListIcon className="w-4 h-4" />
-                     </button>
-                   </div>
-                 </div>
-              </div>
+
 
               {/* Product Grid / List */}
               {!isMounted || prodLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
                 </div>
               ) : filteredAndSortedProducts.length === 0 ? (
@@ -365,7 +299,8 @@ function CategoryContent() {
               ) : (
                 <motion.div 
                   layout
-                  className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6" : "flex flex-col gap-4"}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
+                  className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "flex flex-col gap-4"}
                 >
                   <AnimatePresence mode="popLayout">
                     {paginatedProducts.map((prod, index) => (
@@ -381,7 +316,7 @@ function CategoryContent() {
                         ) : (
                           <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
                             <div className="w-full sm:w-48 aspect-[4/3] rounded-lg overflow-hidden shrink-0 relative">
-                              <img src={prod.images?.[0] || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
+                              <img src={getImageUrl(prod.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
                             </div>
                             <div className="flex-1 flex flex-col py-2">
                               <div className="flex justify-between items-start mb-2">
@@ -450,11 +385,7 @@ function CategoryContent() {
 export default function CategoryPage({ params }) {
   const unwrappedParams = use(params);
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#FAFCFF] flex items-center justify-center">
-        <div className="w-12 h-12 border-4 border-[#0082CA]/20 border-t-[#0082CA] rounded-full animate-spin"></div>
-      </div>
-    }>
+    <Suspense fallback={<PageSkeleton />}>
       <CategoryContent key={unwrappedParams?.slug} />
     </Suspense>
   );

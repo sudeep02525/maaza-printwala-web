@@ -28,7 +28,7 @@ export default function HeroBanner() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-2 relative block rounded-lg overflow-hidden group aspect-[2/1] lg:aspect-auto h-[250px] sm:h-[350px] lg:h-[420px]"
             >
-              <Link href="/all" className="relative w-full h-full block">
+              <Link href="/products" className="relative w-full h-full block">
                 <Image 
                   src={heroBannerMain} 
                   alt="Main Promotion" 

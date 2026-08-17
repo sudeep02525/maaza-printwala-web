@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState } from 'react';
 import { Link } from '@/i18n/routing.js';
@@ -47,12 +48,12 @@ export default function ExploreCategories({ categories = [] }) {
             ) : (
               categories.slice(0, 10).map((cat, index) => {
                 const exploreImages = [
-                  '/images/explore_business_cards_1785478383406.png',
-                  '/images/explore_tshirts_1785478392413.png',
-                  '/images/cat_visiting_cards_new_1785478123231.png',
-                  '/images/cat_notebooks_new_1785478132458.png',
-                  '/images/cat_clothing_new_1785478162007.png',
-                  '/images/cat_mugs_new_1785478141544.png'
+                  getImageUrl('/images/explore_business_cards_1785478383406.png'),
+                  getImageUrl('/images/explore_tshirts_1785478392413.png'),
+                  getImageUrl('/images/cat_visiting_cards_new_1785478123231.png'),
+                  getImageUrl('/images/cat_notebooks_new_1785478132458.png'),
+                  getImageUrl('/images/cat_clothing_new_1785478162007.png'),
+                  getImageUrl('/images/cat_mugs_new_1785478141544.png')
                 ];
                 const displayImage = exploreImages[index % exploreImages.length];
 

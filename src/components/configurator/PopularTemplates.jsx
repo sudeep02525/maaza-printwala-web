@@ -156,11 +156,11 @@ export default function PopularTemplates({ slug }) {
           <div 
             key={template.id}
             onClick={() => router.push(`/products/${slug}/design?templateId=${template.id}`)}
-            className="group cursor-pointer rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[280px] min-w-[280px] sm:min-w-[300px] snap-start"
+            className="group cursor-pointer rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[280px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu"
           >
             {/* Image Container */}
             <div className="flex-1 p-4 flex items-center justify-center">
-               <div className="w-full bg-white shadow-sm border border-slate-200 aspect-[1.75/1] flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow">
+               <div className="w-full bg-white shadow-sm border border-slate-200 aspect-[1.75/1] flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow transform-gpu">
                   {template.renderPreview()}
                </div>
             </div>

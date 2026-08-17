@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -39,10 +40,10 @@ export default function RecentlyViewedProducts() {
               transition={{ duration: 0.4 }}
               className="h-full"
             >
-              <Link href={`/${prod.category?.slug || 'products'}/${prod.slug}`} className="block group">
+              <Link href={`/products/${prod.slug}`} className="block group">
                 <div className="w-full aspect-square bg-slate-50 border border-slate-200 rounded-xl overflow-hidden mb-3">
                   <img 
-                    src={prod.images?.[0]?.url || prod.images?.[0] || 'https://via.placeholder.com/400'} 
+                    src={getImageUrl(prod.images?.[0]?.url || prod.images?.[0]) || 'https://via.placeholder.com/400'} 
                     alt={prod.name?.en || prod.name || 'Product'} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />

@@ -1,4 +1,5 @@
 'use client';
+import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useMotionTemplate, AnimatePresence } from 'framer-motion';
@@ -83,7 +84,7 @@ export default function ProductGallery({ product }) {
       >
         {images.length > 0 ? (
           <img
-            src={images[activeIdx]?.url || images[0]?.url}
+            src={getImageUrl(images[activeIdx]?.url || images[0]?.url)}
             alt={images[activeIdx]?.alt || product.name}
             className="w-full h-full object-cover"
           />
@@ -111,7 +112,7 @@ export default function ProductGallery({ product }) {
                 top: springY,
                 x: '-50%',
                 y: '-50%',
-                backgroundImage: `url(${images[activeIdx]?.url || images[0]?.url})`,
+                backgroundImage: `url(${getImageUrl(images[activeIdx]?.url || images[0]?.url)})`,
                 backgroundPosition: bgPosition,
                 backgroundSize: '300%', // 3x zoom
                 backgroundRepeat: 'no-repeat',
