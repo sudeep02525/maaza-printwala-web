@@ -28,38 +28,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MegaMenu from '../ui/MegaMenu.jsx';
 import Drawer from '../ui/Drawer.jsx';
 import axiosInstance from '@/services/axiosInstance.js';
-const POPULAR_SEARCHES = [
-  "Visiting Cards",
-  "Flyers",
-  "Custom T-Shirts",
-  "Coffee Mugs",
-  "Letterheads",
-];
 
-const SEARCH_SUGGESTIONS = [
-  "Visiting Cards",
-  "Premium Visiting Cards",
-  "Die-Cut Visiting Cards",
-  "Matte Visiting Cards",
-  "Glossy Visiting Cards",
-  "Transparent Visiting Cards",
-  "Business Printing",
-  "Flyers",
-  "Custom T-Shirts",
-  "Coffee Mugs",
-  "Letterheads",
-  "Banners",
-  "Stickers",
-  "Labels",
-  "Custom Packaging",
-  "Standees",
-  "ID Cards",
-  "Lanyards",
-  "Notebooks",
-  "Diaries",
-  "Pen Drives",
-  "Corporate Gifts"
-];
 
 export default function Header() {
   const t = useTranslations();
@@ -81,25 +50,61 @@ export default function Header() {
     router.replace(pathname, { locale: nextLocale });
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debounced, setDebounced] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(searchQuery), 300);
-    return () => clearTimeout(timer);
+    const id = setTimeout(() => setDebounced(searchQuery.trim()), 250);
+    return () => clearTimeout(id);
   }, [searchQuery]);
 
-  const { data: searchSuggestions = [], isFetching: isSearching } = useQuery({
-    queryKey: ['searchSuggestions', debouncedSearch],
+  const { data: searchData = {}, isFetching: isSearching } = useQuery({
+    queryKey: ['suggestions', debounced],
     queryFn: async () => {
-      if (debouncedSearch.trim().length < 2) return [];
-      const res = await axiosInstance.get(`/products/suggestions?q=${encodeURIComponent(debouncedSearch.trim())}`);
-      return res?.data?.suggestions || [];
+      const res = await axiosInstance.get(`/search/suggestions?q=${encodeURIComponent(debounced)}`);
+      return res?.data?.data || { products: [], categories: [], keywords: [], popular: [] };
     },
-    enabled: debouncedSearch.trim().length >= 2
+    enabled: debounced.length >= 2 || isSearchFocused,
+    staleTime: 60_000,
+    placeholderData: (prev) => prev,
   });
+
+  const products = searchData.products || [];
+  const suggestionCategories = searchData.categories || [];
+  const keywords = searchData.keywords || [];
+  const popular = searchData.popular || [];
+
+  const flatSuggestions = [
+    ...products.map(p => ({ type: 'product', ...p })),
+    ...suggestionCategories.map(c => ({ type: 'category', ...c })),
+    ...keywords.map(k => ({ type: 'keyword', term: k }))
+  ];
+
+  const goTo = (item) => {
+    if (item.type === 'product') router.push(`/products/${item.slug || item._id}`);
+    else if (item.type === 'category') router.push(`/${item.slug}`);
+    else router.push(`/products?search=${encodeURIComponent(item.term)}`);
+    setSearchQuery('');
+    setActiveIndex(-1);
+    setIsSearchFocused(false);
+  };
+
+  const onSearchKeyDown = (e) => {
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex(i => Math.min(i + 1, flatSuggestions.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex(i => Math.max(i - 1, 0)); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && flatSuggestions[activeIndex]) goTo(flatSuggestions[activeIndex]);
+      else if (searchQuery.trim()) {
+        router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+        setIsSearchFocused(false);
+      }
+    }
+    else if (e.key === 'Escape') setIsSearchFocused(false);
+  };
   const [isMounted, setIsMounted] = useState(false);
   const { items, fetchCart } = useCartStore();
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -183,16 +188,31 @@ export default function Header() {
 
           {/* Real API-Backed Search Bar - Prominent & Wide */}
           <form
-            onSubmit={handleSearchSubmit}
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim()) {
+                router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+                setIsSearchFocused(false);
+              }
+            }}
             className="hidden md:flex flex-1 max-w-3xl mx-6"
           >
             <div className="relative w-full flex items-center">
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setActiveIndex(-1);
+                }}
                 onFocus={() => setIsSearchFocused(true)}
-                onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+                onBlur={() => setIsSearchFocused(false)}
+                onKeyDown={onSearchKeyDown}
+                role="combobox"
+                aria-expanded={isSearchFocused}
+                aria-autocomplete="list"
+                aria-controls="search-listbox"
+                aria-activedescendant={activeIndex >= 0 ? `search-opt-${activeIndex}` : undefined}
                 placeholder={t('header.searchPlaceholder')}
                 className="w-full pl-4 pr-12 py-3 bg-white border border-slate-300 focus:border-[#0082CA] rounded-md text-sm text-slate-900 outline-none ring-0 focus:ring-1 focus:ring-[#0082CA] transition-all shadow-none"
               />
@@ -211,6 +231,7 @@ export default function Header() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.2 }}
+                    onMouseDown={(e) => e.preventDefault()}
                     className="absolute top-full left-0 right-0 mt-1.5 bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 overflow-hidden z-[9999]"
                   >
                     {!searchQuery.trim() ? (
@@ -219,20 +240,16 @@ export default function Header() {
                           <TrendingUp className="w-3.5 h-3.5 text-slate-400" />
                           <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Popular Searches</h4>
                         </div>
-                        <ul className="space-y-0.5">
-                          {POPULAR_SEARCHES.map(term => (
-                            <li key={term}>
+                        <ul id="search-listbox" role="listbox" className="space-y-0.5">
+                          {popular.map((term, i) => (
+                            <li key={term.term} role="option" aria-selected={activeIndex === i} id={`search-opt-${i}`}>
                               <button
                                 type="button"
-                                onClick={() => {
-                                  setSearchQuery(term);
-                                  router.push(`/products?search=${encodeURIComponent(term)}`);
-                                  setIsSearchFocused(false);
-                                }}
-                                className="w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg"
+                                onClick={() => goTo(term)}
+                                className={`w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg ${activeIndex === i ? 'bg-slate-50' : ''}`}
                               >
                                 <Search className="w-4 h-4 text-slate-400 shrink-0" />
-                                <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term}</span>
+                                <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term.term}</span>
                               </button>
                             </li>
                           ))}
@@ -240,39 +257,57 @@ export default function Header() {
                       </div>
                     ) : (
                       <div className="p-1.5">
-                        {isSearching ? (
+                        {isSearching && flatSuggestions.length === 0 ? (
                            <div className="p-4 text-center text-[13px] font-medium text-slate-400">Searching...</div>
-                        ) : searchSuggestions.length === 0 ? (
+                        ) : flatSuggestions.length === 0 ? (
                            <div className="p-4 text-center text-[13px] font-medium text-slate-400">
-                             No products found for "{searchQuery}"
+                             No results found for "{searchQuery}"
                            </div>
                         ) : (
                            <div className="mb-1">
-                             <div className="flex items-center gap-1.5 mb-1.5 px-2.5 pt-2">
-                               <Search className="w-3.5 h-3.5 text-slate-400" />
-                               <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Products</h4>
-                             </div>
-                             <ul className="space-y-0.5">
-                               {searchSuggestions.map((product) => (
-                                 <li key={product._id}>
+                             <ul id="search-listbox" role="listbox" className="space-y-0.5">
+                               {flatSuggestions.map((item, i) => (
+                                 <li key={`${item.type}-${item.term || item.slug}`} role="option" aria-selected={activeIndex === i} id={`search-opt-${i}`}>
                                    <button
                                      type="button"
-                                     onClick={() => {
-                                       setSearchQuery('');
-                                       setIsSearchFocused(false);
-                                       router.push(`/products/${product.slug}`);
-                                     }}
-                                     className="w-full text-left px-2.5 py-2 hover:bg-slate-50 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg"
+                                     onClick={() => goTo(item)}
+                                     className={`w-full text-left px-2.5 py-2 hover:bg-slate-50 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg ${activeIndex === i ? 'bg-slate-50' : ''}`}
                                    >
-
+                                     <div className="flex items-center justify-center w-8 h-8 rounded-md bg-slate-100 shrink-0">
+                                       {item.type === 'product' ? (
+                                          <Package className="w-4 h-4 text-slate-500" />
+                                       ) : item.type === 'category' ? (
+                                          <Grid className="w-4 h-4 text-slate-500" />
+                                       ) : (
+                                          <Search className="w-4 h-4 text-slate-500" />
+                                       )}
+                                     </div>
                                      <div className="flex-1 min-w-0">
-                                       <div className="text-[13px] font-bold text-slate-800 group-hover:text-[#0082CA] truncate transition-colors">{product.name}</div>
-                                       <div className="text-[11px] text-slate-500 font-medium">Starting from ₹{product.basePrice}</div>
+                                       <div className="text-[13px] font-bold text-slate-800 group-hover:text-[#0082CA] truncate transition-colors">
+                                         {item.name || item.term}
+                                       </div>
+                                       {item.type === 'product' && (
+                                         <div className="text-[11px] text-slate-500 font-medium">Starting from ₹{item.startingPrice}</div>
+                                       )}
+                                       {item.type === 'category' && (
+                                         <div className="text-[11px] text-slate-500 font-medium">Category</div>
+                                       )}
                                      </div>
                                    </button>
                                  </li>
                                ))}
                              </ul>
+                             
+                             <button
+                               type="button"
+                               onClick={() => {
+                                 router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+                                 setIsSearchFocused(false);
+                               }}
+                               className="w-full mt-2 text-center text-[12px] font-bold text-[#0082CA] hover:bg-[#0082CA]/5 py-2 rounded-lg transition-colors"
+                             >
+                               View all results for “{searchQuery}”
+                             </button>
                            </div>
                         )}
                       </div>
