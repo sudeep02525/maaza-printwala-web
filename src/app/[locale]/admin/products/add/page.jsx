@@ -32,9 +32,8 @@ export default function AdminAddProduct() {
     // Fetch categories
     axiosInstance.get('/categories')
       .then(res => {
-        const data = res.data;
-        if (data.success) {
-          setCategories(data.data.categories || data.data);
+        if (res.success) {
+          setCategories(res.data?.categories || res.data || []);
         }
       })
       .catch(err => console.error(err));
@@ -75,12 +74,11 @@ export default function AdminAddProduct() {
       const response = await axiosInstance.post('/products', data, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      const result = response.data;
-      if (result.success) {
+      if (response.success) {
         alert('Product created successfully!');
         router.push(`/${locale}/admin/products`);
       } else {
-        alert(result.message || 'Failed to create product');
+        alert(response.message || 'Failed to create product');
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Error creating product');

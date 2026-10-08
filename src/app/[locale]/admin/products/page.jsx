@@ -13,11 +13,10 @@ export default function AdminProducts() {
   const fetchProducts = async () => {
     try {
       const response = await axiosInstance.get('/products');
-      const data = response.data;
-      if (data.success) {
-        setProducts(data.data.products);
+      if (response.success) {
+        setProducts(response.data?.products || []);
       } else {
-        setError(data.message || 'Failed to fetch products');
+        setError(response.message || 'Failed to fetch products');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'An error occurred while fetching products');
@@ -34,11 +33,10 @@ export default function AdminProducts() {
     if (!confirm('Are you sure you want to delete this product?')) return;
     try {
       const response = await axiosInstance.delete(`/products/${id}`);
-      const data = response.data;
-      if (data.success) {
+      if (response.success) {
         fetchProducts(); // Refresh list
       } else {
-        alert(data.message || 'Failed to delete');
+        alert(response.message || 'Failed to delete');
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Error deleting product');
