@@ -364,6 +364,11 @@ function CatalogueContent() {
   );
 }
 
+export const metadata = {
+  title: 'All Products | Maza Printwala',
+  description: 'Explore our complete catalogue of premium printed products. From business cards to large format printing, we have you covered.'
+};
+
 export default function CataloguePage() {
   return (
     <Suspense fallback={

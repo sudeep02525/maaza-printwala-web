@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Header from '@/components/common/Header.jsx';
 import Footer from '@/components/common/Footer.jsx';
+import CookieConsentBanner from '@/components/common/CookieConsentBanner.jsx';
 import { track } from '@/lib/track.js';
 
 export default function LayoutClientWrapper({ children }) {
@@ -23,6 +24,7 @@ export default function LayoutClientWrapper({ children }) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <CookieConsentBanner />
     </>
   );
 }
