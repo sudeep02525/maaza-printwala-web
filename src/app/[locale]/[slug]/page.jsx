@@ -11,6 +11,7 @@ import {
   LayoutGrid, List as ListIcon, Star, Eye, ShoppingCart, ChevronDown, ChevronRight, CheckCircle2, ShieldCheck, Plus, Minus
 } from 'lucide-react';
 import axiosInstance from '@/services/axiosInstance.js';
+import DOMPurify from 'isomorphic-dompurify';
 import Breadcrumbs from '@/components/ui/Breadcrumbs.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import Skeleton from '@/components/ui/Skeleton.jsx';
@@ -359,7 +360,7 @@ export function CategoryContent({ subSlug }) {
             </p>
             <div 
               className="prose prose-slate prose-lg max-w-5xl prose-h2:text-3xl prose-h2:font-extrabold prose-h2:text-slate-900 prose-h2:mb-6 prose-p:text-slate-600 prose-p:leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: activeCatObj.seoContent }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(activeCatObj.seoContent) }}
             />
           </div>
         )}
