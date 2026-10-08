@@ -3,28 +3,19 @@
 import React, { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
 
+import axiosInstance from '@/services/axiosInstance.js';
+
 export default function CustomerOrders() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const locale = useLocale();
 
   useEffect(() => {
-    // In a real app with auth, we'd fetch the user's orders using their token
-    // For now, if we are guest, we might just show a message or fetch from localstorage guest token
-    // Let's attempt to fetch from the API (which uses the cookie or token)
     const fetchOrders = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const headers = {};
-        if (token) headers.Authorization = `Bearer ${token}`;
-
-        // Just hitting the /api/orders endpoint. If unauth, it returns 401.
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders`, {
-          headers
-        });
-        const data = await res.json();
-        if (data.success && data.data.orders) {
-           setOrders(data.data.orders);
+        const res = await axiosInstance.get('/orders');
+        if (res.success && res.data?.orders) {
+           setOrders(res.data.orders);
         }
       } catch(e) {
         console.error(e);

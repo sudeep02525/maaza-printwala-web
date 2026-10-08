@@ -69,7 +69,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
         },
       });
 
-      const artworkMeta = res.data.data.artwork;
+      const artworkMeta = res.data.artwork;
       setUploadedResult(artworkMeta);
       setUploadProgress(100);
 

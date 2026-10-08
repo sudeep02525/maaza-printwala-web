@@ -17,8 +17,8 @@ export const useCheckoutStore = create((set, get) => ({
     set({ isLoading: true, error: null, priceChangedNotice: false });
     try {
       const response = await axiosInstance.get('/checkout/init');
-      const draft = response.data?.data?.draft || null;
-      const priceChanged = response.data?.data?.priceChanged || false;
+      const draft = response.data?.draft || null;
+      const priceChanged = response.data?.priceChanged || false;
 
       // Determine appropriate starting step based on existing draft data
       let step = 1;
@@ -53,7 +53,7 @@ export const useCheckoutStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get(`/checkout/delivery-methods?pinCode=${pinCode}`);
-      const methods = response.data?.data?.deliveryMethods || [];
+      const methods = response.data?.deliveryMethods || [];
       set({ deliveryMethods: methods, isLoading: false });
       return { success: true, methods };
     } catch (err) {
@@ -68,7 +68,7 @@ export const useCheckoutStore = create((set, get) => ({
     try {
       const draftId = get().draft?._id;
       const response = await axiosInstance.patch('/checkout/contact', { ...payload, draftId });
-      const draft = response.data?.data?.draft || null;
+      const draft = response.data?.draft || null;
       set({ draft, isLoading: false, currentStep: 2 });
       return { success: true, draft };
     } catch (err) {
@@ -83,7 +83,7 @@ export const useCheckoutStore = create((set, get) => ({
     try {
       const draftId = get().draft?._id;
       const response = await axiosInstance.patch('/checkout/address', { ...payload, draftId });
-      const draft = response.data?.data?.draft || null;
+      const draft = response.data?.draft || null;
       set({ draft, isLoading: false, currentStep: 3 });
       return { success: true, draft };
     } catch (err) {
@@ -98,7 +98,7 @@ export const useCheckoutStore = create((set, get) => ({
     try {
       const draftId = get().draft?._id;
       const response = await axiosInstance.patch('/checkout/billing', { ...payload, draftId });
-      const draft = response.data?.data?.draft || null;
+      const draft = response.data?.draft || null;
       set({ draft, isLoading: false, currentStep: 4 });
       return { success: true, draft };
     } catch (err) {
@@ -113,7 +113,7 @@ export const useCheckoutStore = create((set, get) => ({
     try {
       const draftId = get().draft?._id;
       const response = await axiosInstance.post('/checkout/delivery-method', { draftId, deliveryRuleId });
-      const draft = response.data?.data?.draft || null;
+      const draft = response.data?.draft || null;
       set({ draft, isLoading: false, currentStep: 5 });
       return { success: true, draft };
     } catch (err) {
@@ -128,7 +128,7 @@ export const useCheckoutStore = create((set, get) => ({
     try {
       const draftId = get().draft?._id;
       const response = await axiosInstance.post('/checkout/prepare-payment', { draftId });
-      const draft = response.data?.data?.draft || null;
+      const draft = response.data?.draft || null;
       set({ draft, isLoading: false });
       return { success: true, draft };
     } catch (err) {

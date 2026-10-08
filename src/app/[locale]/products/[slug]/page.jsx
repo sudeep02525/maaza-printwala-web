@@ -131,8 +131,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
         configuration: configuration
       })
       .then((res) => {
-        if (res.data?.data) {
-          setServerPriceResult(res.data.data, true);
+        if (res?.data) {
+          setServerPriceResult(res.data, true);
         }
       })
       .catch((err) => {

@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing.js';
+import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 export async function generateMetadata({ params }) {
@@ -59,10 +60,13 @@ export default async function RootLayout({ children, params }) {
   }
 
   const messages = await getMessages();
+  const cookieStore = await cookies();
+  const hasConsent = cookieStore.get('cookieConsent')?.value === 'true';
+
   return (
     <html lang={locale}>
       <head>
-        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+        {hasConsent && process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
             n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -75,7 +79,7 @@ export default async function RootLayout({ children, params }) {
           `}</Script>
         )}
 
-        {process.env.NEXT_PUBLIC_GA_ID && (
+        {hasConsent && process.env.NEXT_PUBLIC_GA_ID && (
           <>
             <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
             <Script id="ga" strategy="afterInteractive">{`

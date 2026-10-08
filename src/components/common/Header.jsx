@@ -68,7 +68,7 @@ export default function Header() {
     queryKey: ['suggestions', debounced],
     queryFn: async () => {
       const res = await axiosInstance.get(`/search/suggestions?q=${encodeURIComponent(debounced)}`);
-      return res?.data?.data || { products: [], categories: [], keywords: [], popular: [] };
+      return res?.data || { products: [], categories: [], keywords: [], popular: [] };
     },
     enabled: debounced.length >= 2 || isSearchFocused,
     staleTime: 60_000,
@@ -101,14 +101,20 @@ export default function Header() {
 
   const goTo = (item) => {
     if (item.type === 'product') {
-      commitSearch(item.name);
+      const t = item.name.trim();
+      if (t) {
+        addRecent(t);
+        axiosInstance.post('/search/log', { term: t, originalTerm: t }).catch(() => {});
+        track('Search', { search_string: t });
+      }
       router.push(`/products/${item.slug || item._id}`);
     } else if (item.type === 'category') {
       commitSearch(item.term || item.name);
-      router.push(`/${item.slug}`);
     } else {
       commitSearch(item.term);
     }
+    setSearchQuery('');
+    setIsSearchFocused(false);
   };
 
   const onSearchKeyDown = (e) => {

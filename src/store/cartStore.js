@@ -11,7 +11,7 @@ export const useCartStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.get('/cart');
-      const cart = response.data?.data?.cart || { items: [], cartTotal: 0 };
+      const cart = response.data?.cart || { items: [], cartTotal: 0 };
       set({
         items: cart.items || [],
         cartTotal: cart.cartTotal || 0,
@@ -31,7 +31,7 @@ export const useCartStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.post('/cart/items', payload);
-      const cart = response.data?.data?.cart || { items: [], cartTotal: 0 };
+      const cart = response.data?.cart || { items: [], cartTotal: 0 };
       set({
         items: cart.items || [],
         cartTotal: cart.cartTotal || 0,
@@ -54,7 +54,7 @@ export const useCartStore = create((set, get) => ({
       if (dimensions !== undefined) payload.dimensions = dimensions;
 
       const response = await axiosInstance.patch(`/cart/items/${itemId}`, payload);
-      const cart = response.data?.data?.cart || { items: [], cartTotal: 0 };
+      const cart = response.data?.cart || { items: [], cartTotal: 0 };
       set({
         items: cart.items || [],
         cartTotal: cart.cartTotal || 0,
@@ -72,7 +72,7 @@ export const useCartStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.delete(`/cart/items/${itemId}`);
-      const cart = response.data?.data?.cart || { items: [], cartTotal: 0 };
+      const cart = response.data?.cart || { items: [], cartTotal: 0 };
       set({
         items: cart.items || [],
         cartTotal: cart.cartTotal || 0,
@@ -90,7 +90,7 @@ export const useCartStore = create((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await axiosInstance.delete('/cart');
-      const cart = response.data?.data?.cart || { items: [], cartTotal: 0 };
+      const cart = response.data?.cart || { items: [], cartTotal: 0 };
       set({
         items: cart.items || [],
         cartTotal: cart.cartTotal || 0,
