@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
+import axiosInstance from '../../../../services/axiosInstance.js';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -18,30 +19,23 @@ export default function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axiosInstance.post('/auth/login', { email, password });
+      const data = response.data;
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
+      if (data.success) {
         if (data.data.user.role !== 'ADMIN') {
           setError('Access denied. Admin role required.');
           setIsLoading(false);
           return;
         }
-        localStorage.setItem('admin_token', data.data.token);
+        localStorage.setItem('admin_token', data.data.accessToken);
         localStorage.setItem('admin_user', JSON.stringify(data.data.user));
         router.push(`/${locale}/admin/dashboard`);
       } else {
         setError(data.message || 'Login failed');
       }
     } catch (err) {
-      setError('An error occurred during login');
+      setError(err.response?.data?.message || 'An error occurred during login');
     } finally {
       setIsLoading(false);
     }

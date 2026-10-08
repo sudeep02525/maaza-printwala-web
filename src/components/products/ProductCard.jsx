@@ -41,8 +41,9 @@ export default function ProductCard({ product }) {
   
   // Pricing logic
   const currentPrice = product.basePrice || 999;
-  const oldPrice = Math.round(currentPrice * 1.5);
-  const discountPercent = Math.round(((oldPrice - currentPrice) / oldPrice) * 100);
+  const oldPrice = product.mrp || null;
+  const hasDiscount = oldPrice && oldPrice > currentPrice;
+  const discountPercent = hasDiscount ? Math.round(((oldPrice - currentPrice) / oldPrice) * 100) : 0;
   
   const image = product.images?.[0]?.url || product.images?.[0];
 
@@ -52,7 +53,7 @@ export default function ProductCard({ product }) {
       <div className="relative aspect-[9/10] bg-[#e6e6e6] overflow-hidden rounded-md">
         {/* Sale Badge */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
-          {discountPercent > 0 && (
+          {hasDiscount && discountPercent > 0 && (
             <div className="bg-rose-500 text-white px-3 py-1 text-xs font-medium capitalize tracking-wide rounded-md shadow-sm">
               {tProd('sale')} <span className="font-extrabold ml-0.5">-{discountPercent}%</span>
             </div>
@@ -115,9 +116,11 @@ export default function ProductCard({ product }) {
             <span className="bg-slate-900 text-white text-[13px] font-bold px-2.5 py-1 rounded shadow-sm">
               ₹{currentPrice.toFixed(2)}
             </span>
-            <span className="text-[11px] text-gray-400 line-through">
-              ₹{oldPrice.toFixed(2)}
-            </span>
+            {hasDiscount && (
+              <span className="text-[11px] text-gray-400 line-through">
+                ₹{oldPrice.toFixed(2)}
+              </span>
+            )}
             <span className="text-[11px] font-bold text-black ml-0.5">
               {locale === 'hi' ? 'कर सहित' : locale === 'mr' ? 'कर समाविष्ट' : 'Incl. VAT'}
             </span>

@@ -18,7 +18,8 @@ import RecentlyViewedProducts from '@/components/products/RecentlyViewedProducts
 export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCategoryName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { setProductContext, designReadyState, quantity, setQuantity, priceData, isCalculating } = useConfiguratorStore();
+  const { setProductContext, designReadyState, quantity, updateQuantity, priceResult, configuration, setServerPriceResult } = useConfiguratorStore();
+  const [isCalculating, setIsCalculating] = useState(false);
   const tCategory = useTranslations('categories');
   const locale = useLocale();
 
@@ -39,20 +40,20 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   const standardQuantities = [100, 200, 300, 400, 500, 1000, 1500, 2000, 3000, 5000];
 
   const getDisplayUnitPrice = (q) => {
-    if (quantity === q && priceData?.unitPrice) return priceData.unitPrice.toFixed(2);
-    if (!priceData?.unitPrice) return "2.00";
+    if (quantity === q && priceResult?.unitPrice) return priceResult.unitPrice.toFixed(2);
+    if (!priceResult?.unitPrice) return "2.00";
     const ratio = q / quantity;
-    let mockUnit = priceData.unitPrice;
+    let mockUnit = priceResult.unitPrice;
     if (q > quantity) {
-        mockUnit = priceData.unitPrice * Math.pow(0.95, Math.log2(ratio));
+        mockUnit = priceResult.unitPrice * Math.pow(0.95, Math.log2(ratio));
     } else if (q < quantity) {
-        mockUnit = priceData.unitPrice * Math.pow(1.05, Math.log2(1/ratio));
+        mockUnit = priceResult.unitPrice * Math.pow(1.05, Math.log2(1/ratio));
     }
     return mockUnit.toFixed(2);
   };
 
   const getDisplayQuantity = () => {
-    return priceData?.quantity || quantity;
+    return priceResult?.quantity || quantity;
   };
 
   // Demo fallback to fix missing category in DB
@@ -120,6 +121,28 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
       setProductContext(product.slug || product._id, product._id, defaultQty, defaultConfig);
     }
   }, [product, schema, setProductContext]);
+
+  // Fetch real price from server when config changes
+  useEffect(() => {
+    if (product?._id && configuration && Object.keys(configuration).length > 0) {
+      setIsCalculating(true);
+      axiosInstance.post(`/products/${product._id}/price`, {
+        quantity: quantity,
+        configuration: configuration
+      })
+      .then((res) => {
+        if (res.data?.data) {
+          setServerPriceResult(res.data.data, true);
+        }
+      })
+      .catch((err) => {
+        console.error('Failed to calculate price', err);
+      })
+      .finally(() => {
+        setIsCalculating(false);
+      });
+    }
+  }, [product?._id, quantity, configuration, setServerPriceResult]);
 
   // Save to recently viewed
   useEffect(() => {
@@ -286,10 +309,18 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           {/* Pricing Section */}
           <div className="space-y-1">
             <div className="flex items-center text-[28px] font-bold text-black">
-              ₹{(priceData?.totalPrice || 200).toFixed(2)}
+              {isCalculating ? (
+                <span className="h-8 w-24 bg-slate-200 rounded animate-pulse block"></span>
+              ) : (
+                `₹${(priceResult?.totalPrice || 200).toFixed(2)}`
+              )}
             </div>
-            <div className="text-[15px] text-slate-500">
-              ₹{priceData?.unitPrice?.toFixed(2) || '2.00'} each / {quantity} units
+            <div className="text-[15px] text-slate-500 flex items-center h-5">
+              {isCalculating ? (
+                <span className="h-4 w-32 bg-slate-200 rounded animate-pulse block"></span>
+              ) : (
+                `₹${priceResult?.unitPrice?.toFixed(2) || '2.00'} each / ${quantity} units`
+              )}
             </div>
           </div>
 
@@ -358,7 +389,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                   onClick={() => setIsOpen(!isOpen)}
                   className="w-full bg-white border border-slate-400 rounded-md px-3 py-2.5 flex items-center justify-between focus:outline-none focus:border-black cursor-pointer text-[15px] font-bold text-black"
                 >
-                  <span>{quantity.toLocaleString('en-IN')} (₹{priceData?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
+                  <span>{quantity.toLocaleString('en-IN')} (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
                   <ChevronDown className={`w-5 h-5 text-black transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2.5} />
                 </button>
                 
@@ -370,7 +401,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                         <div
                           key={q}
                           onClick={() => {
-                            setQuantity(q);
+                            updateQuantity(q);
                             setIsOpen(false);
                           }}
                           className={`px-3 py-2.5 cursor-pointer flex items-center justify-between text-[15px] font-medium mx-1.5 my-1 rounded-md transition-colors ${

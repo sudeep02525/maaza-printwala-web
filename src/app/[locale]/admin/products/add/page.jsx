@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
+import axiosInstance from '../../../../../../services/axiosInstance.js';
 
 export default function AdminAddProduct() {
   const router = useRouter();
@@ -29,9 +30,9 @@ export default function AdminAddProduct() {
 
   useEffect(() => {
     // Fetch categories
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`)
-      .then(res => res.json())
-      .then(data => {
+    axiosInstance.get('/categories')
+      .then(res => {
+        const data = res.data;
         if (data.success) {
           setCategories(data.data.categories || data.data);
         }
@@ -71,15 +72,10 @@ export default function AdminAddProduct() {
     }
 
     try {
-      const token = localStorage.getItem('admin_token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        body: data
+      const response = await axiosInstance.post('/products', data, {
+        headers: { 'Content-Type': 'multipart/form-data' }
       });
-      const result = await response.json();
+      const result = response.data;
       if (result.success) {
         alert('Product created successfully!');
         router.push(`/${locale}/admin/products`);
@@ -87,7 +83,7 @@ export default function AdminAddProduct() {
         alert(result.message || 'Failed to create product');
       }
     } catch (err) {
-      alert('Error creating product');
+      alert(err.response?.data?.message || 'Error creating product');
     } finally {
       setIsLoading(false);
     }

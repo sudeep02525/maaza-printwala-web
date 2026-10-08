@@ -28,21 +28,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MegaMenu from '../ui/MegaMenu.jsx';
 import Drawer from '../ui/Drawer.jsx';
 import axiosInstance from '@/services/axiosInstance.js';
-const ANNOUNCEMENTS = [
-  <div key="1" className="flex items-center gap-1.5 justify-center">
-    <Tag className="w-4 h-4 text-amber-400 shrink-0" />
-    <span>Use code PRINT20 for 20% off on your first Corporate Order</span>
-  </div>,
-  <div key="2" className="flex items-center gap-1.5 justify-center">
-    <Package className="w-4 h-4 text-amber-400 shrink-0" />
-    <span>Free Shipping on all orders above ₹2000!</span>
-  </div>,
-  <div key="3" className="flex items-center gap-1.5 justify-center">
-    <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-    <span>New: Premium Gold Foiled Business Cards now available</span>
-  </div>,
-];
-
 const POPULAR_SEARCHES = [
   "Visiting Cards",
   "Flyers",
@@ -118,16 +103,11 @@ export default function Header() {
   const [isMounted, setIsMounted] = useState(false);
   const { items, fetchCart } = useCartStore();
   const { user, isAuthenticated, logout } = useAuthStore();
-
-  const [announcementIdx, setAnnouncementIdx] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     fetchCart();
-    const interval = setInterval(() => {
-      setAnnouncementIdx((prev) => (prev + 1) % ANNOUNCEMENTS.length);
-    }, 4000);
     
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
@@ -136,7 +116,6 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     
     return () => {
-      clearInterval(interval);
       window.removeEventListener("scroll", handleScroll);
     };
   }, [fetchCart]);

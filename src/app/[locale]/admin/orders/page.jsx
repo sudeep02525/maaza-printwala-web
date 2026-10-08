@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import axiosInstance from '../../../../../services/axiosInstance.js';
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -9,20 +10,15 @@ export default function AdminOrders() {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/orders`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
+      const response = await axiosInstance.get('/admin/orders');
+      const data = response.data;
       if (data.success) {
         setOrders(data.data.orders);
       } else {
         setError(data.message || 'Failed to fetch orders');
       }
     } catch (err) {
-      setError('An error occurred while fetching orders');
+      setError(err.response?.data?.message || 'An error occurred while fetching orders');
     } finally {
       setIsLoading(false);
     }
@@ -34,23 +30,15 @@ export default function AdminOrders() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const token = localStorage.getItem('admin_token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/orders/${id}/status`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({ status: newStatus })
-      });
-      const data = await response.json();
+      const response = await axiosInstance.patch(`/admin/orders/${id}/status`, { status: newStatus });
+      const data = response.data;
       if (data.success) {
         fetchOrders(); // Refresh list
       } else {
         alert(data.message || 'Failed to update status');
       }
     } catch (err) {
-      alert('Error updating status');
+      alert(err.response?.data?.message || 'Error updating status');
     }
   };
 

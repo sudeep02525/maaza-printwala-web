@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from '@/i18n/routing.js';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import axiosInstance from '../../../../../services/axiosInstance.js';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -11,15 +12,15 @@ export default function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products`);
-      const data = await response.json();
+      const response = await axiosInstance.get('/products');
+      const data = response.data;
       if (data.success) {
         setProducts(data.data.products);
       } else {
         setError(data.message || 'Failed to fetch products');
       }
     } catch (err) {
-      setError('An error occurred while fetching products');
+      setError(err.response?.data?.message || 'An error occurred while fetching products');
     } finally {
       setIsLoading(false);
     }
@@ -32,21 +33,15 @@ export default function AdminProducts() {
   const handleDelete = async (id) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
     try {
-      const token = localStorage.getItem('admin_token');
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/products/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      const data = await response.json();
+      const response = await axiosInstance.delete(`/products/${id}`);
+      const data = response.data;
       if (data.success) {
         fetchProducts(); // Refresh list
       } else {
         alert(data.message || 'Failed to delete');
       }
     } catch (err) {
-      alert('Error deleting product');
+      alert(err.response?.data?.message || 'Error deleting product');
     }
   };
 
