@@ -28,6 +28,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MegaMenu from '../ui/MegaMenu.jsx';
 import Drawer from '../ui/Drawer.jsx';
 import axiosInstance from '@/services/axiosInstance.js';
+import { useRecentSearches } from '@/hooks/useRecentSearches.js';
+import { Clock } from 'lucide-react';
+import { track } from '@/lib/track.js';
 
 
 export default function Header() {
@@ -83,13 +86,29 @@ export default function Header() {
     ...keywords.map(k => ({ type: 'keyword', term: k }))
   ];
 
-  const goTo = (item) => {
-    if (item.type === 'product') router.push(`/products/${item.slug || item._id}`);
-    else if (item.type === 'category') router.push(`/${item.slug}`);
-    else router.push(`/products?search=${encodeURIComponent(item.term)}`);
+  const { recent, add: addRecent, clear: clearRecent, remove: removeRecent } = useRecentSearches();
+
+  const commitSearch = (term) => {
+    const t = (term || '').trim();
+    if (!t) return;
+    addRecent(t);
+    axiosInstance.post('/search/log', { term: t }).catch(() => {});
+    track('Search', { search_string: t });
+    router.push(`/products?search=${encodeURIComponent(t)}`);
     setSearchQuery('');
-    setActiveIndex(-1);
     setIsSearchFocused(false);
+  };
+
+  const goTo = (item) => {
+    if (item.type === 'product') {
+      commitSearch(item.name);
+      router.push(`/products/${item.slug || item._id}`);
+    } else if (item.type === 'category') {
+      commitSearch(item.term || item.name);
+      router.push(`/${item.slug}`);
+    } else {
+      commitSearch(item.term);
+    }
   };
 
   const onSearchKeyDown = (e) => {
@@ -191,8 +210,7 @@ export default function Header() {
             onSubmit={(e) => {
               e.preventDefault();
               if (searchQuery.trim()) {
-                router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
-                setIsSearchFocused(false);
+                commitSearch(searchQuery.trim());
               }
             }}
             className="hidden md:flex flex-1 max-w-3xl mx-6"
@@ -236,24 +254,58 @@ export default function Header() {
                   >
                     {!searchQuery.trim() ? (
                       <div className="p-1.5">
-                        <div className="flex items-center gap-1.5 mb-1.5 px-2.5 pt-2">
-                          <TrendingUp className="w-3.5 h-3.5 text-slate-400" />
-                          <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Popular Searches</h4>
-                        </div>
-                        <ul id="search-listbox" role="listbox" className="space-y-0.5">
-                          {popular.map((term, i) => (
-                            <li key={term.term} role="option" aria-selected={activeIndex === i} id={`search-opt-${i}`}>
-                              <button
-                                type="button"
-                                onClick={() => goTo(term)}
-                                className={`w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg ${activeIndex === i ? 'bg-slate-50' : ''}`}
-                              >
-                                <Search className="w-4 h-4 text-slate-400 shrink-0" />
-                                <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term.term}</span>
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
+                        {recent.length > 0 && (
+                          <div className="mb-3">
+                            <div className="flex items-center justify-between px-2.5 pt-2 mb-1.5">
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="w-3.5 h-3.5 text-slate-400" />
+                                <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Recent Searches</h4>
+                              </div>
+                              <button type="button" onClick={clearRecent} className="text-[11px] font-bold text-[#0082CA] hover:underline">Clear</button>
+                            </div>
+                            <ul role="listbox" className="space-y-0.5">
+                              {recent.map((term, i) => (
+                                <li key={`recent-${term}`} role="option" aria-selected={activeIndex === i}>
+                                  <div className={`w-full flex items-center justify-between px-2.5 py-2 hover:bg-slate-50 text-slate-700 transition-colors group rounded-lg ${activeIndex === i ? 'bg-slate-50' : ''}`}>
+                                    <button type="button" onClick={() => commitSearch(term)} className="flex items-center gap-3 flex-1 text-left">
+                                      <Clock className="w-4 h-4 text-slate-400 shrink-0" />
+                                      <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term}</span>
+                                    </button>
+                                    <button type="button" onClick={(e) => { e.stopPropagation(); removeRecent(term); }} className="text-slate-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50">
+                                      <LogOut className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {popular.length > 0 && (
+                          <div>
+                            <div className="flex items-center gap-1.5 mb-1.5 px-2.5 pt-2">
+                              <TrendingUp className="w-3.5 h-3.5 text-slate-400" />
+                              <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Trending Searches</h4>
+                            </div>
+                            <ul id="search-listbox" role="listbox" className="space-y-0.5">
+                              {popular.map((term, i) => {
+                                const idx = recent.length + i;
+                                return (
+                                  <li key={`popular-${term.term}`} role="option" aria-selected={activeIndex === idx} id={`search-opt-${idx}`}>
+                                    <button
+                                      type="button"
+                                      onClick={() => commitSearch(term.term)}
+                                      className={`w-full text-left px-2.5 py-2 hover:bg-slate-50 text-slate-700 flex items-center gap-3 transition-colors cursor-pointer group rounded-lg ${activeIndex === idx ? 'bg-slate-50' : ''}`}
+                                    >
+                                      <TrendingUp className="w-4 h-4 text-slate-400 shrink-0" />
+                                      <span className="text-[13px] font-medium text-slate-700 group-hover:text-[#0082CA] truncate transition-colors">{term.term}</span>
+                                    </button>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div className="p-1.5">

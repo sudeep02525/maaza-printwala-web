@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing.js';
+import Script from 'next/script';
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -60,6 +61,33 @@ export default async function RootLayout({ children, params }) {
   const messages = await getMessages();
   return (
     <html lang={locale}>
+      <head>
+        {process.env.NEXT_PUBLIC_META_PIXEL_ID && (
+          <Script id="meta-pixel" strategy="afterInteractive">{`
+            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
+            fbq('track', 'PageView');
+          `}</Script>
+        )}
+
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} strategy="afterInteractive" />
+            <Script id="ga" strategy="afterInteractive">{`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              ${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ? `gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ADS_ID}');` : ''}
+            `}</Script>
+          </>
+        )}
+      </head>
       <body className="bg-[var(--color-bg-neutral)] text-[var(--color-charcoal)] antialiased font-sans min-h-screen flex flex-col">
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
