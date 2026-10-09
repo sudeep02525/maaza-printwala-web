@@ -65,7 +65,7 @@ export default async function RootLayout({ children, params }) {
   const hasConsent = cookieStore.get('cookieConsent')?.value === 'true';
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         {hasConsent && process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
@@ -92,7 +92,7 @@ export default async function RootLayout({ children, params }) {
           </>
         )}
       </head>
-      <body className="bg-[var(--color-bg-neutral)] text-[var(--color-charcoal)] antialiased font-sans min-h-screen flex flex-col">
+      <body className="bg-[var(--color-bg-neutral)] text-[var(--color-charcoal)] antialiased font-sans min-h-screen flex flex-col" suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <LayoutClientWrapper>{children}</LayoutClientWrapper>

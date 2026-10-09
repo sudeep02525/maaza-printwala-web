@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layers, Image as ImageIcon, Type, Square, Save, Undo, Redo, ZoomIn, Search, ShoppingCart } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { templateEngine } from '../engines/TemplateEngine.js';
 
 export default function DesignStudio({ slug }) {
+  const searchParams = useSearchParams();
+  const templateId = searchParams.get('templateId');
+  const [template, setTemplate] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (templateId) {
+      setLoading(true);
+      templateEngine.getTemplateById(templateId).then(data => {
+        setTemplate(data);
+        setLoading(false);
+      });
+    }
+  }, [templateId]);
+
   return (
     <div className="flex flex-col w-full h-screen bg-slate-100 font-sans overflow-hidden">
       {/* Top Toolbar */}
@@ -10,6 +27,12 @@ export default function DesignStudio({ slug }) {
           <div className="font-black text-xl tracking-tighter text-blue-600">PrintWala</div>
           <div className="h-4 w-px bg-slate-300"></div>
           <div className="text-sm font-semibold text-slate-700">Design: {slug}</div>
+          {template && (
+            <>
+              <div className="h-4 w-px bg-slate-300"></div>
+              <div className="text-sm text-slate-500">Template: {template.name}</div>
+            </>
+          )}
         </div>
         
         <div className="flex items-center gap-2">
@@ -49,8 +72,21 @@ export default function DesignStudio({ slug }) {
         <div className="w-72 bg-white border-r border-slate-200 shrink-0 flex flex-col shadow-sm z-10">
           <div className="p-4 border-b border-slate-100 font-bold text-slate-800">Templates</div>
           <div className="p-4 overflow-y-auto">
-            {/* Placeholder items */}
-            <div className="text-xs text-slate-500 italic">Template Engine initializing...</div>
+            {loading ? (
+              <div className="text-xs text-slate-500 italic">Loading template...</div>
+            ) : template ? (
+              <div className="flex flex-col gap-2">
+                <div className="font-semibold text-sm">{template.name}</div>
+                {template.thumbnail && (
+                  <img src={template.thumbnail} alt={template.name} className="w-full rounded border border-slate-200" />
+                )}
+                <div className="text-xs text-slate-500 mt-2">
+                  {template.editableFields?.length || 0} editable fields found.
+                </div>
+              </div>
+            ) : (
+              <div className="text-xs text-slate-500 italic">No template loaded.</div>
+            )}
           </div>
         </div>
 
@@ -58,7 +94,10 @@ export default function DesignStudio({ slug }) {
         <div className="flex-1 bg-slate-100 relative flex items-center justify-center overflow-hidden">
            {/* Placeholder Canvas */}
            <div className="w-[600px] h-[350px] bg-white shadow-lg relative flex items-center justify-center border border-slate-200">
-              <span className="text-slate-400 font-bold flex items-center gap-2"><ZoomIn className="w-5 h-5"/> Canvas Engine initializing...</span>
+              <span className="text-slate-400 font-bold flex items-center gap-2">
+                <ZoomIn className="w-5 h-5"/> 
+                {template ? `Canvas loaded for ${template.name}` : 'Canvas Engine initializing...'}
+              </span>
            </div>
 
            {/* Bottom Status Bar */}
