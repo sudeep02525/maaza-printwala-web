@@ -1,6 +1,6 @@
 export const getImageUrl = (path) => {
   if (!path) return '';
-  if (path.startsWith('http')) return path;
+  if (path.startsWith('http') || path.startsWith('data:')) return path;
   
   // Extract base URL from env
   const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';

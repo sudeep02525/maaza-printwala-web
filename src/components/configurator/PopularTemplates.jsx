@@ -7,6 +7,76 @@ import { getImageUrl } from '@/utils/getImageUrl.js';
 import Skeleton from '@/components/ui/Skeleton.jsx';
 import { Link } from '@/i18n/routing.js';
 
+function TemplateCard({ template, slug, router }) {
+  const [activeVariantIndex, setActiveVariantIndex] = React.useState(0);
+  
+  const variants = template.colorVariants?.length > 0 ? template.colorVariants : [{
+    name: 'Default',
+    colorCode: '#cccccc',
+    previewFront: template.previewFront || template.thumbnail,
+    previewBack: template.previewBack,
+    _id: 'default'
+  }];
+  
+  const activeVariant = variants[activeVariantIndex];
+  const mainImage = getImageUrl(activeVariant.previewFront) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80';
+  const backImage = getImageUrl(activeVariant.previewBack);
+
+  const handleClick = () => {
+    let url = `/products/${slug}/design?templateId=${template._id}`;
+    if (activeVariant._id !== 'default') {
+      url += `&variantId=${activeVariant._id}`;
+    }
+    router.push(url);
+  };
+
+  return (
+    <div className="group rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[300px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu">
+      {/* Image Container */}
+      <div 
+        className="flex-1 p-4 pb-2 flex items-center justify-center cursor-pointer"
+        onClick={handleClick}
+      >
+         <div className="w-full aspect-[1.75/1] bg-white shadow-sm border border-slate-200 flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow transform-gpu rounded-md p-1 group/img">
+           <img 
+             src={mainImage} 
+             alt={template.name}
+             className={`w-full h-full object-contain rounded-sm transition-opacity duration-300 ${backImage ? 'group-hover/img:opacity-0' : ''}`}
+           />
+           {backImage && (
+             <img 
+               src={backImage} 
+               alt={`${template.name} back`}
+               className="absolute inset-1 w-[calc(100%-8px)] h-[calc(100%-8px)] object-contain rounded-sm opacity-0 group-hover/img:opacity-100 transition-opacity duration-300"
+             />
+           )}
+         </div>
+      </div>
+
+      {/* Title Area and Swatches */}
+      <div className="p-4 pt-1 flex flex-col">
+        {variants.length > 1 && (
+          <div className="flex items-center gap-1.5 mb-2">
+            {variants.map((v, idx) => (
+              <button
+                key={v._id || idx}
+                onClick={(e) => { e.stopPropagation(); setActiveVariantIndex(idx); }}
+                className={`w-5 h-5 rounded-full border-2 transition-all ${activeVariantIndex === idx ? 'border-blue-600 scale-110 shadow-sm' : 'border-slate-300 hover:scale-110'}`}
+                style={{ backgroundColor: v.colorCode || '#ccc' }}
+                title={v.name}
+              />
+            ))}
+          </div>
+        )}
+        <h3 className="text-sm font-bold text-slate-900 line-clamp-1 cursor-pointer" onClick={handleClick}>{template.name}</h3>
+        <p className="text-xs text-slate-500 mt-0.5 truncate">
+          {template.editableFields?.length || 0} editable fields
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function PopularTemplates({ slug }) {
   const router = useRouter();
   const scrollRef = useRef(null);
@@ -14,7 +84,6 @@ export default function PopularTemplates({ slug }) {
   const { data: response, isLoading } = useQuery({
     queryKey: ['templates', slug],
     queryFn: async () => {
-      // API supports fetching by either slug or Object ID
       const res = await axiosInstance.get(`/templates/product/${slug}`);
       return res.data;
     },
@@ -44,7 +113,7 @@ export default function PopularTemplates({ slug }) {
   }
 
   if (!templates || templates.length === 0) {
-    return null; // Don't show the section if no templates exist for this product
+    return null;
   }
 
   return (
@@ -71,30 +140,7 @@ export default function PopularTemplates({ slug }) {
         className="flex overflow-x-auto gap-4 pb-4 no-scrollbar snap-x"
       >
         {templates.map((template) => (
-          <div 
-            key={template._id}
-            onClick={() => router.push(`/products/${slug}/design?templateId=${template._id}`)}
-            className="group cursor-pointer rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[280px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu"
-          >
-            {/* Image Container */}
-            <div className="flex-1 p-4 flex items-center justify-center">
-               <div className="w-full h-full bg-white shadow-sm border border-slate-200 flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow transform-gpu rounded-md p-1">
-                 <img 
-                   src={getImageUrl(template.thumbnail || template.previewFront) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} 
-                   alt={template.name}
-                   className="w-full h-full object-cover rounded-sm"
-                 />
-               </div>
-            </div>
-
-            {/* Title Area (Replaced Swatches) */}
-            <div className="p-4 pt-1 flex flex-col">
-              <h3 className="text-sm font-bold text-slate-900 line-clamp-1">{template.name}</h3>
-              <p className="text-xs text-slate-500 mt-0.5 truncate">
-                {template.editableFields?.length || 0} editable fields
-              </p>
-            </div>
-          </div>
+          <TemplateCard key={template._id} template={template} slug={slug} router={router} />
         ))}
       </div>
     </div>
