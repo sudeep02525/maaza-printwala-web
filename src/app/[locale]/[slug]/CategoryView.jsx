@@ -3,7 +3,7 @@ import { getImageUrl } from '@/utils/getImageUrl.js';
 
 import React, { useState, useEffect, Suspense, useMemo, use } from 'react';
 import { Link, useRouter, usePathname } from '@/i18n/routing.js';
-import { useSearchParams, useParams } from 'next/navigation';
+import { useSearchParams, useParams, notFound } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -172,6 +172,10 @@ export function CategoryContent({ subSlug }) {
     }
   });
 
+  if (!catLoading && !activeCatObj) {
+    notFound();
+  }
+
   const activeCatSubs = activeCatObj?.subcategoryGroups?.flatMap(g => g.items) || [];
   // We still fetch products generically for now (DB might not match the new slugs perfectly yet, but this sets the foundation)
   const { data: prodData, isLoading: prodLoading } = useQuery({
@@ -293,7 +297,7 @@ export function CategoryContent({ subSlug }) {
                         : (locale === 'hi' ? 'इस श्रेणी' : locale === 'mr' ? 'या श्रेणीत' : 'this category') 
                     })}
                   </p>
-                  <Link href="/all" className="bg-[#0082CA] hover:bg-[#0068A2] text-white px-8 py-3 rounded-lg font-bold transition-all shadow-md shadow-[#0082CA]/20">
+                  <Link href="/products" className="bg-[#0082CA] hover:bg-[#0068A2] text-white px-8 py-3 rounded-lg font-bold transition-all shadow-md shadow-[#0082CA]/20">
                     {t('categoryPage.exploreAll')}
                   </Link>
                 </div>
