@@ -48,7 +48,7 @@ export default function MegaMenu() {
     queryKey: ['categories'],
     queryFn: async () => {
       const res = await axiosInstance.get('/categories');
-      console.log("MegaMenu API Response:", res);
+
       return Array.isArray(res.data) ? res.data : (res.data?.data || res.data?.categories || res.categories || []);
     }
   });

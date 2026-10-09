@@ -17,14 +17,15 @@ export async function generateMetadata({ params }) {
     const title = t('title');
     const description = t('description');
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://maazaprintwala.in';
     return {
-      metadataBase: new URL('https://maazaprintwala.in'),
+      metadataBase: new URL(baseUrl),
       title: title,
       description: description,
       openGraph: {
         title: title,
         description: description,
-        url: `https://maazaprintwala.in/${locale}`,
+        url: `${baseUrl}/${locale}`,
         siteName: 'Maza Printwala',
         locale: locale,
         type: 'website',
@@ -35,12 +36,12 @@ export async function generateMetadata({ params }) {
         description: description,
       },
       alternates: {
-        canonical: `https://maazaprintwala.in/${locale}`,
+        canonical: `${baseUrl}/${locale}`,
         languages: {
-          'en': 'https://maazaprintwala.in/en',
-          'hi': 'https://maazaprintwala.in/hi',
-          'mr': 'https://maazaprintwala.in/mr',
-          'x-default': 'https://maazaprintwala.in/en'
+          'en': `${baseUrl}/en`,
+          'hi': `${baseUrl}/hi`,
+          'mr': `${baseUrl}/mr`,
+          'x-default': `${baseUrl}/en`
         },
       },
     };
@@ -75,7 +76,6 @@ export default async function RootLayout({ children, params }) {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
             fbq('init', '${process.env.NEXT_PUBLIC_META_PIXEL_ID}');
-            fbq('track', 'PageView');
           `}</Script>
         )}
 

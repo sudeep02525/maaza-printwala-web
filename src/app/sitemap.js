@@ -1,7 +1,7 @@
 import { serverApi } from '@/lib/server-api.js';
 
 export default async function sitemap() {
-  const baseUrl = 'https://maazaprintwala.in';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://maazaprintwala.in';
   
   // Create language alternates helper
   const getAlternates = (path) => ({
