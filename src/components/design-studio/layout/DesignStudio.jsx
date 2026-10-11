@@ -15,7 +15,25 @@ import {
   ShoppingCart, 
   Trash2, 
   Check, 
-  Sparkles 
+  Sparkles,
+  Eye,
+  Save,
+  Download,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Bold,
+  Italic,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  ArrowUp,
+  ArrowDown,
+  X,
+  AlertTriangle,
+  CheckCircle2,
+  FileCheck,
+  ShieldCheck
 } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { templateEngine } from '../engines/TemplateEngine.js';
@@ -76,20 +94,60 @@ export default function DesignStudio({ slug }) {
   const [activeObject, setActiveObject] = useState(null);
   const [addingToCart, setAddingToCart] = useState(false);
 
+  // 2-Sided Card Editing: 'front' | 'back'
+  const [activeSide, setActiveSide] = useState('front');
+  const frontCanvasJsonRef = useRef(null);
+  const backCanvasJsonRef = useRef(null);
+
   // Available templates for this product
   const [productTemplates, setProductTemplates] = useState([]);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
 
-  // User uploaded images
+  // User uploaded images & DPI check
   const [uploadedImages, setUploadedImages] = useState([]);
+  const [uploadDpiWarning, setUploadDpiWarning] = useState(null);
   const fileInputRef = useRef(null);
 
   // Shape creation color
   const [selectedShapeColor, setSelectedShapeColor] = useState('#3b82f6');
 
+  // Undo / Redo History Stacks
+  const [historyStack, setHistoryStack] = useState([]);
+  const [redoStack, setRedoStack] = useState([]);
+  const isHistoryLocked = useRef(false);
+
+  // Zoom Control
+  const [zoom, setZoom] = useState(1);
+
+  // Print Guides (Bleed & Safe Area)
+  const [showGuides, setShowGuides] = useState(true);
+
+  // Save Draft Feedback
+  const [draftSavedMsg, setDraftSavedMsg] = useState(false);
+
+  // Preview Modal
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [previewDataUrl, setPreviewDataUrl] = useState('');
+  const [previewTab, setPreviewTab] = useState('front');
+
   const canvasRef = useRef(null);
   const fabricRef = useRef(null);
   const containerRef = useRef(null);
+
+  // Save Canvas State to Undo History
+  const recordHistory = useCallback(() => {
+    if (!fabricRef.current || isHistoryLocked.current) return;
+    try {
+      const json = JSON.stringify(fabricRef.current.toJSON());
+      setHistoryStack(prev => {
+        if (prev.length > 0 && prev[prev.length - 1] === json) return prev;
+        return [...prev.slice(-25), json];
+      });
+      setRedoStack([]);
+    } catch (e) {
+      console.warn("Could not record canvas history:", e);
+    }
+  }, []);
 
   // Helper to load template canvas data and sync custom fields
   const loadTemplateOnCanvas = useCallback((canvas, tpl, fields = {}) => {
@@ -116,6 +174,8 @@ export default function DesignStudio({ slug }) {
           }
         });
         canvas.renderAll();
+        // Record initial state
+        setTimeout(() => recordHistory(), 100);
       }).catch(err => console.error("Error loading canvas JSON:", err));
     } else if (tpl.editableFields) {
       tpl.editableFields.forEach((field, idx) => {
@@ -135,8 +195,9 @@ export default function DesignStudio({ slug }) {
         }
       });
       canvas.renderAll();
+      setTimeout(() => recordHistory(), 100);
     }
-  }, []);
+  }, [recordHistory]);
 
   // 1. Initialize Fabric Canvas ONCE on mount (empty deps, disposes ONLY on unmount)
   useEffect(() => {
@@ -152,6 +213,11 @@ export default function DesignStudio({ slug }) {
       canvas.on('selection:created', (e) => setActiveObject(e.selected[0]));
       canvas.on('selection:updated', (e) => setActiveObject(e.selected[0]));
       canvas.on('selection:cleared', () => setActiveObject(null));
+
+      // Hook history listener
+      canvas.on('object:modified', () => recordHistory());
+      canvas.on('object:added', () => recordHistory());
+      canvas.on('object:removed', () => recordHistory());
     }
 
     return () => {
@@ -160,7 +226,7 @@ export default function DesignStudio({ slug }) {
         fabricRef.current = null;
       }
     };
-  }, []);
+  }, [recordHistory]);
 
   // 2. Load template data onto the canvas whenever template changes (NO DISPOSE)
   useEffect(() => {
@@ -284,6 +350,7 @@ export default function DesignStudio({ slug }) {
       if (obj && (obj.type?.toLowerCase() === 'textbox' || obj.type?.toLowerCase() === 'text')) {
         obj.set({ text: value });
         fabricRef.current.renderAll();
+        recordHistory();
       }
     }
   };
@@ -292,10 +359,128 @@ export default function DesignStudio({ slug }) {
     if (activeObject && fabricRef.current) {
       activeObject.set(property, value);
       fabricRef.current.renderAll();
+      recordHistory();
     }
   };
 
-  // Image Upload handler
+  // Undo Functionality
+  const handleUndo = () => {
+    if (!fabricRef.current || historyStack.length <= 1) return;
+    isHistoryLocked.current = true;
+    const currentState = historyStack[historyStack.length - 1];
+    const prevState = historyStack[historyStack.length - 2];
+
+    setRedoStack(prev => [...prev, currentState]);
+    setHistoryStack(prev => prev.slice(0, prev.length - 1));
+
+    fabricRef.current.loadFromJSON(JSON.parse(prevState)).then(() => {
+      fabricRef.current.renderAll();
+      isHistoryLocked.current = false;
+    }).catch(() => { isHistoryLocked.current = false; });
+  };
+
+  // Redo Functionality
+  const handleRedo = () => {
+    if (!fabricRef.current || redoStack.length === 0) return;
+    isHistoryLocked.current = true;
+    const nextState = redoStack[redoStack.length - 1];
+
+    setHistoryStack(prev => [...prev, nextState]);
+    setRedoStack(prev => prev.slice(0, prev.length - 1));
+
+    fabricRef.current.loadFromJSON(JSON.parse(nextState)).then(() => {
+      fabricRef.current.renderAll();
+      isHistoryLocked.current = false;
+    }).catch(() => { isHistoryLocked.current = false; });
+  };
+
+  // Save Draft (Local storage persistence + UI feedback)
+  const handleSaveDraft = () => {
+    if (!fabricRef.current || !template) return;
+    const draftPayload = {
+      templateId: template._id || templateId,
+      slug,
+      customFields,
+      selectedVariantId,
+      activeSide,
+      canvasJson: fabricRef.current.toJSON(),
+      updatedAt: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem(`maaza_draft_${slug}`, JSON.stringify(draftPayload));
+      setDraftSavedMsg(true);
+      setTimeout(() => setDraftSavedMsg(false), 3000);
+    } catch (e) {
+      console.error("Draft save failed:", e);
+    }
+  };
+
+  // Open Realistic Preview Modal
+  const handleOpenPreview = () => {
+    if (!fabricRef.current) return;
+    const dataUrl = fabricRef.current.toDataURL({ format: 'png', multiplier: 2 });
+    setPreviewDataUrl(dataUrl);
+    setPreviewTab('front');
+    setShowPreviewModal(true);
+  };
+
+  // Download Print Proof
+  const handleDownloadProof = () => {
+    if (!previewDataUrl) return;
+    const link = document.createElement('a');
+    link.download = `proof-${slug || 'printwala'}-${Date.now()}.png`;
+    link.href = previewDataUrl;
+    link.click();
+  };
+
+  // Toggle Front / Back Card Sides
+  const handleSideToggle = (side) => {
+    if (side === activeSide || !fabricRef.current) return;
+
+    // 1. Save current side state
+    if (activeSide === 'front') {
+      frontCanvasJsonRef.current = fabricRef.current.toJSON();
+    } else {
+      backCanvasJsonRef.current = fabricRef.current.toJSON();
+    }
+
+    setActiveSide(side);
+    fabricRef.current.clear();
+    fabricRef.current.backgroundColor = '#ffffff';
+
+    if (side === 'back') {
+      if (backCanvasJsonRef.current) {
+        fabricRef.current.loadFromJSON(backCanvasJsonRef.current).then(() => {
+          fabricRef.current.renderAll();
+        });
+      } else {
+        // Create an elegant matching back side
+        const bgFill = template?.canvasJson?.objects?.[0]?.fill || '#0f172a';
+        const rect = new fabric.Rect({
+          left: 0, top: 0, width: 600, height: 350, fill: bgFill, selectable: false, originX: 'left', originY: 'top'
+        });
+        const backLogo = new fabric.Textbox(customFields.company_name || template?.name || 'PRINTWALA', {
+          left: 150, top: 140, width: 300, fontSize: 32, fontWeight: 'bold', fill: '#ffffff', textAlign: 'center', originX: 'left', originY: 'top'
+        });
+        const backUrl = new fabric.Textbox(customFields.website || 'www.maazaprintwala.in', {
+          left: 150, top: 200, width: 300, fontSize: 14, fill: '#94a3b8', textAlign: 'center', originX: 'left', originY: 'top'
+        });
+        fabricRef.current.add(rect, backLogo, backUrl);
+        fabricRef.current.renderAll();
+      }
+    } else {
+      // Restore front side
+      if (frontCanvasJsonRef.current) {
+        fabricRef.current.loadFromJSON(frontCanvasJsonRef.current).then(() => {
+          fabricRef.current.renderAll();
+        });
+      } else if (template) {
+        loadTemplateOnCanvas(fabricRef.current, template, customFields);
+      }
+    }
+  };
+
+  // Image Upload handler with DPI resolution check
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -304,6 +489,16 @@ export default function DesignStudio({ slug }) {
     reader.onload = (event) => {
       const dataUrl = event.target?.result;
       if (typeof dataUrl === 'string') {
+        const testImg = new Image();
+        testImg.src = dataUrl;
+        testImg.onload = () => {
+          if (testImg.naturalWidth < 400 || testImg.naturalHeight < 400) {
+            setUploadDpiWarning(`Low resolution (${testImg.naturalWidth}×${testImg.naturalHeight}px). For sharp print quality, 800px+ is recommended.`);
+          } else {
+            setUploadDpiWarning(null);
+          }
+        };
+
         setUploadedImages(prev => [dataUrl, ...prev]);
         addImageToCanvas(dataUrl);
       }
@@ -317,12 +512,12 @@ export default function DesignStudio({ slug }) {
     if (!fabricRef.current) return;
     fabric.FabricImage.fromURL(imgUrl).then(img => {
       // Scale down if image is too large
-      if (img.width > 200 || img.height > 200) {
-        const scale = Math.min(200 / img.width, 200 / img.height);
+      if (img.width > 220 || img.height > 220) {
+        const scale = Math.min(220 / img.width, 220 / img.height);
         img.scale(scale);
       }
       img.set({
-        left: 120,
+        left: 140,
         top: 100,
         originX: 'left',
         originY: 'top'
@@ -330,6 +525,7 @@ export default function DesignStudio({ slug }) {
       fabricRef.current.add(img);
       fabricRef.current.setActiveObject(img);
       fabricRef.current.renderAll();
+      recordHistory();
     }).catch(err => console.error("Error adding image:", err));
   };
 
@@ -351,6 +547,7 @@ export default function DesignStudio({ slug }) {
       fabricRef.current.add(text);
       fabricRef.current.setActiveObject(text);
       fabricRef.current.renderAll();
+      recordHistory();
     }
   };
 
@@ -384,22 +581,54 @@ export default function DesignStudio({ slug }) {
       fabricRef.current.add(shape);
       fabricRef.current.setActiveObject(shape);
       fabricRef.current.renderAll();
+      recordHistory();
     }
   };
 
-  const deleteSelected = useCallback((e) => {
-    if ((e.key === 'Delete' || e.key === 'Backspace') && activeObject && fabricRef.current) {
-      if (activeObject.isEditing) return; // Don't delete if typing inside textbox
+  // Layer Arrangement: Bring Forward, Send Backward
+  const handleLayer = (action) => {
+    if (!fabricRef.current || !activeObject) return;
+    if (action === 'forward') fabricRef.current.bringObjectForward(activeObject);
+    if (action === 'backward') fabricRef.current.sendObjectBackwards(activeObject);
+    if (action === 'front') fabricRef.current.bringObjectToFront(activeObject);
+    if (action === 'back') fabricRef.current.sendObjectToBack(activeObject);
+    fabricRef.current.renderAll();
+    recordHistory();
+  };
+
+  // Keyboard shortcut listener for Delete & Undo/Redo
+  const handleKeyDown = useCallback((e) => {
+    if (!fabricRef.current) return;
+
+    // Check if user is actively typing inside an input or editable textbox
+    if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName) || activeObject?.isEditing) {
+      return;
+    }
+
+    // Delete / Backspace
+    if ((e.key === 'Delete' || e.key === 'Backspace') && activeObject) {
       fabricRef.current.remove(activeObject);
       setActiveObject(null);
       fabricRef.current.renderAll();
+      recordHistory();
     }
-  }, [activeObject]);
+
+    // Ctrl+Z (Undo) / Ctrl+Y (Redo)
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        handleUndo();
+      } else if (e.key === 'y' || (e.key === 'z' && e.shiftKey)) {
+        e.preventDefault();
+        handleRedo();
+      }
+    }
+  }, [activeObject, recordHistory, historyStack, redoStack]);
 
   useEffect(() => {
-    window.addEventListener('keydown', deleteSelected);
-    return () => window.removeEventListener('keydown', deleteSelected);
-  }, [deleteSelected]);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleKeyDown]);
 
   const addToCart = async () => {
     if (!template) return;
@@ -418,7 +647,9 @@ export default function DesignStudio({ slug }) {
         designType: 'TEMPLATE',
         template: {
           templateId: template._id || templateId,
-          customFields
+          customFields,
+          activeSide,
+          variantId: selectedVariantId
         }
       });
 
@@ -434,7 +665,7 @@ export default function DesignStudio({ slug }) {
   return (
     <div className="flex flex-col w-full h-screen bg-slate-100 font-sans overflow-hidden">
       {/* Top Toolbar */}
-      <div className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-10">
+      <div className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-30">
         <div className="flex items-center gap-4">
           <div className="font-black text-xl tracking-tighter text-blue-600">PrintWala</div>
           <div className="h-4 w-px bg-slate-300"></div>
@@ -448,28 +679,63 @@ export default function DesignStudio({ slug }) {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Undo Button */}
           <button 
             type="button" 
-            title="Undo" 
-            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 transition-colors"
+            title="Undo (Ctrl+Z)"
+            onClick={handleUndo}
+            disabled={historyStack.length <= 1}
+            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <Undo className="w-4 h-4" />
           </button>
+
+          {/* Redo Button */}
           <button 
             type="button" 
-            title="Redo" 
-            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 transition-colors"
+            title="Redo (Ctrl+Y)"
+            onClick={handleRedo}
+            disabled={redoStack.length === 0}
+            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <Redo className="w-4 h-4" />
           </button>
+
           <div className="h-4 w-px bg-slate-300 mx-1"></div>
+
+          {/* Save Draft Button */}
+          <button 
+            type="button"
+            onClick={handleSaveDraft}
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all ${
+              draftSavedMsg 
+                ? 'bg-emerald-50 text-emerald-700 border border-emerald-300' 
+                : 'text-slate-700 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            {draftSavedMsg ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Save className="w-3.5 h-3.5" />}
+            {draftSavedMsg ? 'Saved ✓' : 'Save Draft'}
+          </button>
+
+          {/* Preview Button */}
+          <button 
+            type="button"
+            onClick={handleOpenPreview}
+            className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-md flex items-center gap-1.5 transition-colors"
+          >
+            <Eye className="w-3.5 h-3.5 text-blue-600" /> Preview
+          </button>
+
+          <div className="h-4 w-px bg-slate-300 mx-1"></div>
+
+          {/* Add to Cart Button */}
           <button 
             type="button"
             onClick={addToCart} 
             disabled={addingToCart || !template}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-sm font-bold rounded-md shadow-sm flex items-center gap-2 transition-colors"
+            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white text-xs font-bold rounded-md shadow-sm flex items-center gap-2 transition-colors"
           >
-            <ShoppingCart className="w-4 h-4" /> {addingToCart ? 'Adding...' : 'Add to Cart'}
+            <ShoppingCart className="w-3.5 h-3.5" /> {addingToCart ? 'Adding...' : 'Add to Cart'}
           </button>
         </div>
       </div>
@@ -551,7 +817,7 @@ export default function DesignStudio({ slug }) {
             <>
               <div className="p-4 border-b border-slate-100 flex items-center justify-between">
                 <span className="font-bold text-slate-800">Customize Card</span>
-                <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold">Active</span>
+                <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold capitalize">{activeSide} Side</span>
               </div>
               <div className="p-4 overflow-y-auto flex flex-col gap-4 flex-1">
                 {loading ? (
@@ -695,12 +961,23 @@ export default function DesignStudio({ slug }) {
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 shadow-xs transition-colors"
                 >
-                  <Upload className="w-4 h-4" /> Upload Image
+                  <Upload className="w-4 h-4" /> Upload Logo or Image
                 </button>
                 <p className="text-[11px] text-slate-400 text-center">Supports PNG, JPG, SVG, WebP</p>
 
+                {/* DPI Warning Badge */}
+                {uploadDpiWarning && (
+                  <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start gap-2 text-xs text-amber-800">
+                    <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                    <span>{uploadDpiWarning}</span>
+                  </div>
+                )}
+
                 <div className="flex flex-col gap-2 mt-2">
-                  <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Your Images</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Your Images</span>
+                    <span className="text-[11px] text-slate-400">Click to add</span>
+                  </div>
                   {uploadedImages.length > 0 ? (
                     <div className="grid grid-cols-2 gap-2">
                       {uploadedImages.map((imgUrl, i) => (
@@ -716,7 +993,7 @@ export default function DesignStudio({ slug }) {
                     </div>
                   ) : (
                     <div className="p-6 border-2 border-dashed border-slate-200 rounded-lg text-center text-xs text-slate-400">
-                      No images uploaded yet. Click upload to add logos, icons, or photos!
+                      No images uploaded yet. Upload your logo to place it on the card!
                     </div>
                   )}
                 </div>
@@ -856,60 +1133,262 @@ export default function DesignStudio({ slug }) {
         </div>
 
         {/* Center Workspace */}
-        <div ref={containerRef} className="flex-1 bg-slate-100 relative flex items-center justify-center overflow-hidden p-6">
-          <div className="shadow-2xl border border-slate-300 bg-white rounded-sm overflow-hidden">
-            <canvas ref={canvasRef} id="design-canvas" />
+        <div ref={containerRef} className="flex-1 bg-slate-100 relative flex flex-col items-center justify-center overflow-hidden p-6">
+          
+          {/* Card Side Switcher (Front / Back) */}
+          <div className="mb-4 bg-white p-1 rounded-lg border border-slate-200 shadow-xs flex items-center gap-1 z-10">
+            <button
+              type="button"
+              onClick={() => handleSideToggle('front')}
+              className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${
+                activeSide === 'front'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Front Side
+            </button>
+            <button
+              type="button"
+              onClick={() => handleSideToggle('back')}
+              className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${
+                activeSide === 'back'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Back Side
+            </button>
           </div>
 
-          {/* Bottom Status Bar */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-md border border-slate-200 flex items-center gap-4 text-xs font-bold text-slate-600">
+          {/* Canvas Wrapper with Zoom & Print Guides */}
+          <div 
+            className="relative transition-transform duration-200 ease-out"
+            style={{ transform: `scale(${zoom})`, transformOrigin: 'center center' }}
+          >
+            {/* The Actual Canvas Box */}
+            <div className="shadow-2xl border border-slate-300 bg-white rounded-sm overflow-hidden relative">
+              <canvas ref={canvasRef} id="design-canvas" />
+
+              {/* Print Guides Overlay (Bleed & Safe Area) */}
+              {showGuides && (
+                <div className="absolute inset-0 pointer-events-none z-20">
+                  {/* Outer Bleed boundary */}
+                  <div className="absolute inset-0 border border-dashed border-red-500/70">
+                    <span className="absolute top-1 left-1.5 text-[9px] font-bold text-red-500 tracking-wider bg-white/80 px-1 rounded">
+                      BLEED (CUT LINE)
+                    </span>
+                  </div>
+                  {/* Inner Safe Area boundary */}
+                  <div className="absolute inset-5 border border-dashed border-emerald-500/70">
+                    <span className="absolute bottom-1 right-1.5 text-[9px] font-bold text-emerald-600 tracking-wider bg-white/80 px-1 rounded">
+                      SAFE AREA (KEEP TEXT INSIDE)
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom Floating Status & Zoom Controls Bar */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1.5 rounded-full shadow-lg border border-slate-200 flex items-center gap-3 text-xs font-bold text-slate-600 z-10">
             <span>Size: 600 × 350 px</span>
+            
             <div className="w-px h-3 bg-slate-300"></div>
-            <span>Ready</span>
+
+            {/* Guides Toggle */}
+            <button 
+              type="button"
+              onClick={() => setShowGuides(prev => !prev)}
+              className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
+                showGuides ? 'bg-emerald-50 text-emerald-700' : 'text-slate-500 hover:bg-slate-100'
+              }`}
+            >
+              Guides: {showGuides ? 'ON' : 'OFF'}
+            </button>
+
+            <div className="w-px h-3 bg-slate-300"></div>
+
+            {/* Zoom Controls */}
+            <div className="flex items-center gap-1.5">
+              <button 
+                type="button" 
+                title="Zoom Out"
+                onClick={() => setZoom(prev => Math.max(0.5, prev - 0.15))}
+                className="p-1 hover:bg-slate-100 rounded text-slate-600"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-[11px] w-10 text-center font-mono">{Math.round(zoom * 100)}%</span>
+              <button 
+                type="button" 
+                title="Zoom In"
+                onClick={() => setZoom(prev => Math.min(1.8, prev + 0.15))}
+                className="p-1 hover:bg-slate-100 rounded text-slate-600"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+              <button 
+                type="button" 
+                title="Reset Zoom (100%)"
+                onClick={() => setZoom(1)}
+                className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600"
+              >
+                <RotateCcw className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Right Properties Panel */}
         <div className="w-72 bg-white border-l border-slate-200 shrink-0 flex flex-col shadow-sm z-10">
-          <div className="p-4 border-b border-slate-100 font-bold text-slate-800">Properties</div>
-          <div className="p-4">
+          <div className="p-4 border-b border-slate-100 font-bold text-slate-800 flex items-center justify-between">
+            <span>Properties</span>
+            {activeObject && (
+              <span className="text-[11px] uppercase tracking-wider px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-semibold">
+                {activeObject.type}
+              </span>
+            )}
+          </div>
+          <div className="p-4 overflow-y-auto flex-1">
             {activeObject ? (
               <div className="flex flex-col gap-4">
+                
+                {/* 1. Color Picker */}
                 {(activeObject.type?.toLowerCase() === 'textbox' ||
                   activeObject.type?.toLowerCase() === 'text' ||
                   activeObject.type?.toLowerCase() === 'rect' ||
                   activeObject.type?.toLowerCase() === 'circle' ||
                   activeObject.type?.toLowerCase() === 'triangle') && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-1.5">
                     <label className="text-xs font-semibold text-slate-600">Color</label>
-                    <input
-                      type="color"
-                      value={activeObject.fill || '#000000'}
-                      onChange={(e) => handlePropertyChange('fill', e.target.value)}
-                      className="w-full h-8 cursor-pointer rounded border border-slate-200"
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="color"
+                        value={activeObject.fill || '#000000'}
+                        onChange={(e) => handlePropertyChange('fill', e.target.value)}
+                        className="w-9 h-8 cursor-pointer rounded border border-slate-200 p-0.5"
+                      />
+                      <span className="text-xs font-mono text-slate-500 uppercase">{activeObject.fill || '#000000'}</span>
+                    </div>
                   </div>
                 )}
+
+                {/* 2. Text Specific Controls */}
                 {(activeObject.type?.toLowerCase() === 'textbox' || activeObject.type?.toLowerCase() === 'text') && (
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs font-semibold text-slate-600">Font Size</label>
-                    <input
-                      type="number"
-                      value={activeObject.fontSize || 20}
-                      onChange={(e) => handlePropertyChange('fontSize', parseInt(e.target.value, 10))}
-                      className="w-full text-sm p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
+                  <>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-600">Font Size</label>
+                      <input
+                        type="number"
+                        value={activeObject.fontSize || 20}
+                        onChange={(e) => handlePropertyChange('fontSize', parseInt(e.target.value, 10))}
+                        className="w-full text-sm p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-600">Font Family</label>
+                      <select
+                        value={activeObject.fontFamily || 'Arial'}
+                        onChange={(e) => handlePropertyChange('fontFamily', e.target.value)}
+                        className="w-full text-xs p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500 bg-white"
+                      >
+                        <option value="Arial">Arial</option>
+                        <option value="Georgia">Georgia</option>
+                        <option value="Times New Roman">Times New Roman</option>
+                        <option value="Impact">Impact</option>
+                        <option value="Trebuchet MS">Trebuchet MS</option>
+                        <option value="Verdana">Verdana</option>
+                        <option value="Courier New">Courier New</option>
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-xs font-semibold text-slate-600">Formatting & Alignment</label>
+                      <div className="flex items-center gap-1 border border-slate-200 rounded p-1 bg-slate-50">
+                        <button
+                          type="button"
+                          title="Bold"
+                          onClick={() => handlePropertyChange('fontWeight', activeObject.fontWeight === 'bold' ? 'normal' : 'bold')}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontWeight === 'bold' ? 'bg-white shadow-xs font-bold text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                        >
+                          <Bold className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          title="Italic"
+                          onClick={() => handlePropertyChange('fontStyle', activeObject.fontStyle === 'italic' ? 'normal' : 'italic')}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontStyle === 'italic' ? 'bg-white shadow-xs font-bold text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                        >
+                          <Italic className="w-3.5 h-3.5" />
+                        </button>
+                        <div className="w-px h-4 bg-slate-300 mx-1"></div>
+                        <button
+                          type="button"
+                          title="Align Left"
+                          onClick={() => handlePropertyChange('textAlign', 'left')}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'left' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                        >
+                          <AlignLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          title="Align Center"
+                          onClick={() => handlePropertyChange('textAlign', 'center')}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'center' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                        >
+                          <AlignCenter className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          title="Align Right"
+                          onClick={() => handlePropertyChange('textAlign', 'right')}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'right' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                        >
+                          <AlignRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </>
                 )}
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs font-semibold text-slate-600">Opacity</label>
-                  <input
-                    type="range" min="0" max="1" step="0.1"
+
+                {/* 3. Opacity Slider */}
+                <div className="flex flex-col gap-1.5">
+                  <div className="flex justify-between items-center text-xs font-semibold text-slate-600">
+                    <span>Opacity</span>
+                    <span>{Math.round((activeObject.opacity ?? 1) * 100)}%</span>
+                  </div>
+                  <input 
+                    type="range" min="0" max="1" step="0.05" 
                     value={activeObject.opacity ?? 1}
                     onChange={(e) => handlePropertyChange('opacity', parseFloat(e.target.value))}
-                    className="w-full"
+                    className="w-full cursor-pointer accent-blue-600"
                   />
                 </div>
+
+                {/* 4. Layer Arrangement */}
+                <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-100">
+                  <label className="text-xs font-semibold text-slate-600">Layer Position</label>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleLayer('forward')}
+                      className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-xs font-medium text-slate-700 flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <ArrowUp className="w-3 h-3" /> Forward
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleLayer('backward')}
+                      className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-xs font-medium text-slate-700 flex items-center justify-center gap-1 transition-colors"
+                    >
+                      <ArrowDown className="w-3 h-3" /> Backward
+                    </button>
+                  </div>
+                </div>
+
+                {/* 5. Delete Object */}
                 <div className="pt-2 border-t border-slate-100">
                   <button
                     type="button"
@@ -918,6 +1397,7 @@ export default function DesignStudio({ slug }) {
                         fabricRef.current.remove(activeObject);
                         setActiveObject(null);
                         fabricRef.current.renderAll();
+                        recordHistory();
                       }
                     }}
                     className="w-full py-1.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded flex items-center justify-center gap-1.5 transition-colors"
@@ -925,13 +1405,112 @@ export default function DesignStudio({ slug }) {
                     <Trash2 className="w-3.5 h-3.5" /> Delete Element
                   </button>
                 </div>
+
               </div>
             ) : (
-              <div className="text-xs text-slate-500 italic">Select an object on the canvas to see its properties.</div>
+              <div className="text-xs text-slate-500 italic p-4 text-center border-2 border-dashed border-slate-100 rounded-lg">
+                Click any text, shape, or logo on the card to edit its properties, layers, and colors.
+              </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Realistic Card Preview Modal */}
+      {showPreviewModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileCheck className="w-5 h-5 text-blue-600" />
+                <h3 className="font-bold text-slate-800 text-base">Design Proof & Preview</h3>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowPreviewModal(false)}
+                className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 flex flex-col items-center justify-center bg-slate-50">
+              {/* Preview Tabs */}
+              <div className="mb-4 bg-white p-1 rounded-lg border border-slate-200 shadow-xs flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPreviewTab('front')}
+                  className={`px-4 py-1 text-xs font-bold rounded-md transition-colors ${
+                    previewTab === 'front' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  Front Side Proof
+                </button>
+                {template?.previewBack && (
+                  <button
+                    type="button"
+                    onClick={() => setPreviewTab('back')}
+                    className={`px-4 py-1 text-xs font-bold rounded-md transition-colors ${
+                      previewTab === 'back' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    Back Side Proof
+                  </button>
+                )}
+              </div>
+
+              {/* Realistic Card Mockup Shadow Box */}
+              <div className="w-[480px] aspect-[1.714/1] bg-white rounded-xl shadow-2xl border border-slate-200 p-1 flex items-center justify-center overflow-hidden">
+                {previewTab === 'front' ? (
+                  previewDataUrl ? (
+                    <img src={previewDataUrl} alt="Front proof" className="w-full h-full object-contain rounded-lg" />
+                  ) : (
+                    <div className="text-xs text-slate-400">Loading proof...</div>
+                  )
+                ) : (
+                  <img src={template.previewBack} alt="Back proof" className="w-full h-full object-contain rounded-lg" />
+                )}
+              </div>
+
+              <div className="mt-4 flex items-center gap-2 text-xs text-slate-500 font-medium">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>3.5" × 2.0" Standard Commercial Visiting Card Proof (300 DPI)</span>
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-slate-100 bg-white flex items-center justify-between">
+              <button
+                type="button"
+                onClick={handleDownloadProof}
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg flex items-center gap-2 transition-colors"
+              >
+                <Download className="w-4 h-4 text-slate-600" /> Download Proof (PNG)
+              </button>
+
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowPreviewModal(false)}
+                  className="px-4 py-2 border border-slate-300 text-slate-700 text-xs font-semibold rounded-lg hover:bg-slate-50 transition-colors"
+                >
+                  Continue Editing
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPreviewModal(false);
+                    addToCart();
+                  }}
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-sm transition-colors"
+                >
+                  <ShoppingCart className="w-3.5 h-3.5" /> Approve & Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
