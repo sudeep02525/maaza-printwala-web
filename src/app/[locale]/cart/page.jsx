@@ -2,18 +2,79 @@
 
 import { useEffect, useState } from 'react';
 import { Link } from '@/i18n/routing.js';
-import { ShoppingBag, Trash2, ArrowLeft, CheckCircle2, AlertCircle, FileText, LayoutTemplate, Sparkles, ShieldCheck, RefreshCw, Plus, Minus, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Trash2, ArrowLeft, CheckCircle2, AlertCircle, FileText, LayoutTemplate, Sparkles, ShieldCheck, RefreshCw, Plus, Minus, ArrowRight, Tag, Percent, X, Check } from 'lucide-react';
+import axiosInstance from '@/services/axiosInstance.js';
 import { useCartStore } from '@/store/cartStore.js';
 import Button from '@/components/ui/Button.jsx';
 import Card from '@/components/ui/Card.jsx';
 import Badge from '@/components/ui/Badge.jsx';
 import Alert from '@/components/ui/Alert.jsx';
 
+const formatFieldLabel = (key) => {
+  const map = {
+    company_name: 'Company Name',
+    tagline: 'Tagline',
+    website: 'Website',
+    logo_letter: 'Logo Letter',
+    address: 'Address',
+    person_name: 'Person Name',
+    job_title: 'Job Title',
+    contact_info: 'Contact Info',
+    email: 'Email',
+    phone: 'Phone',
+  };
+  if (map[key]) return map[key];
+  return key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
 export default function CartPage() {
   const { items, cartTotal, isLoading, error, fetchCart, updateItemQuantity, removeItem, clearCart } = useCartStore();
   const [updatingId, setUpdatingId] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  // Coupon state
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponError, setCouponError] = useState(null);
+  const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+  const [activeCoupons, setActiveCoupons] = useState([]);
+
+  useEffect(() => {
+    axiosInstance.get('/coupons/active')
+      .then((res) => {
+        if (res.data?.coupons) setActiveCoupons(res.data.coupons);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleApplyCoupon = async (codeToUse) => {
+    const code = (codeToUse || couponInput).trim();
+    if (!code) return;
+    setIsApplyingCoupon(true);
+    setCouponError(null);
+    try {
+      const res = await axiosInstance.post('/coupons/validate', {
+        code,
+        cartTotal,
+      });
+      if (res.data) {
+        setAppliedCoupon(res.data);
+        setCouponInput(code);
+      }
+    } catch (err) {
+      setCouponError(err.response?.data?.message || err.message || 'Invalid or expired coupon.');
+      setAppliedCoupon(null);
+    } finally {
+      setIsApplyingCoupon(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput('');
+    setCouponError(null);
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -183,7 +244,7 @@ export default function CartPage() {
                               </span>
                             </div>
                           ) : (
-                            <div className="space-y-1">
+                            <div className="space-y-1.5">
                               <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
                                 <LayoutTemplate className="w-3.5 h-3.5 text-[#C71578] shrink-0" />
                                 <span className="truncate">
@@ -191,10 +252,13 @@ export default function CartPage() {
                                 </span>
                               </div>
                               {item.template?.customFields && (
-                                <div className="text-[11px] text-slate-500 pl-5 line-clamp-1">
-                                  {Object.entries(item.template.customFields)
-                                    .map(([k, v]) => `${k}: "${v}"`)
-                                    .join(' • ')}
+                                <div className="text-[11px] text-slate-600 pl-5 flex flex-wrap gap-x-3 gap-y-1">
+                                  {Object.entries(item.template.customFields).map(([k, v]) => (
+                                    <span key={k}>
+                                      <span className="font-semibold text-slate-500">{formatFieldLabel(k)}:</span>{' '}
+                                      <span className="text-slate-800 font-medium">"{v}"</span>
+                                    </span>
+                                  ))}
                                 </div>
                               )}
                             </div>
@@ -258,7 +322,78 @@ export default function CartPage() {
                 <h2 className="text-xl font-black text-slate-900 mt-0.5">Order Summary</h2>
               </div>
 
-              <div className="space-y-3 text-xs sm:text-sm">
+              {/* Promo Code / Coupon Section */}
+              <div className="pt-2 border-t border-slate-100 space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                  <span className="flex items-center gap-1.5">
+                    <Tag className="w-3.5 h-3.5 text-[#0082CA]" /> Have a Promo Code?
+                  </span>
+                </div>
+
+                {appliedCoupon ? (
+                  <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-4 h-4 text-emerald-600" />
+                      <div>
+                        <span className="font-bold text-emerald-800">{appliedCoupon.coupon?.code}</span>
+                        <span className="text-emerald-600 block text-[10px]">
+                          Save ₹{appliedCoupon.discountAmount}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="text-slate-400 hover:text-red-500 p-1 cursor-pointer"
+                      title="Remove coupon"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                        placeholder="ENTER CODE"
+                        className="flex-1 text-xs p-2.5 border border-slate-300 rounded-lg uppercase tracking-wider font-bold focus:outline-none focus:border-[#0082CA]"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleApplyCoupon()}
+                        disabled={isApplyingCoupon || !couponInput.trim()}
+                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+                      >
+                        {isApplyingCoupon ? '...' : 'Apply'}
+                      </button>
+                    </div>
+
+                    {couponError && (
+                      <p className="text-[11px] text-red-600 font-medium">{couponError}</p>
+                    )}
+
+                    {activeCoupons.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {activeCoupons.map((c) => (
+                          <button
+                            key={c.code}
+                            type="button"
+                            onClick={() => handleApplyCoupon(c.code)}
+                            className="text-[10px] font-bold px-2 py-1 rounded bg-blue-50 text-[#0082CA] hover:bg-blue-100 border border-blue-200 transition-colors cursor-pointer"
+                          >
+                            🏷️ {c.code}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Order Figures */}
+              <div className="space-y-3 text-xs sm:text-sm pt-2 border-t border-slate-100">
                 <div className="flex justify-between text-slate-600 font-semibold">
                   <span>Total Items</span>
                   <span className="font-bold text-slate-900">{items.length}</span>
@@ -273,19 +408,41 @@ export default function CartPage() {
                   <span>Subtotal Amount</span>
                   <span className="font-bold text-slate-900">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 font-semibold">
-                  <span>Est. GST (18% commercial rate)</span>
-                  <span className="font-bold text-slate-900">₹{Math.round((cartTotal || 0) * 0.18).toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between text-slate-400 text-xs font-normal">
-                  <span>Shipping & Logistics</span>
-                  <span>Calculated during checkout</span>
-                </div>
-              </div>
 
-              <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline">
-                <span className="text-base font-black text-slate-900">Estimated Total</span>
-                <span className="text-2xl font-black text-[#0082CA]">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
+                {appliedCoupon && (
+                  <div className="flex justify-between text-emerald-600 font-bold">
+                    <span>Coupon Discount ({appliedCoupon.coupon?.code})</span>
+                    <span>-₹{Number(appliedCoupon.discountAmount || 0).toLocaleString('en-IN')}</span>
+                  </div>
+                )}
+
+                {(() => {
+                  const discount = appliedCoupon?.discountAmount || 0;
+                  const taxable = Math.max(0, (cartTotal || 0) - discount);
+                  const gst = Math.round(taxable * 0.18);
+                  const estimatedTotal = taxable + gst;
+
+                  return (
+                    <>
+                      <div className="flex justify-between text-slate-600 font-semibold">
+                        <span>Est. GST (18% commercial rate)</span>
+                        <span className="font-bold text-slate-900">₹{gst.toLocaleString('en-IN')}</span>
+                      </div>
+                      <div className="flex justify-between text-slate-400 text-xs font-normal">
+                        <span>Shipping & Logistics</span>
+                        <span>Calculated during checkout</span>
+                      </div>
+
+                      <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline">
+                        <div>
+                          <span className="text-base font-black text-slate-900 block">Estimated Total</span>
+                          <span className="text-[10px] font-semibold text-slate-400">Includes 18% GST</span>
+                        </div>
+                        <span className="text-2xl font-black text-[#0082CA]">₹{estimatedTotal.toLocaleString('en-IN')}</span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               {/* Verified Pricing Trust Badge */}

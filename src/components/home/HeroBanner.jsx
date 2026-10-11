@@ -86,7 +86,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/business-cards" className="relative w-full h-full block">
+                <Link href="/visiting-cards" className="relative w-full h-full block">
                   <Image 
                     src={visitingCardsBanner} 
                     alt="Business Cards" 

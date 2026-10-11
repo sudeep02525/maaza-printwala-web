@@ -126,7 +126,8 @@ export default function Footer() {
               {categories.slice(0, 6).map(cat => (
                 <li key={cat.slug}><Link href={`/${cat.slug}`} className="hover:text-[#0082CA] transition-colors">{t.has(`categories.${cat.slug}`) ? t(`categories.${cat.slug}`) : cat.name}</Link></li>
               ))}
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors text-[#0082CA] font-bold">{t('footer.viewAllProducts')} &rarr;</Link></li>
+              <li><Link href="/categories" className="hover:text-[#0082CA] transition-colors text-[#0082CA] font-bold">All Categories Directory &rarr;</Link></li>
+              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors text-slate-600 font-medium">{t('footer.viewAllProducts')} &rarr;</Link></li>
             </ul>
           </FooterAccordionItem>
 
@@ -134,20 +135,20 @@ export default function Footer() {
           <FooterAccordionItem title={t('footer.resources')} id="resources">
             <ul className="space-y-3 text-sm text-slate-500 font-medium">
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'डिज़ाइन टेम्प्लेट' : locale === 'mr' ? 'डिझाईन टेम्पलेट्स' : 'Design Templates'}</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'आर्टवर्क गाइडलाइंस' : locale === 'mr' ? 'आर्टवर्क मार्गदर्शक तत्त्वे' : 'Artwork Guidelines'}</Link></li>
+              <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'थोक एवं कॉर्पोरेट ऑर्डर' : locale === 'mr' ? 'मोठ्या प्रमाणात ऑर्डर्स' : 'Bulk & B2B Inquiries'}</Link></li>
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'पेपर क्वालिटी गाइड' : locale === 'mr' ? 'पेपर क्वालिटी मार्गदर्शक' : 'Paper Quality Guide'}</Link></li>
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'प्रिंटिंग ब्लॉग' : locale === 'mr' ? 'प्रिंटिंग ब्लॉग' : 'Printing Blog'}</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'डेवलपर API' : locale === 'mr' ? 'डेव्हलपर API' : 'Developer API'}</Link></li>
+              <li><Link href="/support" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'ग्राहक सहायता' : locale === 'mr' ? 'ग्राहक मदत' : 'Customer Support Desk'}</Link></li>
             </ul>
           </FooterAccordionItem>
 
           {/* Column 4: Support */}
           <FooterAccordionItem title={t('footer.support')} id="support">
             <ul className="space-y-3 text-sm text-slate-500 font-medium flex flex-col items-start">
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'सहायता केंद्र / अक्सर पूछे जाने वाले प्रश्न' : locale === 'mr' ? 'मदत केंद्र / वारंवार विचारले जाणारे प्रश्न' : 'Help Center / FAQs'}</Link></li>
+              <li><Link href="/support" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'सहायता केंद्र / अक्सर पूछे जाने वाले प्रश्न' : locale === 'mr' ? 'मदत केंद्र / वारंवार विचारले जाणारे प्रश्न' : 'Help Center / FAQs'}</Link></li>
               <li><Link href="/track-order" className="hover:text-[#0082CA] transition-colors">{t('header.trackOrder')}</Link></li>
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.returnPolicy')}</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'शिपिंग जानकारी' : locale === 'mr' ? 'शिपिंग माहिती' : 'Shipping Information'}</Link></li>
+              <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'कॉर्पोरेट कोटेशन' : locale === 'mr' ? 'कॉर्पोरेट कोटेशन' : 'Corporate Quotations'}</Link></li>
               <li>
                 <div className="pt-2 flex items-start justify-start gap-2">
                   <Phone className="w-4 h-4 shrink-0 text-[#0082CA] mt-0.5" />
@@ -170,7 +171,7 @@ export default function Footer() {
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.about')}</Link></li>
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'करियर' : locale === 'mr' ? 'करिअर' : 'Careers'}</Link></li>
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'प्रेस और मीडिया' : locale === 'mr' ? 'प्रेस आणि मीडिया' : 'Press & Media'}</Link></li>
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'पार्टनर प्रोग्राम' : locale === 'mr' ? 'पार्टनर प्रोग्राम' : 'Partner Program'}</Link></li>
+                <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'पार्टनर प्रोग्राम' : locale === 'mr' ? 'पार्टनर प्रोग्राम' : 'Partner Program'}</Link></li>
               </ul>
             </FooterAccordionItem>
             

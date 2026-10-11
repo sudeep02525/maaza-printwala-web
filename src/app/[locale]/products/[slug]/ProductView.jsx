@@ -14,6 +14,7 @@ import DesignExperienceModal from '@/components/configurator/DesignExperienceMod
 import DesignReadySummary from '@/components/configurator/DesignReadySummary.jsx';
 import PopularTemplates from '@/components/configurator/PopularTemplates.jsx';
 import RecentlyViewedProducts from '@/components/products/RecentlyViewedProducts.jsx';
+import ProductReviews from '@/components/products/ProductReviews.jsx';
 
 export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCategoryName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,16 +41,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   const standardQuantities = [100, 200, 300, 400, 500, 1000, 1500, 2000, 3000, 5000];
 
   const getDisplayUnitPrice = (q) => {
-    if (quantity === q && priceResult?.unitPrice) return priceResult.unitPrice.toFixed(2);
-    if (!priceResult?.unitPrice) return "2.00";
-    const ratio = q / quantity;
-    let mockUnit = priceResult.unitPrice;
-    if (q > quantity) {
-        mockUnit = priceResult.unitPrice * Math.pow(0.95, Math.log2(ratio));
-    } else if (q < quantity) {
-        mockUnit = priceResult.unitPrice * Math.pow(1.05, Math.log2(1/ratio));
-    }
-    return mockUnit.toFixed(2);
+    if (priceResult?.unitPrice) return priceResult.unitPrice.toFixed(2);
+    return "0.00";
   };
 
   const getDisplayQuantity = () => {
@@ -459,6 +452,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
       <PopularTemplates slug={slug} />
       
       <RecentlyViewedProducts />
+      
+      <ProductReviews productId={product?._id} productName={product?.name} />
 
     </div>
 

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
+import { Link } from '@/i18n/routing.js';
 
 import axiosInstance from '@/services/axiosInstance.js';
 
@@ -35,7 +36,7 @@ export default function CustomerOrders() {
       ) : orders.length === 0 ? (
         <div className="text-center py-12 bg-slate-50 rounded-xl border border-slate-200">
           <p className="text-slate-600 mb-4">You have not placed any orders yet, or you are not logged in.</p>
-          <a href={`/${locale}/products`} className="text-[#0082CA] font-bold hover:underline">Continue Shopping</a>
+          <Link href="/products" className="text-[#0082CA] font-bold hover:underline">Continue Shopping</Link>
         </div>
       ) : (
         <div className="space-y-6">
