@@ -94,6 +94,12 @@ export default function DesignStudio({ slug }) {
   const [activeObject, setActiveObject] = useState(null);
   const [addingToCart, setAddingToCart] = useState(false);
 
+  // Product & Configuration Schema for Order
+  const [product, setProduct] = useState(null);
+  const [productSchema, setProductSchema] = useState(null);
+  const [productConfig, setProductConfig] = useState({});
+  const [orderQuantity, setOrderQuantity] = useState(100);
+
   // 2-Sided Card Editing: 'front' | 'back'
   const [activeSide, setActiveSide] = useState('front');
   const frontCanvasJsonRef = useRef(null);
@@ -228,12 +234,41 @@ export default function DesignStudio({ slug }) {
     };
   }, [recordHistory]);
 
-  // 2. Load template data onto the canvas whenever template changes (NO DISPOSE)
+  // 2. Load template data onto the canvas whenever template or activeSide changes (NO DISPOSE)
   useEffect(() => {
     if (fabricRef.current && template) {
-      loadTemplateOnCanvas(fabricRef.current, template, customFields);
+      const cached = activeSide === 'back' ? backCanvasJsonRef.current : frontCanvasJsonRef.current;
+      if (cached) {
+        fabricRef.current.clear();
+        fabricRef.current.backgroundColor = '#ffffff';
+        fabricRef.current.loadFromJSON(cached).then(() => {
+          fabricRef.current.renderAll();
+        }).catch(err => console.error("Error restoring cached canvas:", err));
+      } else {
+        let sideJson = template.canvasJson;
+        if (activeSide === 'back') {
+          if (template.canvasJsonBack) {
+            sideJson = template.canvasJsonBack;
+          } else {
+            // Elegant fallback matching back side with variant's color
+            const activeVar = template.colorVariants?.find(v => (v._id || v.name) === selectedVariantId);
+            const bgFill = activeVar?.colorCode || template.canvasJson?.objects?.[0]?.fill || '#0f172a';
+            sideJson = {
+              version: "7.4.0",
+              width: 600,
+              height: 350,
+              objects: [
+                { type: "Rect", left: 0, top: 0, width: 600, height: 350, fill: bgFill, selectable: false, originX: "left", originY: "top" },
+                { type: "Textbox", left: 100, top: 120, width: 400, fontSize: 36, fontWeight: "bold", fontFamily: "Arial", fill: "#ffffff", text: customFields.company_name || template.name || 'PRINTWALA', textAlign: "center", originX: "left", originY: "top", id: "company_name" },
+                { type: "Textbox", left: 100, top: 200, width: 400, fontSize: 14, fontFamily: "Arial", fill: "#94a3b8", text: customFields.website || 'www.maazaprintwala.in', textAlign: "center", originX: "left", originY: "top", id: "website" }
+              ]
+            };
+          }
+        }
+        loadTemplateOnCanvas(fabricRef.current, { ...template, canvasJson: sideJson }, customFields);
+      }
     }
-  }, [template, loadTemplateOnCanvas]);
+  }, [template, activeSide, loadTemplateOnCanvas, selectedVariantId]);
 
   // Load all templates available for this product
   useEffect(() => {
@@ -249,6 +284,36 @@ export default function DesignStudio({ slug }) {
           handleSelectTemplate(tpls[0]);
         }
       }).catch(() => setLoadingTemplates(false));
+    }
+  }, [slug]);
+
+  // Load Product and Configuration Schema for Add to Cart
+  useEffect(() => {
+    if (slug) {
+      axiosInstance.get(`/products/${slug}`).then(res => {
+        const prod = res.data?.product;
+        if (prod) {
+          setProduct(prod);
+          axiosInstance.get(`/products/${prod._id}/schema`).then(sRes => {
+            const sch = sRes.data?.schema;
+            if (sch) {
+              setProductSchema(sch);
+              const initialConfig = {};
+              if (sch.attributes) {
+                sch.attributes.forEach(attr => {
+                  if (attr.options && attr.options.length > 0) {
+                    initialConfig[attr.key] = attr.options[0].value;
+                  }
+                });
+              }
+              setProductConfig(initialConfig);
+              if (sch.quantityTiers && sch.quantityTiers.length > 0) {
+                setOrderQuantity(sch.quantityTiers[0]);
+              }
+            }
+          }).catch(err => console.error("Could not fetch product schema:", err));
+        }
+      }).catch(err => console.error("Could not fetch product:", err));
     }
   }, [slug]);
 
@@ -278,6 +343,7 @@ export default function DesignStudio({ slug }) {
             previewFront: initialVariant.previewFront || data.previewFront,
             previewBack: initialVariant.previewBack || data.previewBack,
             canvasJson: initialVariant.canvasJson || data.canvasJson,
+            canvasJsonBack: initialVariant.canvasJsonBack || data.canvasJsonBack,
           };
           setSelectedVariantId(initialVariant._id || initialVariant.name);
         }
@@ -310,6 +376,7 @@ export default function DesignStudio({ slug }) {
         previewFront: initialVariant.previewFront || selectedTpl.previewFront,
         previewBack: initialVariant.previewBack || selectedTpl.previewBack,
         canvasJson: initialVariant.canvasJson || selectedTpl.canvasJson,
+        canvasJsonBack: initialVariant.canvasJsonBack || selectedTpl.canvasJsonBack,
       };
       setSelectedVariantId(initialVariant._id || initialVariant.name);
     } else {
@@ -332,11 +399,15 @@ export default function DesignStudio({ slug }) {
   // Handle color variant change — updates state, second useEffect reloads canvas safely without disposing
   const handleVariantChange = (variant) => {
     setSelectedVariantId(variant._id || variant.name);
+    // Clear side canvas caches so the new variant's front and back designs apply immediately
+    frontCanvasJsonRef.current = null;
+    backCanvasJsonRef.current = null;
     setTemplate(prev => ({
       ...prev,
       previewFront: variant.previewFront || prev?.previewFront,
       previewBack: variant.previewBack || prev?.previewBack,
       canvasJson: variant.canvasJson || prev?.canvasJson,
+      canvasJsonBack: variant.canvasJsonBack || prev?.canvasJsonBack,
     }));
   };
 
@@ -445,39 +516,6 @@ export default function DesignStudio({ slug }) {
     }
 
     setActiveSide(side);
-    fabricRef.current.clear();
-    fabricRef.current.backgroundColor = '#ffffff';
-
-    if (side === 'back') {
-      if (backCanvasJsonRef.current) {
-        fabricRef.current.loadFromJSON(backCanvasJsonRef.current).then(() => {
-          fabricRef.current.renderAll();
-        });
-      } else {
-        // Create an elegant matching back side
-        const bgFill = template?.canvasJson?.objects?.[0]?.fill || '#0f172a';
-        const rect = new fabric.Rect({
-          left: 0, top: 0, width: 600, height: 350, fill: bgFill, selectable: false, originX: 'left', originY: 'top'
-        });
-        const backLogo = new fabric.Textbox(customFields.company_name || template?.name || 'PRINTWALA', {
-          left: 150, top: 140, width: 300, fontSize: 32, fontWeight: 'bold', fill: '#ffffff', textAlign: 'center', originX: 'left', originY: 'top'
-        });
-        const backUrl = new fabric.Textbox(customFields.website || 'www.maazaprintwala.in', {
-          left: 150, top: 200, width: 300, fontSize: 14, fill: '#94a3b8', textAlign: 'center', originX: 'left', originY: 'top'
-        });
-        fabricRef.current.add(rect, backLogo, backUrl);
-        fabricRef.current.renderAll();
-      }
-    } else {
-      // Restore front side
-      if (frontCanvasJsonRef.current) {
-        fabricRef.current.loadFromJSON(frontCanvasJsonRef.current).then(() => {
-          fabricRef.current.renderAll();
-        });
-      } else if (template) {
-        loadTemplateOnCanvas(fabricRef.current, template, customFields);
-      }
-    }
   };
 
   // Image Upload handler with DPI resolution check
@@ -634,16 +672,31 @@ export default function DesignStudio({ slug }) {
     if (!template) return;
     setAddingToCart(true);
     try {
-      const res = await axiosInstance.get(`/products/${slug}`);
-      const productId = res.data?.product?._id;
+      let productId = product?._id;
+      if (!productId) {
+        const res = await axiosInstance.get(`/products/${slug}`);
+        productId = res.data?.product?._id;
+      }
 
       if (!productId) throw new Error('Product not found');
+
+      // Build complete configuration from schema
+      let finalConfig = { ...productConfig };
+      if (productSchema?.attributes) {
+        productSchema.attributes.forEach((attr) => {
+          if (!finalConfig[attr.key] && attr.options && attr.options.length > 0) {
+            finalConfig[attr.key] = attr.options[0].value;
+          }
+        });
+      }
+
+      const finalQty = orderQuantity || productSchema?.quantityTiers?.[0] || 100;
 
       // Add to Cart payload
       await axiosInstance.post('/cart/items', {
         productId,
-        quantity: 100,
-        configuration: {},
+        quantity: finalQty,
+        configuration: finalConfig,
         designType: 'TEMPLATE',
         template: {
           templateId: template._id || templateId,
@@ -656,7 +709,7 @@ export default function DesignStudio({ slug }) {
       router.push('/cart');
     } catch (err) {
       console.error(err);
-      alert('Failed to add to cart. ' + (err.message || ''));
+      alert('Failed to add to cart. ' + (err.response?.data?.message || err.message || ''));
     } finally {
       setAddingToCart(false);
     }
@@ -887,6 +940,49 @@ export default function DesignStudio({ slug }) {
                         <div className="text-xs text-slate-500 italic">No editable fields.</div>
                       )}
                     </div>
+
+                    {/* Print & Paper Options */}
+                    {productSchema && (
+                      <div className="flex flex-col gap-3 pt-3 border-t border-slate-100">
+                        <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Print &amp; Paper Options</div>
+                        {productSchema.attributes?.map((attr) => (
+                          <div key={attr.key} className="flex flex-col gap-1">
+                            <label className="text-xs font-semibold text-slate-600">
+                              {attr.label || attr.key}
+                            </label>
+                            <select
+                              value={productConfig[attr.key] || attr.options?.[0]?.value || ''}
+                              onChange={(e) => setProductConfig(prev => ({ ...prev, [attr.key]: e.target.value }))}
+                              className="w-full text-xs p-2 border border-slate-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-slate-700"
+                            >
+                              {attr.options?.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                  {opt.label || opt.value} {opt.priceModifier ? `(+₹${opt.priceModifier})` : ''}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ))}
+
+                        {/* Quantity Selection */}
+                        {productSchema.quantityTiers && productSchema.quantityTiers.length > 0 && (
+                          <div className="flex flex-col gap-1">
+                            <label className="text-xs font-semibold text-slate-600">Quantity</label>
+                            <select
+                              value={orderQuantity}
+                              onChange={(e) => setOrderQuantity(Number(e.target.value))}
+                              className="w-full text-xs p-2 border border-slate-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-slate-700"
+                            >
+                              {productSchema.quantityTiers.map((qty) => (
+                                <option key={qty} value={qty}>
+                                  {qty} Units
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div className="text-xs text-slate-500 italic">No template loaded.</div>
