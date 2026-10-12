@@ -27,6 +27,16 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [deliverySpeed, setDeliverySpeed] = useState('standard');
+  const [pincode, setPincode] = useState('110001');
+  const [isEditingPincode, setIsEditingPincode] = useState(false);
+  const [pincodeInput, setPincodeInput] = useState('110001');
+  const [openSection, setOpenSection] = useState('specs');
+
+  const getEstimatedDate = (days) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -318,14 +328,51 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Delivery Info */}
-          <div className="text-[15px]">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-black">Delivery to 110001</span>
-              <button className="underline text-black">More information</button>
+          <div className="p-3.5 rounded-xl bg-slate-100/70 border border-slate-200 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-1.5 text-slate-700">
+                <MapPin className="w-3.5 h-3.5 text-[#0082CA]" />
+                <span>Delivery to <strong className="text-slate-900 font-bold">{pincode}</strong></span>
+              </div>
+              {isEditingPincode ? (
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={pincodeInput}
+                    onChange={(e) => setPincodeInput(e.target.value.replace(/\D/g, ''))}
+                    className="w-20 px-2 py-0.5 text-xs border border-slate-300 rounded bg-white font-mono focus:outline-hidden focus:border-[#0082CA]"
+                    placeholder="PIN Code"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (pincodeInput.length === 6) setPincode(pincodeInput);
+                      setIsEditingPincode(false);
+                    }}
+                    className="text-xs font-bold text-[#0082CA] hover:underline"
+                  >
+                    Check
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsEditingPincode(true)}
+                  className="text-xs font-semibold text-[#0082CA] hover:underline cursor-pointer"
+                >
+                  Change PIN
+                </button>
+              )}
             </div>
-            <div className="flex items-center gap-2 font-bold text-black">
-              <Truck className="w-5 h-5" />
-              <span>8 August <span className="text-emerald-500 font-normal">FREE</span></span>
+            <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
+              <Truck className="w-4 h-4 text-[#0082CA]" />
+              <span>
+                Deliver by {deliverySpeed === 'sameday' ? 'Tomorrow' : getEstimatedDate(4)}{' '}
+                <span className="text-emerald-700 font-bold text-[11px] ml-1 bg-emerald-100 px-2 py-0.5 rounded-full">
+                  FREE
+                </span>
+              </span>
             </div>
           </div>
 
@@ -337,24 +384,26 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <label className="text-[15px] font-bold text-black block">Delivery Speed</label>
               <div className="flex gap-2">
                 <button 
+                  type="button"
                   onClick={() => setDeliverySpeed('standard')}
-                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors ${
+                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'standard' 
                       ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
                       : 'bg-white border-slate-300 text-black hover:bg-slate-50'
                   }`}
                 >
-                  Standard
+                  Standard (3-4 Days)
                 </button>
                 <button 
+                  type="button"
                   onClick={() => setDeliverySpeed('sameday')}
-                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors ${
+                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'sameday' 
                       ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
                       : 'bg-white border-slate-300 text-black hover:bg-slate-50'
                   }`}
                 >
-                  Same Day Delivery - Mumbai, Bengaluru &amp; Kolkata
+                  Express / Same Day
                 </button>
               </div>
             </div>
@@ -363,9 +412,9 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             <div className="space-y-1">
               <label className="text-[15px] font-bold text-black block">Corners</label>
               <div className="relative">
-                <select className="w-full appearance-none bg-white border border-slate-400 rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-black focus:outline-none focus:border-black cursor-pointer">
-                  <option>Standard</option>
-                  <option>Rounded</option>
+                <select className="w-full appearance-none bg-white border border-slate-400 rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-black focus:outline-hidden focus:border-black cursor-pointer">
+                  <option>Standard Square Corners</option>
+                  <option>Smooth Rounded Corners (6mm)</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                   <ChevronDown className="w-5 h-5 text-black" strokeWidth={2.5} />
@@ -374,20 +423,79 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             </div>
 
             {/* Quantity */}
-            <div className="space-y-1">
-              <label className="text-[15px] font-bold text-black block">Quantity</label>
-              <div className="relative" ref={dropdownRef}>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <label className="text-[15px] font-bold text-black block">Quantity &amp; Volume Pricing</label>
+                <span className="text-xs font-semibold text-[#0082CA]">Bulk discounts applied</span>
+              </div>
+
+              {/* Volume Discount Table */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
+                {[
+                  { q: 100, label: '100 pcs', perUnit: (priceResult?.unitPrice || 2.5).toFixed(2), discount: 'Base' },
+                  { q: 250, label: '250 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.9).toFixed(2), discount: 'Save 10%' },
+                  { q: 500, label: '500 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.8).toFixed(2), discount: 'Save 20%', popular: true },
+                  { q: 1000, label: '1,000 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.65).toFixed(2), discount: 'Save 35%', bestValue: true },
+                  { q: 2500, label: '2,500 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.52).toFixed(2), discount: 'Save 48%' },
+                ].map((tier) => {
+                  const isCurrent = quantity === tier.q;
+                  return (
+                    <button
+                      key={tier.q}
+                      type="button"
+                      onClick={() => updateQuantity(tier.q)}
+                      className={`relative flex flex-col items-center justify-center p-2 rounded-lg border text-center transition-all cursor-pointer ${
+                        isCurrent
+                          ? 'bg-[#f0f7ff] border-[#0082CA] shadow-xs ring-2 ring-[#0082CA]/20'
+                          : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                      }`}
+                    >
+                      {tier.popular && (
+                        <span className="absolute -top-2 bg-[#0082CA] text-white text-[8px] font-extrabold px-1.5 py-0.2 rounded-full uppercase tracking-tighter">
+                          Popular
+                        </span>
+                      )}
+                      {tier.bestValue && (
+                        <span className="absolute -top-2 bg-emerald-600 text-white text-[8px] font-extrabold px-1.5 py-0.2 rounded-full uppercase tracking-tighter">
+                          Best Value
+                        </span>
+                      )}
+                      <span className="text-xs font-bold text-slate-900">{tier.label}</span>
+                      <span className="text-[11px] font-semibold text-slate-600 mt-0.5">₹{tier.perUnit}/ea</span>
+                      <span className={`text-[9px] font-bold mt-0.5 ${isCurrent ? 'text-[#0082CA]' : 'text-emerald-700'}`}>
+                        {tier.discount}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Bulk B2B Notice */}
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-sky-50/70 border border-sky-100 text-xs">
+                <div className="text-slate-700">
+                  <span className="font-bold text-slate-900">Need 5,000+ units?</span> Custom enterprise volume pricing available.
+                </div>
+                <Link
+                  href="/bulk-enquiry"
+                  className="text-[#0082CA] font-bold hover:underline inline-flex items-center gap-1 shrink-0 ml-2"
+                >
+                  Get a Quote &rarr;
+                </Link>
+              </div>
+
+              {/* Quantity dropdown fallback */}
+              <div className="relative pt-1" ref={dropdownRef}>
                 <button
                   type="button"
                   onClick={() => setIsOpen(!isOpen)}
-                  className="w-full bg-white border border-slate-400 rounded-md px-3 py-2.5 flex items-center justify-between focus:outline-none focus:border-black cursor-pointer text-[15px] font-bold text-black"
+                  className="w-full bg-white border border-slate-300 rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-black cursor-pointer text-sm font-semibold text-slate-800"
                 >
-                  <span>{quantity.toLocaleString('en-IN')} (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
-                  <ChevronDown className={`w-5 h-5 text-black transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2.5} />
+                  <span>Selected Quantity: {quantity.toLocaleString('en-IN')} units (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
+                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
                 </button>
                 
                 {isOpen && (
-                  <div className="absolute z-10 w-full mt-1.5 bg-white border border-slate-300 rounded-md shadow-lg max-h-[300px] overflow-y-auto py-1 custom-scrollbar">
+                  <div className="absolute z-10 w-full mt-1.5 bg-white border border-slate-300 rounded-md shadow-lg max-h-[250px] overflow-y-auto py-1 custom-scrollbar">
                     {standardQuantities.map((q) => {
                       const isSelected = quantity === q;
                       return (
@@ -397,20 +505,14 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                             updateQuantity(q);
                             setIsOpen(false);
                           }}
-                          className={`px-3 py-2.5 cursor-pointer flex items-center justify-between text-[15px] font-medium mx-1.5 my-1 rounded-md transition-colors ${
+                          className={`px-3 py-2 cursor-pointer flex items-center justify-between text-sm font-medium mx-1.5 my-0.5 rounded-md transition-colors ${
                             isSelected 
-                              ? 'bg-[#f0f7ff] text-black border border-[#0082CA]' 
-                              : 'text-black hover:bg-slate-100 border border-transparent'
+                              ? 'bg-[#f0f7ff] text-[#0082CA] font-bold border border-[#0082CA]/30' 
+                              : 'text-slate-700 hover:bg-slate-100 border border-transparent'
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <span>{q.toLocaleString('en-IN')} (₹{getDisplayUnitPrice(q)} / unit)</span>
-                            {q === 200 && (
-                              <span className="bg-sky-100 text-slate-800 text-[10px] font-bold px-2 py-0.5 rounded-full border border-sky-200 ml-1 leading-none">
-                                Recommended
-                              </span>
-                            )}
-                          </div>
+                          <span>{q.toLocaleString('en-IN')} units</span>
+                          <span className="text-xs text-slate-500">₹{getDisplayUnitPrice(q)} / unit</span>
                         </div>
                       );
                     })}
@@ -421,30 +523,211 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
           </div>
 
-          {/* CTAs */}
-          <div className="space-y-3 pt-6 border-t border-slate-200">
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-[#71cbf4] hover:bg-[#5dbfec] text-black font-bold text-[15px] py-3.5 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
-            >
-              Browse designs <Image className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="w-full bg-white hover:bg-slate-50 border border-slate-300 text-black font-bold text-[15px] py-3.5 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
-            >
-              Upload design <CloudUpload className="w-5 h-5" />
-            </button>
-            
-            <div className="pt-2">
-              <button className="text-[15px] font-bold text-black flex items-center justify-between w-full hover:text-[#0082CA] transition-colors py-3 border-b border-slate-200">
-                Specs &amp; Templates <ChevronRight className="w-5 h-5" />
-              </button>
-              <button className="text-[15px] font-bold text-black flex items-center justify-between w-full hover:text-[#0082CA] transition-colors py-3 border-b border-slate-200">
-                Product Options <ChevronRight className="w-5 h-5" />
-              </button>
+          {/* Trust Strip */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-3.5 rounded-xl bg-slate-100/60 border border-slate-200 text-[11px] font-semibold text-slate-700">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
+              <span>Free Design Help</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>100% QC Checked</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FileText className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
+              <span>GST Tax Invoice</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Zap className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <span>Bulk Discounts</span>
             </div>
           </div>
+
+          {/* CTAs */}
+          <div className="space-y-3 pt-4 border-t border-slate-200">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full bg-[#0082CA] hover:bg-[#0068A2] text-white font-bold text-[15px] py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm cursor-pointer"
+            >
+              Browse Ready Templates <Image className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="w-full bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-bold text-[15px] py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              Upload Your Own Design <CloudUpload className="w-5 h-5 text-[#0082CA]" />
+            </button>
+          </div>
+
+          {/* Print Accordions (Specs, Paper Guide, Artwork Guidelines, FAQ) */}
+          <div className="border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white overflow-hidden mt-6">
+            
+            {/* 1. Specs Table Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setOpenSection(openSection === 'specs' ? null : 'specs')}
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Package className="w-4 h-4 text-[#0082CA]" />
+                  <span>Technical Specifications &amp; Sizing</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'specs' ? 'rotate-180' : ''}`} />
+              </button>
+              {openSection === 'specs' && (
+                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50">
+                  <table className="w-full text-left border-collapse">
+                    <tbody>
+                      <tr className="border-b border-slate-200">
+                        <td className="py-2 font-semibold text-slate-700 w-1/3">Standard Size</td>
+                        <td className="py-2 text-slate-600">89 × 51 mm (3.5 × 2.0 inches)</td>
+                      </tr>
+                      <tr className="border-b border-slate-200">
+                        <td className="py-2 font-semibold text-slate-700">Paper Stock</td>
+                        <td className="py-2 text-slate-600">300 GSM / 350 GSM Premium Artboard</td>
+                      </tr>
+                      <tr className="border-b border-slate-200">
+                        <td className="py-2 font-semibold text-slate-700">Print Quality</td>
+                        <td className="py-2 text-slate-600">300+ DPI High Definition Offset / Digital</td>
+                      </tr>
+                      <tr className="border-b border-slate-200">
+                        <td className="py-2 font-semibold text-slate-700">Bleed / Safe Margin</td>
+                        <td className="py-2 text-slate-600">3 mm Bleed, 3 mm Safe Cutting Margin</td>
+                      </tr>
+                      <tr>
+                        <td className="py-2 font-semibold text-slate-700">Dispatch Turnaround</td>
+                        <td className="py-2 text-slate-600">Standard 24-48 hrs, Same-Day available</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            {/* 2. Paper & Finish Guide Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setOpenSection(openSection === 'paper' ? null : 'paper')}
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <Layers className="w-4 h-4 text-[#0082CA]" />
+                  <span>Paper Quality &amp; Finish Guide</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'paper' ? 'rotate-180' : ''}`} />
+              </button>
+              {openSection === 'paper' && (
+                <div className="px-4 pb-4 pt-1 space-y-2.5 text-xs text-slate-600 bg-slate-50/50">
+                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                    <strong className="text-slate-900 font-bold block mb-0.5">350 GSM Matte Lamination</strong>
+                    <span>Silky, glare-free finish that resists fingerprints and creates an understated, executive look.</span>
+                  </div>
+                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                    <strong className="text-slate-900 font-bold block mb-0.5">350 GSM High-Gloss UV</strong>
+                    <span>Ultra-shiny reflective coating that enhances contrast and makes bright brand colors pop vividly.</span>
+                  </div>
+                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
+                    <strong className="text-slate-900 font-bold block mb-0.5">Spot UV Accent Coat</strong>
+                    <span>Tactile raised gloss varnish placed precisely over logos and names against a smooth velvety base.</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Artwork Guidelines Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setOpenSection(openSection === 'artwork' ? null : 'artwork')}
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <FileText className="w-4 h-4 text-[#0082CA]" />
+                  <span>Artwork Guidelines &amp; Bleed Safe Zone</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'artwork' ? 'rotate-180' : ''}`} />
+              </button>
+              {openSection === 'artwork' && (
+                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50 space-y-2">
+                  <p>Follow these print specifications to ensure flawless manufacturing:</p>
+                  <ul className="list-disc pl-4 space-y-1">
+                    <li><strong>Resolution:</strong> Minimum 300 DPI for crisp vector logos and sharp typography.</li>
+                    <li><strong>Color Mode:</strong> CMYK color space (RGB will be converted before press).</li>
+                    <li><strong>Bleed Area:</strong> 3mm on all edges to prevent white edges during high-speed guillotine cutting.</li>
+                    <li><strong>Safe Area:</strong> Keep all critical text, contact numbers, and QR codes at least 3mm away from the edge.</li>
+                    <li><strong>Supported Formats:</strong> Print-ready PDF (preferred), AI, PSD, EPS, or high-res PNG.</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            {/* 4. FAQ Accordion */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setOpenSection(openSection === 'faq' ? null : 'faq')}
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2.5">
+                  <HelpCircle className="w-4 h-4 text-[#0082CA]" />
+                  <span>Frequently Asked Questions</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'faq' ? 'rotate-180' : ''}`} />
+              </button>
+              {openSection === 'faq' && (
+                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50 space-y-2.5">
+                  <div>
+                    <strong className="text-slate-900 block mb-0.5">Can I review a proof before printing?</strong>
+                    <span>Yes! Our automated preflight tool validates your artwork resolution and safe zones immediately, and sends a digital proof for confirmation.</span>
+                  </div>
+                  <div>
+                    <strong className="text-slate-900 block mb-0.5">Do you provide GST tax invoices?</strong>
+                    <span>Absolutely. Enter your company GSTIN during checkout to receive an automatic B2B tax invoice with input credit eligible.</span>
+                  </div>
+                  <div>
+                    <strong className="text-slate-900 block mb-0.5">Can I reorder cards with updated details easily?</strong>
+                    <span>Yes, your previous orders and design files are saved in your account dashboard for 1-click reordering at anytime.</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+          </div>
+
+          {/* JSON-LD Structured Data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Product',
+                name: product.name,
+                description: product.description || product.shortDescription,
+                image: (product.images || []).map((img) => (typeof img === 'string' ? img : img.url)),
+                brand: {
+                  '@type': 'Brand',
+                  name: 'Maza Printwala',
+                },
+                offers: {
+                  '@type': 'Offer',
+                  priceCurrency: 'INR',
+                  price: (priceResult?.totalPrice || product.basePrice || 200).toFixed(2),
+                  availability: 'https://schema.org/InStock',
+                  seller: {
+                    '@type': 'Organization',
+                    name: 'Maza Printwala',
+                  },
+                },
+                aggregateRating: {
+                  '@type': 'AggregateRating',
+                  ratingValue: '4.8',
+                  reviewCount: '1611',
+                },
+              }),
+            }}
+          />
 
         </div>
       </div>

@@ -75,7 +75,7 @@ export default function ProductGallery({ product }) {
         {/* Main Studio Preview Box */}
       <div 
         className={cn(
-          "relative bg-slate-100 rounded-lg border border-slate-200 overflow-hidden aspect-square flex items-center justify-center shadow-sm",
+          "relative bg-white rounded-xl border border-slate-200 overflow-hidden aspect-square flex items-center justify-center shadow-xs transition-shadow duration-300 hover:shadow-md",
           isZoomed ? "cursor-none" : "cursor-zoom-in"
         )}
         onMouseEnter={handleMouseEnter}
@@ -86,12 +86,20 @@ export default function ProductGallery({ product }) {
           <img
             src={getImageUrl(images[activeIdx]?.url || images[0]?.url)}
             alt={images[activeIdx]?.alt || product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain p-3 sm:p-4 transition-transform duration-300"
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-slate-400 space-y-2 p-8">
             <Package className="w-16 h-16 stroke-1" />
             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Standard Print Preview</span>
+          </div>
+        )}
+
+        {/* Hover zoom hint badge */}
+        {!isZoomed && images.length > 0 && (
+          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-slate-700 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs flex items-center gap-1.5 pointer-events-none opacity-80 hover:opacity-100 transition-opacity">
+            <ZoomIn className="w-3.5 h-3.5 text-[#0082CA]" />
+            <span>Hover to zoom</span>
           </div>
         )}
       </div>
@@ -112,9 +120,10 @@ export default function ProductGallery({ product }) {
                 top: springY,
                 x: '-50%',
                 y: '-50%',
+                backgroundColor: '#ffffff',
                 backgroundImage: `url(${getImageUrl(images[activeIdx]?.url || images[0]?.url)})`,
                 backgroundPosition: bgPosition,
-                backgroundSize: '300%', // 3x zoom
+                backgroundSize: '280%', // 2.8x zoom
                 backgroundRepeat: 'no-repeat',
                 imageRendering: 'high-quality'
               }}
@@ -131,33 +140,41 @@ export default function ProductGallery({ product }) {
                 }} 
               />
               {/* Center Crosshair Dot for precision feel */}
-              <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-black/30 rounded-full -translate-x-1/2 -translate-y-1/2" />
+              <div className="absolute top-1/2 left-1/2 w-1.5 h-1.5 bg-[#0082CA]/60 rounded-full -translate-x-1/2 -translate-y-1/2" />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-
       {/* Thumbnails Row with Priority Order Tooltips */}
       {images.length > 1 && (
-        <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
-          {images.map((img, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIdx(idx)}
-              className={cn(
-                'relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all shrink-0 bg-slate-50 group/thumb',
-                activeIdx === idx
-                  ? 'border-[#0082CA] ring-2 ring-[#0082CA]/20 scale-95 shadow-sm'
-                  : 'border-slate-200 opacity-75 hover:opacity-100 hover:border-slate-300'
-              )}
-            >
-              <img src={img.url} alt={img.alt || 'thumbnail'} className="w-full h-full object-cover" />
-              <div className="absolute inset-x-0 bottom-0 bg-slate-950/80 text-white text-[8px] font-extrabold py-0.5 text-center tracking-tighter truncate px-0.5">
-                {img.label.split(' ')[1] || `View ${idx + 1}`}
-              </div>
-            </button>
-          ))}
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 no-scrollbar">
+          {images.map((img, idx) => {
+            const shortLabels = ['Hero', 'Angle', 'Texture', 'Lifestyle', 'Packaging', 'Sample'];
+            const tag = shortLabels[idx] || `View ${idx + 1}`;
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActiveIdx(idx)}
+                className={cn(
+                  'relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white group/thumb focus:outline-hidden',
+                  activeIdx === idx
+                    ? 'border-[#0082CA] ring-2 ring-[#0082CA]/25 scale-95 shadow-sm'
+                    : 'border-slate-200 opacity-80 hover:opacity-100 hover:border-slate-300'
+                )}
+              >
+                <img
+                  src={getImageUrl(img.url)}
+                  alt={img.alt || 'thumbnail'}
+                  className="w-full h-full object-contain p-1.5"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-slate-900/85 text-white text-[9px] font-bold py-0.5 text-center tracking-tight truncate px-0.5">
+                  {tag}
+                </div>
+              </button>
+            );
+          })}
         </div>
       )}
 
