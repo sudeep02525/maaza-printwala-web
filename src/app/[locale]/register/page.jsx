@@ -448,7 +448,7 @@ export default function RegisterPage() {
         <button
           type="button"
           onClick={handleGoogleSignUp}
-          className="w-full py-2.5 px-4 border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-slate-50/80 rounded-xl font-bold text-xs sm:text-sm text-[var(--text-main)] flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
+          className="w-full py-2.5 px-4 border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--hover)] rounded-xl font-bold text-xs sm:text-sm text-[var(--text-main)] flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path

@@ -169,7 +169,7 @@ export default function ProductGallery({ product }) {
                   alt={img.alt || 'thumbnail'}
                   className="w-full h-full object-contain p-1.5"
                 />
-                <div className="absolute inset-x-0 bottom-0 bg-slate-900/85 text-white text-[9px] font-bold py-0.5 text-center tracking-tight truncate px-0.5">
+                <div className="absolute inset-x-0 bottom-0 bg-black/85 text-white text-[9px] font-bold py-0.5 text-center tracking-tight truncate px-0.5">
                   {tag}
                 </div>
               </button>

@@ -201,7 +201,7 @@ export default function CartPage() {
                     <div className="flex items-start gap-4 flex-1 min-w-0">
                       <div className="w-24 h-24 rounded-lg bg-[var(--hover)] overflow-hidden shrink-0 border border-[var(--border)] relative">
                         <img src={prodImg} alt={prodName} className="w-full h-full object-cover" />
-                        <div className="absolute top-1 left-1 bg-slate-900/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
+                        <div className="absolute top-1 left-1 bg-black/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
                           {item.designType}
                         </div>
                       </div>
@@ -364,7 +364,7 @@ export default function CartPage() {
                         type="button"
                         onClick={() => handleApplyCoupon()}
                         disabled={isApplyingCoupon || !couponInput.trim()}
-                        className="px-4 py-2 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
+                        className="px-4 py-2 bg-[var(--text-main)] hover:bg-[#0082CA] disabled:opacity-40 text-[var(--bg-card)] hover:text-white text-xs font-bold rounded-lg transition-colors cursor-pointer"
                       >
                         {isApplyingCoupon ? '...' : 'Apply'}
                       </button>

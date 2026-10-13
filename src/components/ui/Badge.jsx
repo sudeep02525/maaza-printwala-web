@@ -12,7 +12,7 @@ export default function Badge({
 
   const variants = {
     default: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border)]',
-    primary: 'bg-slate-900 text-white',
+    primary: 'bg-[var(--text-main)] text-[var(--bg-card)]',
     accent: 'bg-[#0082CA] text-white',
     success: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border-strong)]',
     warning: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border-strong)]',

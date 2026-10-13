@@ -32,8 +32,8 @@ export default function CheckoutProgress({ currentStep, onStepClick }) {
                     isCompleted
                       ? 'bg-emerald-600 text-white'
                       : isCurrent
-                      ? 'bg-[#1E3A8A] text-white ring-4 ring-[#1E3A8A]/20 shadow-md'
-                      : 'bg-gray-200 text-gray-600'
+                      ? 'bg-[#0082CA] text-white ring-4 ring-[#0082CA]/20 shadow-md'
+                      : 'bg-[var(--hover)] text-[var(--text-muted)] border border-[var(--border)]'
                   }`}
                 >
                   {isCompleted ? (
@@ -46,7 +46,7 @@ export default function CheckoutProgress({ currentStep, onStepClick }) {
                 </div>
                 <span
                   className={`text-xs md:text-sm font-semibold ${
-                    isCurrent ? 'text-[#1E3A8A]' : isCompleted ? 'text-gray-800' : 'text-gray-400'
+                    isCurrent ? 'text-[#0082CA]' : isCompleted ? 'text-[var(--text-main)]' : 'text-[var(--text-faint)]'
                   }`}
                 >
                   {step.name}
@@ -56,7 +56,7 @@ export default function CheckoutProgress({ currentStep, onStepClick }) {
               {idx < steps.length - 1 && (
                 <div
                   className={`flex-1 h-0.5 mx-2 md:mx-4 transition-colors ${
-                    step.id < currentStep ? 'bg-emerald-600' : 'bg-gray-200'
+                    step.id < currentStep ? 'bg-emerald-600' : 'bg-[var(--border)]'
                   }`}
                 />
               )}

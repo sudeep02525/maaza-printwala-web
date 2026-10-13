@@ -198,7 +198,7 @@ export default async function HomePage({ params }) {
               <FadeIn key={i} delay={i * 0.1}>
                 <div className="relative aspect-square rounded-lg overflow-hidden group border border-[var(--border)]">
                   <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Gallery" />
-                  <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <Heart className="w-8 h-8 text-white fill-white shadow-sm" />
                   </div>
                 </div>

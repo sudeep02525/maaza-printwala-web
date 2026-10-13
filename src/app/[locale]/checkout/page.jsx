@@ -144,7 +144,7 @@ export default function CheckoutPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
                     <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
-                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
+                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-[var(--border)]">
                         <span className="font-extrabold text-[var(--text-main)]">Contact Details</span>
                         <button onClick={() => setStep(1)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
@@ -154,7 +154,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
-                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
+                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-[var(--border)]">
                         <span className="font-extrabold text-[var(--text-main)]">Delivery Address</span>
                         <button onClick={() => setStep(2)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
@@ -164,13 +164,13 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
-                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
+                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-[var(--border)]">
                         <span className="font-extrabold text-[var(--text-main)]">Billing & GST</span>
                         <button onClick={() => setStep(3)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
                       <p className="text-[var(--text-main)] font-bold">{draft.billingDetails?.sameAsDelivery ? 'Same as Delivery Address' : draft.billingDetails?.address?.fullName}</p>
                       {draft.billingDetails?.isBusinessPurchase && (
-                        <div className="mt-2 pt-2 border-t border-slate-200/60 text-xs font-mono text-[var(--text-main)]">
+                        <div className="mt-2 pt-2 border-t border-[var(--border)] text-xs font-mono text-[var(--text-main)]">
                           <p><span className="font-bold">Company:</span> {draft.billingDetails.companyName}</p>
                           <p><span className="font-bold">GSTIN:</span> {draft.billingDetails.gstin}</p>
                         </div>
@@ -178,7 +178,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
-                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
+                      <div className="flex justify-between items-center mb-2 pb-2 border-b border-[var(--border)]">
                         <span className="font-extrabold text-[var(--text-main)]">Delivery Method</span>
                         <button onClick={() => setStep(4)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>

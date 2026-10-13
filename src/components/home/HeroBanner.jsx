@@ -71,7 +71,7 @@ export default function HeroBanner() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent p-6 flex flex-col justify-end items-center text-center">
                     <h3 className="text-white font-bold text-xl mb-1 drop-shadow-md">{tHero('corpGifting')}</h3>
-                    <p className="text-slate-200 text-[13px] font-semibold drop-shadow-md mb-2">{tHero('corpDiscount')}</p>
+                    <p className="text-white/85 text-[13px] font-semibold drop-shadow-md mb-2">{tHero('corpDiscount')}</p>
                     <span className="text-white text-sm font-semibold flex items-center gap-1 drop-shadow-md">
                       {tHero('explore')} <span className="text-lg leading-none">&rarr;</span>
                     </span>
@@ -98,7 +98,7 @@ export default function HeroBanner() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 flex flex-col justify-end items-center text-center">
                     <h3 className="text-white font-bold text-xl mb-1 drop-shadow-md">{tHero('visitingCards')}</h3>
-                    <p className="text-slate-200 text-[13px] font-semibold drop-shadow-md mb-2">{tHero('cardsPrice')}</p>
+                    <p className="text-white/85 text-[13px] font-semibold drop-shadow-md mb-2">{tHero('cardsPrice')}</p>
                     <span className="text-white text-sm font-semibold flex items-center gap-1 drop-shadow-md">
                       {tHero('explore')} <span className="text-lg leading-none">&rarr;</span>
                     </span>

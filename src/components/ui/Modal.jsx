@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children, className, max
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fade-in">
       <div
         className={cn(
           'bg-[var(--bg-card)] rounded-lg border border-[var(--border)] shadow-xl w-full overflow-hidden max-h-[90vh] flex flex-col',

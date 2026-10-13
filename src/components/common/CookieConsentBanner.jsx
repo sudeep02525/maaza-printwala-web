@@ -89,12 +89,12 @@ export default function CookieConsentBanner() {
           transition={{ duration: 0.25, ease: 'easeOut' }}
           className="fixed bottom-4 left-4 right-4 sm:right-auto sm:bottom-6 sm:left-6 z-50 sm:w-[350px] max-w-[360px] mx-auto sm:mx-0 pointer-events-auto"
         >
-          <div className="bg-slate-900/95 text-slate-200 p-4 sm:p-4.5 rounded-2xl shadow-2xl border border-slate-800 backdrop-blur-md">
+          <div className="bg-[var(--bg-card)] text-[var(--text-main)] p-4 sm:p-4.5 rounded-2xl shadow-2xl border border-[var(--border)] backdrop-blur-md">
             
             {/* Header / Text */}
             <div className="flex items-start gap-2.5">
               <span className="text-xl shrink-0 leading-none select-none">🍪</span>
-              <p className="text-xs sm:text-[13px] leading-snug text-[var(--text-faint)]">
+              <p className="text-xs sm:text-[13px] leading-snug text-[var(--text-muted)]">
                 We use cookies to improve your experience and show relevant offers.
               </p>
             </div>
@@ -111,7 +111,7 @@ export default function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={declineCookies}
-                className="flex-1 py-2 px-3 bg-slate-800 hover:bg-slate-700 text-[var(--text-faint)] border border-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer text-center"
+                className="flex-1 py-2 px-3 bg-[var(--hover)] hover:bg-[var(--border)] text-[var(--text-main)] border border-[var(--border)] text-xs font-semibold rounded-lg transition-colors cursor-pointer text-center"
               >
                 Decline
               </button>
@@ -121,7 +121,7 @@ export default function CookieConsentBanner() {
             <div className="pt-2 flex justify-start">
               <Link
                 href="/privacy"
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-faint)] hover:text-white transition-colors group"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-muted)] hover:text-[#0082CA] transition-colors group"
               >
                 <span>Cookie Policy</span>
                 <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>

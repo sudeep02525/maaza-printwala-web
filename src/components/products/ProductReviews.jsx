@@ -75,7 +75,7 @@ export default function ProductReviews({ productId, productName }) {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="w-fit px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-2 shadow-sm cursor-pointer"
+          className="w-fit px-5 py-2.5 bg-[var(--text-main)] hover:bg-[#0082CA] text-[var(--bg-card)] hover:text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-2 shadow-sm cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 text-[#71cbf4]" /> Write a Review
         </button>
@@ -154,7 +154,7 @@ export default function ProductReviews({ productId, productName }) {
                     <Star
                       key={star}
                       className={`w-3.5 h-3.5 ${
-                        star <= r.rating ? 'text-amber-400 fill-amber-400' : 'text-slate-200'
+                        star <= r.rating ? 'text-amber-400 fill-amber-400' : 'text-[var(--border)]'
                       }`}
                     />
                   ))}
@@ -176,7 +176,7 @@ export default function ProductReviews({ productId, productName }) {
 
       {/* Review Submission Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
           <div className="bg-[var(--bg-card)] rounded-xl max-w-md w-full p-6 shadow-2xl relative">
             <button
               onClick={() => setIsModalOpen(false)}

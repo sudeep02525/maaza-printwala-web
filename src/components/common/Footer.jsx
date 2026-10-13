@@ -126,8 +126,7 @@ export default function Footer() {
               {categories.slice(0, 6).map(cat => (
                 <li key={cat.slug}><Link href={`/${cat.slug}`} className="hover:text-[#0082CA] transition-colors">{t.has(`categories.${cat.slug}`) ? t(`categories.${cat.slug}`) : cat.name}</Link></li>
               ))}
-              <li><Link href="/categories" className="hover:text-[#0082CA] transition-colors text-[#0082CA] font-bold">All Categories Directory &rarr;</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors text-[var(--text-muted)] font-medium">{t('footer.viewAllProducts')} &rarr;</Link></li>
+              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors text-[#0082CA] font-bold">{t('footer.viewAllProducts')} &rarr;</Link></li>
             </ul>
           </FooterAccordionItem>
 

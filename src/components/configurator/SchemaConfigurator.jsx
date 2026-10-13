@@ -78,7 +78,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                             className={cn(
                               'px-3.5 py-2.5 rounded-lg border text-xs font-bold transition-all flex items-center justify-between text-left',
                               isSelected
-                                ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
+                                ? 'bg-[#0082CA] text-white border-[#0082CA] shadow-xs'
                                 : 'bg-[var(--bg-subtle)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--hover)] hover:border-[var(--border-strong)]'
                             )}
                           >
@@ -129,7 +129,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         className={cn(
                           'px-3.5 py-2 rounded-lg border text-xs font-bold transition-all flex items-center gap-2',
                           isSelected
-                            ? 'bg-slate-900 text-white border-slate-900 shadow-xs scale-102'
+                            ? 'bg-[#0082CA] text-white border-[#0082CA] shadow-xs scale-102'
                             : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)] hover:border-[var(--border-strong)]'
                         )}
                       >

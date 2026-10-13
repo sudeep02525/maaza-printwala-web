@@ -60,7 +60,7 @@ export default function DesignTemplates() {
                 />
                 
                 {/* Editor Overlay */}
-                <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                   <button className="bg-[#0082CA] text-white px-5 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-600 transition-colors shadow-lg transform translate-y-4 group-hover:translate-y-0 duration-300">
                     <Edit3 className="w-4 h-4" /> Customize Now
                   </button>

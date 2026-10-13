@@ -25,7 +25,7 @@ function QuickViewModal({ product, onClose }) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm">
         <motion.div 
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -61,7 +61,7 @@ function QuickViewModal({ product, onClose }) {
                 <span className="text-sm font-bold text-[var(--text-main)]">4.9</span>
                 <span className="text-xs text-[var(--text-muted)]">(128 Reviews)</span>
               </div>
-              <div className="w-1 h-1 rounded-full bg-slate-300" />
+              <div className="w-1 h-1 rounded-full bg-[var(--border-strong)]" />
               <span className="text-sm font-bold text-[#0082CA]">From ₹{product.basePrice}</span>
             </div>
 

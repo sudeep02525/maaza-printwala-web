@@ -281,7 +281,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           
           {/* Header Section */}
           <div>
-            <h1 className="text-[28px] sm:text-3xl font-bold text-black mb-1">{getProductName(product.name)}</h1>
+            <h1 className="text-[28px] sm:text-3xl font-bold text-[var(--text-main)] mb-1">{getProductName(product.name)}</h1>
             <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--text-main)] mb-4">
               <div className="flex text-[#ff9900]">
                 <Star className="w-4 h-4 fill-current" />
@@ -294,9 +294,9 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <span className="underline cursor-pointer">(1611)</span>
             </div>
             
-            <p className="text-[15px] font-bold text-black mb-4">Personalized cards with a professional look.</p>
+            <p className="text-[15px] font-bold text-[var(--text-main)] mb-4">Personalized cards with a professional look.</p>
             
-            <ul className="list-disc pl-5 text-[15px] text-black space-y-1 mb-4">
+            <ul className="list-disc pl-5 text-[15px] text-[var(--text-main)] space-y-1 mb-4">
               <li>4000+ design options available</li>
               <li>Standard glossy or matte paper included</li>
               <li>Need help in designing? You can avail our <span className="underline cursor-pointer">Design Services</span></li>
@@ -312,7 +312,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                 setOpenSection('specs');
                 document.getElementById('product-specs-accordion')?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="text-[15px] underline text-black hover:text-[#0082CA] transition-colors cursor-pointer"
+              className="text-[15px] underline text-[var(--text-main)] hover:text-[#0082CA] transition-colors cursor-pointer"
             >
               See Details
             </button>
@@ -320,7 +320,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
           {/* Pricing Section */}
           <div className="space-y-1">
-            <div className="flex items-center text-[28px] font-bold text-black">
+            <div className="flex items-center text-[28px] font-bold text-[var(--text-main)]">
               {isCalculating ? (
                 <span className="h-8 w-24 bg-[var(--border)] rounded animate-pulse block"></span>
               ) : (
@@ -337,7 +337,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Delivery Info */}
-          <div className="p-3.5 rounded-xl bg-slate-100/70 border border-[var(--border)] space-y-2">
+          <div className="p-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] space-y-2">
             <div className="flex items-center justify-between text-xs">
               <div className="flex items-center gap-1.5 text-[var(--text-main)]">
                 <MapPin className="w-3.5 h-3.5 text-[#0082CA]" />
@@ -390,15 +390,15 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             
             {/* Delivery Speed */}
             <div className="space-y-1">
-              <label className="text-[15px] font-bold text-black block">Delivery Speed</label>
+              <label className="text-[15px] font-bold text-[var(--text-main)] block">Delivery Speed</label>
               <div className="flex gap-2">
                 <button 
                   type="button"
                   onClick={() => setDeliverySpeed('standard')}
                   className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'standard' 
-                      ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
-                      : 'bg-[var(--bg-card)] border-[var(--border-strong)] text-black hover:bg-[var(--bg-subtle)]'
+                      ? 'bg-[#0082CA]/15 border-[#0082CA] text-[var(--text-main)]' 
+                      : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
                   Standard (3-4 Days)
@@ -408,8 +408,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                   onClick={() => setDeliverySpeed('sameday')}
                   className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'sameday' 
-                      ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
-                      : 'bg-[var(--bg-card)] border-[var(--border-strong)] text-black hover:bg-[var(--bg-subtle)]'
+                      ? 'bg-[#0082CA]/15 border-[#0082CA] text-[var(--text-main)]' 
+                      : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
                   Express / Same Day
@@ -419,14 +419,14 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
             {/* Corners */}
             <div className="space-y-1">
-              <label className="text-[15px] font-bold text-black block">Corners</label>
+              <label className="text-[15px] font-bold text-[var(--text-main)] block">Corners</label>
               <div className="relative">
-                <select className="w-full appearance-none bg-[var(--bg-card)] border border-slate-400 rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-black focus:outline-hidden focus:border-black cursor-pointer">
+                <select className="w-full appearance-none bg-[var(--bg-card)] border border-[var(--border)] rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-[var(--text-main)] focus:outline-hidden focus:border-[#0082CA] cursor-pointer">
                   <option>Standard Square Corners</option>
                   <option>Smooth Rounded Corners (6mm)</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
-                  <ChevronDown className="w-5 h-5 text-black" strokeWidth={2.5} />
+                  <ChevronDown className="w-5 h-5 text-[var(--text-main)]" strokeWidth={2.5} />
                 </div>
               </div>
             </div>
@@ -434,7 +434,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             {/* Quantity */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="text-[15px] font-bold text-black block">Quantity &amp; Volume Pricing</label>
+                <label className="text-[15px] font-bold text-[var(--text-main)] block">Quantity &amp; Volume Pricing</label>
                 <span className="text-xs font-semibold text-[#0082CA]">Bulk discounts applied</span>
               </div>
 
@@ -480,7 +480,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               </div>
 
               {/* Bulk B2B Notice */}
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-sky-50/70 border border-sky-100 text-xs">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#0082CA]/10 border border-[#0082CA]/20 text-xs">
                 <div className="text-[var(--text-main)]">
                   <span className="font-bold text-[var(--text-main)]">Need 5,000+ units?</span> Custom enterprise volume pricing available.
                 </div>
@@ -497,7 +497,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                 <button
                   type="button"
                   onClick={() => setIsOpen(!isOpen)}
-                  className="w-full bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-black cursor-pointer text-sm font-semibold text-[var(--text-main)]"
+                  className="w-full bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-[#0082CA] cursor-pointer text-sm font-semibold text-[var(--text-main)]"
                 >
                   <span>Selected Quantity: {quantity.toLocaleString('en-IN')} units (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
                   <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
@@ -533,7 +533,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Trust Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-3.5 rounded-xl bg-slate-100/60 border border-[var(--border)] text-[11px] font-semibold text-[var(--text-main)]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-3.5 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] text-[11px] font-semibold text-[var(--text-main)]">
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
               <span>Free Design Help</span>

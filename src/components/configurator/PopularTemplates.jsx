@@ -102,7 +102,7 @@ export default function PopularTemplates({ slug }) {
   if (isLoading) {
     return (
       <div className="mt-16 border-t border-[var(--border)] pt-12 w-full relative">
-        <h2 className="text-[22px] font-bold text-black mb-6">Explore most popular templates</h2>
+        <h2 className="text-[22px] font-bold text-[var(--text-main)] mb-6">Explore most popular templates</h2>
         <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar">
           {[1, 2, 3, 4].map(i => (
             <Skeleton key={i} className="h-[280px] min-w-[280px] sm:min-w-[300px] shrink-0 rounded-lg" />
@@ -119,7 +119,7 @@ export default function PopularTemplates({ slug }) {
   return (
     <div className="mt-16 border-t border-[var(--border)] pt-12 w-full relative">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-[22px] font-bold text-black">Explore most popular templates</h2>
+        <h2 className="text-[22px] font-bold text-[var(--text-main)]">Explore most popular templates</h2>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-2 mr-4">
             <button onClick={() => scroll('left')} className="w-8 h-8 rounded-full border border-[var(--border)] flex items-center justify-center hover:bg-[var(--bg-subtle)] text-[var(--text-muted)] transition-colors">
@@ -129,7 +129,7 @@ export default function PopularTemplates({ slug }) {
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
-          <Link href="/products" className="text-[14px] font-bold text-black flex items-center gap-0.5 hover:underline">
+          <Link href="/products" className="text-[14px] font-bold text-[var(--text-main)] flex items-center gap-0.5 hover:underline">
             Browse all <ChevronRight className="w-5 h-5" />
           </Link>
         </div>

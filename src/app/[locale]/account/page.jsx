@@ -252,7 +252,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-10 font-sans">
+    <div className="min-h-screen bg-[var(--bg-subtle)] py-10 font-sans">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Header */}
@@ -702,7 +702,7 @@ export default function AccountPage() {
 
       {/* Address Add / Edit Modal */}
       {addressModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
           <div
             className="bg-[var(--bg-card)] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-[var(--border)] my-8"
             onClick={(e) => e.stopPropagation()}
