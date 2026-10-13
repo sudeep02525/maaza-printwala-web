@@ -205,7 +205,7 @@ export const TopRatedSection = ({ products = [] }) => {
   };
 
   return (
-    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50 border-t border-[var(--border)]">
+    <section className="py-20 relative overflow-hidden bg-[var(--bg-subtle)] border-t border-[var(--border)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
           <div>

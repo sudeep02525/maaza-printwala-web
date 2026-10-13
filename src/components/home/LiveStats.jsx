@@ -5,15 +5,15 @@ import { motion } from 'framer-motion';
 import { Truck, Users, LayoutTemplate, Briefcase } from 'lucide-react';
 
 const STATS = [
-  { label: 'Orders Delivered', value: '1.2M+', icon: Truck, color: 'text-[#0082CA]', bg: 'bg-blue-50' },
-  { label: 'Happy Customers', value: '100k+', icon: Users, color: 'text-emerald-500', bg: 'bg-emerald-50' },
-  { label: 'Design Templates', value: '5000+', icon: LayoutTemplate, color: 'text-amber-500', bg: 'bg-amber-50' },
-  { label: 'Corporate Partners', value: '10k+', icon: Briefcase, color: 'text-purple-500', bg: 'bg-purple-50' },
+  { label: 'Orders Delivered', value: '1.2M+', icon: Truck, color: 'text-[#0082CA]', bg: 'bg-[#0082CA]/10' },
+  { label: 'Happy Customers', value: '100k+', icon: Users, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+  { label: 'Design Templates', value: '5000+', icon: LayoutTemplate, color: 'text-amber-500', bg: 'bg-amber-500/10' },
+  { label: 'Corporate Partners', value: '10k+', icon: Briefcase, color: 'text-purple-500', bg: 'bg-purple-500/10' },
 ];
 
 export default function LiveStats() {
   return (
-    <section className="py-20 bg-slate-900 border-b border-slate-800 relative overflow-hidden">
+    <section className="py-20 bg-[var(--bg-card)] border-b border-[var(--border)] relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

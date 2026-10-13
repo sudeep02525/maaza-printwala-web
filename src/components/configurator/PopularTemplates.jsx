@@ -31,7 +31,7 @@ function TemplateCard({ template, slug, router }) {
   };
 
   return (
-    <div className="group rounded-lg border border-[var(--border-strong)] bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[300px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu">
+    <div className="group rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] overflow-hidden hover:border-[var(--border-strong)] transition-colors flex flex-col h-[300px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu">
       {/* Image Container */}
       <div 
         className="flex-1 p-4 pb-2 flex items-center justify-center cursor-pointer"

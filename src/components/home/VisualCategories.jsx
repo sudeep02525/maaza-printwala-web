@@ -18,7 +18,7 @@ export default function VisualCategories() {
   const t = useTranslations();
 
   return (
-    <section className="py-14 bg-[#fafafa]">
+    <section className="py-14 bg-[var(--bg-page)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 space-y-16">
         
         {/* Business Essentials Block */}

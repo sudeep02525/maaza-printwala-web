@@ -721,11 +721,11 @@ export default function DesignStudio({ slug }) {
       <div className="h-14 bg-[var(--bg-card)] border-b border-[var(--border)] flex items-center justify-between px-4 shrink-0 shadow-sm z-30">
         <div className="flex items-center gap-4">
           <div className="font-black text-xl tracking-tighter text-blue-600">PrintWala</div>
-          <div className="h-4 w-px bg-slate-300"></div>
+          <div className="h-4 w-px bg-[var(--border)]"></div>
           <div className="text-sm font-semibold text-[var(--text-main)] capitalize">Product: {slug?.replace(/-/g, ' ')}</div>
           {template && (
             <>
-              <div className="h-4 w-px bg-slate-300"></div>
+              <div className="h-4 w-px bg-[var(--border)]"></div>
               <div className="text-sm text-[var(--text-muted)] font-medium">Template: {template.name}</div>
             </>
           )}
@@ -754,7 +754,7 @@ export default function DesignStudio({ slug }) {
             <Redo className="w-4 h-4" />
           </button>
 
-          <div className="h-4 w-px bg-slate-300 mx-1"></div>
+          <div className="h-4 w-px bg-[var(--border)] mx-1"></div>
 
           {/* Save Draft Button */}
           <button 
@@ -779,7 +779,7 @@ export default function DesignStudio({ slug }) {
             <Eye className="w-3.5 h-3.5 text-blue-600" /> Preview
           </button>
 
-          <div className="h-4 w-px bg-slate-300 mx-1"></div>
+          <div className="h-4 w-px bg-[var(--border)] mx-1"></div>
 
           {/* Add to Cart Button */}
           <button 
@@ -1290,7 +1290,7 @@ export default function DesignStudio({ slug }) {
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[var(--bg-card)] px-4 py-1.5 rounded-full shadow-lg border border-[var(--border)] flex items-center gap-3 text-xs font-bold text-[var(--text-muted)] z-10">
             <span>Size: 600 × 350 px</span>
             
-            <div className="w-px h-3 bg-slate-300"></div>
+            <div className="w-px h-3 bg-[var(--border)]"></div>
 
             {/* Guides Toggle */}
             <button 
@@ -1303,7 +1303,7 @@ export default function DesignStudio({ slug }) {
               Guides: {showGuides ? 'ON' : 'OFF'}
             </button>
 
-            <div className="w-px h-3 bg-slate-300"></div>
+            <div className="w-px h-3 bg-[var(--border)]"></div>
 
             {/* Zoom Controls */}
             <div className="flex items-center gap-1.5">
@@ -1419,7 +1419,7 @@ export default function DesignStudio({ slug }) {
                         >
                           <Italic className="w-3.5 h-3.5" />
                         </button>
-                        <div className="w-px h-4 bg-slate-300 mx-1"></div>
+                        <div className="w-px h-4 bg-[var(--border)] mx-1"></div>
                         <button
                           type="button"
                           title="Align Left"

@@ -30,7 +30,7 @@ export default function PersonalizedRows() {
   if (recentlyViewed.length === 0 && RECENTLY_CUSTOMIZED.length === 0) return null;
 
   return (
-    <section className="py-12 bg-[#fafafa] border-t border-[var(--border)]">
+    <section className="py-12 bg-[var(--bg-page)] border-t border-[var(--border)]">
       <div className="max-w-[1520px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">

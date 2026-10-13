@@ -6,7 +6,7 @@ export default function Card({ children, className, hover = false, ...props }) {
     <div
       className={cn(
         'bg-[var(--bg-card)] rounded-lg border border-[var(--border)] transition-colors duration-150',
-        hover && 'hover:border-slate-400',
+        hover && 'hover:border-[var(--border-strong)]',
         className
       )}
       {...props}

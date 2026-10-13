@@ -111,7 +111,7 @@ export default function HeroBanner() {
       </section>
 
       {/* Trust Strip (PrintVenue Style) */}
-      <div className="bg-[#fafafa] border-y border-[var(--border)] py-8">
+      <div className="bg-[var(--bg-subtle)] border-y border-[var(--border)] py-8">
         <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-4 divide-x-0 md:divide-x md:divide-[var(--border)]">
             

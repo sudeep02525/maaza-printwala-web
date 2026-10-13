@@ -56,10 +56,10 @@ export default function CategoriesView() {
   return (
     <div className="min-h-screen bg-[var(--bg-subtle)]">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-white to-[#F1F5F9] border-b border-slate-200/80 pt-10 pb-12">
+      <div className="bg-[var(--bg-subtle)] border-b border-[var(--border)] pt-10 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-50 text-[#0082CA] border border-sky-200/60 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#0082CA]/10 text-[#0082CA] border border-[#0082CA]/20 mb-4">
               <Layers className="w-3.5 h-3.5" /> Complete Print Directory
             </span>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-[var(--text-main)] tracking-tight">
@@ -141,7 +141,7 @@ export default function CategoriesView() {
             <p className="text-sm text-[var(--text-muted)] mt-1">Try another keyword or reset the category filter.</p>
             <button
               onClick={() => { setSearchTerm(''); setSelectedCategorySlug('all'); }}
-              className="mt-4 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-lg hover:bg-[#0082CA] transition"
+              className="mt-4 px-4 py-2 bg-[var(--text-main)] text-[var(--bg-card)] text-xs font-bold rounded-lg hover:bg-[#0082CA] hover:text-white transition"
             >
               Reset Filters
             </button>

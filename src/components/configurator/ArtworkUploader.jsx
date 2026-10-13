@@ -115,7 +115,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
             className={`p-8 rounded-lg border-2 border-dashed text-center transition-all flex flex-col items-center justify-center space-y-4 ${
               isDragging
                 ? 'border-[#0082CA] bg-blue-50/50 scale-[1.01]'
-                : 'border-[var(--border-strong)] hover:border-slate-400 bg-[var(--bg-subtle)]'
+                : 'border-[var(--border-strong)] hover:border-[#0082CA] bg-[var(--bg-subtle)]'
             }`}
           >
             <div className="w-14 h-14 rounded-full bg-[var(--bg-card)] shadow-sm flex items-center justify-center text-[#0082CA] border border-[var(--border)]">

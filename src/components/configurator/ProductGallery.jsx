@@ -97,7 +97,7 @@ export default function ProductGallery({ product }) {
 
         {/* Hover zoom hint badge */}
         {!isZoomed && images.length > 0 && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-[var(--text-main)] text-[11px] font-semibold px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs flex items-center gap-1.5 pointer-events-none opacity-80 hover:opacity-100 transition-opacity">
+          <div className="absolute top-3 right-3 bg-[var(--bg-card)] backdrop-blur-xs text-[var(--text-main)] text-[11px] font-semibold px-2.5 py-1 rounded-full border border-[var(--border)] shadow-xs flex items-center gap-1.5 pointer-events-none opacity-80 hover:opacity-100 transition-opacity">
             <ZoomIn className="w-3.5 h-3.5 text-[#0082CA]" />
             <span>Hover to zoom</span>
           </div>

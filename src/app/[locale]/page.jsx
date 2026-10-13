@@ -128,7 +128,7 @@ export default async function HomePage({ params }) {
   const recentlyViewed = getSlice(48, 6);
 
   return (
-    <div className="bg-[#fafafa] min-h-screen font-sans overflow-x-hidden">
+    <div className="bg-[var(--bg-page)] min-h-screen font-sans overflow-x-hidden">
       
       {/* 3. HERO & TRUST STRIP */}
       <HeroBanner />
@@ -142,7 +142,7 @@ export default async function HomePage({ params }) {
       <FeaturedSlider products={bestSellers} />
       
       {/* BEST SELLING (Standard Grid) */}
-      <section className="py-14 bg-[#fafafa]">
+      <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('bestSellers')} tButtons={tButtons} />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -156,7 +156,7 @@ export default async function HomePage({ params }) {
       <CustomMerchSection />
       
       {/* RECENTLY ADDED (Standard Grid with 'New' implication) */}
-      <section className="py-14 bg-[#fafafa]">
+      <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('newArrivals')} subtitle={locale === 'hi' ? 'नए टेम्प्लेट और उत्पाद' : locale === 'mr' ? 'नवीन टेम्पलेट्स आणि उत्पादने' : 'Fresh new templates and products'} tButtons={tButtons} />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -168,7 +168,7 @@ export default async function HomePage({ params }) {
       <TopRatedSection products={trendingProducts} />
 
       {/* 17. POPULAR SEARCHES (SEO) */}
-      <section className="py-10 bg-[#f8fafc]">
+      <section className="py-10 bg-[var(--bg-subtle)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('popularSearches')} linkText={null} tButtons={tButtons} />
           <div className="flex flex-wrap gap-3">

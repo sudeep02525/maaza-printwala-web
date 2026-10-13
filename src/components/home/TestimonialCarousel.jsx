@@ -71,14 +71,14 @@ export default function TestimonialCarousel() {
               transition={{ duration: 0.5, ease: "easeInOut" }}
               className="w-full"
             >
-              <div className="bg-[var(--bg-card)] border border-[var(--border)] p-8 sm:p-10 rounded-2xl shadow-xl shadow-slate-200/50 flex flex-col items-center text-center">
+              <div className="bg-[var(--bg-card)] border border-[var(--border)] p-8 sm:p-10 rounded-2xl shadow-lg flex flex-col items-center text-center">
                 
                 {/* Rating & Verified */}
                 <div className="flex items-center justify-between w-full mb-8">
                   <div className="flex gap-1 bg-[var(--bg-subtle)] border border-[var(--border)] px-3 py-1.5 rounded-full">
                     {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400"/>)}
                   </div>
-                  <div className="flex items-center gap-1.5 text-emerald-600 text-xs font-bold bg-emerald-50 border border-emerald-100 px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
                     <BadgeCheck className="w-4 h-4" />
                     <span>Verified Buyer</span>
                   </div>
@@ -117,7 +117,7 @@ export default function TestimonialCarousel() {
               key={i}
               onClick={() => setCurrentIndex(i)}
               className={`h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === i ? 'bg-[#0082CA] w-8' : 'bg-slate-300 w-2.5 hover:bg-slate-400'
+                currentIndex === i ? 'bg-[#0082CA] w-8' : 'bg-[var(--border-strong)] w-2.5 hover:bg-[var(--text-muted)]'
               }`}
               aria-label={`Go to slide ${i + 1}`}
             />
