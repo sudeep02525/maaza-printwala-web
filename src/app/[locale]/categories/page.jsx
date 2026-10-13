@@ -10,10 +10,10 @@ export default function CategoriesPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="min-h-screen bg-[var(--bg-subtle)] flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <div className="w-10 h-10 border-4 border-[#0082CA]/20 border-t-[#0082CA] rounded-full animate-spin"></div>
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Loading Categories Directory...</p>
+            <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest">Loading Categories Directory...</p>
           </div>
         </div>
       }

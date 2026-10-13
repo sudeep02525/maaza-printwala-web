@@ -7,13 +7,13 @@ import { Link } from '@/i18n/routing.js';
 
 export default function PromoBanners() {
   return (
-    <section className="py-16 bg-white border-b border-slate-100">
+    <section className="py-16 bg-[var(--bg-card)] border-b border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="flex items-end justify-between mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Seasonal Offers</h2>
-            <p className="text-sm text-slate-500 mt-2">Exclusive discounts on corporate printing for a limited time.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Seasonal Offers</h2>
+            <p className="text-sm text-[var(--text-muted)] mt-2">Exclusive discounts on corporate printing for a limited time.</p>
           </div>
         </div>
 

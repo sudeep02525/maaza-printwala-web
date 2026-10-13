@@ -34,25 +34,25 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
   };
 
   return (
-    <Card className="p-6 sm:p-8 border-slate-200 select-none">
+    <Card className="p-6 sm:p-8 border-[var(--border)] select-none">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-black text-slate-900">1. Contact Information</h2>
+        <h2 className="text-xl font-black text-[var(--text-main)]">1. Contact Information</h2>
         <Badge variant="primary" size="sm">Step 1 of 5</Badge>
       </div>
-      <p className="text-xs sm:text-sm text-slate-600 mb-6 font-normal">
+      <p className="text-xs sm:text-sm text-[var(--text-muted)] mb-6 font-normal">
         We will send order confirmation, production updates, and commercial invoice details to this email and phone number.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Full Name *</label>
+          <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Full Name *</label>
           <input
             type="text"
             value={formData.fullName}
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
             placeholder="e.g. Rahul Sharma"
-            className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-              errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
+            className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-[var(--text-main)] ${
+              errors.fullName ? 'border-red-500 focus:ring-red-200' : 'border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-[#0082CA]/20'
             }`}
           />
           {errors.fullName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.fullName}</p>}
@@ -60,23 +60,23 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address *</label>
+            <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Email Address *</label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="rahul@example.com"
-              className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                errors.email ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
+              className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-[var(--text-main)] ${
+                errors.email ? 'border-red-500 focus:ring-red-200' : 'border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-[#0082CA]/20'
               }`}
             />
             {errors.email && <p className="text-xs font-semibold text-red-600 mt-1">{errors.email}</p>}
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Mobile Number (10 digits) *</label>
+            <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Mobile Number (10 digits) *</label>
             <div className="flex">
-              <span className="inline-flex items-center px-3.5 rounded-l-lg border border-r-0 border-slate-300 bg-slate-100 text-slate-700 text-sm font-bold">
+              <span className="inline-flex items-center px-3.5 rounded-l-lg border border-r-0 border-[var(--border-strong)] bg-[var(--hover)] text-[var(--text-main)] text-sm font-bold">
                 +91
               </span>
               <input
@@ -85,8 +85,8 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
                 placeholder="9876543210"
-                className={`w-full px-4 py-3 rounded-r-lg border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
+                className={`w-full px-4 py-3 rounded-r-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-[var(--text-main)] ${
+                  errors.phone ? 'border-red-500 focus:ring-red-200' : 'border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                 }`}
               />
             </div>
@@ -94,7 +94,7 @@ export default function ContactSection({ initialData, onSubmit, isLoading }) {
           </div>
         </div>
 
-        <div className="pt-4 flex justify-end border-t border-slate-100 mt-6">
+        <div className="pt-4 flex justify-end border-t border-[var(--border)] mt-6">
           <Button
             type="submit"
             variant="primary"

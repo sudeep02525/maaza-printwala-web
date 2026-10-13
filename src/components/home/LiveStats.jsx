@@ -19,7 +19,7 @@ export default function LiveStats() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">India&apos;s Fastest Growing Print Network</h2>
-          <p className="text-sm text-slate-400 mt-2">Trusted by individuals and enterprises alike.</p>
+          <p className="text-sm text-[var(--text-faint)] mt-2">Trusted by individuals and enterprises alike.</p>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -44,7 +44,7 @@ export default function LiveStats() {
               >
                 {stat.value}
               </motion.h3>
-              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">{stat.label}</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-faint)]">{stat.label}</p>
             </motion.div>
           ))}
         </div>

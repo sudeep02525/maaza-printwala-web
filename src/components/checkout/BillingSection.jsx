@@ -68,72 +68,72 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
   };
 
   return (
-    <Card className="p-6 sm:p-8 border-slate-200 select-none">
+    <Card className="p-6 sm:p-8 border-[var(--border)] select-none">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-black text-slate-900">3. Billing & GST Details</h2>
+        <h2 className="text-xl font-black text-[var(--text-main)]">3. Billing & GST Details</h2>
         <Badge variant="primary" size="sm">Step 3 of 5</Badge>
       </div>
-      <p className="text-xs sm:text-sm text-slate-600 mb-6 font-normal">
+      <p className="text-xs sm:text-sm text-[var(--text-muted)] mb-6 font-normal">
         Configure billing address and optional GSTIN for commercial tax invoice generation.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Business Purchase / GST Toggle */}
-        <div className="bg-slate-50 rounded-lg p-5 border border-slate-200">
+        <div className="bg-[var(--bg-subtle)] rounded-lg p-5 border border-[var(--border)]">
           <label className="flex items-start space-x-3 cursor-pointer">
             <input
               type="checkbox"
               checked={isBusinessPurchase}
               onChange={(e) => setIsBusinessPurchase(e.target.checked)}
-              className="mt-1 w-5 h-5 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA]"
+              className="mt-1 w-5 h-5 text-[#0082CA] rounded border-[var(--border-strong)] focus:ring-[#0082CA]"
             />
             <div>
-              <span className="text-base font-bold text-slate-900">I am buying for my business (Claim GST Input Tax Credit)</span>
-              <p className="text-xs text-slate-600 mt-0.5 font-normal">
+              <span className="text-base font-bold text-[var(--text-main)]">I am buying for my business (Claim GST Input Tax Credit)</span>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5 font-normal">
                 Enter your company GSTIN to receive a commercial B2B tax invoice.
               </p>
             </div>
           </label>
 
           {isBusinessPurchase && (
-            <div className="mt-4 pt-4 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mt-4 pt-4 border-t border-[var(--border)] grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Company / Legal Entity Name *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Company / Legal Entity Name *</label>
                 <input
                   type="text"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="e.g. Maaza Enterprises Pvt Ltd"
-                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-slate-900 ${
-                    errors.companyName ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none transition-all text-sm font-semibold text-[var(--text-main)] ${
+                    errors.companyName ? 'border-red-500 focus:ring-red-200' : 'border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
                 {errors.companyName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.companyName}</p>}
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">15-Digit GSTIN *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">15-Digit GSTIN *</label>
                 <input
                   type="text"
                   maxLength="15"
                   value={gstin}
                   onChange={(e) => setGstin(e.target.value.toUpperCase())}
                   placeholder="e.g. 27AAAAA0000A1Z5"
-                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none transition-all font-mono uppercase text-sm font-bold text-slate-900 ${
-                    errors.gstin ? 'border-red-500 focus:ring-red-200' : 'border-slate-300 focus:border-[#0082CA] focus:ring-[#0082CA]/20'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none transition-all font-mono uppercase text-sm font-bold text-[var(--text-main)] ${
+                    errors.gstin ? 'border-red-500 focus:ring-red-200' : 'border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-[#0082CA]/20'
                   }`}
                 />
                 {errors.gstin && <p className="text-xs font-semibold text-red-600 mt-1">{errors.gstin}</p>}
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Purchase Order (PO) Number (Optional)</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Purchase Order (PO) Number (Optional)</label>
                 <input
                   type="text"
                   value={purchaseOrderNumber}
                   onChange={(e) => setPurchaseOrderNumber(e.target.value)}
                   placeholder="e.g. PO-2026-8891"
-                  className="w-full px-4 py-3 rounded-lg border bg-white border-slate-300 focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-slate-900"
+                  className="w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] border-[var(--border-strong)] focus:border-[#0082CA] focus:ring-2 focus:ring-[#0082CA]/20 focus:outline-none transition-all text-sm font-semibold text-[var(--text-main)]"
                 />
               </div>
             </div>
@@ -147,86 +147,86 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
               type="checkbox"
               checked={sameAsDelivery}
               onChange={(e) => setSameAsDelivery(e.target.checked)}
-              className="w-5 h-5 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA]"
+              className="w-5 h-5 text-[#0082CA] rounded border-[var(--border-strong)] focus:ring-[#0082CA]"
             />
-            <span className="text-sm font-bold text-slate-800">My billing address is the same as my delivery address</span>
+            <span className="text-sm font-bold text-[var(--text-main)]">My billing address is the same as my delivery address</span>
           </label>
         </div>
 
         {/* Separate billing address fields */}
         {!sameAsDelivery && (
-          <div className="p-5 bg-slate-50 rounded-lg border border-slate-200 space-y-4">
-            <h3 className="text-sm font-bold text-slate-900">Separate Billing Address</h3>
+          <div className="p-5 bg-[var(--bg-subtle)] rounded-lg border border-[var(--border)] space-y-4">
+            <h3 className="text-sm font-bold text-[var(--text-main)]">Separate Billing Address</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Billing Name *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Billing Name *</label>
                 <input
                   type="text"
                   value={billingAddr.fullName}
                   onChange={(e) => setBillingAddr({ ...billingAddr, fullName: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border bg-white focus:ring-2 focus:outline-none text-sm font-semibold text-slate-900 ${
-                    errors.billingFullName ? 'border-red-500' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] focus:ring-2 focus:outline-none text-sm font-semibold text-[var(--text-main)] ${
+                    errors.billingFullName ? 'border-red-500' : 'border-[var(--border-strong)]'
                   }`}
                 />
                 {errors.billingFullName && <p className="text-xs font-semibold text-red-600 mt-1">{errors.billingFullName}</p>}
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Billing Mobile</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Billing Mobile</label>
                 <input
                   type="text"
                   maxLength="10"
                   value={billingAddr.phone}
                   onChange={(e) => setBillingAddr({ ...billingAddr, phone: e.target.value.replace(/\D/g, '') })}
-                  className="w-full px-4 py-3 rounded-lg border bg-white border-slate-300 text-sm font-semibold text-slate-900"
+                  className="w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] border-[var(--border-strong)] text-sm font-semibold text-[var(--text-main)]"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Street Address *</label>
+              <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">Street Address *</label>
               <input
                 type="text"
                 value={billingAddr.streetAddress}
                 onChange={(e) => setBillingAddr({ ...billingAddr, streetAddress: e.target.value })}
-                className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
-                  errors.billingStreet ? 'border-red-500' : 'border-slate-300'
+                className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] text-sm font-semibold text-[var(--text-main)] ${
+                  errors.billingStreet ? 'border-red-500' : 'border-[var(--border-strong)]'
                 }`}
               />
               {errors.billingStreet && <p className="text-xs font-semibold text-red-600 mt-1">{errors.billingStreet}</p>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">PIN Code *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">PIN Code *</label>
                 <input
                   type="text"
                   maxLength="6"
                   value={billingAddr.pinCode}
                   onChange={(e) => setBillingAddr({ ...billingAddr, pinCode: e.target.value.replace(/\D/g, '') })}
-                  className={`w-full px-4 py-3 rounded-lg border bg-white font-mono text-sm font-bold text-slate-900 ${
-                    errors.billingPin ? 'border-red-500' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] font-mono text-sm font-bold text-[var(--text-main)] ${
+                    errors.billingPin ? 'border-red-500' : 'border-[var(--border-strong)]'
                   }`}
                 />
                 {errors.billingPin && <p className="text-xs font-semibold text-red-600 mt-1">{errors.billingPin}</p>}
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">City *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">City *</label>
                 <input
                   type="text"
                   value={billingAddr.city}
                   onChange={(e) => setBillingAddr({ ...billingAddr, city: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
-                    errors.billingCity ? 'border-red-500' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] text-sm font-semibold text-[var(--text-main)] ${
+                    errors.billingCity ? 'border-red-500' : 'border-[var(--border-strong)]'
                   }`}
                 />
                 {errors.billingCity && <p className="text-xs font-semibold text-red-600 mt-1">{errors.billingCity}</p>}
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">State *</label>
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5">State *</label>
                 <input
                   type="text"
                   value={billingAddr.state}
                   onChange={(e) => setBillingAddr({ ...billingAddr, state: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border bg-white text-sm font-semibold text-slate-900 ${
-                    errors.billingState ? 'border-red-500' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-lg border bg-[var(--bg-card)] text-sm font-semibold text-[var(--text-main)] ${
+                    errors.billingState ? 'border-red-500' : 'border-[var(--border-strong)]'
                   }`}
                 />
                 {errors.billingState && <p className="text-xs font-semibold text-red-600 mt-1">{errors.billingState}</p>}
@@ -235,7 +235,7 @@ export default function BillingSection({ initialData, deliveryAddress, onSubmit,
           </div>
         )}
 
-        <div className="pt-4 flex items-center justify-between border-t border-slate-100 mt-6">
+        <div className="pt-4 flex items-center justify-between border-t border-[var(--border)] mt-6">
           <Button
             type="button"
             variant="outline"

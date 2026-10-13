@@ -182,43 +182,43 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
   if (prodLoading) {
     return (
-      <div className="bg-slate-50 min-h-screen pb-24 lg:pb-12">
+      <div className="bg-[var(--bg-subtle)] min-h-screen pb-24 lg:pb-12">
         <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 select-none font-sans">
           {/* Breadcrumb Skeleton */}
-          <div className="h-4 bg-slate-200 rounded w-[250px] animate-pulse mb-4" />
+          <div className="h-4 bg-[var(--border)] rounded w-[250px] animate-pulse mb-4" />
           
           {/* Main Product Stage Skeleton */}
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start relative">
             
             {/* LEFT COL: Gallery Skeleton */}
             <div className="w-full lg:w-1/2 lg:sticky lg:top-24 self-start space-y-6 z-10">
-              <div className="w-full aspect-square bg-slate-200 rounded-lg animate-pulse" />
+              <div className="w-full aspect-square bg-[var(--border)] rounded-lg animate-pulse" />
               <div className="flex gap-4">
-                <div className="w-24 h-24 bg-slate-200 rounded animate-pulse" />
-                <div className="w-24 h-24 bg-slate-200 rounded animate-pulse" />
-                <div className="w-24 h-24 bg-slate-200 rounded animate-pulse" />
+                <div className="w-24 h-24 bg-[var(--border)] rounded animate-pulse" />
+                <div className="w-24 h-24 bg-[var(--border)] rounded animate-pulse" />
+                <div className="w-24 h-24 bg-[var(--border)] rounded animate-pulse" />
               </div>
             </div>
             
             {/* RIGHT COL: Detailed Information Skeleton */}
             <div className="w-full lg:w-1/2 space-y-8 pb-10">
               <div className="space-y-4">
-                <div className="h-10 bg-slate-200 rounded w-3/4 animate-pulse" />
-                <div className="h-4 bg-slate-200 rounded w-1/4 animate-pulse" />
-                <div className="h-4 bg-slate-200 rounded w-full animate-pulse mt-4" />
-                <div className="h-4 bg-slate-200 rounded w-5/6 animate-pulse" />
-                <div className="h-4 bg-slate-200 rounded w-4/6 animate-pulse" />
+                <div className="h-10 bg-[var(--border)] rounded w-3/4 animate-pulse" />
+                <div className="h-4 bg-[var(--border)] rounded w-1/4 animate-pulse" />
+                <div className="h-4 bg-[var(--border)] rounded w-full animate-pulse mt-4" />
+                <div className="h-4 bg-[var(--border)] rounded w-5/6 animate-pulse" />
+                <div className="h-4 bg-[var(--border)] rounded w-4/6 animate-pulse" />
               </div>
 
               <div className="space-y-2">
-                <div className="h-10 bg-slate-200 rounded w-1/3 animate-pulse" />
-                <div className="h-4 bg-slate-200 rounded w-1/4 animate-pulse" />
+                <div className="h-10 bg-[var(--border)] rounded w-1/3 animate-pulse" />
+                <div className="h-4 bg-[var(--border)] rounded w-1/4 animate-pulse" />
               </div>
               
               <div className="space-y-4">
-                <div className="h-14 bg-slate-200 rounded w-full animate-pulse" />
-                <div className="h-14 bg-slate-200 rounded w-full animate-pulse" />
-                <div className="h-14 bg-slate-200 rounded w-full animate-pulse" />
+                <div className="h-14 bg-[var(--border)] rounded w-full animate-pulse" />
+                <div className="h-14 bg-[var(--border)] rounded w-full animate-pulse" />
+                <div className="h-14 bg-[var(--border)] rounded w-full animate-pulse" />
               </div>
             </div>
           </div>
@@ -230,8 +230,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   if (prodError || !product) {
     return (
     <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-4">
-        <h1 className="text-2xl font-bold text-slate-900">Product Not Found</h1>
-        <p className="text-sm text-slate-500">We couldn&apos;t locate the requested product in our catalogue.</p>
+        <h1 className="text-2xl font-bold text-[var(--text-main)]">Product Not Found</h1>
+        <p className="text-sm text-[var(--text-muted)]">We couldn&apos;t locate the requested product in our catalogue.</p>
         <Link
           href="/products"
           className="inline-block px-6 py-2.5 bg-[#0082CA] text-white font-bold text-xs rounded-lg shadow-xs hover:bg-[#0068A2]"
@@ -243,19 +243,19 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   }
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-24 lg:pb-12">
+    <div className="bg-[var(--bg-subtle)] min-h-screen pb-24 lg:pb-12">
       <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 select-none font-sans">
       {/* 1. Breadcrumbs */}
-      <nav className="flex items-center text-sm font-normal text-slate-500 space-x-2 overflow-x-auto py-1 mb-4">
-        <Link href="/" className="hover:text-slate-700 flex items-center shrink-0 transition-colors">
+      <nav className="flex items-center text-sm font-normal text-[var(--text-muted)] space-x-2 overflow-x-auto py-1 mb-4">
+        <Link href="/" className="hover:text-[var(--text-main)] flex items-center shrink-0 transition-colors">
           Home
         </Link>
-        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
-        <Link href={`/${actualCategory?.slug || fallbackCategorySlug || 'all'}`} className="shrink-0 hover:text-slate-700 transition-colors">
+        <ChevronRight className="w-4 h-4 text-[var(--text-faint)] shrink-0" strokeWidth={2} />
+        <Link href={`/${actualCategory?.slug || fallbackCategorySlug || 'all'}`} className="shrink-0 hover:text-[var(--text-main)] transition-colors">
           {(actualCategory?.slug || fallbackCategorySlug) ? tCategory(actualCategory?.slug || fallbackCategorySlug) : (actualCategory?.name || fallbackCategoryName || 'Print Item')}
         </Link>
-        <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" strokeWidth={2} />
-        <span className="text-slate-900 shrink-0">{getProductName(product.name)}</span>
+        <ChevronRight className="w-4 h-4 text-[var(--text-faint)] shrink-0" strokeWidth={2} />
+        <span className="text-[var(--text-main)] shrink-0">{getProductName(product.name)}</span>
       </nav>
 
       {/* 2. Design Ready Banner */}
@@ -282,7 +282,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           {/* Header Section */}
           <div>
             <h1 className="text-[28px] sm:text-3xl font-bold text-black mb-1">{getProductName(product.name)}</h1>
-            <div className="flex items-center gap-1.5 text-sm font-medium text-slate-800 mb-4">
+            <div className="flex items-center gap-1.5 text-sm font-medium text-[var(--text-main)] mb-4">
               <div className="flex text-[#ff9900]">
                 <Star className="w-4 h-4 fill-current" />
                 <Star className="w-4 h-4 fill-current" />
@@ -322,14 +322,14 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           <div className="space-y-1">
             <div className="flex items-center text-[28px] font-bold text-black">
               {isCalculating ? (
-                <span className="h-8 w-24 bg-slate-200 rounded animate-pulse block"></span>
+                <span className="h-8 w-24 bg-[var(--border)] rounded animate-pulse block"></span>
               ) : (
                 `₹${(priceResult?.totalPrice || 200).toFixed(2)}`
               )}
             </div>
-            <div className="text-[15px] text-slate-500 flex items-center h-5">
+            <div className="text-[15px] text-[var(--text-muted)] flex items-center h-5">
               {isCalculating ? (
-                <span className="h-4 w-32 bg-slate-200 rounded animate-pulse block"></span>
+                <span className="h-4 w-32 bg-[var(--border)] rounded animate-pulse block"></span>
               ) : (
                 `₹${priceResult?.unitPrice?.toFixed(2) || '2.00'} each / ${quantity} units`
               )}
@@ -337,11 +337,11 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Delivery Info */}
-          <div className="p-3.5 rounded-xl bg-slate-100/70 border border-slate-200 space-y-2">
+          <div className="p-3.5 rounded-xl bg-slate-100/70 border border-[var(--border)] space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 text-slate-700">
+              <div className="flex items-center gap-1.5 text-[var(--text-main)]">
                 <MapPin className="w-3.5 h-3.5 text-[#0082CA]" />
-                <span>Delivery to <strong className="text-slate-900 font-bold">{pincode}</strong></span>
+                <span>Delivery to <strong className="text-[var(--text-main)] font-bold">{pincode}</strong></span>
               </div>
               {isEditingPincode ? (
                 <div className="flex items-center gap-1.5">
@@ -350,7 +350,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                     maxLength={6}
                     value={pincodeInput}
                     onChange={(e) => setPincodeInput(e.target.value.replace(/\D/g, ''))}
-                    className="w-20 px-2 py-0.5 text-xs border border-slate-300 rounded bg-white font-mono focus:outline-hidden focus:border-[#0082CA]"
+                    className="w-20 px-2 py-0.5 text-xs border border-[var(--border-strong)] rounded bg-[var(--bg-card)] font-mono focus:outline-hidden focus:border-[#0082CA]"
                     placeholder="PIN Code"
                   />
                   <button
@@ -374,7 +374,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                 </button>
               )}
             </div>
-            <div className="flex items-center gap-2 font-bold text-slate-900 text-sm">
+            <div className="flex items-center gap-2 font-bold text-[var(--text-main)] text-sm">
               <Truck className="w-4 h-4 text-[#0082CA]" />
               <span>
                 Deliver by {deliverySpeed === 'sameday' ? 'Tomorrow' : getEstimatedDate(4)}{' '}
@@ -398,7 +398,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                   className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'standard' 
                       ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
-                      : 'bg-white border-slate-300 text-black hover:bg-slate-50'
+                      : 'bg-[var(--bg-card)] border-[var(--border-strong)] text-black hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
                   Standard (3-4 Days)
@@ -409,7 +409,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                   className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
                     deliverySpeed === 'sameday' 
                       ? 'bg-[#e7f4fb] border-[#0082CA] text-black' 
-                      : 'bg-white border-slate-300 text-black hover:bg-slate-50'
+                      : 'bg-[var(--bg-card)] border-[var(--border-strong)] text-black hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
                   Express / Same Day
@@ -421,7 +421,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             <div className="space-y-1">
               <label className="text-[15px] font-bold text-black block">Corners</label>
               <div className="relative">
-                <select className="w-full appearance-none bg-white border border-slate-400 rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-black focus:outline-hidden focus:border-black cursor-pointer">
+                <select className="w-full appearance-none bg-[var(--bg-card)] border border-slate-400 rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-black focus:outline-hidden focus:border-black cursor-pointer">
                   <option>Standard Square Corners</option>
                   <option>Smooth Rounded Corners (6mm)</option>
                 </select>
@@ -456,7 +456,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                       className={`relative flex flex-col items-center justify-center p-2 rounded-lg border text-center transition-all cursor-pointer ${
                         isCurrent
                           ? 'bg-[#f0f7ff] border-[#0082CA] shadow-xs ring-2 ring-[#0082CA]/20'
-                          : 'bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          : 'bg-[var(--bg-card)] border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--bg-subtle)]'
                       }`}
                     >
                       {tier.popular && (
@@ -469,8 +469,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                           Best Value
                         </span>
                       )}
-                      <span className="text-xs font-bold text-slate-900">{tier.label}</span>
-                      <span className="text-[11px] font-semibold text-slate-600 mt-0.5">₹{tier.perUnit}/ea</span>
+                      <span className="text-xs font-bold text-[var(--text-main)]">{tier.label}</span>
+                      <span className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">₹{tier.perUnit}/ea</span>
                       <span className={`text-[9px] font-bold mt-0.5 ${isCurrent ? 'text-[#0082CA]' : 'text-emerald-700'}`}>
                         {tier.discount}
                       </span>
@@ -481,8 +481,8 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
               {/* Bulk B2B Notice */}
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-sky-50/70 border border-sky-100 text-xs">
-                <div className="text-slate-700">
-                  <span className="font-bold text-slate-900">Need 5,000+ units?</span> Custom enterprise volume pricing available.
+                <div className="text-[var(--text-main)]">
+                  <span className="font-bold text-[var(--text-main)]">Need 5,000+ units?</span> Custom enterprise volume pricing available.
                 </div>
                 <Link
                   href="/bulk-enquiry"
@@ -497,14 +497,14 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                 <button
                   type="button"
                   onClick={() => setIsOpen(!isOpen)}
-                  className="w-full bg-white border border-slate-300 rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-black cursor-pointer text-sm font-semibold text-slate-800"
+                  className="w-full bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-black cursor-pointer text-sm font-semibold text-[var(--text-main)]"
                 >
                   <span>Selected Quantity: {quantity.toLocaleString('en-IN')} units (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
-                  <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
+                  <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
                 </button>
                 
                 {isOpen && (
-                  <div className="absolute z-10 w-full mt-1.5 bg-white border border-slate-300 rounded-md shadow-lg max-h-[250px] overflow-y-auto py-1 custom-scrollbar">
+                  <div className="absolute z-10 w-full mt-1.5 bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md shadow-lg max-h-[250px] overflow-y-auto py-1 custom-scrollbar">
                     {standardQuantities.map((q) => {
                       const isSelected = quantity === q;
                       return (
@@ -517,11 +517,11 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                           className={`px-3 py-2 cursor-pointer flex items-center justify-between text-sm font-medium mx-1.5 my-0.5 rounded-md transition-colors ${
                             isSelected 
                               ? 'bg-[#f0f7ff] text-[#0082CA] font-bold border border-[#0082CA]/30' 
-                              : 'text-slate-700 hover:bg-slate-100 border border-transparent'
+                              : 'text-[var(--text-main)] hover:bg-[var(--hover)] border border-transparent'
                           }`}
                         >
                           <span>{q.toLocaleString('en-IN')} units</span>
-                          <span className="text-xs text-slate-500">₹{getDisplayUnitPrice(q)} / unit</span>
+                          <span className="text-xs text-[var(--text-muted)]">₹{getDisplayUnitPrice(q)} / unit</span>
                         </div>
                       );
                     })}
@@ -533,7 +533,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Trust Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-3.5 rounded-xl bg-slate-100/60 border border-slate-200 text-[11px] font-semibold text-slate-700">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-3.5 rounded-xl bg-slate-100/60 border border-[var(--border)] text-[11px] font-semibold text-[var(--text-main)]">
             <div className="flex items-center gap-2">
               <Sparkles className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
               <span>Free Design Help</span>
@@ -553,7 +553,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* CTAs */}
-          <div className="space-y-3 pt-4 border-t border-slate-200">
+          <div className="space-y-3 pt-4 border-t border-[var(--border)]">
             <button
               onClick={() => setIsModalOpen(true)}
               className="w-full bg-[#0082CA] hover:bg-[#0068A2] text-white font-bold text-[15px] py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-sm cursor-pointer"
@@ -562,51 +562,51 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             </button>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="w-full bg-white hover:bg-slate-50 border border-slate-300 text-slate-900 font-bold text-[15px] py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full bg-[var(--bg-card)] hover:bg-[var(--bg-subtle)] border border-[var(--border-strong)] text-[var(--text-main)] font-bold text-[15px] py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               Upload Your Own Design <CloudUpload className="w-5 h-5 text-[#0082CA]" />
             </button>
           </div>
 
           {/* Print Accordions (Specs, Paper Guide, Artwork Guidelines, FAQ) */}
-          <div id="product-specs-accordion" className="border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white overflow-hidden mt-6 scroll-mt-24">
+          <div id="product-specs-accordion" className="border border-[var(--border)] rounded-xl divide-y divide-[var(--border)] bg-[var(--bg-card)] overflow-hidden mt-6 scroll-mt-24">
             
             {/* 1. Specs Table Accordion */}
             <div>
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'specs' ? null : 'specs')}
-                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <Package className="w-4 h-4 text-[#0082CA]" />
                   <span>Technical Specifications &amp; Sizing</span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'specs' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${openSection === 'specs' ? 'rotate-180' : ''}`} />
               </button>
               {openSection === 'specs' && (
-                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50">
+                <div className="px-4 pb-4 pt-1 text-xs text-[var(--text-muted)] bg-[var(--bg-subtle)]">
                   <table className="w-full text-left border-collapse">
                     <tbody>
-                      <tr className="border-b border-slate-200">
-                        <td className="py-2 font-semibold text-slate-700 w-1/3">Standard Size</td>
-                        <td className="py-2 text-slate-600">89 × 51 mm (3.5 × 2.0 inches)</td>
+                      <tr className="border-b border-[var(--border)]">
+                        <td className="py-2 font-semibold text-[var(--text-main)] w-1/3">Standard Size</td>
+                        <td className="py-2 text-[var(--text-muted)]">89 × 51 mm (3.5 × 2.0 inches)</td>
                       </tr>
-                      <tr className="border-b border-slate-200">
-                        <td className="py-2 font-semibold text-slate-700">Paper Stock</td>
-                        <td className="py-2 text-slate-600">300 GSM / 350 GSM Premium Artboard</td>
+                      <tr className="border-b border-[var(--border)]">
+                        <td className="py-2 font-semibold text-[var(--text-main)]">Paper Stock</td>
+                        <td className="py-2 text-[var(--text-muted)]">300 GSM / 350 GSM Premium Artboard</td>
                       </tr>
-                      <tr className="border-b border-slate-200">
-                        <td className="py-2 font-semibold text-slate-700">Print Quality</td>
-                        <td className="py-2 text-slate-600">300+ DPI High Definition Offset / Digital</td>
+                      <tr className="border-b border-[var(--border)]">
+                        <td className="py-2 font-semibold text-[var(--text-main)]">Print Quality</td>
+                        <td className="py-2 text-[var(--text-muted)]">300+ DPI High Definition Offset / Digital</td>
                       </tr>
-                      <tr className="border-b border-slate-200">
-                        <td className="py-2 font-semibold text-slate-700">Bleed / Safe Margin</td>
-                        <td className="py-2 text-slate-600">3 mm Bleed, 3 mm Safe Cutting Margin</td>
+                      <tr className="border-b border-[var(--border)]">
+                        <td className="py-2 font-semibold text-[var(--text-main)]">Bleed / Safe Margin</td>
+                        <td className="py-2 text-[var(--text-muted)]">3 mm Bleed, 3 mm Safe Cutting Margin</td>
                       </tr>
                       <tr>
-                        <td className="py-2 font-semibold text-slate-700">Dispatch Turnaround</td>
-                        <td className="py-2 text-slate-600">Standard 24-48 hrs, Same-Day available</td>
+                        <td className="py-2 font-semibold text-[var(--text-main)]">Dispatch Turnaround</td>
+                        <td className="py-2 text-[var(--text-muted)]">Standard 24-48 hrs, Same-Day available</td>
                       </tr>
                     </tbody>
                   </table>
@@ -619,26 +619,26 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'paper' ? null : 'paper')}
-                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <Layers className="w-4 h-4 text-[#0082CA]" />
                   <span>Paper Quality &amp; Finish Guide</span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'paper' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${openSection === 'paper' ? 'rotate-180' : ''}`} />
               </button>
               {openSection === 'paper' && (
-                <div className="px-4 pb-4 pt-1 space-y-2.5 text-xs text-slate-600 bg-slate-50/50">
-                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
-                    <strong className="text-slate-900 font-bold block mb-0.5">350 GSM Matte Lamination</strong>
+                <div className="px-4 pb-4 pt-1 space-y-2.5 text-xs text-[var(--text-muted)] bg-[var(--bg-subtle)]">
+                  <div className="p-2.5 bg-[var(--bg-card)] rounded-lg border border-[var(--border)]">
+                    <strong className="text-[var(--text-main)] font-bold block mb-0.5">350 GSM Matte Lamination</strong>
                     <span>Silky, glare-free finish that resists fingerprints and creates an understated, executive look.</span>
                   </div>
-                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
-                    <strong className="text-slate-900 font-bold block mb-0.5">350 GSM High-Gloss UV</strong>
+                  <div className="p-2.5 bg-[var(--bg-card)] rounded-lg border border-[var(--border)]">
+                    <strong className="text-[var(--text-main)] font-bold block mb-0.5">350 GSM High-Gloss UV</strong>
                     <span>Ultra-shiny reflective coating that enhances contrast and makes bright brand colors pop vividly.</span>
                   </div>
-                  <div className="p-2.5 bg-white rounded-lg border border-slate-200">
-                    <strong className="text-slate-900 font-bold block mb-0.5">Spot UV Accent Coat</strong>
+                  <div className="p-2.5 bg-[var(--bg-card)] rounded-lg border border-[var(--border)]">
+                    <strong className="text-[var(--text-main)] font-bold block mb-0.5">Spot UV Accent Coat</strong>
                     <span>Tactile raised gloss varnish placed precisely over logos and names against a smooth velvety base.</span>
                   </div>
                 </div>
@@ -650,16 +650,16 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'artwork' ? null : 'artwork')}
-                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <FileText className="w-4 h-4 text-[#0082CA]" />
                   <span>Artwork Guidelines &amp; Bleed Safe Zone</span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'artwork' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${openSection === 'artwork' ? 'rotate-180' : ''}`} />
               </button>
               {openSection === 'artwork' && (
-                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50 space-y-2">
+                <div className="px-4 pb-4 pt-1 text-xs text-[var(--text-muted)] bg-[var(--bg-subtle)] space-y-2">
                   <p>Follow these print specifications to ensure flawless manufacturing:</p>
                   <ul className="list-disc pl-4 space-y-1">
                     <li><strong>Resolution:</strong> Minimum 300 DPI for crisp vector logos and sharp typography.</li>
@@ -677,26 +677,26 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <button
                 type="button"
                 onClick={() => setOpenSection(openSection === 'faq' ? null : 'faq')}
-                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-slate-900 hover:bg-slate-50 transition-colors cursor-pointer"
+                className="w-full px-4 py-3.5 flex items-center justify-between text-left font-bold text-sm text-[var(--text-main)] hover:bg-[var(--bg-subtle)] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-2.5">
                   <HelpCircle className="w-4 h-4 text-[#0082CA]" />
                   <span>Frequently Asked Questions</span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform ${openSection === 'faq' ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${openSection === 'faq' ? 'rotate-180' : ''}`} />
               </button>
               {openSection === 'faq' && (
-                <div className="px-4 pb-4 pt-1 text-xs text-slate-600 bg-slate-50/50 space-y-2.5">
+                <div className="px-4 pb-4 pt-1 text-xs text-[var(--text-muted)] bg-[var(--bg-subtle)] space-y-2.5">
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Can I review a proof before printing?</strong>
+                    <strong className="text-[var(--text-main)] block mb-0.5">Can I review a proof before printing?</strong>
                     <span>Yes! Our automated preflight tool validates your artwork resolution and safe zones immediately, and sends a digital proof for confirmation.</span>
                   </div>
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Do you provide GST tax invoices?</strong>
+                    <strong className="text-[var(--text-main)] block mb-0.5">Do you provide GST tax invoices?</strong>
                     <span>Absolutely. Enter your company GSTIN during checkout to receive an automatic B2B tax invoice with input credit eligible.</span>
                   </div>
                   <div>
-                    <strong className="text-slate-900 block mb-0.5">Can I reorder cards with updated details easily?</strong>
+                    <strong className="text-[var(--text-main)] block mb-0.5">Can I reorder cards with updated details easily?</strong>
                     <span>Yes, your previous orders and design files are saved in your account dashboard for 1-click reordering at anytime.</span>
                   </div>
                 </div>

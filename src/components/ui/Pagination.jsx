@@ -17,7 +17,7 @@ export default function Pagination({ currentPage = 1, totalPages = 1, onPageChan
         <span>Prev</span>
       </Button>
 
-      <span className="text-xs font-bold text-slate-700 px-3 py-1.5 rounded-lg bg-slate-100 border border-slate-200">
+      <span className="text-xs font-bold text-[var(--text-main)] px-3 py-1.5 rounded-lg bg-[var(--hover)] border border-[var(--border)]">
         Page {currentPage} of {totalPages}
       </span>
 

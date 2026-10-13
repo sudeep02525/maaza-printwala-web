@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 
 const SectionHeader = ({ title, linkText }) => (
   <div className="flex justify-between items-end mb-8">
-    <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">{title}</h2>
+    <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight">{title}</h2>
     {linkText && <a href="#" className="text-sm font-semibold text-[#0082CA] hover:underline">{linkText}</a>}
   </div>
 );
@@ -39,10 +39,10 @@ export default function VisualCategories() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
                 <Link href={item.link || "/products"} className="group flex flex-col gap-3">
-                  <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden shadow-sm border border-slate-200 relative">
+                  <div className="aspect-square bg-[var(--hover)] rounded-lg overflow-hidden shadow-sm border border-[var(--border)] relative">
                     <img src={item.img} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
                   </div>
-                  <h3 className="font-bold text-slate-900 text-sm">{item.name}</h3>
+                  <h3 className="font-bold text-[var(--text-main)] text-sm">{item.name}</h3>
                 </Link>
               </motion.div>
             ))}
@@ -67,10 +67,10 @@ export default function VisualCategories() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
                 <Link href={item.link || "/products"} className="group flex flex-col gap-3">
-                  <div className="aspect-square bg-slate-100 rounded-lg overflow-hidden shadow-sm border border-slate-200 relative">
+                  <div className="aspect-square bg-[var(--hover)] rounded-lg overflow-hidden shadow-sm border border-[var(--border)] relative">
                     <img src={item.img} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt={item.name} />
                   </div>
-                  <h3 className="font-bold text-slate-900 text-sm">{item.name}</h3>
+                  <h3 className="font-bold text-[var(--text-main)] text-sm">{item.name}</h3>
                 </Link>
               </motion.div>
             ))}

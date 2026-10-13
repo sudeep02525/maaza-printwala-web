@@ -42,24 +42,24 @@ export default function CustomerOrders() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12 min-h-screen font-sans">
-      <h1 className="text-3xl font-extrabold text-slate-900 mb-8">My Orders</h1>
+      <h1 className="text-3xl font-extrabold text-[var(--text-main)] mb-8">My Orders</h1>
       
       {isLoading ? (
-        <div className="text-center py-12 text-slate-500">Loading orders...</div>
+        <div className="text-center py-12 text-[var(--text-muted)]">Loading orders...</div>
       ) : orders.length === 0 ? (
-        <div className="text-center py-12 bg-slate-50 rounded-xl border border-slate-200">
-          <p className="text-slate-600 mb-4">You have not placed any orders yet, or you are not logged in.</p>
+        <div className="text-center py-12 bg-[var(--bg-subtle)] rounded-xl border border-[var(--border)]">
+          <p className="text-[var(--text-muted)] mb-4">You have not placed any orders yet, or you are not logged in.</p>
           <Link href="/products" className="text-[#0082CA] font-bold hover:underline">Continue Shopping</Link>
         </div>
       ) : (
         <div className="space-y-6">
           {orders.map(order => (
-            <div key={order._id} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div key={order._id} className="bg-[var(--bg-card)] p-6 rounded-xl border border-[var(--border)] shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
-                <p className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Order #{order.orderNumber}</p>
-                <h3 className="text-lg font-bold text-slate-900 mb-1">{order.items?.[0]?.productNameSnapshot || 'Custom Print Item'}</h3>
-                <p className="text-sm text-slate-600">Quantity: {order.items?.[0]?.quantity}</p>
-                <p className="text-sm text-slate-600 mt-2">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                <p className="text-xs text-[var(--text-muted)] uppercase font-bold tracking-wider mb-1">Order #{order.orderNumber}</p>
+                <h3 className="text-lg font-bold text-[var(--text-main)] mb-1">{order.items?.[0]?.productNameSnapshot || 'Custom Print Item'}</h3>
+                <p className="text-sm text-[var(--text-muted)]">Quantity: {order.items?.[0]?.quantity}</p>
+                <p className="text-sm text-[var(--text-muted)] mt-2">Date: {new Date(order.createdAt).toLocaleDateString()}</p>
               </div>
               
               <div className="flex flex-col md:items-end gap-3">
@@ -70,7 +70,7 @@ export default function CustomerOrders() {
                 }`}>
                   {order.fulfilmentStatus.replace('_', ' ')}
                 </span>
-                <span className="text-xl font-black text-slate-900">₹{order.finalPayableAmount.toFixed(2)}</span>
+                <span className="text-xl font-black text-[var(--text-main)]">₹{order.finalPayableAmount.toFixed(2)}</span>
               </div>
             </div>
           ))}

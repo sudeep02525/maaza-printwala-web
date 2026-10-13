@@ -256,20 +256,20 @@ export default function AccountPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Page Header */}
-        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-xs mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[var(--bg-card)] rounded-2xl p-6 sm:p-8 border border-[var(--border)] shadow-xs mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#0082CA] to-sky-400 text-white font-extrabold text-2xl flex items-center justify-center shadow-md">
               {user?.name ? user.name[0].toUpperCase() : 'U'}
             </div>
             <div>
-              <h1 className="text-2xl font-black text-slate-900">{user?.name || 'My Account'}</h1>
-              <p className="text-sm text-slate-500 mt-0.5">{user?.email}</p>
+              <h1 className="text-2xl font-black text-[var(--text-main)]">{user?.name || 'My Account'}</h1>
+              <p className="text-sm text-[var(--text-muted)] mt-0.5">{user?.email}</p>
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 inline-flex items-center gap-1">
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 border border-emerald-200 inline-flex items-center gap-1">
                   <ShieldCheck className="w-3 h-3" /> Verified Member
                 </span>
                 {user?.companyName && (
-                  <span className="text-[11px] font-semibold text-slate-500">
+                  <span className="text-[11px] font-semibold text-[var(--text-muted)]">
                     &bull; {user.companyName}
                   </span>
                 )}
@@ -288,7 +288,7 @@ export default function AccountPage() {
             <button
               type="button"
               onClick={logout}
-              className="py-2.5 px-4 rounded-xl border border-slate-200 text-slate-600 hover:text-red-600 hover:bg-red-50 font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors cursor-pointer"
+              className="py-2.5 px-4 rounded-xl border border-[var(--border)] text-[var(--text-muted)] hover:text-red-600 hover:bg-red-500/10 font-bold text-xs sm:text-sm flex items-center gap-2 transition-colors cursor-pointer"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">Sign Out</span>
@@ -307,7 +307,7 @@ export default function AccountPage() {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-left transition-all cursor-pointer ${
                 activeTab === 'profile'
                   ? 'bg-[#0082CA] text-white shadow-sm'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  : 'bg-[var(--bg-card)] text-[var(--text-main)] hover:bg-[var(--hover)] border border-[var(--border)]'
               }`}
             >
               <User className="w-4 h-4 shrink-0" />
@@ -320,14 +320,14 @@ export default function AccountPage() {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-left transition-all cursor-pointer ${
                 activeTab === 'addresses'
                   ? 'bg-[#0082CA] text-white shadow-sm'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  : 'bg-[var(--bg-card)] text-[var(--text-main)] hover:bg-[var(--hover)] border border-[var(--border)]'
               }`}
             >
               <MapPin className="w-4 h-4 shrink-0" />
               <div className="flex-1 flex items-center justify-between">
                 <span>Address Book</span>
                 <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold ${
-                  activeTab === 'addresses' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                  activeTab === 'addresses' ? 'bg-white/20 text-white' : 'bg-[var(--hover)] text-[var(--text-muted)]'
                 }`}>
                   {addresses.length}
                 </span>
@@ -340,7 +340,7 @@ export default function AccountPage() {
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-left transition-all cursor-pointer ${
                 activeTab === 'security'
                   ? 'bg-[#0082CA] text-white shadow-sm'
-                  : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200'
+                  : 'bg-[var(--bg-card)] text-[var(--text-main)] hover:bg-[var(--hover)] border border-[var(--border)]'
               }`}
             >
               <Lock className="w-4 h-4 shrink-0" />
@@ -349,11 +349,11 @@ export default function AccountPage() {
 
             <Link
               href="/orders"
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-[var(--text-main)] bg-[var(--bg-card)] hover:bg-[var(--hover)] border border-[var(--border)] transition-colors"
             >
               <Package className="w-4 h-4 shrink-0" />
               <span>Order History</span>
-              <ArrowRight className="w-3.5 h-3.5 ml-auto text-slate-400" />
+              <ArrowRight className="w-3.5 h-3.5 ml-auto text-[var(--text-faint)]" />
             </Link>
           </div>
 
@@ -362,10 +362,10 @@ export default function AccountPage() {
 
             {/* TAB 1: Profile Details */}
             {activeTab === 'profile' && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                <div className="border-b border-slate-100 pb-4 mb-6">
-                  <h2 className="text-lg font-bold text-slate-900">Personal Information</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
+              <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 shadow-xs">
+                <div className="border-b border-[var(--border)] pb-4 mb-6">
+                  <h2 className="text-lg font-bold text-[var(--text-main)]">Personal Information</h2>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">
                     Update your account details and business GSTIN for tax invoices
                   </p>
                 </div>
@@ -387,7 +387,7 @@ export default function AccountPage() {
                 <form onSubmit={handleProfileSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                         Full Name
                       </label>
                       <input
@@ -395,52 +395,52 @@ export default function AccountPage() {
                         value={profileData.name}
                         onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                         required
-                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                        className="w-full px-4 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                         placeholder="Your full name"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                         Email Address
                       </label>
                       <input
                         type="email"
                         value={user?.email || ''}
                         disabled
-                        className="w-full px-4 py-2.5 bg-slate-100 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed"
+                        className="w-full px-4 py-2.5 bg-[var(--hover)] border border-[var(--border)] rounded-xl text-sm text-[var(--text-muted)] cursor-not-allowed"
                       />
-                      <span className="text-[11px] text-slate-400 mt-1 block">Account email cannot be modified</span>
+                      <span className="text-[11px] text-[var(--text-faint)] mt-1 block">Account email cannot be modified</span>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                         Phone Number
                       </label>
                       <input
                         type="tel"
                         value={profileData.phone}
                         onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                        className="w-full px-4 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                         placeholder="10-digit mobile number"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                         Company / Business Name (Optional)
                       </label>
                       <input
                         type="text"
                         value={profileData.companyName}
                         onChange={(e) => setProfileData({ ...profileData, companyName: e.target.value })}
-                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                        className="w-full px-4 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                         placeholder="e.g. Acme Prints LLP"
                       />
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                      <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                         GSTIN for B2B Invoices (Optional)
                       </label>
                       <input
@@ -448,16 +448,16 @@ export default function AccountPage() {
                         value={profileData.gstin}
                         onChange={(e) => setProfileData({ ...profileData, gstin: e.target.value.toUpperCase() })}
                         maxLength={15}
-                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900 font-mono"
+                        className="w-full px-4 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)] font-mono"
                         placeholder="22AAAAA0000A1Z5"
                       />
-                      <span className="text-[11px] text-slate-400 mt-1 block">
+                      <span className="text-[11px] text-[var(--text-faint)] mt-1 block">
                         Will be automatically attached to your invoices for GST input tax credit
                       </span>
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-100 flex justify-end">
+                  <div className="pt-4 border-t border-[var(--border)] flex justify-end">
                     <button
                       type="submit"
                       disabled={profileSaving}
@@ -479,11 +479,11 @@ export default function AccountPage() {
 
             {/* TAB 2: Address Book */}
             {activeTab === 'addresses' && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                <div className="border-b border-slate-100 pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 shadow-xs">
+                <div className="border-b border-[var(--border)] pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 className="text-lg font-bold text-slate-900">Saved Delivery Addresses</h2>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <h2 className="text-lg font-bold text-[var(--text-main)]">Saved Delivery Addresses</h2>
+                    <p className="text-xs text-[var(--text-muted)] mt-0.5">
                       Manage multiple shipping locations for personal and office print dispatches
                     </p>
                   </div>
@@ -502,10 +502,10 @@ export default function AccountPage() {
                     <Loader2 className="w-6 h-6 animate-spin text-[#0082CA]" />
                   </div>
                 ) : addresses.length === 0 ? (
-                  <div className="text-center py-12 px-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                    <MapPin className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                    <h3 className="text-sm font-bold text-slate-700">No saved addresses yet</h3>
-                    <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+                  <div className="text-center py-12 px-4 bg-[var(--bg-subtle)] rounded-2xl border border-dashed border-[var(--border)]">
+                    <MapPin className="w-10 h-10 text-[var(--text-faint)] mx-auto mb-3" />
+                    <h3 className="text-sm font-bold text-[var(--text-main)]">No saved addresses yet</h3>
+                    <p className="text-xs text-[var(--text-faint)] mt-1 max-w-sm mx-auto">
                       Save your home, studio or office address now so checkout is 1-click easy next time.
                     </p>
                     <button
@@ -524,12 +524,12 @@ export default function AccountPage() {
                         className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
                           addr.isDefault
                             ? 'border-[#0082CA] bg-sky-50/20 shadow-xs ring-1 ring-[#0082CA]/20'
-                            : 'border-slate-200 hover:border-slate-300 bg-white'
+                            : 'border-[var(--border)] hover:border-[var(--border-strong)] bg-[var(--bg-card)]'
                         }`}
                       >
                         <div>
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-bold text-slate-900 text-sm">{addr.fullName}</span>
+                            <span className="font-bold text-[var(--text-main)] text-sm">{addr.fullName}</span>
                             {addr.isDefault ? (
                               <span className="text-[10px] font-bold bg-sky-100 text-[#0082CA] px-2 py-0.5 rounded-full border border-sky-200">
                                 Default
@@ -538,35 +538,35 @@ export default function AccountPage() {
                               <button
                                 type="button"
                                 onClick={() => handleSetDefault(addr._id)}
-                                className="text-[11px] font-semibold text-slate-400 hover:text-[#0082CA] cursor-pointer"
+                                className="text-[11px] font-semibold text-[var(--text-faint)] hover:text-[#0082CA] cursor-pointer"
                               >
                                 Set as default
                               </button>
                             )}
                           </div>
 
-                          <p className="text-xs text-slate-600 leading-relaxed">
+                          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                             {addr.streetAddress}
                             {addr.locality ? `, ${addr.locality}` : ''}
                             {addr.addressLine2 ? `, ${addr.addressLine2}` : ''}
                           </p>
                           {addr.landmark && (
-                            <p className="text-[11px] text-slate-400 mt-0.5">Landmark: {addr.landmark}</p>
+                            <p className="text-[11px] text-[var(--text-faint)] mt-0.5">Landmark: {addr.landmark}</p>
                           )}
-                          <p className="text-xs font-semibold text-slate-800 mt-1">
+                          <p className="text-xs font-semibold text-[var(--text-main)] mt-1">
                             {addr.city}, {addr.state} - {addr.pinCode}
                           </p>
-                          <p className="text-xs text-slate-500 mt-1">Phone: {addr.phone}</p>
+                          <p className="text-xs text-[var(--text-muted)] mt-1">Phone: {addr.phone}</p>
                           {addr.gstin && (
-                            <p className="text-[11px] font-mono text-slate-500 mt-0.5">GST: {addr.gstin}</p>
+                            <p className="text-[11px] font-mono text-[var(--text-muted)] mt-0.5">GST: {addr.gstin}</p>
                           )}
                         </div>
 
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+                        <div className="mt-4 pt-3 border-t border-[var(--border)] flex items-center justify-end gap-3">
                           <button
                             type="button"
                             onClick={() => openEditAddress(addr)}
-                            className="text-xs font-bold text-slate-600 hover:text-[#0082CA] flex items-center gap-1 cursor-pointer transition-colors"
+                            className="text-xs font-bold text-[var(--text-muted)] hover:text-[#0082CA] flex items-center gap-1 cursor-pointer transition-colors"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                             <span>Edit</span>
@@ -574,7 +574,7 @@ export default function AccountPage() {
                           <button
                             type="button"
                             onClick={() => handleDeleteAddress(addr._id)}
-                            className="text-xs font-bold text-slate-400 hover:text-red-600 flex items-center gap-1 cursor-pointer transition-colors"
+                            className="text-xs font-bold text-[var(--text-faint)] hover:text-red-600 flex items-center gap-1 cursor-pointer transition-colors"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>Delete</span>
@@ -589,10 +589,10 @@ export default function AccountPage() {
 
             {/* TAB 3: Security & Password */}
             {activeTab === 'security' && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
-                <div className="border-b border-slate-100 pb-4 mb-6">
-                  <h2 className="text-lg font-bold text-slate-900">Change Password</h2>
-                  <p className="text-xs text-slate-500 mt-0.5">
+              <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 shadow-xs">
+                <div className="border-b border-[var(--border)] pb-4 mb-6">
+                  <h2 className="text-lg font-bold text-[var(--text-main)]">Change Password</h2>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5">
                     Update your account login password to keep your profile secure
                   </p>
                 </div>
@@ -613,7 +613,7 @@ export default function AccountPage() {
 
                 <form onSubmit={handlePasswordSubmit} className="space-y-5 max-w-lg">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                       Current Password
                     </label>
                     <div className="relative">
@@ -622,13 +622,13 @@ export default function AccountPage() {
                         value={passwordData.currentPassword}
                         onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
                         required
-                        className="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                        className="w-full px-4 py-2.5 pr-11 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                         placeholder="Enter current password"
                       />
                       <button
                         type="button"
                         onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1"
                         aria-label="Toggle password view"
                       >
                         {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -637,7 +637,7 @@ export default function AccountPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                       New Password
                     </label>
                     <div className="relative">
@@ -647,13 +647,13 @@ export default function AccountPage() {
                         onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
                         required
                         minLength={6}
-                        className="w-full px-4 py-2.5 pr-11 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                        className="w-full px-4 py-2.5 pr-11 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                         placeholder="At least 6 characters"
                       />
                       <button
                         type="button"
                         onClick={() => setShowNewPassword(!showNewPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1"
                         aria-label="Toggle password view"
                       >
                         {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -662,7 +662,7 @@ export default function AccountPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                       Confirm New Password
                     </label>
                     <input
@@ -670,7 +670,7 @@ export default function AccountPage() {
                       value={passwordData.confirmPassword}
                       onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
                       required
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-white text-sm text-slate-900"
+                      className="w-full px-4 py-2.5 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-xl focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] text-sm text-[var(--text-main)]"
                       placeholder="Repeat new password"
                     />
                   </div>
@@ -704,17 +704,17 @@ export default function AccountPage() {
       {addressModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
           <div
-            className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-slate-200 my-8"
+            className="bg-[var(--bg-card)] rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-[var(--border)] my-8"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="border-b border-slate-100 pb-3 mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-slate-900">
+            <div className="border-b border-[var(--border)] pb-3 mb-5 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-[var(--text-main)]">
                 {editingAddressId ? 'Edit Address' : 'Add New Delivery Address'}
               </h3>
               <button
                 type="button"
                 onClick={() => setAddressModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold cursor-pointer"
+                className="text-[var(--text-faint)] hover:text-[var(--text-muted)] text-sm font-bold cursor-pointer"
               >
                 &times;
               </button>
@@ -729,7 +729,7 @@ export default function AccountPage() {
             <form onSubmit={handleAddressSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     Contact Name *
                   </label>
                   <input
@@ -737,13 +737,13 @@ export default function AccountPage() {
                     value={addressForm.fullName}
                     onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
                     required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="Receiver Name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     Mobile Phone *
                   </label>
                   <input
@@ -751,13 +751,13 @@ export default function AccountPage() {
                     value={addressForm.phone}
                     onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
                     required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="10-digit number"
                   />
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     Flat / House No. / Building / Street *
                   </label>
                   <input
@@ -765,39 +765,39 @@ export default function AccountPage() {
                     value={addressForm.streetAddress}
                     onChange={(e) => setAddressForm({ ...addressForm, streetAddress: e.target.value })}
                     required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="12/A, Horizon Industrial Park"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     Locality / Area
                   </label>
                   <input
                     type="text"
                     value={addressForm.locality}
                     onChange={(e) => setAddressForm({ ...addressForm, locality: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="Andheri East"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     Landmark
                   </label>
                   <input
                     type="text"
                     value={addressForm.landmark}
                     onChange={(e) => setAddressForm({ ...addressForm, landmark: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="Near Metro Station"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     City *
                   </label>
                   <input
@@ -805,13 +805,13 @@ export default function AccountPage() {
                     value={addressForm.city}
                     onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
                     required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="Mumbai"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     State *
                   </label>
                   <input
@@ -819,13 +819,13 @@ export default function AccountPage() {
                     value={addressForm.state}
                     onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
                     required
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)]"
                     placeholder="Maharashtra"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     PIN Code *
                   </label>
                   <input
@@ -834,13 +834,13 @@ export default function AccountPage() {
                     onChange={(e) => setAddressForm({ ...addressForm, pinCode: e.target.value })}
                     required
                     maxLength={6}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 font-mono"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)] font-mono"
                     placeholder="400069"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-700 uppercase mb-1">
+                  <label className="block text-[11px] font-bold text-[var(--text-main)] uppercase mb-1">
                     GSTIN (Optional)
                   </label>
                   <input
@@ -848,7 +848,7 @@ export default function AccountPage() {
                     value={addressForm.gstin}
                     onChange={(e) => setAddressForm({ ...addressForm, gstin: e.target.value.toUpperCase() })}
                     maxLength={15}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 font-mono"
+                    className="w-full px-3 py-2 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg text-xs text-[var(--text-main)] font-mono"
                     placeholder="GSTIN if applicable"
                   />
                 </div>
@@ -860,19 +860,19 @@ export default function AccountPage() {
                     type="checkbox"
                     checked={addressForm.isDefault}
                     onChange={(e) => setAddressForm({ ...addressForm, isDefault: e.target.checked })}
-                    className="w-4 h-4 text-[#0082CA] rounded border-slate-300"
+                    className="w-4 h-4 text-[#0082CA] rounded border-[var(--border-strong)]"
                   />
-                  <span className="text-xs text-slate-700 font-semibold">
+                  <span className="text-xs text-[var(--text-main)] font-semibold">
                     Set as default delivery address
                   </span>
                 </label>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+              <div className="pt-4 border-t border-[var(--border)] flex items-center justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setAddressModalOpen(false)}
-                  className="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 text-xs font-bold transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-lg text-[var(--text-muted)] hover:bg-[var(--hover)] text-xs font-bold transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

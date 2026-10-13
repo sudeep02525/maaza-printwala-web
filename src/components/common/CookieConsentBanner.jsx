@@ -94,7 +94,7 @@ export default function CookieConsentBanner() {
             {/* Header / Text */}
             <div className="flex items-start gap-2.5">
               <span className="text-xl shrink-0 leading-none select-none">🍪</span>
-              <p className="text-xs sm:text-[13px] leading-snug text-slate-300">
+              <p className="text-xs sm:text-[13px] leading-snug text-[var(--text-faint)]">
                 We use cookies to improve your experience and show relevant offers.
               </p>
             </div>
@@ -111,7 +111,7 @@ export default function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={declineCookies}
-                className="flex-1 py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer text-center"
+                className="flex-1 py-2 px-3 bg-slate-800 hover:bg-slate-700 text-[var(--text-faint)] border border-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer text-center"
               >
                 Decline
               </button>
@@ -121,7 +121,7 @@ export default function CookieConsentBanner() {
             <div className="pt-2 flex justify-start">
               <Link
                 href="/privacy"
-                className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-400 hover:text-white transition-colors group"
+                className="inline-flex items-center gap-1 text-[11px] font-medium text-[var(--text-faint)] hover:text-white transition-colors group"
               >
                 <span>Cookie Policy</span>
                 <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>

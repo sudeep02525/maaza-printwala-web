@@ -15,8 +15,8 @@ const SectionHeader = ({ title, subtitle, linkText }) => {
   return (
     <div className="flex justify-between items-end mb-8">
       <div>
-        <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">{title}</h2>
-        {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
+        <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight">{title}</h2>
+        {subtitle && <p className="text-sm text-[var(--text-muted)] mt-1">{subtitle}</p>}
       </div>
       {text && (
         <Link href="/products" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
@@ -36,7 +36,7 @@ export const FeaturedSlider = ({ products = [] }) => {
   if (!products?.length) return null;
 
   return (
-    <section className="py-14 bg-white border-b border-slate-100">
+    <section className="py-14 bg-[var(--bg-card)] border-b border-[var(--border)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         <SectionHeader title={tHome('featuredProducts')} subtitle={sub} />
         <HorizontalSlider cardWidthClass="w-[280px] sm:w-[300px] lg:w-[calc(25%-18px)]">
@@ -59,7 +59,7 @@ export const CorporateSection = ({ products = [] }) => {
   const btn = locale === 'hi' ? 'किट्स एक्सप्लोर करें' : locale === 'mr' ? 'किट्स एक्सप्लोर करा' : 'Explore Kits';
 
   return (
-    <section className="py-16 bg-[#F8FAFC]">
+    <section className="py-16 bg-[var(--bg-subtle)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         <SectionHeader title={tHome('corporateGifting')} subtitle={sub} />
         
@@ -76,7 +76,7 @@ export const CorporateSection = ({ products = [] }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent p-8 flex flex-col justify-end">
               <h3 className="text-3xl font-extrabold text-white mb-3">{title}</h3>
               <p className="text-white/80 text-sm mb-6">{desc}</p>
-              <Link href="/corporate-gifts" className="w-fit px-6 py-2.5 bg-white text-slate-900 font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
+              <Link href="/corporate-gifts" className="w-fit px-6 py-2.5 bg-[var(--bg-card)] text-[var(--text-main)] font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
                 {btn}
               </Link>
             </div>
@@ -116,8 +116,8 @@ export const WeddingSection = () => {
   return (
     <section className="py-16 bg-[#FFF5F5] border-y border-red-50">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 text-center mb-10">
-        <h2 className="text-3xl sm:text-4xl font-serif text-slate-900 italic tracking-wide mb-3">{tHome('weddingBoutique')}</h2>
-        <p className="text-slate-600 text-sm">{sub}</p>
+        <h2 className="text-3xl sm:text-4xl font-serif text-[var(--text-main)] italic tracking-wide mb-3">{tHome('weddingBoutique')}</h2>
+        <p className="text-[var(--text-muted)] text-sm">{sub}</p>
       </div>
       
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
@@ -157,7 +157,7 @@ export const CustomMerchSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-white border-b border-slate-100">
+    <section className="py-16 bg-[var(--bg-card)] border-b border-[var(--border)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         <SectionHeader title={tHome('customMerchandise')} subtitle={sub} />
         
@@ -171,10 +171,10 @@ export const CustomMerchSection = () => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <Link href={item.link} className="group flex flex-col items-center gap-4 w-full">
-                <div className="w-full aspect-square max-w-[280px] rounded-full border border-slate-200 overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
+                <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
                   <img loading="lazy" src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.name} />
                 </div>
-                <span className="text-sm sm:text-base font-bold text-slate-700 text-center leading-tight group-hover:text-[#0082CA]">{item.name}</span>
+                <span className="text-sm sm:text-base font-bold text-[var(--text-main)] text-center leading-tight group-hover:text-[#0082CA]">{item.name}</span>
               </Link>
             </motion.div>
           ))}
@@ -205,14 +205,14 @@ export const TopRatedSection = ({ products = [] }) => {
   };
 
   return (
-    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50 border-t border-slate-100">
+    <section className="py-20 relative overflow-hidden bg-gradient-to-b from-white to-slate-50 border-t border-[var(--border)]">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 relative z-10">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
           <div>
-            <h2 className="text-3xl sm:text-[36px] font-extrabold text-slate-900 tracking-tight mb-2">{tHome('topRated')}</h2>
-            <p className="text-base text-slate-500">{sub}</p>
+            <h2 className="text-3xl sm:text-[36px] font-extrabold text-[var(--text-main)] tracking-tight mb-2">{tHome('topRated')}</h2>
+            <p className="text-base text-[var(--text-muted)]">{sub}</p>
           </div>
-          <Link href="/products" className="inline-flex items-center gap-2 text-sm font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow">
+          <Link href="/products" className="inline-flex items-center gap-2 text-sm font-bold text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-subtle)] hover:border-[var(--border-strong)] px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow">
             {tButtons('viewAll')} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -229,8 +229,8 @@ export const TopRatedSection = ({ products = [] }) => {
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <Link href={`/products/${p.slug || p._id}`} className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-full sm:w-40 h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden bg-white relative border border-slate-100 flex items-center justify-center p-2">
+                <Link href={`/products/${p.slug || p._id}`} className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-full sm:w-40 h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden bg-[var(--bg-card)] relative border border-[var(--border)] flex items-center justify-center p-2">
                     <img loading="lazy" src={image} className="w-full h-full object-contain" alt={p.name} />
                   </div>
                   
@@ -243,13 +243,13 @@ export const TopRatedSection = ({ products = [] }) => {
                           <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                         </div>
                       </div>
-                      <span className="text-xs text-slate-500 ml-1.5 font-medium">(4.9)</span>
+                      <span className="text-xs text-[var(--text-muted)] ml-1.5 font-medium">(4.9)</span>
                     </div>
-                    <h3 className="font-bold text-slate-900 text-lg sm:text-xl truncate mb-1.5 hover:text-[#0082CA] transition-colors">{getProductName(p.name)}</h3>
-                    <p className="text-sm text-slate-500 line-clamp-1 mb-5">{p.category?.slug ? tCategory(p.category.slug) : (p.category?.name || 'High Quality Print')}</p>
+                    <h3 className="font-bold text-[var(--text-main)] text-lg sm:text-xl truncate mb-1.5 hover:text-[#0082CA] transition-colors">{getProductName(p.name)}</h3>
+                    <p className="text-sm text-[var(--text-muted)] line-clamp-1 mb-5">{p.category?.slug ? tCategory(p.category.slug) : (p.category?.name || 'High Quality Print')}</p>
                     <div className="flex items-center justify-between mt-auto">
-                      <div className="text-slate-900 font-black text-xl sm:text-2xl">₹{price}</div>
-                      <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center hover:bg-[#0082CA] hover:border-[#0082CA] hover:text-white transition-colors text-slate-400">
+                      <div className="text-[var(--text-main)] font-black text-xl sm:text-2xl">₹{price}</div>
+                      <div className="w-10 h-10 rounded-full bg-[var(--bg-subtle)] border border-[var(--border)] flex items-center justify-center hover:bg-[#0082CA] hover:border-[#0082CA] hover:text-white transition-colors text-[var(--text-faint)]">
                         <ArrowRight className="w-4 h-4" />
                       </div>
                     </div>

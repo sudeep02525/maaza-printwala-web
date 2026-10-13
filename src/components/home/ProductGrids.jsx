@@ -30,26 +30,26 @@ export default function ProductGrids() {
   ];
 
   return (
-    <section className="py-12 bg-white border-y border-slate-100">
+    <section className="py-12 bg-[var(--bg-card)] border-y border-[var(--border)]">
       <div className="max-w-[1520px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
         
         {/* Tabs Header */}
         <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-6">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Curated for You</h2>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Curated for You</h2>
           
-          <div className="flex p-1 bg-slate-100 rounded-lg max-w-full overflow-x-auto no-scrollbar">
+          <div className="flex p-1 bg-[var(--hover)] rounded-lg max-w-full overflow-x-auto no-scrollbar">
             {TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative px-5 py-2.5 rounded-lg text-sm font-bold whitespace-nowrap transition-colors ${
-                  activeTab === tab.id ? 'text-[#0082CA]' : 'text-slate-500 hover:text-slate-700'
+                  activeTab === tab.id ? 'text-[#0082CA]' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'
                 }`}
               >
                 {activeTab === tab.id && (
                   <motion.div 
                     layoutId="active-tab" 
-                    className="absolute inset-0 bg-white shadow-sm rounded-lg border border-slate-200" 
+                    className="absolute inset-0 bg-[var(--bg-card)] shadow-sm rounded-lg border border-[var(--border)]" 
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
@@ -78,7 +78,7 @@ export default function ProductGrids() {
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map(p => <ProductCard key={p._id} product={p} />)
                 ) : (
-                  <div className="col-span-full py-12 text-center text-slate-500">
+                  <div className="col-span-full py-12 text-center text-[var(--text-muted)]">
                     No products found for this section.
                   </div>
                 )}

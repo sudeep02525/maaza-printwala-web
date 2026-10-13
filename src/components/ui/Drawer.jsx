@@ -24,19 +24,19 @@ export default function Drawer({ isOpen, onClose, title, children, side = 'left'
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex bg-slate-900/60 backdrop-blur-xs animate-fade-in">
+    <div className="fixed inset-0 z-50 flex bg-black/60 backdrop-blur-xs animate-fade-in">
       <div
         className={cn(
-          'bg-white w-80 max-w-[85vw] h-full shadow-2xl flex flex-col transition-transform duration-300',
-          side === 'left' ? 'mr-auto border-r border-slate-200' : 'ml-auto border-l border-slate-200',
+          'bg-[var(--bg-card)] text-[var(--text-main)] w-80 max-w-[85vw] h-full shadow-2xl flex flex-col transition-transform duration-300',
+          side === 'left' ? 'mr-auto border-r border-[var(--border)]' : 'ml-auto border-l border-[var(--border)]',
           className
         )}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200 bg-slate-50">
-          <h3 className="text-base font-bold text-slate-900">{title}</h3>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] bg-[var(--bg-subtle)]">
+          <h3 className="text-base font-bold text-[var(--text-main)]">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-lg transition-colors"
+            className="p-1.5 text-[var(--text-faint)] hover:text-[var(--text-main)] hover:bg-[var(--hover)] rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>

@@ -39,26 +39,26 @@ export default function TrackOrderPage() {
       case 'Shipped': return 'bg-blue-100 text-blue-700 border-blue-200';
       case 'Processing': return 'bg-amber-100 text-amber-700 border-amber-200';
       case 'Cancelled': return 'bg-red-100 text-red-700 border-red-200';
-      default: return 'bg-slate-100 text-slate-700 border-slate-200';
+      default: return 'bg-[var(--hover)] text-[var(--text-main)] border-[var(--border)]';
     }
   };
 
   return (
-    <div className="min-h-[80vh] bg-[#FAFCFF] py-12 px-4">
+    <div className="min-h-[80vh] bg-[var(--bg-subtle)] py-12 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Track Your Order</h1>
-          <p className="text-slate-500 font-medium">Enter your order ID below to check its current status and estimated delivery time.</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-[var(--text-main)] mb-4">Track Your Order</h1>
+          <p className="text-[var(--text-muted)] font-medium">Enter your order ID below to check its current status and estimated delivery time.</p>
         </div>
 
-        <div className="bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 mb-8">
+        <div className="bg-[var(--bg-card)] p-6 sm:p-10 rounded-2xl shadow-sm border border-[var(--border)] mb-8">
           <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-4">
             <input
               type="text"
               value={orderNumber}
               onChange={(e) => setOrderNumber(e.target.value)}
               placeholder="e.g. ORD-12345"
-              className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-white transition-colors"
+              className="flex-1 px-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] transition-colors"
               required
             />
             <button
@@ -73,11 +73,11 @@ export default function TrackOrderPage() {
         </div>
 
         {order && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="bg-[var(--bg-card)] rounded-2xl shadow-sm border border-[var(--border)] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="p-6 border-b border-[var(--border)] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Order Details</p>
-                <h2 className="text-xl font-extrabold text-slate-900">{order.orderNumber || order._id}</h2>
+                <p className="text-xs font-bold text-[var(--text-faint)] uppercase tracking-widest mb-1">Order Details</p>
+                <h2 className="text-xl font-extrabold text-[var(--text-main)]">{order.orderNumber || order._id}</h2>
               </div>
               <div className={`px-4 py-1.5 rounded-full border text-sm font-bold ${getStatusColor(order.status)}`}>
                 {order.status || 'Received'}
@@ -86,46 +86,46 @@ export default function TrackOrderPage() {
             
             <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               <div className="flex items-start gap-3">
-                <Calendar className="w-5 h-5 text-slate-400 mt-0.5" />
+                <Calendar className="w-5 h-5 text-[var(--text-faint)] mt-0.5" />
                 <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Date Placed</p>
-                  <p className="text-sm font-semibold text-slate-900">{new Date(order.createdAt).toLocaleDateString()}</p>
+                  <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Date Placed</p>
+                  <p className="text-sm font-semibold text-[var(--text-main)]">{new Date(order.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3">
-                <CreditCard className="w-5 h-5 text-slate-400 mt-0.5" />
+                <CreditCard className="w-5 h-5 text-[var(--text-faint)] mt-0.5" />
                 <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Total Amount</p>
-                  <p className="text-sm font-semibold text-slate-900">₹{order.totalAmount}</p>
+                  <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Total Amount</p>
+                  <p className="text-sm font-semibold text-[var(--text-main)]">₹{order.totalAmount}</p>
                 </div>
               </div>
               
               <div className="flex items-start gap-3 md:col-span-2">
-                <Truck className="w-5 h-5 text-slate-400 mt-0.5" />
+                <Truck className="w-5 h-5 text-[var(--text-faint)] mt-0.5" />
                 <div>
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Shipping To</p>
-                  <p className="text-sm font-semibold text-slate-900">{order.shippingAddress?.fullName}</p>
-                  <p className="text-xs text-slate-600 mt-0.5 line-clamp-2">
+                  <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">Shipping To</p>
+                  <p className="text-sm font-semibold text-[var(--text-main)]">{order.shippingAddress?.fullName}</p>
+                  <p className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-2">
                     {order.shippingAddress?.addressLine1}, {order.shippingAddress?.city}, {order.shippingAddress?.state} {order.shippingAddress?.pinCode}
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className="bg-slate-50 p-6 border-t border-slate-100">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">Items Summary</h3>
+            <div className="bg-[var(--bg-subtle)] p-6 border-t border-[var(--border)]">
+              <h3 className="text-sm font-bold text-[var(--text-main)] uppercase tracking-wider mb-4">Items Summary</h3>
               <div className="space-y-3">
                 {(order.items || []).map((item, idx) => (
                   <div key={idx} className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-md border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
-                      <Package className="w-6 h-6 text-slate-300" />
+                    <div className="w-12 h-12 bg-[var(--bg-card)] rounded-md border border-[var(--border)] flex items-center justify-center overflow-hidden shrink-0">
+                      <Package className="w-6 h-6 text-[var(--text-faint)]" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-slate-900 truncate">{item.product?.name || 'Custom Product'}</p>
-                      <p className="text-xs font-medium text-slate-500">Qty: {item.quantity}</p>
+                      <p className="text-sm font-bold text-[var(--text-main)] truncate">{item.product?.name || 'Custom Product'}</p>
+                      <p className="text-xs font-medium text-[var(--text-muted)]">Qty: {item.quantity}</p>
                     </div>
-                    <div className="text-sm font-bold text-slate-900">
+                    <div className="text-sm font-bold text-[var(--text-main)]">
                       ₹{item.price * item.quantity}
                     </div>
                   </div>

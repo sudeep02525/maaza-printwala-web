@@ -16,13 +16,13 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
   const isReady = draft.status === 'READY_FOR_PAYMENT';
 
   return (
-    <Card className="p-6 sm:p-8 space-y-6 sticky top-24 border-slate-200 select-none">
-      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+    <Card className="p-6 sm:p-8 space-y-6 sticky top-24 border-[var(--border)] select-none">
+      <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
         <div>
           <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-wider block">
             Order Valuation
           </span>
-          <h3 className="text-lg font-black text-slate-900 mt-0.5">Order Summary</h3>
+          <h3 className="text-lg font-black text-[var(--text-main)] mt-0.5">Order Summary</h3>
         </div>
         <Badge variant="primary" size="sm">Live Server</Badge>
       </div>
@@ -32,15 +32,15 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
         {items.map((item, idx) => (
           <div key={idx} className="flex justify-between items-start text-xs sm:text-sm">
             <div className="flex-1 pr-3 min-w-0">
-              <p className="font-black text-slate-900 truncate">{item.productNameSnapshot || 'Custom Print Item'}</p>
-              <p className="text-xs text-slate-500 mt-0.5 font-normal">
-                Qty: <strong className="text-slate-800">{item.quantity}</strong> • Type: <strong className="text-slate-800 uppercase">{item.designType}</strong>
+              <p className="font-black text-[var(--text-main)] truncate">{item.productNameSnapshot || 'Custom Print Item'}</p>
+              <p className="text-xs text-[var(--text-muted)] mt-0.5 font-normal">
+                Qty: <strong className="text-[var(--text-main)]">{item.quantity}</strong> • Type: <strong className="text-[var(--text-main)] uppercase">{item.designType}</strong>
               </p>
               {item.template?.templateName && (
                 <p className="text-[11px] text-[#0082CA] font-semibold truncate mt-0.5">Layout: {item.template.templateName}</p>
               )}
             </div>
-            <div className="text-right font-black text-slate-900 shrink-0">
+            <div className="text-right font-black text-[var(--text-main)] shrink-0">
               ₹{Number(item.authoritativeLineTotal || 0).toLocaleString('en-IN')}
             </div>
           </div>
@@ -59,15 +59,15 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
       )}
 
       {/* Authoritative Totals Breakdown */}
-      <div className="space-y-3 py-4 border-t border-b border-slate-100 text-xs sm:text-sm font-semibold">
-        <div className="flex justify-between text-slate-600">
+      <div className="space-y-3 py-4 border-t border-b border-[var(--border)] text-xs sm:text-sm font-semibold">
+        <div className="flex justify-between text-[var(--text-muted)]">
           <span>Subtotal Amount</span>
-          <span className="font-black text-slate-900">₹{subtotal.toLocaleString('en-IN')}</span>
+          <span className="font-black text-[var(--text-main)]">₹{subtotal.toLocaleString('en-IN')}</span>
         </div>
 
-        <div className="flex justify-between text-slate-600">
+        <div className="flex justify-between text-[var(--text-muted)]">
           <span className="truncate pr-2">Delivery ({draft.deliveryMethodSnapshot?.name || 'Pending Selection'})</span>
-          <span className="font-black text-slate-900 shrink-0">
+          <span className="font-black text-[var(--text-main)] shrink-0">
             {draft.selectedDeliveryRule ? (
               deliveryCharge === 0 ? (
                 <span className="text-emerald-600 font-black">FREE</span>
@@ -75,27 +75,27 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
                 `₹${deliveryCharge.toLocaleString('en-IN')}`
               )
             ) : (
-              <span className="text-slate-400 font-normal italic">Select method</span>
+              <span className="text-[var(--text-faint)] font-normal italic">Select method</span>
             )}
           </span>
         </div>
 
-        <div className="flex justify-between items-center p-3 rounded-lg bg-slate-50 border border-slate-200 text-slate-700 text-xs">
+        <div className="flex justify-between items-center p-3 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] text-[var(--text-main)] text-xs">
           <div>
-            <span className="font-bold text-slate-900 block">Applicable Taxes:</span>
-            <span className="text-[11px] text-slate-500 font-normal">Standard commercial GST invoiced separately</span>
+            <span className="font-bold text-[var(--text-main)] block">Applicable Taxes:</span>
+            <span className="text-[11px] text-[var(--text-muted)] font-normal">Standard commercial GST invoiced separately</span>
           </div>
-          <span className="font-bold text-slate-600">As per invoice</span>
+          <span className="font-bold text-[var(--text-muted)]">As per invoice</span>
         </div>
       </div>
 
       {/* Final Total Display */}
       <div className="py-2">
         <div className="flex justify-between items-baseline mb-1">
-          <span className="text-base font-black text-slate-900">Total Estimated Payable</span>
+          <span className="text-base font-black text-[var(--text-main)]">Total Estimated Payable</span>
           <span className="text-2xl font-black text-[#0082CA]">₹{total.toLocaleString('en-IN')}</span>
         </div>
-        <p className="text-[11px] text-slate-500 font-normal">
+        <p className="text-[11px] text-[var(--text-muted)] font-normal">
           * Final invoice with applicable commercial taxes will be provided upon dispatch.
         </p>
       </div>
@@ -118,21 +118,21 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
 
       {/* Production Payment Readiness Safety Guard (Commercial Messaging Compliance) */}
       {isReady && (
-        <div className="mt-6 p-6 rounded-lg bg-emerald-50 text-slate-900 space-y-4 border border-emerald-300 shadow-sm">
+        <div className="mt-6 p-6 rounded-lg bg-emerald-50 text-[var(--text-main)] space-y-4 border border-emerald-300 shadow-sm">
           <div className="flex items-center space-x-2 text-emerald-800 font-black text-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
             <span>Order Successfully Registered</span>
           </div>
-          <p className="text-xs text-slate-700 leading-relaxed font-normal">
+          <p className="text-xs text-[var(--text-main)] leading-relaxed font-normal">
             Your commercial printing specifications, Indian delivery address, and logistics method have been validated and recorded on our production server.
           </p>
 
-          <div className="p-4 rounded-lg bg-white border border-emerald-200 text-xs space-y-2 font-normal shadow-2xs">
+          <div className="p-4 rounded-lg bg-[var(--bg-card)] border border-emerald-200 text-xs space-y-2 font-normal shadow-2xs">
             <div className="flex items-center gap-2 text-[#0082CA] font-bold">
               <Lock className="w-4 h-4 shrink-0" />
               <span>Online Payment Processing Notice</span>
             </div>
-            <p className="text-slate-600 text-[11px] leading-relaxed">
+            <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
               Online payment gateway processing is temporarily undergoing scheduled banking integration. Your order has been securely captured in our system. A commercial representative will reach out shortly with customized billing instructions and dispatch scheduling.
             </p>
           </div>

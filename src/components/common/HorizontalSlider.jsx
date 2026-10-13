@@ -55,19 +55,19 @@ export default function HorizontalSlider({ children, cardWidthClass = "w-[280px]
       <button 
         onClick={scrollPrev}
         disabled={!canScrollLeft}
-        className={`absolute left-0 lg:-left-4 top-[55%] -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition-all duration-300 ${!canScrollLeft ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}
+        className={`absolute left-0 lg:-left-4 top-[55%] -translate-y-1/2 z-10 w-12 h-12 bg-[var(--bg-card)] shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-[var(--border)] rounded-full flex items-center justify-center hover:bg-[var(--bg-subtle)] transition-all duration-300 ${!canScrollLeft ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}
         aria-label="Previous slide"
       >
-        <ChevronLeft className="w-6 h-6 text-slate-800" />
+        <ChevronLeft className="w-6 h-6 text-[var(--text-main)]" />
       </button>
 
       <button 
         onClick={scrollNext}
         disabled={!canScrollRight}
-        className={`absolute right-0 lg:-right-4 top-[55%] -translate-y-1/2 z-10 w-12 h-12 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-slate-100 rounded-full flex items-center justify-center hover:bg-slate-50 transition-all duration-300 ${!canScrollRight ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}
+        className={`absolute right-0 lg:-right-4 top-[55%] -translate-y-1/2 z-10 w-12 h-12 bg-[var(--bg-card)] shadow-[0_4px_20px_rgba(0,0,0,0.1)] border border-[var(--border)] rounded-full flex items-center justify-center hover:bg-[var(--bg-subtle)] transition-all duration-300 ${!canScrollRight ? 'opacity-0 pointer-events-none scale-95' : 'opacity-100 scale-100'}`}
         aria-label="Next slide"
       >
-        <ChevronRight className="w-6 h-6 text-slate-800" />
+        <ChevronRight className="w-6 h-6 text-[var(--text-main)]" />
       </button>
       
       <div 

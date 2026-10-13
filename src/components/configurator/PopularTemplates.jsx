@@ -31,13 +31,13 @@ function TemplateCard({ template, slug, router }) {
   };
 
   return (
-    <div className="group rounded-lg border border-slate-300 bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[300px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu">
+    <div className="group rounded-lg border border-[var(--border-strong)] bg-[#f4f4f4] overflow-hidden hover:border-slate-400 transition-colors flex flex-col h-[300px] min-w-[280px] sm:min-w-[300px] shrink-0 snap-start transform-gpu">
       {/* Image Container */}
       <div 
         className="flex-1 p-4 pb-2 flex items-center justify-center cursor-pointer"
         onClick={handleClick}
       >
-         <div className="w-full aspect-[1.75/1] bg-white shadow-sm border border-slate-200 flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow transform-gpu rounded-md p-1 group/img">
+         <div className="w-full aspect-[1.75/1] bg-[var(--bg-card)] shadow-sm border border-[var(--border)] flex items-center justify-center relative overflow-hidden group-hover:shadow-md transition-shadow transform-gpu rounded-md p-1 group/img">
            <img 
              src={mainImage} 
              alt={template.name}
@@ -61,15 +61,15 @@ function TemplateCard({ template, slug, router }) {
               <button
                 key={v._id || idx}
                 onClick={(e) => { e.stopPropagation(); setActiveVariantIndex(idx); }}
-                className={`w-5 h-5 rounded-full border-2 transition-all ${activeVariantIndex === idx ? 'border-blue-600 scale-110 shadow-sm' : 'border-slate-300 hover:scale-110'}`}
+                className={`w-5 h-5 rounded-full border-2 transition-all ${activeVariantIndex === idx ? 'border-blue-600 scale-110 shadow-sm' : 'border-[var(--border-strong)] hover:scale-110'}`}
                 style={{ backgroundColor: v.colorCode || '#ccc' }}
                 title={v.name}
               />
             ))}
           </div>
         )}
-        <h3 className="text-sm font-bold text-slate-900 line-clamp-1 cursor-pointer" onClick={handleClick}>{template.name}</h3>
-        <p className="text-xs text-slate-500 mt-0.5 truncate">
+        <h3 className="text-sm font-bold text-[var(--text-main)] line-clamp-1 cursor-pointer" onClick={handleClick}>{template.name}</h3>
+        <p className="text-xs text-[var(--text-muted)] mt-0.5 truncate">
           {template.editableFields?.length || 0} editable fields
         </p>
       </div>
@@ -101,7 +101,7 @@ export default function PopularTemplates({ slug }) {
 
   if (isLoading) {
     return (
-      <div className="mt-16 border-t border-slate-200 pt-12 w-full relative">
+      <div className="mt-16 border-t border-[var(--border)] pt-12 w-full relative">
         <h2 className="text-[22px] font-bold text-black mb-6">Explore most popular templates</h2>
         <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar">
           {[1, 2, 3, 4].map(i => (
@@ -117,15 +117,15 @@ export default function PopularTemplates({ slug }) {
   }
 
   return (
-    <div className="mt-16 border-t border-slate-200 pt-12 w-full relative">
+    <div className="mt-16 border-t border-[var(--border)] pt-12 w-full relative">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-[22px] font-bold text-black">Explore most popular templates</h2>
         <div className="flex items-center gap-4">
           <div className="hidden sm:flex items-center gap-2 mr-4">
-            <button onClick={() => scroll('left')} className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-600 transition-colors">
+            <button onClick={() => scroll('left')} className="w-8 h-8 rounded-full border border-[var(--border)] flex items-center justify-center hover:bg-[var(--bg-subtle)] text-[var(--text-muted)] transition-colors">
               <ChevronRight className="w-4 h-4 rotate-180" />
             </button>
-            <button onClick={() => scroll('right')} className="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-600 transition-colors">
+            <button onClick={() => scroll('right')} className="w-8 h-8 rounded-full border border-[var(--border)] flex items-center justify-center hover:bg-[var(--bg-subtle)] text-[var(--text-muted)] transition-colors">
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>

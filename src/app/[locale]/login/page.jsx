@@ -76,12 +76,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
-      <div className="w-full max-w-md bg-white p-7 sm:p-9 rounded-2xl shadow-sm border border-slate-200">
+      <div className="w-full max-w-md bg-[var(--bg-card)] p-7 sm:p-9 rounded-2xl shadow-sm border border-[var(--border)]">
         
         {/* Header */}
         <div className="text-center mb-7">
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">Welcome Back</h1>
-          <p className="text-slate-500 font-medium text-xs sm:text-sm">Sign in to your Maza Printwala account</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-[var(--text-main)] tracking-tight mb-2">Welcome Back</h1>
+          <p className="text-[var(--text-muted)] font-medium text-xs sm:text-sm">Sign in to your Maza Printwala account</p>
         </div>
         
         {/* Global Error Banner */}
@@ -101,7 +101,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="login-email"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5"
             >
               Email Address
             </label>
@@ -119,10 +119,10 @@ export default function LoginPage() {
               required
               aria-invalid={!!fieldErrors.email}
               aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-              className={`w-full px-4 py-3 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+              className={`w-full px-4 py-3 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                 fieldErrors.email
                   ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                  : 'border-slate-200 focus:border-[#0082CA]'
+                  : 'border-[var(--border)] focus:border-[#0082CA]'
               }`}
               placeholder="name@example.com"
             />
@@ -139,7 +139,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-between mb-1.5">
               <label
                 htmlFor="login-password"
-                className="text-xs font-bold text-slate-700 uppercase tracking-wider"
+                className="text-xs font-bold text-[var(--text-main)] uppercase tracking-wider"
               >
                 Password
               </label>
@@ -165,17 +165,17 @@ export default function LoginPage() {
                 required
                 aria-invalid={!!fieldErrors.password}
                 aria-describedby={fieldErrors.password ? 'password-error' : undefined}
-                className={`w-full px-4 py-3 pr-11 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+                className={`w-full px-4 py-3 pr-11 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                   fieldErrors.password
                     ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                    : 'border-slate-200 focus:border-[#0082CA]'
+                    : 'border-[var(--border)] focus:border-[#0082CA]'
                 }`}
                 placeholder="Enter your account password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5 cursor-pointer rounded-lg"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1.5 cursor-pointer rounded-lg"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -197,9 +197,9 @@ export default function LoginPage() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA] cursor-pointer"
+                className="w-4 h-4 text-[#0082CA] rounded border-[var(--border-strong)] focus:ring-[#0082CA] cursor-pointer"
               />
-              <span className="text-xs text-slate-600 font-medium">Remember me on this browser</span>
+              <span className="text-xs text-[var(--text-muted)] font-medium">Remember me on this browser</span>
             </label>
           </div>
           
@@ -223,9 +223,9 @@ export default function LoginPage() {
         {/* Social Login Divider */}
         <div className="relative my-6 text-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-[var(--border)]" />
           </div>
-          <span className="relative px-3 bg-white text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <span className="relative px-3 bg-[var(--bg-card)] text-[11px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
             or continue with
           </span>
         </div>
@@ -234,7 +234,7 @@ export default function LoginPage() {
         <button
           type="button"
           onClick={handleGoogleSignIn}
-          className="w-full py-3 px-4 border border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 rounded-xl font-bold text-xs sm:text-sm text-slate-700 flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
+          className="w-full py-3 px-4 border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-slate-50/80 rounded-xl font-bold text-xs sm:text-sm text-[var(--text-main)] flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -258,13 +258,13 @@ export default function LoginPage() {
         </button>
 
         {/* Security & GST Trust Line */}
-        <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-400">
+        <div className="mt-5 pt-4 border-t border-[var(--border)] flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[var(--text-faint)]">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>256-bit SSL encrypted &bull; GST tax invoices enabled</span>
         </div>
 
         {/* Sign Up Redirect */}
-        <p className="mt-5 text-center text-xs sm:text-sm font-medium text-slate-600">
+        <p className="mt-5 text-center text-xs sm:text-sm font-medium text-[var(--text-muted)]">
           Don't have an account?{' '}
           <Link
             href={searchParams.get('next') ? `/register?next=${encodeURIComponent(searchParams.get('next'))}` : '/register'}

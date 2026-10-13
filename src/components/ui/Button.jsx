@@ -19,8 +19,8 @@ export default function Button({
   const variants = {
     primary: 'bg-[#0082CA] text-white hover:bg-[#0068A2] focus:ring-[#0082CA] shadow-xs',
     secondary: 'bg-slate-900 text-white hover:bg-slate-800 focus:ring-slate-900 shadow-xs',
-    outline: 'border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 focus:ring-[#0082CA]',
-    ghost: 'bg-transparent text-slate-700 hover:bg-slate-100 focus:ring-slate-400',
+    outline: 'border border-[var(--border-strong)] bg-[var(--bg-card)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)] focus:ring-[#0082CA]',
+    ghost: 'bg-transparent text-[var(--text-main)] hover:bg-[var(--hover)] focus:ring-slate-400',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-600 shadow-xs',
   };
 

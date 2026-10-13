@@ -30,8 +30,8 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
         {!selectedExp ? (
           <div className="space-y-6">
             <div className="text-center max-w-lg mx-auto space-y-1">
-              <h3 className="text-lg font-black text-slate-900">How Would You Like To Supply Artwork?</h3>
-              <p className="text-xs text-slate-600 font-normal">
+              <h3 className="text-lg font-black text-[var(--text-main)]">How Would You Like To Supply Artwork?</h3>
+              <p className="text-xs text-[var(--text-muted)] font-normal">
                 Select whether you already have an artwork file to upload or prefer customizing one of our predefined layouts.
               </p>
             </div>
@@ -40,14 +40,14 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option A: Upload Own Design */}
               <button
                 onClick={() => setSelectedExp('UPLOAD')}
-                className="p-5 rounded-xl border border-slate-200 hover:border-[#0082CA] bg-white hover:bg-blue-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer"
+                className="p-5 rounded-xl border border-[var(--border)] hover:border-[#0082CA] bg-[var(--bg-card)] hover:bg-blue-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
                   <div className="w-12 h-12 rounded-lg bg-blue-50 text-[#0082CA] flex items-center justify-center group-hover:scale-105 transition-transform border border-blue-100">
                     <UploadCloud className="w-6 h-6" />
                   </div>
-                  <h3 className="text-base font-black text-slate-900">Upload My Design</h3>
-                  <div className="text-xs text-slate-600 space-y-1">
+                  <h3 className="text-base font-black text-[var(--text-main)]">Upload My Design</h3>
+                  <div className="text-xs text-[var(--text-muted)] space-y-1">
                     <p className="flex items-center gap-1">✔ Drag & Drop upload</p>
                     <p className="flex items-center gap-1">✔ JPG, PNG, PDF, AI, PSD</p>
                     <p className="flex items-center gap-1">✔ Instant upload preview</p>
@@ -62,14 +62,14 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
               {/* Option B: Choose a Template */}
               <button
                 onClick={handleSelectTemplate}
-                className="p-5 rounded-xl border border-slate-200 hover:border-[#C71578] bg-white hover:bg-pink-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer"
+                className="p-5 rounded-xl border border-[var(--border)] hover:border-[#C71578] bg-[var(--bg-card)] hover:bg-pink-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer"
               >
                 <div className="space-y-3">
                   <div className="w-12 h-12 rounded-lg bg-pink-50 text-[#C71578] flex items-center justify-center group-hover:scale-105 transition-transform border border-pink-100">
                     <LayoutTemplate className="w-6 h-6" />
                   </div>
-                  <h3 className="text-base font-black text-slate-900">Browse Templates</h3>
-                  <div className="text-xs text-slate-600 space-y-1">
+                  <h3 className="text-base font-black text-[var(--text-main)]">Browse Templates</h3>
+                  <div className="text-xs text-[var(--text-muted)] space-y-1">
                     <p className="flex items-center gap-1">✔ Ready-made designs</p>
                     <p className="flex items-center gap-1">✔ Multiple categories</p>
                     <p className="flex items-center gap-1">✔ Preview before selecting</p>
@@ -87,15 +87,15 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
                   setDesignReady('CUSTOM', { serviceFee: 499, status: 'pending_brief' });
                   onClose();
                 }}
-                className="p-5 rounded-xl border border-slate-200 hover:border-emerald-600 bg-white hover:bg-emerald-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer relative overflow-hidden"
+                className="p-5 rounded-xl border border-[var(--border)] hover:border-emerald-600 bg-[var(--bg-card)] hover:bg-emerald-50/30 text-left transition-all group flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md cursor-pointer relative overflow-hidden"
               >
                 <div className="absolute -right-6 -top-6 w-24 h-24 bg-emerald-50 rounded-full opacity-50 group-hover:scale-150 transition-transform duration-500 pointer-events-none"></div>
                 <div className="space-y-3 relative z-10">
-                  <div className="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-105 transition-transform border border-emerald-100">
+                  <div className="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center group-hover:scale-105 transition-transform border border-emerald-100">
                     <Paintbrush className="w-6 h-6" />
                   </div>
-                  <h3 className="text-base font-black text-slate-900">Need a Custom Design?</h3>
-                  <div className="text-xs text-slate-600 space-y-1">
+                  <h3 className="text-base font-black text-[var(--text-main)]">Need a Custom Design?</h3>
+                  <div className="text-xs text-[var(--text-muted)] space-y-1">
                     <p className="flex items-center gap-1 text-emerald-700 font-medium pb-1">Our designers will create it.</p>
                     <p className="flex items-center gap-1">✔ Professional Design</p>
                     <p className="flex items-center gap-1">✔ Unlimited Revisions</p>
@@ -124,12 +124,12 @@ export default function DesignExperienceModal({ isOpen, onClose, product }) {
           </div>
         )}
 
-        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span className="flex items-center gap-1.5 font-semibold text-slate-600">
+        <div className="pt-4 border-t border-[var(--border)] flex items-center justify-between text-xs text-[var(--text-muted)]">
+          <span className="flex items-center gap-1.5 font-semibold text-[var(--text-muted)]">
             <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
             <span>Standard commercial printing file submission</span>
           </span>
-          <span className="text-[11px] text-slate-400 font-normal">Secure server storage</span>
+          <span className="text-[11px] text-[var(--text-faint)] font-normal">Secure server storage</span>
         </div>
       </div>
     </Modal>

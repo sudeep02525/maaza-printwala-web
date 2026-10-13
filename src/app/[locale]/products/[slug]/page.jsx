@@ -33,7 +33,7 @@ export default function ProductDetailPage({ params }) {
     <Suspense fallback={
       <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-4">
         <div className="w-10 h-10 border-4 border-[#0082CA] border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading product specifications...</p>
+        <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Loading product specifications...</p>
       </div>
     }>
       <ProductDetailContent slug={unwrappedParams.slug} />

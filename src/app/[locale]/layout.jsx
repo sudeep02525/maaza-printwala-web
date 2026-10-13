@@ -67,6 +67,12 @@ export default async function RootLayout({ children, params }) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        {/* Anti-flash inline script for dark mode */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme;var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}`,
+          }}
+        />
         {hasConsent && process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -92,7 +98,7 @@ export default async function RootLayout({ children, params }) {
           </>
         )}
       </head>
-      <body className="bg-[var(--color-bg-neutral)] text-[var(--color-charcoal)] antialiased font-sans min-h-screen flex flex-col" suppressHydrationWarning>
+      <body className="bg-[var(--bg-page)] text-[var(--text-main)] antialiased font-sans min-h-screen flex flex-col transition-colors" suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <LayoutClientWrapper>{children}</LayoutClientWrapper>

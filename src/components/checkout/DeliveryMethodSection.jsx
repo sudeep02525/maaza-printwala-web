@@ -33,13 +33,13 @@ export default function DeliveryMethodSection({
   };
 
   return (
-    <Card className="p-6 sm:p-8 border-slate-200 select-none">
+    <Card className="p-6 sm:p-8 border-[var(--border)] select-none">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-xl font-black text-slate-900">4. Delivery Method</h2>
+        <h2 className="text-xl font-black text-[var(--text-main)]">4. Delivery Method</h2>
         <Badge variant="primary" size="sm">Logistics</Badge>
       </div>
-      <p className="text-xs sm:text-sm text-slate-600 mb-6 font-normal">
-        Select a shipping method serviceable for Indian PIN Code <span className="font-mono font-bold text-slate-900">{pinCode}</span>.
+      <p className="text-xs sm:text-sm text-[var(--text-muted)] mb-6 font-normal">
+        Select a shipping method serviceable for Indian PIN Code <span className="font-mono font-bold text-[var(--text-main)]">{pinCode}</span>.
       </p>
 
       {isLoading && methods.length === 0 ? (
@@ -65,7 +65,7 @@ export default function DeliveryMethodSection({
                   className={`flex items-center justify-between p-5 rounded-lg border transition-all cursor-pointer ${
                     isSelected
                       ? 'border-[#0082CA] bg-blue-50/30 shadow-xs'
-                      : 'border-slate-200 hover:border-slate-300 bg-white'
+                      : 'border-[var(--border)] hover:border-[var(--border-strong)] bg-[var(--bg-card)]'
                   }`}
                 >
                   <div className="flex items-start space-x-4">
@@ -74,13 +74,13 @@ export default function DeliveryMethodSection({
                       name="deliveryMethod"
                       checked={isSelected}
                       onChange={() => setSelected(method._id)}
-                      className="mt-1 w-5 h-5 text-[#0082CA] border-slate-300 focus:ring-[#0082CA]"
+                      className="mt-1 w-5 h-5 text-[#0082CA] border-[var(--border-strong)] focus:ring-[#0082CA]"
                     />
                     <div>
                       <div className="flex items-center space-x-2">
-                        <span className="text-base font-black text-slate-900">{method.name}</span>
+                        <span className="text-base font-black text-[var(--text-main)]">{method.name}</span>
                       </div>
-                      <p className="text-xs text-slate-600 mt-1 font-normal">
+                      <p className="text-xs text-[var(--text-muted)] mt-1 font-normal">
                         Estimated dispatch timeline: {method.estimatedDaysMin}–{method.estimatedDaysMax} working days
                       </p>
                       {method.freeDeliveryThreshold && (
@@ -94,11 +94,11 @@ export default function DeliveryMethodSection({
                   </div>
 
                   <div className="text-right shrink-0 pl-4">
-                    <span className={`text-base font-black ${isFree ? 'text-emerald-600' : 'text-slate-900'}`}>
+                    <span className={`text-base font-black ${isFree ? 'text-emerald-600' : 'text-[var(--text-main)]'}`}>
                       {isFree ? 'FREE' : `₹${charge.toLocaleString('en-IN')}`}
                     </span>
                     {isFree && method.charge > 0 && (
-                      <span className="block text-xs text-slate-400 line-through font-semibold">
+                      <span className="block text-xs text-[var(--text-faint)] line-through font-semibold">
                         ₹{method.charge.toLocaleString('en-IN')}
                       </span>
                     )}
@@ -108,7 +108,7 @@ export default function DeliveryMethodSection({
             })}
           </div>
 
-          <div className="pt-4 flex items-center justify-between border-t border-slate-100">
+          <div className="pt-4 flex items-center justify-between border-t border-[var(--border)]">
             <Button
               type="button"
               variant="outline"

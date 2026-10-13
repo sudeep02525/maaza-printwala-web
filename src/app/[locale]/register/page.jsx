@@ -45,7 +45,7 @@ export default function RegisterPage() {
 
   // Dynamic Password Strength Meter
   const passwordStrength = useMemo(() => {
-    if (!password) return { score: 0, label: '', color: 'bg-slate-200' };
+    if (!password) return { score: 0, label: '', color: 'bg-[var(--border)]' };
     let score = 0;
     if (password.length >= 6) score += 1;
     if (password.length >= 8) score += 1;
@@ -136,12 +136,12 @@ export default function RegisterPage() {
 
   return (
     <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
-      <div className="w-full max-w-md bg-white p-7 sm:p-9 rounded-2xl shadow-sm border border-slate-200">
+      <div className="w-full max-w-md bg-[var(--bg-card)] p-7 sm:p-9 rounded-2xl shadow-sm border border-[var(--border)]">
         
         {/* Header */}
         <div className="text-center mb-7">
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-2">Create Account</h1>
-          <p className="text-slate-500 font-medium text-xs sm:text-sm">Join Maza Printwala for custom merchandise & instant prints</p>
+          <h1 className="text-2xl sm:text-3xl font-black text-[var(--text-main)] tracking-tight mb-2">Create Account</h1>
+          <p className="text-[var(--text-muted)] font-medium text-xs sm:text-sm">Join Maza Printwala for custom merchandise & instant prints</p>
         </div>
         
         {/* Global Error Banner */}
@@ -161,7 +161,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="register-name"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5"
             >
               Full Name
             </label>
@@ -179,10 +179,10 @@ export default function RegisterPage() {
               required
               aria-invalid={!!fieldErrors.name}
               aria-describedby={fieldErrors.name ? 'name-error' : undefined}
-              className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+              className={`w-full px-4 py-2.5 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                 fieldErrors.name
                   ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                  : 'border-slate-200 focus:border-[#0082CA]'
+                  : 'border-[var(--border)] focus:border-[#0082CA]'
               }`}
               placeholder="e.g. Rahul Sharma"
             />
@@ -198,7 +198,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="register-email"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5"
             >
               Email Address
             </label>
@@ -216,10 +216,10 @@ export default function RegisterPage() {
               required
               aria-invalid={!!fieldErrors.email}
               aria-describedby={fieldErrors.email ? 'email-error' : undefined}
-              className={`w-full px-4 py-2.5 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+              className={`w-full px-4 py-2.5 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                 fieldErrors.email
                   ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                  : 'border-slate-200 focus:border-[#0082CA]'
+                  : 'border-[var(--border)] focus:border-[#0082CA]'
               }`}
               placeholder="name@example.com"
             />
@@ -236,14 +236,14 @@ export default function RegisterPage() {
             <div className="flex items-center justify-between mb-1.5">
               <label
                 htmlFor="register-phone"
-                className="text-xs font-bold text-slate-700 uppercase tracking-wider"
+                className="text-xs font-bold text-[var(--text-main)] uppercase tracking-wider"
               >
                 Mobile Phone
               </label>
-              <span className="text-[11px] text-slate-400 font-medium">Optional for SMS tracking</span>
+              <span className="text-[11px] text-[var(--text-faint)] font-medium">Optional for SMS tracking</span>
             </div>
             <div className="relative flex">
-              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-slate-200 bg-slate-100 text-slate-500 text-xs font-bold">
+              <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-[var(--border)] bg-[var(--hover)] text-[var(--text-muted)] text-xs font-bold">
                 +91
               </span>
               <input
@@ -260,10 +260,10 @@ export default function RegisterPage() {
                 maxLength={10}
                 aria-invalid={!!fieldErrors.phone}
                 aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
-                className={`w-full px-4 py-2.5 bg-slate-50 border rounded-r-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+                className={`w-full px-4 py-2.5 bg-[var(--bg-subtle)] border rounded-r-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                   fieldErrors.phone
                     ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                    : 'border-slate-200 focus:border-[#0082CA]'
+                    : 'border-[var(--border)] focus:border-[#0082CA]'
                 }`}
                 placeholder="10-digit number"
               />
@@ -280,7 +280,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="register-password"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5"
             >
               Password
             </label>
@@ -300,17 +300,17 @@ export default function RegisterPage() {
                 minLength={6}
                 aria-invalid={!!fieldErrors.password}
                 aria-describedby={fieldErrors.password ? 'password-error' : undefined}
-                className={`w-full px-4 py-2.5 pr-11 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+                className={`w-full px-4 py-2.5 pr-11 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                   fieldErrors.password
                     ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                    : 'border-slate-200 focus:border-[#0082CA]'
+                    : 'border-[var(--border)] focus:border-[#0082CA]'
                 }`}
                 placeholder="At least 6 characters"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5 cursor-pointer rounded-lg"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1.5 cursor-pointer rounded-lg"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -321,13 +321,13 @@ export default function RegisterPage() {
             {password.length > 0 && (
               <div className="mt-2 space-y-1 animate-fadeIn">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500">Strength:</span>
+                  <span className="text-[var(--text-muted)]">Strength:</span>
                   <span className={`font-bold ${passwordStrength.text}`}>{passwordStrength.label}</span>
                 </div>
                 <div className="grid grid-cols-3 gap-1.5 h-1.5 w-full">
-                  <div className={`rounded-full h-full ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-slate-200'} transition-all`} />
-                  <div className={`rounded-full h-full ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-slate-200'} transition-all`} />
-                  <div className={`rounded-full h-full ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-slate-200'} transition-all`} />
+                  <div className={`rounded-full h-full ${passwordStrength.score >= 1 ? passwordStrength.color : 'bg-[var(--border)]'} transition-all`} />
+                  <div className={`rounded-full h-full ${passwordStrength.score >= 2 ? passwordStrength.color : 'bg-[var(--border)]'} transition-all`} />
+                  <div className={`rounded-full h-full ${passwordStrength.score >= 3 ? passwordStrength.color : 'bg-[var(--border)]'} transition-all`} />
                 </div>
               </div>
             )}
@@ -344,7 +344,7 @@ export default function RegisterPage() {
           <div>
             <label
               htmlFor="register-confirm-password"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-1.5"
             >
               Confirm Password
             </label>
@@ -362,17 +362,17 @@ export default function RegisterPage() {
                 required
                 aria-invalid={!!fieldErrors.confirmPassword}
                 aria-describedby={fieldErrors.confirmPassword ? 'confirm-password-error' : undefined}
-                className={`w-full px-4 py-2.5 pr-11 bg-slate-50 border rounded-xl focus:outline-none focus:bg-white transition-colors text-sm text-slate-900 ${
+                className={`w-full px-4 py-2.5 pr-11 bg-[var(--bg-subtle)] border rounded-xl focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-sm text-[var(--text-main)] ${
                   fieldErrors.confirmPassword
                     ? 'border-rose-400 focus:border-rose-500 ring-1 ring-rose-200'
-                    : 'border-slate-200 focus:border-[#0082CA]'
+                    : 'border-[var(--border)] focus:border-[#0082CA]'
                 }`}
                 placeholder="Repeat password"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5 cursor-pointer rounded-lg"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1.5 cursor-pointer rounded-lg"
                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
                 {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -397,9 +397,9 @@ export default function RegisterPage() {
                   setAgreeTerms(e.target.checked);
                   if (fieldErrors.agreeTerms) setFieldErrors((p) => ({ ...p, agreeTerms: '' }));
                 }}
-                className="mt-0.5 w-4 h-4 text-[#0082CA] rounded border-slate-300 focus:ring-[#0082CA] cursor-pointer"
+                className="mt-0.5 w-4 h-4 text-[#0082CA] rounded border-[var(--border-strong)] focus:ring-[#0082CA] cursor-pointer"
               />
-              <span className="text-xs text-slate-600 leading-normal">
+              <span className="text-xs text-[var(--text-muted)] leading-normal">
                 I agree to the{' '}
                 <Link href="/terms" target="_blank" className="text-[#0082CA] font-semibold hover:underline">
                   Terms of Service
@@ -437,9 +437,9 @@ export default function RegisterPage() {
         {/* Social Divider */}
         <div className="relative my-5 text-center">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-[var(--border)]" />
           </div>
-          <span className="relative px-3 bg-white text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <span className="relative px-3 bg-[var(--bg-card)] text-[11px] font-bold text-[var(--text-faint)] uppercase tracking-wider">
             or sign up with
           </span>
         </div>
@@ -448,7 +448,7 @@ export default function RegisterPage() {
         <button
           type="button"
           onClick={handleGoogleSignUp}
-          className="w-full py-2.5 px-4 border border-slate-200 hover:border-slate-300 hover:bg-slate-50/80 rounded-xl font-bold text-xs sm:text-sm text-slate-700 flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
+          className="w-full py-2.5 px-4 border border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-slate-50/80 rounded-xl font-bold text-xs sm:text-sm text-[var(--text-main)] flex items-center justify-center gap-2.5 transition-all cursor-pointer shadow-2xs"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24">
             <path
@@ -472,13 +472,13 @@ export default function RegisterPage() {
         </button>
 
         {/* Trust Line */}
-        <div className="mt-4 pt-3.5 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-400">
+        <div className="mt-4 pt-3.5 border-t border-[var(--border)] flex items-center justify-center gap-1.5 text-[11px] font-semibold text-[var(--text-faint)]">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>Instant account access &bull; Easy re-ordering</span>
         </div>
 
         {/* Sign In Redirect */}
-        <p className="mt-4 text-center text-xs sm:text-sm font-medium text-slate-600">
+        <p className="mt-4 text-center text-xs sm:text-sm font-medium text-[var(--text-muted)]">
           Already have an account?{' '}
           <Link
             href={searchParams.get('next') ? `/login?next=${encodeURIComponent(searchParams.get('next'))}` : '/login'}

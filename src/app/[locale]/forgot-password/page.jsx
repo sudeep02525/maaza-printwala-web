@@ -27,16 +27,16 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#FAFCFF] px-4 py-12">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+    <div className="min-h-[80vh] flex items-center justify-center bg-[var(--bg-subtle)] px-4 py-12">
+      <div className="w-full max-w-md bg-[var(--bg-card)] p-8 rounded-2xl shadow-sm border border-[var(--border)]">
         
         {/* Header Icon & Title */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 mx-auto mb-4 bg-sky-50 text-[#0082CA] rounded-2xl flex items-center justify-center shadow-xs border border-sky-100">
             <KeyRound className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Forgot Password?</h1>
-          <p className="text-slate-500 font-medium text-sm">
+          <h1 className="text-2xl sm:text-3xl font-black text-[var(--text-main)] mb-2">Forgot Password?</h1>
+          <p className="text-[var(--text-muted)] font-medium text-sm">
             No worries! Enter your account email and we'll send you a password reset link.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
             <div className="pt-2">
               <Link
                 href="/login"
-                className="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-center block text-sm transition-colors"
+                className="w-full py-3 bg-[var(--hover)] hover:bg-[var(--border)] text-[var(--text-main)] font-bold rounded-lg text-center block text-sm transition-colors"
               >
                 Return to Sign In
               </Link>
@@ -90,7 +90,7 @@ export default function ForgotPasswordPage() {
             <div>
               <label
                 htmlFor="forgot-email"
-                className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"
+                className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2"
               >
                 Registered Email Address
               </label>
@@ -103,10 +103,10 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-white transition-colors text-slate-900"
+                  className="w-full pl-10 pr-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] transition-colors text-[var(--text-main)]"
                   placeholder="name@example.com"
                 />
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-[var(--text-faint)] absolute left-3.5 top-1/2 -translate-y-1/2" />
               </div>
             </div>
 
@@ -128,7 +128,7 @@ export default function ForgotPasswordPage() {
             <div className="pt-2 text-center">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-1.5 text-sm font-bold text-slate-600 hover:text-[#0082CA] transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--text-muted)] hover:text-[#0082CA] transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Sign In</span>

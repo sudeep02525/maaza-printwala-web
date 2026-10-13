@@ -89,15 +89,15 @@ export default function ArtworkUploader({ product, onCloseModal }) {
   return (
     <div className="space-y-6 select-none">
       {/* Artwork Requirements Banner */}
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 text-xs space-y-2">
-        <div className="flex items-center gap-1.5 font-bold text-slate-900">
+      <div className="bg-[var(--bg-subtle)] p-4 rounded-lg border border-[var(--border)] text-xs space-y-2">
+        <div className="flex items-center gap-1.5 font-bold text-[var(--text-main)]">
           <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
           <span>Artwork Submission Guidelines:</span>
         </div>
-        <ul className="list-disc list-inside text-slate-600 space-y-1 font-normal pl-1">
-          <li>Accepted Formats: <strong className="text-slate-900">{allowedList.join(', ')}</strong></li>
-          <li>Maximum File Limit: <strong className="text-slate-900">{maxLimitMB} MB</strong> per file</li>
-          <li>General Guidance: <span className="text-slate-700">{reqs.guidance || 'Keep important text and logos within safe margin boundaries.'}</span></li>
+        <ul className="list-disc list-inside text-[var(--text-muted)] space-y-1 font-normal pl-1">
+          <li>Accepted Formats: <strong className="text-[var(--text-main)]">{allowedList.join(', ')}</strong></li>
+          <li>Maximum File Limit: <strong className="text-[var(--text-main)]">{maxLimitMB} MB</strong> per file</li>
+          <li>General Guidance: <span className="text-[var(--text-main)]">{reqs.guidance || 'Keep important text and logos within safe margin boundaries.'}</span></li>
         </ul>
       </div>
 
@@ -115,19 +115,19 @@ export default function ArtworkUploader({ product, onCloseModal }) {
             className={`p-8 rounded-lg border-2 border-dashed text-center transition-all flex flex-col items-center justify-center space-y-4 ${
               isDragging
                 ? 'border-[#0082CA] bg-blue-50/50 scale-[1.01]'
-                : 'border-slate-300 hover:border-slate-400 bg-slate-50/50'
+                : 'border-[var(--border-strong)] hover:border-slate-400 bg-[var(--bg-subtle)]'
             }`}
           >
-            <div className="w-14 h-14 rounded-full bg-white shadow-sm flex items-center justify-center text-[#0082CA] border border-slate-200">
+            <div className="w-14 h-14 rounded-full bg-[var(--bg-card)] shadow-sm flex items-center justify-center text-[#0082CA] border border-[var(--border)]">
               <Upload className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-900">
+              <p className="text-sm font-bold text-[var(--text-main)]">
                 Drag and drop your print artwork file here
               </p>
-              <p className="text-xs text-slate-500 mt-1">or browse files from your local drive</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">or browse files from your local drive</p>
             </div>
-            <label className="px-6 py-2.5 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold text-xs rounded-lg shadow-xs cursor-pointer transition-all">
+            <label className="px-6 py-2.5 bg-[var(--bg-card)] border border-[var(--border-strong)] hover:bg-[var(--bg-subtle)] text-[var(--text-main)] font-bold text-xs rounded-lg shadow-xs cursor-pointer transition-all">
               Browse Artwork File
               <input
                 type="file"
@@ -139,12 +139,12 @@ export default function ArtworkUploader({ product, onCloseModal }) {
 
           {/* Selected File Details */}
           {file && (
-            <div className="p-4 bg-white border border-slate-200 rounded-lg flex items-center justify-between shadow-xs">
+            <div className="p-4 bg-[var(--bg-card)] border border-[var(--border)] rounded-lg flex items-center justify-between shadow-xs">
               <div className="flex items-center gap-3 overflow-hidden">
                 <FileText className="w-8 h-8 text-[#0082CA] shrink-0" />
                 <div className="overflow-hidden">
-                  <p className="text-xs font-bold text-slate-900 truncate">{file.name}</p>
-                  <p className="text-[10px] text-slate-400 font-normal">
+                  <p className="text-xs font-bold text-[var(--text-main)] truncate">{file.name}</p>
+                  <p className="text-[10px] text-[var(--text-faint)] font-normal">
                     {(file.size / (1024 * 1024)).toFixed(2)} MB • Ready to upload
                   </p>
                 </div>
@@ -152,7 +152,7 @@ export default function ArtworkUploader({ product, onCloseModal }) {
               <button
                 type="button"
                 onClick={() => setFile(null)}
-                className="text-slate-400 hover:text-red-600 p-1.5 rounded-lg hover:bg-slate-50 transition-all"
+                className="text-[var(--text-faint)] hover:text-red-600 p-1.5 rounded-lg hover:bg-[var(--bg-subtle)] transition-all"
                 title="Remove file"
               >
                 <Trash2 className="w-4 h-4" />
@@ -170,11 +170,11 @@ export default function ArtworkUploader({ product, onCloseModal }) {
           {/* Upload Progress */}
           {isUploading && (
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs font-bold text-slate-700">
+              <div className="flex justify-between text-xs font-bold text-[var(--text-main)]">
                 <span>Uploading artwork file...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-[var(--hover)] rounded-full overflow-hidden">
                 <div
                   className="h-full bg-[#0082CA] transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}

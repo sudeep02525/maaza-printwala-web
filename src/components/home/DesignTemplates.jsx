@@ -27,8 +27,8 @@ export default function DesignTemplates() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
             <span className="text-[#0082CA] font-bold text-xs uppercase tracking-wider mb-2 block">Online Studio</span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Customizable Templates</h2>
-            <p className="text-sm text-slate-500 mt-2">Pick a premium template and customize it in our browser editor.</p>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight">Customizable Templates</h2>
+            <p className="text-sm text-[var(--text-muted)] mt-2">Pick a premium template and customize it in our browser editor.</p>
           </div>
           <Link href="/products" className="hidden sm:flex items-center gap-1 text-[#0082CA] font-bold hover:underline">
             View All Templates <ArrowRight className="w-4 h-4"/>
@@ -44,7 +44,7 @@ export default function DesignTemplates() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
               whileHover={{ y: -5 }}
-              className="group bg-white rounded-lg overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+              className="group bg-[var(--bg-card)] rounded-lg overflow-hidden border border-[var(--border)] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
               onClick={() => {
                 if (temp.product) {
                   router.push(`/products/${temp.product.slug || temp.product._id}/design?templateId=${temp._id}`);
@@ -52,7 +52,7 @@ export default function DesignTemplates() {
               }}
             >
               {/* Image Container with Editor Overlay */}
-              <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden flex items-center justify-center p-2">
+              <div className="relative aspect-[4/3] bg-[var(--hover)] overflow-hidden flex items-center justify-center p-2">
                 <img 
                   src={getImageUrl(temp.thumbnail || temp.previewFront) || 'https://images.unsplash.com/photo-1574751508226-f40445d31599?auto=format&fit=crop&w=600&q=80'} 
                   alt={temp.name} 
@@ -71,7 +71,7 @@ export default function DesignTemplates() {
                 <p className="text-xs font-bold text-[#0082CA] uppercase tracking-wider mb-1">
                   {temp.product?.name || 'Template'}
                 </p>
-                <h3 className="font-extrabold text-slate-900 truncate">{temp.name}</h3>
+                <h3 className="font-extrabold text-[var(--text-main)] truncate">{temp.name}</h3>
               </div>
             </motion.div>
           ))}

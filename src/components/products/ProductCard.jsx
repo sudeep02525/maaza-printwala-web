@@ -50,7 +50,7 @@ export default function ProductCard({ product }) {
   return (
     <div className="group relative flex flex-col w-full h-full">
       {/* Image Container */}
-      <div className="relative aspect-[9/10] bg-[#e6e6e6] overflow-hidden rounded-md">
+      <div className="relative aspect-[9/10] bg-[var(--hover)] overflow-hidden rounded-md border border-[var(--border)]">
         {/* Sale Badge */}
         <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
           {hasDiscount && discountPercent > 0 && (
@@ -75,7 +75,7 @@ export default function ProductCard({ product }) {
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             />
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-slate-300">
+            <div className="flex flex-col items-center justify-center h-full text-[var(--text-faint)]">
               <Package className="w-10 h-10 mb-2 stroke-1" />
             </div>
           )}
@@ -85,13 +85,13 @@ export default function ProductCard({ product }) {
       {/* Product Info */}
       <div className="flex flex-col text-left pt-3 flex-1">
         {/* Brand */}
-        <span className="text-[11px] text-gray-500 font-medium mb-1">
+        <span className="text-[11px] text-[var(--text-muted)] font-medium mb-1">
           {product.brand || categoryName || 'printvenue'}
         </span>
 
         {/* Product Name */}
         <Link href={`/products/${id}`} draggable={false}>
-          <h3 className="text-[14px] font-bold text-black leading-snug line-clamp-2 hover:text-[#0082CA] transition-colors">
+          <h3 className="text-[14px] font-bold text-[var(--text-main)] leading-snug line-clamp-2 hover:text-[#0082CA] transition-colors">
             {name}
           </h3>
         </Link>
@@ -107,21 +107,21 @@ export default function ProductCard({ product }) {
               <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
             </div>
           </div>
-          <span className="text-xs text-gray-500 ml-1 hover:underline cursor-pointer">{tProd('reviews', { count: 3 })}</span>
+          <span className="text-xs text-[var(--text-muted)] ml-1 hover:underline cursor-pointer">{tProd('reviews', { count: 3 })}</span>
         </div>
 
         <div className="mt-auto">
           {/* Price Row */}
           <div className="flex items-center flex-wrap gap-2 mt-2">
-            <span className="bg-slate-900 text-white text-[13px] font-bold px-2.5 py-1 rounded shadow-sm">
+            <span className="bg-[var(--text-main)] text-[var(--bg-card)] text-[13px] font-bold px-2.5 py-1 rounded shadow-sm">
               ₹{currentPrice.toFixed(2)}
             </span>
             {hasDiscount && (
-              <span className="text-[11px] text-gray-400 line-through">
+              <span className="text-[11px] text-[var(--text-faint)] line-through">
                 ₹{oldPrice.toFixed(2)}
               </span>
             )}
-            <span className="text-[11px] font-bold text-black ml-0.5">
+            <span className="text-[11px] font-bold text-[var(--text-main)] ml-0.5">
               {locale === 'hi' ? 'कर सहित' : locale === 'mr' ? 'कर समाविष्ट' : 'Incl. VAT'}
             </span>
           </div>
@@ -131,7 +131,7 @@ export default function ProductCard({ product }) {
             <span className="text-[11px] text-[#8dc63f] font-bold">
               {locale === 'hi' ? '4 दिनों में डिलीवरी' : locale === 'mr' ? '4 दिवसात वितरण' : 'delivery within 4 days'}
             </span>
-            <Info className="w-3.5 h-3.5 text-gray-300" />
+            <Info className="w-3.5 h-3.5 text-[var(--text-faint)]" />
           </div>
         </div>
       </div>

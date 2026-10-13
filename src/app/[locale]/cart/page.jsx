@@ -117,20 +117,20 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 select-none">
+    <div className="min-h-screen bg-[var(--bg-subtle)] py-12 px-4 sm:px-6 lg:px-8 select-none">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border)] pb-6">
           <div>
             <Badge variant="primary" size="sm" className="mb-2">Shopping Cart</Badge>
-            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-black text-[var(--text-main)] tracking-tight flex items-center gap-3">
               <ShoppingBag className="w-7 h-7 text-[#0082CA]" />
               <span>Your Print Orders</span>
             </h1>
           </div>
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-[#0082CA] transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[var(--text-muted)] hover:text-[#0082CA] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> Continue Shopping
           </Link>
@@ -145,19 +145,19 @@ export default function CartPage() {
 
         {/* Loading State for Initial Fetch */}
         {!isMounted || (isLoading && items.length === 0) ? (
-          <Card className="p-16 text-center space-y-4 border-slate-200">
+          <Card className="p-16 text-center space-y-4 border-[var(--border)]">
             <RefreshCw className="w-10 h-10 text-[#0082CA] animate-spin mx-auto" />
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Syncing shopping cart items...</p>
+            <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Syncing shopping cart items...</p>
           </Card>
         ) : items.length === 0 ? (
           /* Empty Cart State */
-          <Card className="p-16 text-center max-w-2xl mx-auto space-y-6 border-slate-200">
+          <Card className="p-16 text-center max-w-2xl mx-auto space-y-6 border-[var(--border)]">
             <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto text-[#0082CA] border border-blue-100">
               <ShoppingBag className="w-10 h-10" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900">Your shopping cart is empty</h2>
-              <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto font-normal leading-relaxed">
+              <h2 className="text-xl sm:text-2xl font-black text-[var(--text-main)]">Your shopping cart is empty</h2>
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md mx-auto font-normal leading-relaxed">
                 Ready to prepare custom commercial printing? Explore our product catalogue and configure your specifications.
               </p>
             </div>
@@ -173,7 +173,7 @@ export default function CartPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Cart Items List (8 cols) */}
             <div className="lg:col-span-8 space-y-4">
-              <div className="flex items-center justify-between px-2 text-xs font-bold text-slate-500 uppercase tracking-wider">
+              <div className="flex items-center justify-between px-2 text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">
                 <span>Cart Items ({items.length})</span>
                 <button
                   onClick={handleClear}
@@ -193,13 +193,13 @@ export default function CartPage() {
                 return (
                   <Card
                     key={item._id || idx}
-                    className={`p-6 border-slate-200 transition-all flex flex-col md:flex-row gap-6 items-start md:items-center justify-between ${
-                      isItemUpdating ? 'opacity-50 pointer-events-none' : 'hover:border-slate-300'
+                    className={`p-6 border-[var(--border)] transition-all flex flex-col md:flex-row gap-6 items-start md:items-center justify-between ${
+                      isItemUpdating ? 'opacity-50 pointer-events-none' : 'hover:border-[var(--border-strong)]'
                     }`}
                   >
                     {/* Item Image & Info */}
                     <div className="flex items-start gap-4 flex-1 min-w-0">
-                      <div className="w-24 h-24 rounded-lg bg-slate-100 overflow-hidden shrink-0 border border-slate-200 relative">
+                      <div className="w-24 h-24 rounded-lg bg-[var(--hover)] overflow-hidden shrink-0 border border-[var(--border)] relative">
                         <img src={prodImg} alt={prodName} className="w-full h-full object-cover" />
                         <div className="absolute top-1 left-1 bg-slate-900/80 text-white px-1.5 py-0.5 rounded text-[9px] font-bold uppercase">
                           {item.designType}
@@ -209,7 +209,7 @@ export default function CartPage() {
                       <div className="space-y-2 flex-1 min-w-0">
                         <Link
                           href={`/products/${item.product?.slug || ''}`}
-                          className="text-base font-black text-slate-900 hover:text-[#0082CA] transition-colors block truncate"
+                          className="text-base font-black text-[var(--text-main)] hover:text-[#0082CA] transition-colors block truncate"
                         >
                           {prodName}
                         </Link>
@@ -221,7 +221,7 @@ export default function CartPage() {
                             return (
                               <span
                                 key={k}
-                                className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[10px] font-bold uppercase border border-slate-200"
+                                className="px-2 py-0.5 rounded bg-[var(--hover)] text-[var(--text-main)] text-[10px] font-bold uppercase border border-[var(--border)]"
                               >
                                 {k}: {String(v)}
                               </span>
@@ -235,28 +235,28 @@ export default function CartPage() {
                         </div>
 
                         {/* Design Experience Breakdown */}
-                        <div className="bg-slate-50 rounded-lg p-2.5 border border-slate-200 text-xs space-y-1">
+                        <div className="bg-[var(--bg-subtle)] rounded-lg p-2.5 border border-[var(--border)] text-xs space-y-1">
                           {item.designType === 'UPLOAD' ? (
-                            <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
+                            <div className="flex items-center gap-2 text-[var(--text-main)] font-normal truncate">
                               <FileText className="w-3.5 h-3.5 text-[#0082CA] shrink-0" />
                               <span className="truncate">
-                                Artwork File: <strong className="text-slate-900">{item.artwork?.originalName || item.artwork?.fileId || 'Custom File'}</strong>
+                                Artwork File: <strong className="text-[var(--text-main)]">{item.artwork?.originalName || item.artwork?.fileId || 'Custom File'}</strong>
                               </span>
                             </div>
                           ) : (
                             <div className="space-y-1.5">
-                              <div className="flex items-center gap-2 text-slate-700 font-normal truncate">
+                              <div className="flex items-center gap-2 text-[var(--text-main)] font-normal truncate">
                                 <LayoutTemplate className="w-3.5 h-3.5 text-[#C71578] shrink-0" />
                                 <span className="truncate">
-                                  Template Layout: <strong className="text-slate-900">{item.template?.templateName || 'Predefined Template'}</strong>
+                                  Template Layout: <strong className="text-[var(--text-main)]">{item.template?.templateName || 'Predefined Template'}</strong>
                                 </span>
                               </div>
                               {item.template?.customFields && (
-                                <div className="text-[11px] text-slate-600 pl-5 flex flex-wrap gap-x-3 gap-y-1">
+                                <div className="text-[11px] text-[var(--text-muted)] pl-5 flex flex-wrap gap-x-3 gap-y-1">
                                   {Object.entries(item.template.customFields).map(([k, v]) => (
                                     <span key={k}>
-                                      <span className="font-semibold text-slate-500">{formatFieldLabel(k)}:</span>{' '}
-                                      <span className="text-slate-800 font-medium">"{v}"</span>
+                                      <span className="font-semibold text-[var(--text-muted)]">{formatFieldLabel(k)}:</span>{' '}
+                                      <span className="text-[var(--text-main)] font-medium">"{v}"</span>
                                     </span>
                                   ))}
                                 </div>
@@ -270,30 +270,30 @@ export default function CartPage() {
                     {/* Quantity Selector & Prices */}
                     <div className="flex md:flex-col items-center md:items-end justify-between w-full md:w-auto border-t md:border-t-0 pt-4 md:pt-0 gap-4 shrink-0">
                       <div className="text-left md:text-right">
-                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Line Total</div>
-                        <div className="text-xl font-black text-slate-900">
+                        <div className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider">Line Total</div>
+                        <div className="text-xl font-black text-[var(--text-main)]">
                           ₹{Number(item.authoritativeLineTotal || 0).toLocaleString('en-IN')}
                         </div>
-                        <div className="text-[11px] font-semibold text-slate-500">
+                        <div className="text-[11px] font-semibold text-[var(--text-muted)]">
                           ₹{Number(item.authoritativeUnitPrice || 0).toLocaleString('en-IN')} / unit
                         </div>
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <div className="inline-flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200">
+                        <div className="inline-flex items-center bg-[var(--bg-subtle)] rounded-lg p-1 border border-[var(--border)]">
                           <button
                             onClick={() => handleQuantityChange(item._id, item.quantity, -50)}
                             disabled={item.quantity <= 50 || isItemUpdating}
-                            className="w-7 h-7 rounded-lg bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center font-black disabled:opacity-40 transition-all border border-slate-200 cursor-pointer"
+                            className="w-7 h-7 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--hover)] text-[var(--text-main)] flex items-center justify-center font-black disabled:opacity-40 transition-all border border-[var(--border)] cursor-pointer"
                             title="Decrease Quantity (-50)"
                           >
                             <Minus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="w-14 text-center text-xs font-bold text-slate-900">{item.quantity}</span>
+                          <span className="w-14 text-center text-xs font-bold text-[var(--text-main)]">{item.quantity}</span>
                           <button
                             onClick={() => handleQuantityChange(item._id, item.quantity, 50)}
                             disabled={isItemUpdating}
-                            className="w-7 h-7 rounded-lg bg-white hover:bg-slate-100 text-slate-700 flex items-center justify-center font-black disabled:opacity-40 transition-all border border-slate-200 cursor-pointer"
+                            className="w-7 h-7 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--hover)] text-[var(--text-main)] flex items-center justify-center font-black disabled:opacity-40 transition-all border border-[var(--border)] cursor-pointer"
                             title="Increase Quantity (+50)"
                           >
                             <Plus className="w-3.5 h-3.5" />
@@ -303,7 +303,7 @@ export default function CartPage() {
                         <button
                           onClick={() => handleRemove(item._id)}
                           disabled={isItemUpdating}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                          className="p-2 text-[var(--text-faint)] hover:text-red-600 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer"
                           title="Remove item"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -316,15 +316,15 @@ export default function CartPage() {
             </div>
 
             {/* Order Summary Sidebar (4 cols) */}
-            <div className="lg:col-span-4 bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6 sticky top-24">
-              <div className="border-b border-slate-100 pb-4">
+            <div className="lg:col-span-4 bg-[var(--bg-card)] p-6 sm:p-8 rounded-lg border border-[var(--border)] shadow-xs space-y-6 sticky top-24">
+              <div className="border-b border-[var(--border)] pb-4">
                 <span className="text-[10px] font-bold text-[#0082CA] uppercase tracking-widest block">Order Calculation</span>
-                <h2 className="text-xl font-black text-slate-900 mt-0.5">Order Summary</h2>
+                <h2 className="text-xl font-black text-[var(--text-main)] mt-0.5">Order Summary</h2>
               </div>
 
               {/* Promo Code / Coupon Section */}
-              <div className="pt-2 border-t border-slate-100 space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+              <div className="pt-2 border-t border-[var(--border)] space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-[var(--text-main)]">
                   <span className="flex items-center gap-1.5">
                     <Tag className="w-3.5 h-3.5 text-[#0082CA]" /> Have a Promo Code?
                   </span>
@@ -344,7 +344,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={handleRemoveCoupon}
-                      className="text-slate-400 hover:text-red-500 p-1 cursor-pointer"
+                      className="text-[var(--text-faint)] hover:text-red-500 p-1 cursor-pointer"
                       title="Remove coupon"
                     >
                       <X className="w-3.5 h-3.5" />
@@ -358,7 +358,7 @@ export default function CartPage() {
                         value={couponInput}
                         onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                         placeholder="ENTER CODE"
-                        className="flex-1 text-xs p-2.5 border border-slate-300 rounded-lg uppercase tracking-wider font-bold focus:outline-none focus:border-[#0082CA]"
+                        className="flex-1 text-xs p-2.5 border border-[var(--border-strong)] rounded-lg uppercase tracking-wider font-bold focus:outline-none focus:border-[#0082CA]"
                       />
                       <button
                         type="button"
@@ -393,20 +393,20 @@ export default function CartPage() {
               </div>
 
               {/* Order Figures */}
-              <div className="space-y-3 text-xs sm:text-sm pt-2 border-t border-slate-100">
-                <div className="flex justify-between text-slate-600 font-semibold">
+              <div className="space-y-3 text-xs sm:text-sm pt-2 border-t border-[var(--border)]">
+                <div className="flex justify-between text-[var(--text-muted)] font-semibold">
                   <span>Total Items</span>
-                  <span className="font-bold text-slate-900">{items.length}</span>
+                  <span className="font-bold text-[var(--text-main)]">{items.length}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 font-semibold">
+                <div className="flex justify-between text-[var(--text-muted)] font-semibold">
                   <span>Total Quantity</span>
-                  <span className="font-bold text-slate-900">
+                  <span className="font-bold text-[var(--text-main)]">
                     {items.reduce((acc, i) => acc + (Number(i.quantity) || 0), 0).toLocaleString('en-IN')} units
                   </span>
                 </div>
-                <div className="flex justify-between text-slate-600 font-semibold">
+                <div className="flex justify-between text-[var(--text-muted)] font-semibold">
                   <span>Subtotal Amount</span>
-                  <span className="font-bold text-slate-900">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
+                  <span className="font-bold text-[var(--text-main)]">₹{Number(cartTotal || 0).toLocaleString('en-IN')}</span>
                 </div>
 
                 {appliedCoupon && (
@@ -424,19 +424,19 @@ export default function CartPage() {
 
                   return (
                     <>
-                      <div className="flex justify-between text-slate-600 font-semibold">
+                      <div className="flex justify-between text-[var(--text-muted)] font-semibold">
                         <span>Est. GST (18% commercial rate)</span>
-                        <span className="font-bold text-slate-900">₹{gst.toLocaleString('en-IN')}</span>
+                        <span className="font-bold text-[var(--text-main)]">₹{gst.toLocaleString('en-IN')}</span>
                       </div>
-                      <div className="flex justify-between text-slate-400 text-xs font-normal">
+                      <div className="flex justify-between text-[var(--text-faint)] text-xs font-normal">
                         <span>Shipping & Logistics</span>
                         <span>Calculated during checkout</span>
                       </div>
 
-                      <div className="border-t border-slate-100 pt-4 flex justify-between items-baseline">
+                      <div className="border-t border-[var(--border)] pt-4 flex justify-between items-baseline">
                         <div>
-                          <span className="text-base font-black text-slate-900 block">Estimated Total</span>
-                          <span className="text-[10px] font-semibold text-slate-400">Includes 18% GST</span>
+                          <span className="text-base font-black text-[var(--text-main)] block">Estimated Total</span>
+                          <span className="text-[10px] font-semibold text-[var(--text-faint)]">Includes 18% GST</span>
                         </div>
                         <span className="text-2xl font-black text-[#0082CA]">₹{estimatedTotal.toLocaleString('en-IN')}</span>
                       </div>
@@ -446,11 +446,11 @@ export default function CartPage() {
               </div>
 
               {/* Verified Pricing Trust Badge */}
-              <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 flex items-start gap-3">
+              <div className="bg-[var(--bg-subtle)] rounded-lg p-4 border border-[var(--border)] flex items-start gap-3">
                 <ShieldCheck className="w-5 h-5 text-[#0082CA] shrink-0 mt-0.5" />
-                <div className="text-xs text-slate-700 space-y-1">
-                  <span className="font-bold text-slate-900 block">Verified Server Valuation</span>
-                  <p className="text-slate-600 font-normal leading-relaxed">
+                <div className="text-xs text-[var(--text-main)] space-y-1">
+                  <span className="font-bold text-[var(--text-main)] block">Verified Server Valuation</span>
+                  <p className="text-[var(--text-muted)] font-normal leading-relaxed">
                     All unit prices, configuration modifiers, and quantity discounts are calculated directly by our server engine.
                   </p>
                 </div>
@@ -464,7 +464,7 @@ export default function CartPage() {
                     <span>Proceed to Checkout</span>
                   </Button>
                 </Link>
-                <p className="text-[11px] text-center text-slate-400 font-normal">
+                <p className="text-[11px] text-center text-[var(--text-faint)] font-normal">
                   * Next step: enter delivery address and contact information.
                 </p>
               </div>

@@ -10,13 +10,13 @@ export default function SchemaConfigurator({ schema, isLoading }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white p-6 sm:p-8 rounded-lg border border-slate-200 space-y-6 animate-pulse shadow-xs">
-        <div className="h-6 bg-slate-200 rounded-lg w-1/3"></div>
+      <div className="bg-[var(--bg-card)] p-6 sm:p-8 rounded-lg border border-[var(--border)] space-y-6 animate-pulse shadow-xs">
+        <div className="h-6 bg-[var(--border)] rounded-lg w-1/3"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="space-y-2">
-              <div className="h-4 bg-slate-200 rounded w-1/4"></div>
-              <div className="h-11 bg-slate-100 rounded-lg"></div>
+              <div className="h-4 bg-[var(--border)] rounded w-1/4"></div>
+              <div className="h-11 bg-[var(--hover)] rounded-lg"></div>
             </div>
           ))}
         </div>
@@ -26,20 +26,20 @@ export default function SchemaConfigurator({ schema, isLoading }) {
 
   if (!schema || !schema.attributes || schema.attributes.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-lg border border-slate-200 text-center text-slate-500 text-sm shadow-xs">
+      <div className="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border)] text-center text-[var(--text-muted)] text-sm shadow-xs">
         No specification schema found for this product. Standard configuration applies.
       </div>
     );
   }
 
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-lg border border-slate-200 shadow-xs space-y-6 select-none">
-      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-        <h3 className="text-base font-black text-slate-900 flex items-center gap-2">
+    <div className="bg-[var(--bg-card)] p-6 sm:p-8 rounded-lg border border-[var(--border)] shadow-xs space-y-6 select-none">
+      <div className="flex items-center justify-between border-b border-[var(--border)] pb-4">
+        <h3 className="text-base font-black text-[var(--text-main)] flex items-center gap-2">
           <Package className="w-5 h-5 text-[#0082CA]" />
           <span>1. Select Custom Specifications</span>
         </h3>
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 px-2.5 py-1 rounded-full border border-slate-200">
+        <span className="text-[10px] font-bold text-[var(--text-faint)] uppercase tracking-wider bg-[var(--bg-subtle)] px-2.5 py-1 rounded-full border border-[var(--border)]">
           Schema Driven
         </span>
       </div>
@@ -52,11 +52,11 @@ export default function SchemaConfigurator({ schema, isLoading }) {
           return (
             <div key={attr.key} className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider">
                   {attr.label} {attr.required && <span className="text-[#C71578]">*</span>}
                 </label>
                 {attr.description && (
-                  <span className="text-[10px] text-slate-400 flex items-center gap-1 cursor-help" title={attr.description}>
+                  <span className="text-[10px] text-[var(--text-faint)] flex items-center gap-1 cursor-help" title={attr.description}>
                     <Info className="w-3 h-3 text-[#0082CA]" /> Info
                   </span>
                 )}
@@ -79,14 +79,14 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                               'px-3.5 py-2.5 rounded-lg border text-xs font-bold transition-all flex items-center justify-between text-left',
                               isSelected
                                 ? 'bg-slate-900 text-white border-slate-900 shadow-xs'
-                                : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300'
+                                : 'bg-[var(--bg-subtle)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--hover)] hover:border-[var(--border-strong)]'
                             )}
                           >
                             <span className="truncate pr-1">{opt.label}</span>
                             {isSelected ? (
                               <Check className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                             ) : opt.priceModifier ? (
-                              <span className="text-[10px] text-slate-500 shrink-0">+₹{opt.priceModifier}</span>
+                              <span className="text-[10px] text-[var(--text-muted)] shrink-0">+₹{opt.priceModifier}</span>
                             ) : null}
                           </button>
                         );
@@ -98,9 +98,9 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                       value={val || ''}
                       onChange={(e) => updateConfiguration(attr.key, e.target.value)}
                       className={cn(
-                        'w-full px-3.5 py-2.5 bg-slate-50 border rounded-lg text-sm font-semibold text-slate-800 transition-all cursor-pointer',
+                        'w-full px-3.5 py-2.5 bg-[var(--bg-subtle)] border rounded-lg text-sm font-semibold text-[var(--text-main)] transition-all cursor-pointer',
                         'focus:outline-none focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA]',
-                        isMissing ? 'border-amber-300 bg-amber-50/30' : 'border-slate-300'
+                        isMissing ? 'border-amber-300 bg-amber-50/30' : 'border-[var(--border-strong)]'
                       )}
                     >
                       <option value="" disabled>Select {attr.label}</option>
@@ -130,18 +130,18 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                           'px-3.5 py-2 rounded-lg border text-xs font-bold transition-all flex items-center gap-2',
                           isSelected
                             ? 'bg-slate-900 text-white border-slate-900 shadow-xs scale-102'
-                            : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300'
+                            : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)] hover:border-[var(--border-strong)]'
                         )}
                       >
                         {isHex ? (
                           <span
-                            className="w-4 h-4 rounded-full border border-slate-300 shadow-2xs shrink-0 flex items-center justify-center"
+                            className="w-4 h-4 rounded-full border border-[var(--border-strong)] shadow-2xs shrink-0 flex items-center justify-center"
                             style={{ backgroundColor: opt.image }}
                           >
                             {isSelected && <Check className="w-2.5 h-2.5 text-white mix-blend-difference" />}
                           </span>
                         ) : (
-                          <span className="w-3.5 h-3.5 rounded-full bg-slate-200 shrink-0"></span>
+                          <span className="w-3.5 h-3.5 rounded-full bg-[var(--border)] shrink-0"></span>
                         )}
                         <span>{opt.label}</span>
                         {opt.priceModifier ? <span className="text-[10px] opacity-75">(+₹{opt.priceModifier})</span> : null}
@@ -156,7 +156,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                 <div className="space-y-2 pt-1">
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
+                      <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block mb-1">
                         Width ({attr.unit || 'ft'})
                       </span>
                       <input
@@ -166,11 +166,11 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.width !== undefined ? configuration.width : 3}
                         onChange={(e) => updateConfiguration('width', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-[var(--bg-subtle)] border border-[var(--border-strong)] rounded-lg text-sm font-bold text-[var(--text-main)] focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
+                      <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider block mb-1">
                         Height ({attr.unit || 'ft'})
                       </span>
                       <input
@@ -180,7 +180,7 @@ export default function SchemaConfigurator({ schema, isLoading }) {
                         step={0.5}
                         value={configuration.height !== undefined ? configuration.height : 2}
                         onChange={(e) => updateConfiguration('height', Number(e.target.value))}
-                        className="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm font-bold text-slate-900 focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
+                        className="w-full px-3.5 py-2 bg-[var(--bg-subtle)] border border-[var(--border-strong)] rounded-lg text-sm font-bold text-[var(--text-main)] focus:ring-2 focus:ring-[#0082CA]/20 focus:border-[#0082CA] focus:outline-none transition-all"
                       />
                     </div>
                   </div>

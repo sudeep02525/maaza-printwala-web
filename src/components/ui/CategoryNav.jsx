@@ -12,7 +12,7 @@ export default function CategoryNav({ categories = [], currentCategorySlug = nul
           className={`flex items-center px-5 py-2.5 rounded-full transition-all duration-300 text-sm font-bold shrink-0 shadow-sm ${
             !currentCategorySlug
               ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/30 scale-105'
-              : 'bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:shadow-md border border-slate-200'
+              : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] hover:shadow-md border border-[var(--border)]'
           }`}
         >
           <span className="whitespace-nowrap">All Products</span>
@@ -27,7 +27,7 @@ export default function CategoryNav({ categories = [], currentCategorySlug = nul
               className={`flex items-center px-5 py-2.5 rounded-full transition-all duration-300 text-sm font-bold shrink-0 shadow-sm ${
                 isSelected
                   ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/30 scale-105'
-                  : 'bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 hover:shadow-md border border-slate-200'
+                  : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] hover:shadow-md border border-[var(--border)]'
               }`}
             >
               <span className="whitespace-nowrap">{cat.name}</span>

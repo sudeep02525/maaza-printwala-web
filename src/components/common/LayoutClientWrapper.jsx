@@ -34,7 +34,7 @@ export default function LayoutClientWrapper({ children }) {
 
   if (isAuthPage) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#FAFCFF]">
+      <div className="min-h-screen flex flex-col bg-[var(--bg-subtle)]">
         <AuthHeader />
         <main className="flex-1 flex flex-col justify-center">{children}</main>
         <AuthFooter />

@@ -75,7 +75,7 @@ export default function ProductGallery({ product }) {
         {/* Main Studio Preview Box */}
       <div 
         className={cn(
-          "relative bg-white rounded-xl border border-slate-200 overflow-hidden aspect-square flex items-center justify-center shadow-xs transition-shadow duration-300 hover:shadow-md",
+          "relative bg-[var(--bg-card)] rounded-xl border border-[var(--border)] overflow-hidden aspect-square flex items-center justify-center shadow-xs transition-shadow duration-300 hover:shadow-md",
           isZoomed ? "cursor-none" : "cursor-zoom-in"
         )}
         onMouseEnter={handleMouseEnter}
@@ -89,15 +89,15 @@ export default function ProductGallery({ product }) {
             className="w-full h-full object-contain p-3 sm:p-4 transition-transform duration-300"
           />
         ) : (
-          <div className="flex flex-col items-center justify-center text-slate-400 space-y-2 p-8">
+          <div className="flex flex-col items-center justify-center text-[var(--text-faint)] space-y-2 p-8">
             <Package className="w-16 h-16 stroke-1" />
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Standard Print Preview</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Standard Print Preview</span>
           </div>
         )}
 
         {/* Hover zoom hint badge */}
         {!isZoomed && images.length > 0 && (
-          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-slate-700 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs flex items-center gap-1.5 pointer-events-none opacity-80 hover:opacity-100 transition-opacity">
+          <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-xs text-[var(--text-main)] text-[11px] font-semibold px-2.5 py-1 rounded-full border border-slate-200/80 shadow-xs flex items-center gap-1.5 pointer-events-none opacity-80 hover:opacity-100 transition-opacity">
             <ZoomIn className="w-3.5 h-3.5 text-[#0082CA]" />
             <span>Hover to zoom</span>
           </div>
@@ -158,10 +158,10 @@ export default function ProductGallery({ product }) {
                 type="button"
                 onClick={() => setActiveIdx(idx)}
                 className={cn(
-                  'relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-white group/thumb focus:outline-hidden',
+                  'relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 bg-[var(--bg-card)] group/thumb focus:outline-hidden',
                   activeIdx === idx
                     ? 'border-[#0082CA] ring-2 ring-[#0082CA]/25 scale-95 shadow-sm'
-                    : 'border-slate-200 opacity-80 hover:opacity-100 hover:border-slate-300'
+                    : 'border-[var(--border)] opacity-80 hover:opacity-100 hover:border-[var(--border-strong)]'
                 )}
               >
                 <img

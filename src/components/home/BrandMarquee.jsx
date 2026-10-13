@@ -18,9 +18,9 @@ const MARQUEE_ITEMS = [...BRANDS, ...BRANDS, ...BRANDS];
 
 export default function BrandMarquee() {
   return (
-    <section className="py-12 bg-white border-b border-slate-100 overflow-hidden">
+    <section className="py-12 bg-[var(--bg-card)] border-b border-[var(--border)] overflow-hidden">
       <div className="max-w-[1480px] mx-auto px-4 text-center mb-8">
-        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Trusted by India&apos;s Leading Enterprises</p>
+        <p className="text-xs font-bold text-[var(--text-faint)] uppercase tracking-widest">Trusted by India&apos;s Leading Enterprises</p>
       </div>
 
       <div className="relative flex overflow-hidden w-full group">

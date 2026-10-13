@@ -37,18 +37,18 @@ export default function CheckoutPage() {
   }, [initCheckout]);
 
   return (
-    <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8 select-none">
+    <div className="min-h-screen bg-[var(--bg-subtle)] py-10 px-4 sm:px-6 lg:px-8 select-none">
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header Breadcrumbs */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-6">
-          <div className="flex items-center space-x-2 text-xs sm:text-sm font-semibold text-slate-500">
-            <Link href="/" className="hover:text-slate-900 flex items-center gap-1">Home</Link>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border)] pb-6">
+          <div className="flex items-center space-x-2 text-xs sm:text-sm font-semibold text-[var(--text-muted)]">
+            <Link href="/" className="hover:text-[var(--text-main)] flex items-center gap-1">Home</Link>
             <span>/</span>
-            <Link href="/cart" className="hover:text-slate-900">Shopping Cart</Link>
+            <Link href="/cart" className="hover:text-[var(--text-main)]">Shopping Cart</Link>
             <span>/</span>
-            <span className="text-slate-900 font-extrabold">Order Checkout</span>
+            <span className="text-[var(--text-main)] font-extrabold">Order Checkout</span>
           </div>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 text-slate-800 text-xs font-bold border border-slate-200">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--hover)] text-[var(--text-main)] text-xs font-bold border border-[var(--border)]">
             <ShieldCheck className="w-4 h-4 text-[#0082CA]" />
             <span>Secure Commercial Order Processing</span>
           </div>
@@ -69,18 +69,18 @@ export default function CheckoutPage() {
 
         {/* Loading Skeleton */}
         {isLoading && !draft ? (
-          <Card className="py-24 text-center space-y-4 border-slate-200">
+          <Card className="py-24 text-center space-y-4 border-[var(--border)]">
             <RefreshCw className="w-10 h-10 text-[#0082CA] animate-spin mx-auto" />
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Verifying cart specifications and calculating pricing...</p>
+            <p className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Verifying cart specifications and calculating pricing...</p>
           </Card>
         ) : !draft ? (
-          <Card className="p-12 text-center max-w-lg mx-auto space-y-6 border-slate-200">
-            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-[#0082CA]">
+          <Card className="p-12 text-center max-w-lg mx-auto space-y-6 border-[var(--border)]">
+            <div className="w-16 h-16 bg-[var(--hover)] rounded-full flex items-center justify-center mx-auto text-[#0082CA]">
               <ShoppingBag className="w-8 h-8" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-xl font-black text-slate-900">Cart Session Expired</h2>
-              <p className="text-xs text-slate-500 font-normal leading-relaxed">We could not initialize a checkout session. Your shopping cart may be empty or your session expired.</p>
+              <h2 className="text-xl font-black text-[var(--text-main)]">Cart Session Expired</h2>
+              <p className="text-xs text-[var(--text-muted)] font-normal leading-relaxed">We could not initialize a checkout session. Your shopping cart may be empty or your session expired.</p>
             </div>
             <Link href="/products">
               <Button variant="primary" size="md">Browse Catalogue</Button>
@@ -132,58 +132,58 @@ export default function CheckoutPage() {
               )}
 
               {currentStep === 5 && (
-                <Card className="p-6 sm:p-8 space-y-6 border-slate-200">
-                  <div className="border-b border-slate-100 pb-4">
-                    <h2 className="text-xl font-black text-slate-900">
+                <Card className="p-6 sm:p-8 space-y-6 border-[var(--border)]">
+                  <div className="border-b border-[var(--border)] pb-4">
+                    <h2 className="text-xl font-black text-[var(--text-main)]">
                       5. Review Order & Shipping Specifications
                     </h2>
-                    <p className="text-xs text-slate-500 mt-0.5 font-normal">
+                    <p className="text-xs text-[var(--text-muted)] mt-0.5 font-normal">
                       Please verify your contact details, Indian delivery address, and billing preference before registering your order.
                     </p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs sm:text-sm">
-                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
-                        <span className="font-extrabold text-slate-900">Contact Details</span>
+                        <span className="font-extrabold text-[var(--text-main)]">Contact Details</span>
                         <button onClick={() => setStep(1)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
-                      <p className="text-slate-900 font-bold">{draft.contactDetails?.fullName}</p>
-                      <p className="text-slate-600">{draft.contactDetails?.email}</p>
-                      <p className="text-slate-600">+91 {draft.contactDetails?.phone}</p>
+                      <p className="text-[var(--text-main)] font-bold">{draft.contactDetails?.fullName}</p>
+                      <p className="text-[var(--text-muted)]">{draft.contactDetails?.email}</p>
+                      <p className="text-[var(--text-muted)]">+91 {draft.contactDetails?.phone}</p>
                     </div>
 
-                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
-                        <span className="font-extrabold text-slate-900">Delivery Address</span>
+                        <span className="font-extrabold text-[var(--text-main)]">Delivery Address</span>
                         <button onClick={() => setStep(2)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
-                      <p className="text-slate-900 font-bold">{draft.deliveryAddress?.fullName}</p>
-                      <p className="text-slate-600">{draft.deliveryAddress?.streetAddress}</p>
-                      <p className="text-slate-600">{draft.deliveryAddress?.city}, {draft.deliveryAddress?.state} - <span className="font-mono font-bold">{draft.deliveryAddress?.pinCode}</span></p>
+                      <p className="text-[var(--text-main)] font-bold">{draft.deliveryAddress?.fullName}</p>
+                      <p className="text-[var(--text-muted)]">{draft.deliveryAddress?.streetAddress}</p>
+                      <p className="text-[var(--text-muted)]">{draft.deliveryAddress?.city}, {draft.deliveryAddress?.state} - <span className="font-mono font-bold">{draft.deliveryAddress?.pinCode}</span></p>
                     </div>
 
-                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
-                        <span className="font-extrabold text-slate-900">Billing & GST</span>
+                        <span className="font-extrabold text-[var(--text-main)]">Billing & GST</span>
                         <button onClick={() => setStep(3)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
-                      <p className="text-slate-900 font-bold">{draft.billingDetails?.sameAsDelivery ? 'Same as Delivery Address' : draft.billingDetails?.address?.fullName}</p>
+                      <p className="text-[var(--text-main)] font-bold">{draft.billingDetails?.sameAsDelivery ? 'Same as Delivery Address' : draft.billingDetails?.address?.fullName}</p>
                       {draft.billingDetails?.isBusinessPurchase && (
-                        <div className="mt-2 pt-2 border-t border-slate-200/60 text-xs font-mono text-slate-700">
+                        <div className="mt-2 pt-2 border-t border-slate-200/60 text-xs font-mono text-[var(--text-main)]">
                           <p><span className="font-bold">Company:</span> {draft.billingDetails.companyName}</p>
                           <p><span className="font-bold">GSTIN:</span> {draft.billingDetails.gstin}</p>
                         </div>
                       )}
                     </div>
 
-                    <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-1">
+                    <div className="p-4 rounded-lg bg-[var(--bg-subtle)] border border-[var(--border)] space-y-1">
                       <div className="flex justify-between items-center mb-2 pb-2 border-b border-slate-200/60">
-                        <span className="font-extrabold text-slate-900">Delivery Method</span>
+                        <span className="font-extrabold text-[var(--text-main)]">Delivery Method</span>
                         <button onClick={() => setStep(4)} className="text-xs text-[#0082CA] font-bold hover:underline cursor-pointer">Edit</button>
                       </div>
-                      <p className="text-slate-900 font-bold">{draft.deliveryMethodSnapshot?.name}</p>
-                      <p className="text-xs text-slate-500 mt-1 font-normal">Est. timeline: {draft.deliveryMethodSnapshot?.estimatedDaysMin}–{draft.deliveryMethodSnapshot?.estimatedDaysMax} working days</p>
+                      <p className="text-[var(--text-main)] font-bold">{draft.deliveryMethodSnapshot?.name}</p>
+                      <p className="text-xs text-[var(--text-muted)] mt-1 font-normal">Est. timeline: {draft.deliveryMethodSnapshot?.estimatedDaysMin}–{draft.deliveryMethodSnapshot?.estimatedDaysMax} working days</p>
                     </div>
                   </div>
                 </Card>

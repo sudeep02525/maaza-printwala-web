@@ -82,8 +82,8 @@ const SectionHeader = ({ title, linkText, subtitle, tButtons }) => {
   return (
     <div className="flex justify-between items-end mb-8">
       <div>
-        <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight">{title}</h2>
-        {subtitle && <p className="text-sm text-slate-500 mt-1">{subtitle}</p>}
+        <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight">{title}</h2>
+        {subtitle && <p className="text-sm text-[var(--text-muted)] mt-1">{subtitle}</p>}
       </div>
       {text && (
         <Link href="/products" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
@@ -174,7 +174,7 @@ export default async function HomePage({ params }) {
           <div className="flex flex-wrap gap-3">
             {getPopularSearches(locale).map((search, i) => (
               <FadeIn key={i} delay={i * 0.05} y={10}>
-                <Link href={`/products?search=${encodeURIComponent(search)}`} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 font-semibold text-xs sm:text-sm rounded-full hover:border-[#0082CA] hover:text-[#0082CA] hover:shadow-sm transition-all block">
+                <Link href={`/products?search=${encodeURIComponent(search)}`} className="px-4 py-2 bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-muted)] font-semibold text-xs sm:text-sm rounded-full hover:border-[#0082CA] hover:text-[#0082CA] hover:shadow-sm transition-all block">
                   <Search className="w-3 h-3 inline-block mr-1.5 -mt-0.5" />
                   {search}
                 </Link>
@@ -185,10 +185,10 @@ export default async function HomePage({ params }) {
       </section>
 
       {/* 18. CUSTOMER GALLERY */}
-      <section className="py-10 bg-white border-y border-slate-100">
+      <section className="py-10 bg-[var(--bg-card)] border-y border-[var(--border)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8 text-center">
-          <h2 className="text-2xl sm:text-[28px] font-extrabold text-slate-900 tracking-tight mb-2">{tHome('customerGallery')}</h2>
-          <p className="text-sm text-slate-500 mb-8 font-medium">
+          <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight mb-2">{tHome('customerGallery')}</h2>
+          <p className="text-sm text-[var(--text-muted)] mb-8 font-medium">
             {locale === 'hi' ? 'फ़ीचर होने के लिए हमें Instagram ' : locale === 'mr' ? 'वैशिष्ट्यीकृत होण्यासाठी आम्हाला Instagram वर ' : 'Tag us on Instagram '}
             <span className="font-bold text-[#0082CA]">@MaazaPrintwala</span> 
             {locale === 'hi' ? ' पर टैग करें।' : locale === 'mr' ? ' टॅग करा.' : ' to get featured.'}
@@ -196,7 +196,7 @@ export default async function HomePage({ params }) {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {INSTAGRAM_POSTS.map((img, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative aspect-square rounded-lg overflow-hidden group border border-slate-200">
+                <div className="relative aspect-square rounded-lg overflow-hidden group border border-[var(--border)]">
                   <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Gallery" />
                   <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <Heart className="w-8 h-8 text-white fill-white shadow-sm" />
@@ -212,9 +212,9 @@ export default async function HomePage({ params }) {
       <TestimonialCarousel />
 
       {/* 20. FAQ */}
-      <section className="py-10 bg-white">
+      <section className="py-10 bg-[var(--bg-card)]">
         <FadeIn className="w-full max-w-6xl mx-auto px-4 md:px-8">
-          <h2 className="text-[28px] font-bold text-slate-800 mb-6 text-left">{tHome('faq')} (FAQs)</h2>
+          <h2 className="text-[28px] font-bold text-[var(--text-main)] mb-6 text-left">{tHome('faq')} (FAQs)</h2>
           <FaqAccordion faqs={[
             { 
               q: locale === 'hi' ? 'Maza Printwala क्या सेवाएँ प्रदान करता है?' : locale === 'mr' ? 'Maza Printwala कोणत्या सेवा देते?' : 'What services does Maza Printwala offer?', 

@@ -716,17 +716,17 @@ export default function DesignStudio({ slug }) {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-slate-100 font-sans overflow-hidden">
+    <div className="flex flex-col w-full h-screen bg-[var(--hover)] font-sans overflow-hidden">
       {/* Top Toolbar */}
-      <div className="h-14 bg-white border-b border-slate-200 flex items-center justify-between px-4 shrink-0 shadow-sm z-30">
+      <div className="h-14 bg-[var(--bg-card)] border-b border-[var(--border)] flex items-center justify-between px-4 shrink-0 shadow-sm z-30">
         <div className="flex items-center gap-4">
           <div className="font-black text-xl tracking-tighter text-blue-600">PrintWala</div>
           <div className="h-4 w-px bg-slate-300"></div>
-          <div className="text-sm font-semibold text-slate-700 capitalize">Product: {slug?.replace(/-/g, ' ')}</div>
+          <div className="text-sm font-semibold text-[var(--text-main)] capitalize">Product: {slug?.replace(/-/g, ' ')}</div>
           {template && (
             <>
               <div className="h-4 w-px bg-slate-300"></div>
-              <div className="text-sm text-slate-500 font-medium">Template: {template.name}</div>
+              <div className="text-sm text-[var(--text-muted)] font-medium">Template: {template.name}</div>
             </>
           )}
         </div>
@@ -738,7 +738,7 @@ export default function DesignStudio({ slug }) {
             title="Undo (Ctrl+Z)"
             onClick={handleUndo}
             disabled={historyStack.length <= 1}
-            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="p-2 hover:bg-[var(--hover)] rounded-md text-[var(--text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <Undo className="w-4 h-4" />
           </button>
@@ -749,7 +749,7 @@ export default function DesignStudio({ slug }) {
             title="Redo (Ctrl+Y)"
             onClick={handleRedo}
             disabled={redoStack.length === 0}
-            className="p-2 hover:bg-slate-100 rounded-md text-slate-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="p-2 hover:bg-[var(--hover)] rounded-md text-[var(--text-muted)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <Redo className="w-4 h-4" />
           </button>
@@ -762,8 +762,8 @@ export default function DesignStudio({ slug }) {
             onClick={handleSaveDraft}
             className={`px-3 py-1.5 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all ${
               draftSavedMsg 
-                ? 'bg-emerald-50 text-emerald-700 border border-emerald-300' 
-                : 'text-slate-700 hover:bg-slate-100 border border-slate-200'
+                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 border border-emerald-300' 
+                : 'text-[var(--text-main)] hover:bg-[var(--hover)] border border-[var(--border)]'
             }`}
           >
             {draftSavedMsg ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Save className="w-3.5 h-3.5" />}
@@ -774,7 +774,7 @@ export default function DesignStudio({ slug }) {
           <button 
             type="button"
             onClick={handleOpenPreview}
-            className="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 rounded-md flex items-center gap-1.5 transition-colors"
+            className="px-3 py-1.5 text-xs font-semibold text-[var(--text-main)] hover:bg-[var(--hover)] border border-[var(--border)] rounded-md flex items-center gap-1.5 transition-colors"
           >
             <Eye className="w-3.5 h-3.5 text-blue-600" /> Preview
           </button>
@@ -795,14 +795,14 @@ export default function DesignStudio({ slug }) {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar Icon Menu */}
-        <div className="w-20 bg-white border-r border-slate-200 flex flex-col items-center py-3 gap-2 shrink-0 z-20 shadow-xs">
+        <div className="w-20 bg-[var(--bg-card)] border-r border-[var(--border)] flex flex-col items-center py-3 gap-2 shrink-0 z-20 shadow-xs">
           <button 
             type="button"
             onClick={() => setActiveTool('customize')} 
             className={`flex flex-col items-center gap-1 p-2.5 w-full transition-colors ${
               activeTool === 'customize' 
                 ? 'text-blue-600 bg-blue-50/70 border-r-2 border-blue-600 font-bold' 
-                : 'text-slate-500 hover:text-blue-600 hover:bg-slate-50 font-medium'
+                : 'text-[var(--text-muted)] hover:text-blue-600 hover:bg-[var(--bg-subtle)] font-medium'
             }`}
           >
             <Sliders className="w-5 h-5" />
@@ -815,7 +815,7 @@ export default function DesignStudio({ slug }) {
             className={`flex flex-col items-center gap-1 p-2.5 w-full transition-colors ${
               activeTool === 'templates' 
                 ? 'text-blue-600 bg-blue-50/70 border-r-2 border-blue-600 font-bold' 
-                : 'text-slate-500 hover:text-blue-600 hover:bg-slate-50 font-medium'
+                : 'text-[var(--text-muted)] hover:text-blue-600 hover:bg-[var(--bg-subtle)] font-medium'
             }`}
           >
             <Layers className="w-5 h-5" />
@@ -828,7 +828,7 @@ export default function DesignStudio({ slug }) {
             className={`flex flex-col items-center gap-1 p-2.5 w-full transition-colors ${
               activeTool === 'uploads' 
                 ? 'text-blue-600 bg-blue-50/70 border-r-2 border-blue-600 font-bold' 
-                : 'text-slate-500 hover:text-blue-600 hover:bg-slate-50 font-medium'
+                : 'text-[var(--text-muted)] hover:text-blue-600 hover:bg-[var(--bg-subtle)] font-medium'
             }`}
           >
             <ImageIcon className="w-5 h-5" />
@@ -841,7 +841,7 @@ export default function DesignStudio({ slug }) {
             className={`flex flex-col items-center gap-1 p-2.5 w-full transition-colors ${
               activeTool === 'text' 
                 ? 'text-blue-600 bg-blue-50/70 border-r-2 border-blue-600 font-bold' 
-                : 'text-slate-500 hover:text-blue-600 hover:bg-slate-50 font-medium'
+                : 'text-[var(--text-muted)] hover:text-blue-600 hover:bg-[var(--bg-subtle)] font-medium'
             }`}
           >
             <Type className="w-5 h-5" />
@@ -854,7 +854,7 @@ export default function DesignStudio({ slug }) {
             className={`flex flex-col items-center gap-1 p-2.5 w-full transition-colors ${
               activeTool === 'shapes' 
                 ? 'text-blue-600 bg-blue-50/70 border-r-2 border-blue-600 font-bold' 
-                : 'text-slate-500 hover:text-blue-600 hover:bg-slate-50 font-medium'
+                : 'text-[var(--text-muted)] hover:text-blue-600 hover:bg-[var(--bg-subtle)] font-medium'
             }`}
           >
             <Square className="w-5 h-5" />
@@ -863,23 +863,23 @@ export default function DesignStudio({ slug }) {
         </div>
 
         {/* Left Dynamic Tool Panel */}
-        <div className="w-80 bg-white border-r border-slate-200 shrink-0 flex flex-col shadow-sm z-10">
+        <div className="w-80 bg-[var(--bg-card)] border-r border-[var(--border)] shrink-0 flex flex-col shadow-sm z-10">
           
           {/* 1. CUSTOMIZE TOOL PANEL */}
           {activeTool === 'customize' && (
             <>
-              <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-                <span className="font-bold text-slate-800">Customize Card</span>
-                <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded font-semibold capitalize">{activeSide} Side</span>
+              <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                <span className="font-bold text-[var(--text-main)]">Customize Card</span>
+                <span className="text-xs px-2 py-0.5 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded font-semibold capitalize">{activeSide} Side</span>
               </div>
               <div className="p-4 overflow-y-auto flex flex-col gap-4 flex-1">
                 {loading ? (
-                  <div className="text-xs text-slate-500 italic">Loading template...</div>
+                  <div className="text-xs text-[var(--text-muted)] italic">Loading template...</div>
                 ) : template ? (
                   <>
                     {/* Preview Image */}
                     {(template.thumbnail || template.previewFront) && (
-                      <div className="w-full aspect-[1.714/1] bg-white border border-slate-200 p-1 rounded relative group/img overflow-hidden shadow-xs">
+                      <div className="w-full aspect-[1.714/1] bg-[var(--bg-card)] border border-[var(--border)] p-1 rounded relative group/img overflow-hidden shadow-xs">
                         <img
                           src={template.thumbnail || template.previewFront}
                           alt={template.name}
@@ -897,8 +897,8 @@ export default function DesignStudio({ slug }) {
 
                     {/* Color Variants Swatches */}
                     {template.colorVariants && template.colorVariants.length > 0 && (
-                      <div className="flex flex-col gap-1.5 pb-3 border-b border-slate-100">
-                        <label className="text-xs font-semibold text-slate-600">Color Variant</label>
+                      <div className="flex flex-col gap-1.5 pb-3 border-b border-[var(--border)]">
+                        <label className="text-xs font-semibold text-[var(--text-muted)]">Color Variant</label>
                         <div className="flex items-center gap-2.5 flex-wrap">
                           {template.colorVariants.map((v, i) => {
                             const isSelected = selectedVariantId === (v._id || v.name);
@@ -909,11 +909,11 @@ export default function DesignStudio({ slug }) {
                                 title={v.name}
                                 onClick={() => handleVariantChange(v)}
                                 className={`w-7 h-7 rounded-full border-2 transition-all flex items-center justify-center ${
-                                  isSelected ? 'border-blue-600 ring-2 ring-blue-300 scale-110 shadow-sm' : 'border-slate-300 hover:scale-105'
+                                  isSelected ? 'border-blue-600 ring-2 ring-blue-300 scale-110 shadow-sm' : 'border-[var(--border-strong)] hover:scale-105'
                                 }`}
                                 style={{ backgroundColor: v.colorCode }}
                               >
-                                {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white shadow-xs" />}
+                                {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-[var(--bg-card)] shadow-xs" />}
                               </button>
                             );
                           })}
@@ -923,37 +923,37 @@ export default function DesignStudio({ slug }) {
 
                     {/* Editable Text Fields */}
                     <div className="flex flex-col gap-3">
-                      <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Template Fields</div>
+                      <div className="text-xs font-bold text-[var(--text-main)] uppercase tracking-wider">Template Fields</div>
                       {template.editableFields?.length > 0 ? (
                         template.editableFields.map((field) => (
                           <div key={field._id || field.key} className="flex flex-col gap-1">
-                            <label className="text-xs font-semibold text-slate-600">{field.label}</label>
+                            <label className="text-xs font-semibold text-[var(--text-muted)]">{field.label}</label>
                             <input
                               type="text"
                               value={customFields[field.key] ?? field.defaultValue ?? ''}
                               onChange={(e) => handleFieldChange(field.key, e.target.value)}
-                              className="w-full text-sm p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                              className="w-full text-sm p-2 border border-[var(--border-strong)] rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                             />
                           </div>
                         ))
                       ) : (
-                        <div className="text-xs text-slate-500 italic">No editable fields.</div>
+                        <div className="text-xs text-[var(--text-muted)] italic">No editable fields.</div>
                       )}
                     </div>
 
                     {/* Print & Paper Options */}
                     {productSchema && (
-                      <div className="flex flex-col gap-3 pt-3 border-t border-slate-100">
-                        <div className="text-xs font-bold text-slate-700 uppercase tracking-wider">Print &amp; Paper Options</div>
+                      <div className="flex flex-col gap-3 pt-3 border-t border-[var(--border)]">
+                        <div className="text-xs font-bold text-[var(--text-main)] uppercase tracking-wider">Print &amp; Paper Options</div>
                         {productSchema.attributes?.map((attr) => (
                           <div key={attr.key} className="flex flex-col gap-1">
-                            <label className="text-xs font-semibold text-slate-600">
+                            <label className="text-xs font-semibold text-[var(--text-muted)]">
                               {attr.label || attr.key}
                             </label>
                             <select
                               value={productConfig[attr.key] || attr.options?.[0]?.value || ''}
                               onChange={(e) => setProductConfig(prev => ({ ...prev, [attr.key]: e.target.value }))}
-                              className="w-full text-xs p-2 border border-slate-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-slate-700"
+                              className="w-full text-xs p-2 border border-[var(--border-strong)] rounded bg-[var(--bg-card)] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-[var(--text-main)]"
                             >
                               {attr.options?.map((opt) => (
                                 <option key={opt.value} value={opt.value}>
@@ -967,11 +967,11 @@ export default function DesignStudio({ slug }) {
                         {/* Quantity Selection */}
                         {productSchema.quantityTiers && productSchema.quantityTiers.length > 0 && (
                           <div className="flex flex-col gap-1">
-                            <label className="text-xs font-semibold text-slate-600">Quantity</label>
+                            <label className="text-xs font-semibold text-[var(--text-muted)]">Quantity</label>
                             <select
                               value={orderQuantity}
                               onChange={(e) => setOrderQuantity(Number(e.target.value))}
-                              className="w-full text-xs p-2 border border-slate-300 rounded bg-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-slate-700"
+                              className="w-full text-xs p-2 border border-[var(--border-strong)] rounded bg-[var(--bg-card)] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 font-medium text-[var(--text-main)]"
                             >
                               {productSchema.quantityTiers.map((qty) => (
                                 <option key={qty} value={qty}>
@@ -985,7 +985,7 @@ export default function DesignStudio({ slug }) {
                     )}
                   </>
                 ) : (
-                  <div className="text-xs text-slate-500 italic">No template loaded.</div>
+                  <div className="text-xs text-[var(--text-muted)] italic">No template loaded.</div>
                 )}
               </div>
             </>
@@ -994,13 +994,13 @@ export default function DesignStudio({ slug }) {
           {/* 2. TEMPLATES TOOL PANEL */}
           {activeTool === 'templates' && (
             <>
-              <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-                <span className="font-bold text-slate-800">Design Templates</span>
-                <span className="text-xs text-slate-400 font-medium">{productTemplates.length} available</span>
+              <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                <span className="font-bold text-[var(--text-main)]">Design Templates</span>
+                <span className="text-xs text-[var(--text-faint)] font-medium">{productTemplates.length} available</span>
               </div>
               <div className="p-4 overflow-y-auto flex flex-col gap-3 flex-1">
                 {loadingTemplates ? (
-                  <div className="text-xs text-slate-500 italic">Loading templates...</div>
+                  <div className="text-xs text-[var(--text-muted)] italic">Loading templates...</div>
                 ) : productTemplates.length > 0 ? (
                   productTemplates.map((tpl) => {
                     const isCurrent = (template?._id === tpl._id) || (templateId === tpl._id);
@@ -1011,14 +1011,14 @@ export default function DesignStudio({ slug }) {
                         className={`group cursor-pointer p-2.5 rounded-lg border transition-all ${
                           isCurrent 
                             ? 'border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-500' 
-                            : 'border-slate-200 hover:border-blue-400 hover:bg-slate-50'
+                            : 'border-[var(--border)] hover:border-blue-400 hover:bg-[var(--bg-subtle)]'
                         }`}
                       >
-                        <div className="w-full aspect-[1.714/1] bg-slate-100 rounded overflow-hidden border border-slate-200 mb-2 relative">
+                        <div className="w-full aspect-[1.714/1] bg-[var(--hover)] rounded overflow-hidden border border-[var(--border)] mb-2 relative">
                           {tpl.previewFront ? (
                             <img src={tpl.previewFront} alt={tpl.name} className="w-full h-full object-contain" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-xs text-slate-400">Preview</div>
+                            <div className="w-full h-full flex items-center justify-center text-xs text-[var(--text-faint)]">Preview</div>
                           )}
                           {isCurrent && (
                             <span className="absolute top-1.5 right-1.5 bg-blue-600 text-white p-1 rounded-full shadow-xs">
@@ -1027,14 +1027,14 @@ export default function DesignStudio({ slug }) {
                           )}
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-800">{tpl.name}</span>
+                          <span className="text-xs font-bold text-[var(--text-main)]">{tpl.name}</span>
                           <span className="text-[11px] text-blue-600 font-semibold group-hover:underline">Select</span>
                         </div>
                       </div>
                     );
                   })
                 ) : (
-                  <div className="text-xs text-slate-500 italic">No templates available for this product.</div>
+                  <div className="text-xs text-[var(--text-muted)] italic">No templates available for this product.</div>
                 )}
               </div>
             </>
@@ -1043,7 +1043,7 @@ export default function DesignStudio({ slug }) {
           {/* 3. UPLOADS TOOL PANEL */}
           {activeTool === 'uploads' && (
             <>
-              <div className="p-4 border-b border-slate-100 font-bold text-slate-800">Uploads</div>
+              <div className="p-4 border-b border-[var(--border)] font-bold text-[var(--text-main)]">Uploads</div>
               <div className="p-4 overflow-y-auto flex flex-col gap-4 flex-1">
                 <input 
                   type="file" 
@@ -1059,7 +1059,7 @@ export default function DesignStudio({ slug }) {
                 >
                   <Upload className="w-4 h-4" /> Upload Logo or Image
                 </button>
-                <p className="text-[11px] text-slate-400 text-center">Supports PNG, JPG, SVG, WebP</p>
+                <p className="text-[11px] text-[var(--text-faint)] text-center">Supports PNG, JPG, SVG, WebP</p>
 
                 {/* DPI Warning Badge */}
                 {uploadDpiWarning && (
@@ -1071,8 +1071,8 @@ export default function DesignStudio({ slug }) {
 
                 <div className="flex flex-col gap-2 mt-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Your Images</span>
-                    <span className="text-[11px] text-slate-400">Click to add</span>
+                    <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Your Images</span>
+                    <span className="text-[11px] text-[var(--text-faint)]">Click to add</span>
                   </div>
                   {uploadedImages.length > 0 ? (
                     <div className="grid grid-cols-2 gap-2">
@@ -1081,14 +1081,14 @@ export default function DesignStudio({ slug }) {
                           key={i} 
                           onClick={() => addImageToCanvas(imgUrl)}
                           title="Click to add to canvas"
-                          className="aspect-square bg-slate-50 rounded border border-slate-200 p-1 cursor-pointer hover:border-blue-500 hover:shadow-xs transition-all flex items-center justify-center overflow-hidden"
+                          className="aspect-square bg-[var(--bg-subtle)] rounded border border-[var(--border)] p-1 cursor-pointer hover:border-blue-500 hover:shadow-xs transition-all flex items-center justify-center overflow-hidden"
                         >
                           <img src={imgUrl} alt="uploaded" className="max-h-full max-w-full object-contain" />
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="p-6 border-2 border-dashed border-slate-200 rounded-lg text-center text-xs text-slate-400">
+                    <div className="p-6 border-2 border-dashed border-[var(--border)] rounded-lg text-center text-xs text-[var(--text-faint)]">
                       No images uploaded yet. Upload your logo to place it on the card!
                     </div>
                   )}
@@ -1100,44 +1100,44 @@ export default function DesignStudio({ slug }) {
           {/* 4. TEXT TOOL PANEL */}
           {activeTool === 'text' && (
             <>
-              <div className="p-4 border-b border-slate-100 font-bold text-slate-800">Add Text</div>
+              <div className="p-4 border-b border-[var(--border)] font-bold text-[var(--text-main)]">Add Text</div>
               <div className="p-4 overflow-y-auto flex flex-col gap-3 flex-1">
                 <button
                   type="button"
                   onClick={() => addTextElement('Add a Heading', { fontSize: 32, fontWeight: 'bold' })}
-                  className="w-full p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-400 rounded-lg text-left transition-colors"
+                  className="w-full p-3 bg-[var(--bg-subtle)] hover:bg-blue-50/60 border border-[var(--border)] hover:border-blue-400 rounded-lg text-left transition-colors"
                 >
-                  <div className="text-xl font-black text-slate-800">Add a Heading</div>
-                  <div className="text-[11px] text-slate-400">32px Bold text</div>
+                  <div className="text-xl font-black text-[var(--text-main)]">Add a Heading</div>
+                  <div className="text-[11px] text-[var(--text-faint)]">32px Bold text</div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => addTextElement('Add a Subheading', { fontSize: 20, fontWeight: '600', fill: '#475569' })}
-                  className="w-full p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-400 rounded-lg text-left transition-colors"
+                  className="w-full p-3 bg-[var(--bg-subtle)] hover:bg-blue-50/60 border border-[var(--border)] hover:border-blue-400 rounded-lg text-left transition-colors"
                 >
-                  <div className="text-base font-bold text-slate-700">Add a Subheading</div>
-                  <div className="text-[11px] text-slate-400">20px Medium text</div>
+                  <div className="text-base font-bold text-[var(--text-main)]">Add a Subheading</div>
+                  <div className="text-[11px] text-[var(--text-faint)]">20px Medium text</div>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => addTextElement('Add body text', { fontSize: 14, fill: '#64748b' })}
-                  className="w-full p-3 bg-slate-50 hover:bg-blue-50/60 border border-slate-200 hover:border-blue-400 rounded-lg text-left transition-colors"
+                  className="w-full p-3 bg-[var(--bg-subtle)] hover:bg-blue-50/60 border border-[var(--border)] hover:border-blue-400 rounded-lg text-left transition-colors"
                 >
-                  <div className="text-sm font-normal text-slate-600">Add body text</div>
-                  <div className="text-[11px] text-slate-400">14px Regular paragraph</div>
+                  <div className="text-sm font-normal text-[var(--text-muted)]">Add body text</div>
+                  <div className="text-[11px] text-[var(--text-faint)]">14px Regular paragraph</div>
                 </button>
 
                 <div className="pt-2">
-                  <div className="text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Preset Badges</div>
+                  <div className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2">Preset Badges</div>
                   <div className="flex gap-2 flex-wrap">
                     {['PREMIUM', 'SINCE 2026', 'ISO 9001', 'OFFICIAL', 'LIMITED'].map(preset => (
                       <button
                         key={preset}
                         type="button"
                         onClick={() => addTextElement(preset, { fontSize: 12, fontWeight: 'bold', fill: '#1e3a8a', charSpacing: 100 })}
-                        className="px-2.5 py-1 bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 text-xs font-bold rounded border border-slate-200 transition-colors"
+                        className="px-2.5 py-1 bg-[var(--hover)] hover:bg-blue-100 text-[var(--text-main)] hover:text-blue-700 text-xs font-bold rounded border border-[var(--border)] transition-colors"
                       >
                         + {preset}
                       </button>
@@ -1151,10 +1151,10 @@ export default function DesignStudio({ slug }) {
           {/* 5. SHAPES TOOL PANEL */}
           {activeTool === 'shapes' && (
             <>
-              <div className="p-4 border-b border-slate-100 font-bold text-slate-800">Add Shapes</div>
+              <div className="p-4 border-b border-[var(--border)] font-bold text-[var(--text-main)]">Add Shapes</div>
               <div className="p-4 overflow-y-auto flex flex-col gap-4 flex-1">
                 <div>
-                  <label className="text-xs font-semibold text-slate-600 mb-1.5 block">Shape Color</label>
+                  <label className="text-xs font-semibold text-[var(--text-muted)] mb-1.5 block">Shape Color</label>
                   <div className="flex items-center gap-2 flex-wrap">
                     {['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#0f172a', '#ffffff'].map(c => (
                       <button
@@ -1162,7 +1162,7 @@ export default function DesignStudio({ slug }) {
                         type="button"
                         onClick={() => setSelectedShapeColor(c)}
                         className={`w-6 h-6 rounded-full border-2 transition-transform ${
-                          selectedShapeColor === c ? 'border-blue-600 ring-2 ring-blue-300 scale-110' : 'border-slate-300 hover:scale-105'
+                          selectedShapeColor === c ? 'border-blue-600 ring-2 ring-blue-300 scale-110' : 'border-[var(--border-strong)] hover:scale-105'
                         }`}
                         style={{ backgroundColor: c }}
                       />
@@ -1171,7 +1171,7 @@ export default function DesignStudio({ slug }) {
                       type="color" 
                       value={selectedShapeColor} 
                       onChange={e => setSelectedShapeColor(e.target.value)}
-                      className="w-6 h-6 p-0 border border-slate-300 rounded cursor-pointer" 
+                      className="w-6 h-6 p-0 border border-[var(--border-strong)] rounded cursor-pointer" 
                     />
                   </div>
                 </div>
@@ -1180,7 +1180,7 @@ export default function DesignStudio({ slug }) {
                   <button
                     type="button"
                     onClick={() => addShapeElement('rect')}
-                    className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg flex flex-col items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
+                    className="p-3 bg-[var(--bg-subtle)] hover:bg-blue-500/10 border border-[var(--border)] rounded-lg flex flex-col items-center gap-2 text-[var(--text-main)] hover:text-blue-600 transition-colors"
                   >
                     <Square className="w-8 h-8" />
                     <span className="text-xs font-semibold">Rectangle</span>
@@ -1189,7 +1189,7 @@ export default function DesignStudio({ slug }) {
                   <button
                     type="button"
                     onClick={() => addShapeElement('rounded-rect')}
-                    className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg flex flex-col items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
+                    className="p-3 bg-[var(--bg-subtle)] hover:bg-blue-500/10 border border-[var(--border)] rounded-lg flex flex-col items-center gap-2 text-[var(--text-main)] hover:text-blue-600 transition-colors"
                   >
                     <div className="w-8 h-8 border-2 border-current rounded-md" />
                     <span className="text-xs font-semibold">Rounded Rect</span>
@@ -1198,7 +1198,7 @@ export default function DesignStudio({ slug }) {
                   <button
                     type="button"
                     onClick={() => addShapeElement('circle')}
-                    className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg flex flex-col items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
+                    className="p-3 bg-[var(--bg-subtle)] hover:bg-blue-500/10 border border-[var(--border)] rounded-lg flex flex-col items-center gap-2 text-[var(--text-main)] hover:text-blue-600 transition-colors"
                   >
                     <Circle className="w-8 h-8" />
                     <span className="text-xs font-semibold">Circle</span>
@@ -1207,7 +1207,7 @@ export default function DesignStudio({ slug }) {
                   <button
                     type="button"
                     onClick={() => addShapeElement('triangle')}
-                    className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg flex flex-col items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
+                    className="p-3 bg-[var(--bg-subtle)] hover:bg-blue-500/10 border border-[var(--border)] rounded-lg flex flex-col items-center gap-2 text-[var(--text-main)] hover:text-blue-600 transition-colors"
                   >
                     <Triangle className="w-8 h-8" />
                     <span className="text-xs font-semibold">Triangle</span>
@@ -1216,7 +1216,7 @@ export default function DesignStudio({ slug }) {
                   <button
                     type="button"
                     onClick={() => addShapeElement('line')}
-                    className="p-3 col-span-2 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg flex items-center justify-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
+                    className="p-3 col-span-2 bg-[var(--bg-subtle)] hover:bg-blue-500/10 border border-[var(--border)] rounded-lg flex items-center justify-center gap-2 text-[var(--text-main)] hover:text-blue-600 transition-colors"
                   >
                     <Minus className="w-6 h-6" />
                     <span className="text-xs font-semibold">Divider Line</span>
@@ -1229,17 +1229,17 @@ export default function DesignStudio({ slug }) {
         </div>
 
         {/* Center Workspace */}
-        <div ref={containerRef} className="flex-1 bg-slate-100 relative flex flex-col items-center justify-center overflow-hidden p-6">
+        <div ref={containerRef} className="flex-1 bg-[var(--hover)] relative flex flex-col items-center justify-center overflow-hidden p-6">
           
           {/* Card Side Switcher (Front / Back) */}
-          <div className="mb-4 bg-white p-1 rounded-lg border border-slate-200 shadow-xs flex items-center gap-1 z-10">
+          <div className="mb-4 bg-[var(--bg-card)] p-1 rounded-lg border border-[var(--border)] shadow-xs flex items-center gap-1 z-10">
             <button
               type="button"
               onClick={() => handleSideToggle('front')}
               className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${
                 activeSide === 'front'
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  : 'text-[var(--text-muted)] hover:bg-[var(--hover)]'
               }`}
             >
               Front Side
@@ -1250,7 +1250,7 @@ export default function DesignStudio({ slug }) {
               className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all ${
                 activeSide === 'back'
                   ? 'bg-blue-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:bg-slate-100'
+                  : 'text-[var(--text-muted)] hover:bg-[var(--hover)]'
               }`}
             >
               Back Side
@@ -1287,7 +1287,7 @@ export default function DesignStudio({ slug }) {
           </div>
 
           {/* Bottom Floating Status & Zoom Controls Bar */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1.5 rounded-full shadow-lg border border-slate-200 flex items-center gap-3 text-xs font-bold text-slate-600 z-10">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-[var(--bg-card)] px-4 py-1.5 rounded-full shadow-lg border border-[var(--border)] flex items-center gap-3 text-xs font-bold text-[var(--text-muted)] z-10">
             <span>Size: 600 × 350 px</span>
             
             <div className="w-px h-3 bg-slate-300"></div>
@@ -1297,7 +1297,7 @@ export default function DesignStudio({ slug }) {
               type="button"
               onClick={() => setShowGuides(prev => !prev)}
               className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
-                showGuides ? 'bg-emerald-50 text-emerald-700' : 'text-slate-500 hover:bg-slate-100'
+                showGuides ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'text-[var(--text-muted)] hover:bg-[var(--hover)]'
               }`}
             >
               Guides: {showGuides ? 'ON' : 'OFF'}
@@ -1311,7 +1311,7 @@ export default function DesignStudio({ slug }) {
                 type="button" 
                 title="Zoom Out"
                 onClick={() => setZoom(prev => Math.max(0.5, prev - 0.15))}
-                className="p-1 hover:bg-slate-100 rounded text-slate-600"
+                className="p-1 hover:bg-[var(--hover)] rounded text-[var(--text-muted)]"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
@@ -1320,7 +1320,7 @@ export default function DesignStudio({ slug }) {
                 type="button" 
                 title="Zoom In"
                 onClick={() => setZoom(prev => Math.min(1.8, prev + 0.15))}
-                className="p-1 hover:bg-slate-100 rounded text-slate-600"
+                className="p-1 hover:bg-[var(--hover)] rounded text-[var(--text-muted)]"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
@@ -1328,7 +1328,7 @@ export default function DesignStudio({ slug }) {
                 type="button" 
                 title="Reset Zoom (100%)"
                 onClick={() => setZoom(1)}
-                className="p-1 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600"
+                className="p-1 hover:bg-[var(--hover)] rounded text-[var(--text-faint)] hover:text-[var(--text-muted)]"
               >
                 <RotateCcw className="w-3 h-3" />
               </button>
@@ -1337,11 +1337,11 @@ export default function DesignStudio({ slug }) {
         </div>
 
         {/* Right Properties Panel */}
-        <div className="w-72 bg-white border-l border-slate-200 shrink-0 flex flex-col shadow-sm z-10">
-          <div className="p-4 border-b border-slate-100 font-bold text-slate-800 flex items-center justify-between">
+        <div className="w-72 bg-[var(--bg-card)] border-l border-[var(--border)] shrink-0 flex flex-col shadow-sm z-10">
+          <div className="p-4 border-b border-[var(--border)] font-bold text-[var(--text-main)] flex items-center justify-between">
             <span>Properties</span>
             {activeObject && (
-              <span className="text-[11px] uppercase tracking-wider px-2 py-0.5 bg-slate-100 text-slate-600 rounded font-semibold">
+              <span className="text-[11px] uppercase tracking-wider px-2 py-0.5 bg-[var(--hover)] text-[var(--text-muted)] rounded font-semibold">
                 {activeObject.type}
               </span>
             )}
@@ -1357,15 +1357,15 @@ export default function DesignStudio({ slug }) {
                   activeObject.type?.toLowerCase() === 'circle' ||
                   activeObject.type?.toLowerCase() === 'triangle') && (
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-slate-600">Color</label>
+                    <label className="text-xs font-semibold text-[var(--text-muted)]">Color</label>
                     <div className="flex items-center gap-2">
                       <input
                         type="color"
                         value={activeObject.fill || '#000000'}
                         onChange={(e) => handlePropertyChange('fill', e.target.value)}
-                        className="w-9 h-8 cursor-pointer rounded border border-slate-200 p-0.5"
+                        className="w-9 h-8 cursor-pointer rounded border border-[var(--border)] p-0.5"
                       />
-                      <span className="text-xs font-mono text-slate-500 uppercase">{activeObject.fill || '#000000'}</span>
+                      <span className="text-xs font-mono text-[var(--text-muted)] uppercase">{activeObject.fill || '#000000'}</span>
                     </div>
                   </div>
                 )}
@@ -1374,21 +1374,21 @@ export default function DesignStudio({ slug }) {
                 {(activeObject.type?.toLowerCase() === 'textbox' || activeObject.type?.toLowerCase() === 'text') && (
                   <>
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-slate-600">Font Size</label>
+                      <label className="text-xs font-semibold text-[var(--text-muted)]">Font Size</label>
                       <input
                         type="number"
                         value={activeObject.fontSize || 20}
                         onChange={(e) => handlePropertyChange('fontSize', parseInt(e.target.value, 10))}
-                        className="w-full text-sm p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full text-sm p-2 border border-[var(--border-strong)] rounded focus:outline-none focus:border-blue-500"
                       />
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-slate-600">Font Family</label>
+                      <label className="text-xs font-semibold text-[var(--text-muted)]">Font Family</label>
                       <select
                         value={activeObject.fontFamily || 'Arial'}
                         onChange={(e) => handlePropertyChange('fontFamily', e.target.value)}
-                        className="w-full text-xs p-2 border border-slate-300 rounded focus:outline-none focus:border-blue-500 bg-white"
+                        className="w-full text-xs p-2 border border-[var(--border-strong)] rounded focus:outline-none focus:border-blue-500 bg-[var(--bg-card)]"
                       >
                         <option value="Arial">Arial</option>
                         <option value="Georgia">Georgia</option>
@@ -1401,13 +1401,13 @@ export default function DesignStudio({ slug }) {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-semibold text-slate-600">Formatting & Alignment</label>
-                      <div className="flex items-center gap-1 border border-slate-200 rounded p-1 bg-slate-50">
+                      <label className="text-xs font-semibold text-[var(--text-muted)]">Formatting & Alignment</label>
+                      <div className="flex items-center gap-1 border border-[var(--border)] rounded p-1 bg-[var(--bg-subtle)]">
                         <button
                           type="button"
                           title="Bold"
                           onClick={() => handlePropertyChange('fontWeight', activeObject.fontWeight === 'bold' ? 'normal' : 'bold')}
-                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontWeight === 'bold' ? 'bg-white shadow-xs font-bold text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontWeight === 'bold' ? 'bg-[var(--bg-card)] shadow-xs font-bold text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--border)]'}`}
                         >
                           <Bold className="w-3.5 h-3.5" />
                         </button>
@@ -1415,7 +1415,7 @@ export default function DesignStudio({ slug }) {
                           type="button"
                           title="Italic"
                           onClick={() => handlePropertyChange('fontStyle', activeObject.fontStyle === 'italic' ? 'normal' : 'italic')}
-                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontStyle === 'italic' ? 'bg-white shadow-xs font-bold text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.fontStyle === 'italic' ? 'bg-[var(--bg-card)] shadow-xs font-bold text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--border)]'}`}
                         >
                           <Italic className="w-3.5 h-3.5" />
                         </button>
@@ -1424,7 +1424,7 @@ export default function DesignStudio({ slug }) {
                           type="button"
                           title="Align Left"
                           onClick={() => handlePropertyChange('textAlign', 'left')}
-                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'left' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'left' ? 'bg-[var(--bg-card)] shadow-xs text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--border)]'}`}
                         >
                           <AlignLeft className="w-3.5 h-3.5" />
                         </button>
@@ -1432,7 +1432,7 @@ export default function DesignStudio({ slug }) {
                           type="button"
                           title="Align Center"
                           onClick={() => handlePropertyChange('textAlign', 'center')}
-                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'center' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'center' ? 'bg-[var(--bg-card)] shadow-xs text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--border)]'}`}
                         >
                           <AlignCenter className="w-3.5 h-3.5" />
                         </button>
@@ -1440,7 +1440,7 @@ export default function DesignStudio({ slug }) {
                           type="button"
                           title="Align Right"
                           onClick={() => handlePropertyChange('textAlign', 'right')}
-                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'right' ? 'bg-white shadow-xs text-blue-600' : 'text-slate-600 hover:bg-slate-200'}`}
+                          className={`p-1.5 rounded text-xs transition-colors ${activeObject.textAlign === 'right' ? 'bg-[var(--bg-card)] shadow-xs text-blue-600' : 'text-[var(--text-muted)] hover:bg-[var(--border)]'}`}
                         >
                           <AlignRight className="w-3.5 h-3.5" />
                         </button>
@@ -1451,7 +1451,7 @@ export default function DesignStudio({ slug }) {
 
                 {/* 3. Opacity Slider */}
                 <div className="flex flex-col gap-1.5">
-                  <div className="flex justify-between items-center text-xs font-semibold text-slate-600">
+                  <div className="flex justify-between items-center text-xs font-semibold text-[var(--text-muted)]">
                     <span>Opacity</span>
                     <span>{Math.round((activeObject.opacity ?? 1) * 100)}%</span>
                   </div>
@@ -1464,20 +1464,20 @@ export default function DesignStudio({ slug }) {
                 </div>
 
                 {/* 4. Layer Arrangement */}
-                <div className="flex flex-col gap-1.5 pt-2 border-t border-slate-100">
-                  <label className="text-xs font-semibold text-slate-600">Layer Position</label>
+                <div className="flex flex-col gap-1.5 pt-2 border-t border-[var(--border)]">
+                  <label className="text-xs font-semibold text-[var(--text-muted)]">Layer Position</label>
                   <div className="grid grid-cols-2 gap-1.5">
                     <button
                       type="button"
                       onClick={() => handleLayer('forward')}
-                      className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-xs font-medium text-slate-700 flex items-center justify-center gap-1 transition-colors"
+                      className="px-2.5 py-1.5 bg-[var(--bg-subtle)] hover:bg-[var(--hover)] border border-[var(--border)] rounded text-xs font-medium text-[var(--text-main)] flex items-center justify-center gap-1 transition-colors"
                     >
                       <ArrowUp className="w-3 h-3" /> Forward
                     </button>
                     <button
                       type="button"
                       onClick={() => handleLayer('backward')}
-                      className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-xs font-medium text-slate-700 flex items-center justify-center gap-1 transition-colors"
+                      className="px-2.5 py-1.5 bg-[var(--bg-subtle)] hover:bg-[var(--hover)] border border-[var(--border)] rounded text-xs font-medium text-[var(--text-main)] flex items-center justify-center gap-1 transition-colors"
                     >
                       <ArrowDown className="w-3 h-3" /> Backward
                     </button>
@@ -1485,7 +1485,7 @@ export default function DesignStudio({ slug }) {
                 </div>
 
                 {/* 5. Delete Object */}
-                <div className="pt-2 border-t border-slate-100">
+                <div className="pt-2 border-t border-[var(--border)]">
                   <button
                     type="button"
                     onClick={() => {
@@ -1504,7 +1504,7 @@ export default function DesignStudio({ slug }) {
 
               </div>
             ) : (
-              <div className="text-xs text-slate-500 italic p-4 text-center border-2 border-dashed border-slate-100 rounded-lg">
+              <div className="text-xs text-[var(--text-muted)] italic p-4 text-center border-2 border-dashed border-[var(--border)] rounded-lg">
                 Click any text, shape, or logo on the card to edit its properties, layers, and colors.
               </div>
             )}
@@ -1515,29 +1515,29 @@ export default function DesignStudio({ slug }) {
       {/* Realistic Card Preview Modal */}
       {showPreviewModal && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden flex flex-col">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+          <div className="bg-[var(--bg-card)] rounded-2xl max-w-2xl w-full shadow-2xl border border-[var(--border)] overflow-hidden flex flex-col">
+            <div className="p-4 border-b border-[var(--border)] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileCheck className="w-5 h-5 text-blue-600" />
-                <h3 className="font-bold text-slate-800 text-base">Design Proof & Preview</h3>
+                <h3 className="font-bold text-[var(--text-main)] text-base">Design Proof & Preview</h3>
               </div>
               <button 
                 type="button" 
                 onClick={() => setShowPreviewModal(false)}
-                className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors"
+                className="p-1.5 hover:bg-[var(--hover)] rounded-full text-[var(--text-faint)] hover:text-[var(--text-muted)] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-6 flex flex-col items-center justify-center bg-slate-50">
+            <div className="p-6 flex flex-col items-center justify-center bg-[var(--bg-subtle)]">
               {/* Preview Tabs */}
-              <div className="mb-4 bg-white p-1 rounded-lg border border-slate-200 shadow-xs flex items-center gap-1">
+              <div className="mb-4 bg-[var(--bg-card)] p-1 rounded-lg border border-[var(--border)] shadow-xs flex items-center gap-1">
                 <button
                   type="button"
                   onClick={() => setPreviewTab('front')}
                   className={`px-4 py-1 text-xs font-bold rounded-md transition-colors ${
-                    previewTab === 'front' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                    previewTab === 'front' ? 'bg-blue-600 text-white' : 'text-[var(--text-muted)] hover:bg-[var(--hover)]'
                   }`}
                 >
                   Front Side Proof
@@ -1547,7 +1547,7 @@ export default function DesignStudio({ slug }) {
                     type="button"
                     onClick={() => setPreviewTab('back')}
                     className={`px-4 py-1 text-xs font-bold rounded-md transition-colors ${
-                      previewTab === 'back' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                      previewTab === 'back' ? 'bg-blue-600 text-white' : 'text-[var(--text-muted)] hover:bg-[var(--hover)]'
                     }`}
                   >
                     Back Side Proof
@@ -1561,33 +1561,33 @@ export default function DesignStudio({ slug }) {
                   previewDataUrl ? (
                     <img src={previewDataUrl} alt="Front proof" className="w-full h-full object-contain rounded-lg" />
                   ) : (
-                    <div className="text-xs text-slate-400">Loading proof...</div>
+                    <div className="text-xs text-[var(--text-faint)]">Loading proof...</div>
                   )
                 ) : (
                   <img src={template.previewBack} alt="Back proof" className="w-full h-full object-contain rounded-lg" />
                 )}
               </div>
 
-              <div className="mt-4 flex items-center gap-2 text-xs text-slate-500 font-medium">
+              <div className="mt-4 flex items-center gap-2 text-xs text-[var(--text-muted)] font-medium">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
                 <span>3.5" × 2.0" Standard Commercial Visiting Card Proof (300 DPI)</span>
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-100 bg-white flex items-center justify-between">
+            <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-card)] flex items-center justify-between">
               <button
                 type="button"
                 onClick={handleDownloadProof}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg flex items-center gap-2 transition-colors"
+                className="px-4 py-2 bg-[var(--hover)] hover:bg-[var(--border)] text-[var(--text-main)] text-xs font-bold rounded-lg flex items-center gap-2 transition-colors"
               >
-                <Download className="w-4 h-4 text-slate-600" /> Download Proof (PNG)
+                <Download className="w-4 h-4 text-[var(--text-muted)]" /> Download Proof (PNG)
               </button>
 
               <div className="flex gap-2">
                 <button
                   type="button"
                   onClick={() => setShowPreviewModal(false)}
-                  className="px-4 py-2 border border-slate-300 text-slate-700 text-xs font-semibold rounded-lg hover:bg-slate-50 transition-colors"
+                  className="px-4 py-2 border border-[var(--border-strong)] text-[var(--text-main)] text-xs font-semibold rounded-lg hover:bg-[var(--bg-subtle)] transition-colors"
                 >
                   Continue Editing
                 </button>

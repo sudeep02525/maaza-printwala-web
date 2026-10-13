@@ -52,16 +52,16 @@ export default function ResetPasswordPage() {
   const activeError = validationError || localError;
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-[#FAFCFF] px-4 py-12">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+    <div className="min-h-[80vh] flex items-center justify-center bg-[var(--bg-subtle)] px-4 py-12">
+      <div className="w-full max-w-md bg-[var(--bg-card)] p-8 rounded-2xl shadow-sm border border-[var(--border)]">
         
         {/* Header Icon & Title */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 mx-auto mb-4 bg-sky-50 text-[#0082CA] rounded-2xl flex items-center justify-center shadow-xs border border-sky-100">
             <Lock className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Set New Password</h1>
-          <p className="text-slate-500 font-medium text-sm">
+          <h1 className="text-2xl sm:text-3xl font-black text-[var(--text-main)] mb-2">Set New Password</h1>
+          <p className="text-[var(--text-muted)] font-medium text-sm">
             Create a secure password with at least 6 characters
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function ResetPasswordPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {!tokenFromUrl && (
               <div>
-                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2">
                   Reset Token
                 </label>
                 <input
@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   required
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-white transition-colors text-slate-900 font-mono text-sm"
+                  className="w-full px-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] transition-colors text-[var(--text-main)] font-mono text-sm"
                   placeholder="Paste your reset token here"
                 />
               </div>
@@ -111,7 +111,7 @@ export default function ResetPasswordPage() {
             <div>
               <label
                 htmlFor="reset-new-password"
-                className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"
+                className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2"
               >
                 New Password
               </label>
@@ -125,13 +125,13 @@ export default function ResetPasswordPage() {
                   onChange={(e) => setNewPassword(e.target.value)}
                   required
                   minLength={6}
-                  className="w-full px-4 py-3 pr-11 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-white transition-colors text-slate-900"
+                  className="w-full px-4 py-3 pr-11 bg-[var(--bg-subtle)] border border-[var(--border)] rounded-lg focus:outline-none focus:border-[#0082CA] focus:bg-[var(--bg-card)] transition-colors text-[var(--text-main)]"
                   placeholder="Enter new password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-faint)] hover:text-[var(--text-muted)] p-1"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -142,7 +142,7 @@ export default function ResetPasswordPage() {
             <div>
               <label
                 htmlFor="reset-confirm-password"
-                className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2"
+                className="block text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-2"
               >
                 Confirm New Password
               </label>
@@ -154,10 +154,10 @@ export default function ResetPasswordPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className={`w-full px-4 py-3 bg-slate-50 border rounded-lg focus:outline-none focus:bg-white transition-colors text-slate-900 ${
+                className={`w-full px-4 py-3 bg-[var(--bg-subtle)] border rounded-lg focus:outline-none focus:bg-[var(--bg-card)] transition-colors text-[var(--text-main)] ${
                   confirmPassword && confirmPassword !== newPassword
                     ? 'border-rose-300 focus:border-rose-500'
-                    : 'border-slate-200 focus:border-[#0082CA]'
+                    : 'border-[var(--border)] focus:border-[#0082CA]'
                 }`}
                 placeholder="Re-enter new password"
               />
@@ -178,7 +178,7 @@ export default function ResetPasswordPage() {
               )}
             </button>
 
-            <p className="mt-4 text-center text-sm font-medium text-slate-600">
+            <p className="mt-4 text-center text-sm font-medium text-[var(--text-muted)]">
               Remember your password?{' '}
               <Link href="/login" className="text-[#0082CA] hover:underline font-bold">
                 Sign in

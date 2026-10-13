@@ -11,13 +11,13 @@ export default function Badge({
   const baseStyles = 'inline-flex items-center font-medium rounded shrink-0 select-none';
 
   const variants = {
-    default: 'bg-slate-100 text-slate-700 border border-slate-200',
+    default: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border)]',
     primary: 'bg-slate-900 text-white',
     accent: 'bg-[#0082CA] text-white',
-    success: 'bg-slate-100 text-slate-800 border border-slate-300',
-    warning: 'bg-slate-100 text-slate-800 border border-slate-300',
-    error: 'bg-slate-100 text-red-700 border border-red-200',
-    neutral: 'bg-slate-100 text-slate-700 border border-slate-200',
+    success: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border-strong)]',
+    warning: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border-strong)]',
+    error: 'bg-[var(--hover)] text-red-700 border border-red-200',
+    neutral: 'bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border)]',
   };
 
   const sizes = {

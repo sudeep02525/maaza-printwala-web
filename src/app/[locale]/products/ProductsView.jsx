@@ -28,16 +28,16 @@ function QuickViewModal({ product, onClose }) {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white rounded-lg overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row shadow-2xl relative"
+          className="bg-[var(--bg-card)] rounded-lg overflow-hidden w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row shadow-2xl relative"
         >
           <button 
             onClick={onClose} 
-            className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors shadow-sm"
+            className="absolute top-4 right-4 z-10 w-10 h-10 bg-[var(--bg-card)] backdrop-blur-md rounded-full flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--hover)] transition-colors shadow-sm"
           >
             <X className="w-5 h-5" />
           </button>
           
-          <div className="w-full md:w-1/2 bg-slate-50 aspect-square md:aspect-auto">
+          <div className="w-full md:w-1/2 bg-[var(--bg-subtle)] aspect-square md:aspect-auto">
             <img 
               src={getImageUrl(product.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'} 
               alt={product.name} 
@@ -47,23 +47,23 @@ function QuickViewModal({ product, onClose }) {
           
           <div className="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto">
             <div className="flex items-center gap-2 mb-3">
-              <span className="bg-emerald-50 text-emerald-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">In Stock</span>
-              {product.featured && <span className="bg-amber-50 text-amber-600 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Best Seller</span>}
+              <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">In Stock</span>
+              {product.featured && <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Best Seller</span>}
             </div>
             
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">{product.name}</h2>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight mb-2">{product.name}</h2>
             
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-1">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-sm font-bold text-slate-900">4.9</span>
-                <span className="text-xs text-slate-500">(128 Reviews)</span>
+                <span className="text-sm font-bold text-[var(--text-main)]">4.9</span>
+                <span className="text-xs text-[var(--text-muted)]">(128 Reviews)</span>
               </div>
               <div className="w-1 h-1 rounded-full bg-slate-300" />
               <span className="text-sm font-bold text-[#0082CA]">From ₹{product.basePrice}</span>
             </div>
 
-            <p className="text-sm text-slate-600 mb-8 leading-relaxed">
+            <p className="text-sm text-[var(--text-muted)] mb-8 leading-relaxed">
               {product.description || 'Premium commercial printing product with customizable specs, fast turnaround, and vibrant CMYK output.'}
             </p>
 
@@ -73,12 +73,12 @@ function QuickViewModal({ product, onClose }) {
                   Customize & Buy <ArrowUpDown className="w-4 h-4 rotate-90" />
                 </button>
               </Link>
-              <button onClick={onClose} className="w-full py-3.5 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg hover:bg-slate-50 transition-colors">
+              <button onClick={onClose} className="w-full py-3.5 bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-main)] font-bold rounded-lg hover:bg-[var(--bg-subtle)] transition-colors">
                 Continue Shopping
               </button>
             </div>
             
-            <div className="mt-8 pt-6 border-t border-slate-100 grid grid-cols-2 gap-4 text-xs font-medium text-slate-500">
+            <div className="mt-8 pt-6 border-t border-[var(--border)] grid grid-cols-2 gap-4 text-xs font-medium text-[var(--text-muted)]">
               <p>✔ Dispatch in 48 Hrs</p>
               <p>✔ GST Invoice Available</p>
               <p>✔ Secure Payments</p>
@@ -185,7 +185,7 @@ export function CatalogueContent() {
   ];
 
   return (
-    <div className="bg-[#FAFCFF] min-h-screen">
+    <div className="bg-[var(--bg-subtle)] min-h-screen">
       <div className="max-w-[1550px] mx-auto px-4 md:px-8 py-8 select-none font-sans">
         
         <Breadcrumbs items={breadcrumbItems} />
@@ -194,13 +194,13 @@ export function CatalogueContent() {
         {/* Active Filters Pill Bar */}
         {(selectedCategory || searchTerm) && (
           <div className="flex flex-wrap items-center gap-2 mb-6 px-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">Active:</span>
+            <span className="text-xs font-bold text-[var(--text-faint)] uppercase tracking-wider mr-2">Active:</span>
             {searchTerm && (
               <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-2 border border-indigo-100">
                 "{searchTerm}" <X className="w-3 h-3 cursor-pointer hover:text-red-500 transition-colors" onClick={() => { const p = new URLSearchParams(searchParams); p.delete('search'); router.push(`/products?${p.toString()}`) }}/>
               </span>
             )}
-            <button onClick={clearAllFilters} className="text-xs font-bold text-slate-500 hover:text-red-500 transition-colors">Clear All</button>
+            <button onClick={clearAllFilters} className="text-xs font-bold text-[var(--text-muted)] hover:text-red-500 transition-colors">Clear All</button>
           </div>
         )}
 
@@ -208,7 +208,7 @@ export function CatalogueContent() {
           
           {/* LEFT SIDEBAR: MINIMAL FILTERS */}
           <div className="w-full lg:w-64 shrink-0 space-y-6">
-                        <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                        <div className="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
 
               <div className="space-y-2">
                 {[
@@ -220,16 +220,16 @@ export function CatalogueContent() {
                   { name: 'Size', options: ['Standard', 'Large', 'Custom Size'] },
                   { name: 'Color', options: ['CMYK', 'Pantone', 'Grayscale'] },
                 ].map((filter, idx) => (
-                  <details key={idx} className="border-t border-slate-100 pt-4 group" open={idx < 2}>
+                  <details key={idx} className="border-t border-[var(--border)] pt-4 group" open={idx < 2}>
                     <summary className="flex items-center justify-between cursor-pointer list-none mb-3 outline-none [&::-webkit-details-marker]:hidden">
-                      <span className="text-sm font-bold text-slate-700 group-hover:text-[#0082CA] transition-colors">{filter.name}</span>
-                      <ChevronDown className="w-4 h-4 text-slate-400 group-hover:text-[#0082CA] group-open:rotate-180 transition-transform" />
+                      <span className="text-sm font-bold text-[var(--text-main)] group-hover:text-[#0082CA] transition-colors">{filter.name}</span>
+                      <ChevronDown className="w-4 h-4 text-[var(--text-faint)] group-hover:text-[#0082CA] group-open:rotate-180 transition-transform" />
                     </summary>
                     <div className="flex flex-col gap-2 pl-1 pb-2">
                       {filter.options.map((opt, oIdx) => (
                         <label key={oIdx} className="flex items-center gap-2 cursor-pointer">
-                          <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-[#0082CA] focus:ring-[#0082CA]" />
-                          <span className="text-sm text-slate-600">{opt}</span>
+                          <input type="checkbox" className="w-4 h-4 rounded border-[var(--border-strong)] text-[#0082CA] focus:ring-[#0082CA]" />
+                          <span className="text-sm text-[var(--text-muted)]">{opt}</span>
                         </label>
                       ))}
                     </div>
@@ -252,12 +252,12 @@ export function CatalogueContent() {
                 {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
               </div>
             ) : filteredAndSortedProducts.length === 0 ? (
-              <div className="bg-white rounded-lg border border-slate-200 border-dashed p-16 text-center shadow-sm">
-                <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+              <div className="bg-[var(--bg-card)] rounded-lg border border-[var(--border)] border-dashed p-16 text-center shadow-sm">
+                <div className="w-20 h-20 bg-[var(--bg-subtle)] rounded-full flex items-center justify-center mx-auto mb-4 text-[var(--text-faint)]">
                   <Search className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-extrabold text-slate-900 mb-2">No exact matches found</h3>
-                <p className="text-sm text-slate-500 max-w-sm mx-auto mb-6">Try adjusting your filters, removing search terms, or exploring our best sellers.</p>
+                <h3 className="text-xl font-extrabold text-[var(--text-main)] mb-2">No exact matches found</h3>
+                <p className="text-sm text-[var(--text-muted)] max-w-sm mx-auto mb-6">Try adjusting your filters, removing search terms, or exploring our best sellers.</p>
                 <button onClick={clearAllFilters} className="bg-[#0082CA] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#0068A2] transition-colors">
                   Clear All Filters
                 </button>
@@ -285,7 +285,7 @@ export function CatalogueContent() {
                         </div>
                       ) : (
                         /* LIST VIEW CARD */
-                        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
+                        <div className="bg-[var(--bg-card)] p-4 rounded-lg border border-[var(--border)] shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row gap-6 group h-full">
                           <div className="w-full sm:w-48 aspect-[4/3] rounded-lg overflow-hidden shrink-0 relative">
                             <img src={getImageUrl(prod.images?.[0]) || 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=300&q=80'} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={prod.name} />
                             {prod.featured && <div className="absolute top-2 left-2 bg-amber-400 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider shadow-sm">Top Rated</div>}
@@ -293,15 +293,15 @@ export function CatalogueContent() {
                           <div className="flex-1 flex flex-col py-2">
                             <div className="flex justify-between items-start mb-2">
                               <div>
-                                <h3 className="text-xl font-extrabold text-slate-900 group-hover:text-[#0082CA] transition-colors"><Link href={`/products/${prod._id}`}>{prod.name}</Link></h3>
+                                <h3 className="text-xl font-extrabold text-[var(--text-main)] group-hover:text-[#0082CA] transition-colors"><Link href={`/products/${prod._id}`}>{prod.name}</Link></h3>
                                 <p className="text-xs font-bold text-emerald-600 mt-1 uppercase tracking-wider">Fast Dispatch Available</p>
                               </div>
                               <div className="text-right">
                                 <span className="text-xl font-black text-[#0082CA]">₹{prod.basePrice}</span>
-                                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold mt-1">Excl. GST</p>
+                                <p className="text-[10px] text-[var(--text-faint)] uppercase tracking-widest font-bold mt-1">Excl. GST</p>
                               </div>
                             </div>
-                            <p className="text-sm text-slate-500 font-medium line-clamp-2 mb-6">{prod.description || 'Premium quality print material offering exceptional durability and professional finish.'}</p>
+                            <p className="text-sm text-[var(--text-muted)] font-medium line-clamp-2 mb-6">{prod.description || 'Premium quality print material offering exceptional durability and professional finish.'}</p>
                             <div className="mt-auto flex items-center gap-3">
                               <Link href={`/products/${prod._id}`} className="flex-1">
                                 <button className="w-full bg-[#0082CA] hover:bg-[#0068A2] text-white px-6 py-2.5 rounded-lg font-bold text-sm transition-colors flex items-center justify-center gap-2">
@@ -329,7 +329,7 @@ export function CatalogueContent() {
                     setCurrentPage(prev => Math.max(prev - 1, 1));
                   }}
                   disabled={currentPage === 1}
-                  className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:border-[#0082CA] hover:text-[#0082CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >&larr;</button>
                 
                 {Array.from({ length: totalPages }).map((_, i) => (
@@ -339,7 +339,7 @@ export function CatalogueContent() {
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                       setCurrentPage(i + 1);
                     }}
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold transition-colors ${currentPage === i + 1 ? 'bg-[#0082CA] text-white shadow-sm' : 'border border-slate-200 text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA]'}`}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold transition-colors ${currentPage === i + 1 ? 'bg-[#0082CA] text-white shadow-sm' : 'border border-[var(--border)] text-[var(--text-faint)] hover:border-[#0082CA] hover:text-[#0082CA]'}`}
                   >{i + 1}</button>
                 ))}
                 
@@ -349,7 +349,7 @@ export function CatalogueContent() {
                     setCurrentPage(prev => Math.min(prev + 1, totalPages));
                   }}
                   disabled={currentPage === totalPages}
-                  className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:border-[#0082CA] hover:text-[#0082CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-10 h-10 rounded-lg border border-[var(--border)] flex items-center justify-center text-[var(--text-faint)] hover:border-[#0082CA] hover:text-[#0082CA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >&rarr;</button>
               </div>
             )}
