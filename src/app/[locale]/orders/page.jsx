@@ -2,30 +2,43 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
-import { Link } from '@/i18n/routing.js';
-
+import { Link, useRouter } from '@/i18n/routing.js';
 import axiosInstance from '@/services/axiosInstance.js';
+import { useAuthStore } from '@/store/authStore.js';
+import { Package, ArrowRight, Loader2 } from 'lucide-react';
 
 export default function CustomerOrders() {
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const locale = useLocale();
+  const router = useRouter();
+  const { isAuthenticated, isLoading: authLoading } = useAuthStore();
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await axiosInstance.get('/orders');
-        if (res.success && res.data?.orders) {
-           setOrders(res.data.orders);
+    if (!authLoading && !isAuthenticated) {
+      router.replace('/login?next=/orders');
+      return;
+    }
+
+    if (isAuthenticated) {
+      const fetchOrders = async () => {
+        setIsLoading(true);
+        try {
+          const res = await axiosInstance.get('/orders');
+          if (res.success && res.data?.orders) {
+            setOrders(res.data.orders);
+          } else if (res.orders) {
+            setOrders(res.orders);
+          }
+        } catch(e) {
+          console.error(e);
+        } finally {
+          setIsLoading(false);
         }
-      } catch(e) {
-        console.error(e);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchOrders();
-  }, []);
+      };
+      fetchOrders();
+    }
+  }, [isAuthenticated, authLoading, router]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12 min-h-screen font-sans">

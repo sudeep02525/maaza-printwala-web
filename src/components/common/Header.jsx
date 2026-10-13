@@ -428,17 +428,28 @@ export default function Header() {
               <div className="w-20 h-9 rounded animate-pulse bg-slate-100" />
             ) : isAuthenticated ? (
               <div className="flex items-center gap-2.5">
-                <div className="flex flex-col items-end hidden sm:flex w-[110px]">
-                  <span className="text-xs font-bold text-slate-900 truncate w-full text-right">
+                <Link
+                  href="/account"
+                  className="flex flex-col items-end hidden sm:flex w-[110px] group text-right"
+                  title="My Account & Addresses"
+                >
+                  <span className="text-xs font-bold text-slate-900 group-hover:text-[#0082CA] transition-colors truncate w-full text-right">
                     {user?.name}
                   </span>
                   <span className="text-[10px] text-slate-500 font-medium truncate w-full text-right">
-                    {user?.email || "Active Account"}
+                    {user?.email || "My Account"}
                   </span>
-                </div>
+                </Link>
+                <Link
+                  href="/account"
+                  className="sm:hidden flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 text-slate-700 hover:text-[#0082CA] transition-colors"
+                  aria-label="My Account"
+                >
+                  <User className="w-4 h-4" />
+                </Link>
                 <button
                   onClick={logout}
-                  className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full hover:bg-slate-200 text-slate-700 hover:text-red-600 transition-colors"
+                  className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full hover:bg-slate-200 text-slate-700 hover:text-red-600 transition-colors cursor-pointer"
                   aria-label="Logout"
                 >
                   <LogOut className="w-5 h-5" />

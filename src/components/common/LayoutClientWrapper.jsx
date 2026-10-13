@@ -6,10 +6,16 @@ import Header from '@/components/common/Header.jsx';
 import Footer from '@/components/common/Footer.jsx';
 import CookieConsentBanner from '@/components/common/CookieConsentBanner.jsx';
 import { track } from '@/lib/track.js';
+import { useAuthStore } from '@/store/authStore.js';
 
 export default function LayoutClientWrapper({ children }) {
   const pathname = usePathname();
   const isCustomizer = pathname.includes('/design');
+  const checkAuth = useAuthStore((s) => s.checkAuth);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   useEffect(() => {
     track('PageView');
