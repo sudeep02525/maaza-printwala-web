@@ -306,7 +306,16 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <li>Price below is MRP (inclusive of all taxes)</li>
             </ul>
             
-            <button className="text-[15px] underline text-black hover:text-[#0082CA] transition-colors">See Details</button>
+            <button 
+              type="button"
+              onClick={() => {
+                setOpenSection('specs');
+                document.getElementById('product-specs-accordion')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="text-[15px] underline text-black hover:text-[#0082CA] transition-colors cursor-pointer"
+            >
+              See Details
+            </button>
           </div>
 
           {/* Pricing Section */}
@@ -560,7 +569,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
           </div>
 
           {/* Print Accordions (Specs, Paper Guide, Artwork Guidelines, FAQ) */}
-          <div className="border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white overflow-hidden mt-6">
+          <div id="product-specs-accordion" className="border border-slate-200 rounded-xl divide-y divide-slate-200 bg-white overflow-hidden mt-6 scroll-mt-24">
             
             {/* 1. Specs Table Accordion */}
             <div>

@@ -74,8 +74,7 @@ export default function DiscoverySections() {
             <div className="mt-8 p-6 bg-gradient-to-br from-indigo-50 to-blue-50 rounded-lg border border-blue-100">
               <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">Pro Tip</span>
               <h4 className="font-bold text-slate-900 mt-3 text-sm">Need help finding something?</h4>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">Our print experts are available 24/7 to help you choose the right paper GSM and finish.</p>
-              <button className="mt-4 text-xs font-bold text-[#0082CA] hover:underline">Chat with an Expert &rarr;</button>
+              <Link href="/contact" className="inline-block mt-4 text-xs font-bold text-[#0082CA] hover:underline">Chat with an Expert &rarr;</Link>
             </div>
           </div>
 

@@ -43,9 +43,9 @@ export default function HeroBanner() {
                     {tHero('heading1')}
                   </h2>
                   <p className="text-white text-sm font-medium mb-6 drop-shadow-sm">{tHero('subheading1')}</p>
-                  <button className="bg-white text-slate-900 font-bold px-6 py-2.5 rounded-sm text-sm w-fit shadow-md hover:bg-slate-100 transition-colors">
+                  <span className="inline-block bg-white text-slate-900 font-bold px-6 py-2.5 rounded-sm text-sm w-fit shadow-md hover:bg-slate-100 transition-colors cursor-pointer">
                     {tHero('explore')}
-                  </button>
+                  </span>
                 </div>
               </Link>
             </motion.div>

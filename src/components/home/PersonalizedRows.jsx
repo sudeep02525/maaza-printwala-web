@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ProductCard from '../products/ProductCard.jsx';
 import { Clock, PenTool } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -74,9 +75,12 @@ export default function PersonalizedRows() {
                 </motion.div>
               ))}
               
-              <button className="w-full mt-2 py-3 bg-white border-2 border-slate-200 border-dashed rounded-lg text-sm font-bold text-slate-500 hover:text-[#0082CA] hover:border-[#0082CA] transition-colors flex items-center justify-center gap-2">
+              <Link 
+                href="/products"
+                className="w-full mt-2 py-3 bg-white border-2 border-slate-200 border-dashed rounded-lg text-sm font-bold text-slate-500 hover:text-[#0082CA] hover:border-[#0082CA] transition-colors flex items-center justify-center gap-2"
+              >
                 View All Designs &rarr;
-              </button>
+              </Link>
             </div>
           </div>
 
