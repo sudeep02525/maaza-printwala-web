@@ -503,7 +503,7 @@ export function CategoryContent({ subSlug }) {
 
               {/* Product Grid / List */}
               {!isMounted || prodLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                   {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
                 </div>
               ) : filteredAndSortedProducts.length === 0 ? (
@@ -527,7 +527,7 @@ export function CategoryContent({ subSlug }) {
                 <motion.div 
                   layout
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}
-                  className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" : "flex flex-col gap-4"}
+                  className={viewMode === 'grid' ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6" : "flex flex-col gap-4"}
                 >
                   <AnimatePresence mode="popLayout">
                     {paginatedProducts.map((prod, index) => (

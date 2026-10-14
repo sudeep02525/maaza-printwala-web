@@ -15,7 +15,6 @@ import axiosInstance from '@/services/axiosInstance.js';
 import Breadcrumbs from '@/components/ui/Breadcrumbs.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import Skeleton from '@/components/ui/Skeleton.jsx';
-import CategoryNav from '@/components/ui/CategoryNav.jsx';
 import { FILTER_GROUPS, checkProductFilterMatch, getFilterLabel } from '@/utils/productFilters.js';
 
 // ---- QUICK VIEW MODAL COMPONENT ----
@@ -265,38 +264,6 @@ export function CatalogueContent() {
         
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* Category Filter Pills */}
-        <div className="my-6">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 px-1 w-full">
-            <button
-              onClick={() => handleCategoryChange('')}
-              className={`flex items-center px-4 py-2 rounded-full transition-all duration-200 text-xs sm:text-sm font-bold shrink-0 shadow-sm ${
-                !selectedCategory
-                  ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/20 scale-105'
-                  : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] border border-[var(--border)]'
-              }`}
-            >
-              <span>All Products</span>
-            </button>
-
-            {categories.map((cat) => {
-              const isSelected = selectedCategory === cat.slug || selectedCategory === cat._id;
-              return (
-                <button
-                  key={cat._id}
-                  onClick={() => handleCategoryChange(cat.slug || cat._id)}
-                  className={`flex items-center px-4 py-2 rounded-full transition-all duration-200 text-xs sm:text-sm font-bold shrink-0 shadow-sm ${
-                    isSelected
-                      ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/20 scale-105'
-                      : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] border border-[var(--border)]'
-                  }`}
-                >
-                  <span>{cat.name}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
 
         {/* Active Filters Pill Bar (Dynamic & Removable) */}
         {hasAnyActiveFilter && (
@@ -482,7 +449,7 @@ export function CatalogueContent() {
 
             {/* Product Grid / List */}
             {!isMounted || prodLoading ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                 {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
               </div>
             ) : filteredAndSortedProducts.length === 0 ? (
@@ -499,7 +466,7 @@ export function CatalogueContent() {
             ) : (
               <motion.div 
                 layout
-                className={viewMode === 'grid' ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" : "flex flex-col gap-4"}
+                className={viewMode === 'grid' ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6" : "flex flex-col gap-4"}
               >
                 <AnimatePresence mode="popLayout">
                   {paginatedProducts.map((prod, index) => (

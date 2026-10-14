@@ -143,7 +143,7 @@ export default async function HomePage({ params }) {
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('bestSellers')} tButtons={tButtons} />
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {bestSellers.map((p, i) => <FadeIn key={`bs-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
         </FadeIn>
@@ -157,7 +157,7 @@ export default async function HomePage({ params }) {
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('newArrivals')} subtitle={locale === 'hi' ? 'नए टेम्प्लेट और उत्पाद' : locale === 'mr' ? 'नवीन टेम्पलेट्स आणि उत्पादने' : 'Fresh new templates and products'} tButtons={tButtons} />
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {newArrivals.map((p, i) => <FadeIn key={`new-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
         </FadeIn>

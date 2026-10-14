@@ -20,7 +20,7 @@ export default function PageSkeleton() {
         {/* Content Skeleton */}
         <div className="flex-1 w-full">
           <div className="h-8 w-48 bg-[var(--border)] rounded animate-pulse mb-8" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
               <div key={i} className="h-[380px] bg-[var(--border)] rounded-lg animate-pulse" />
             ))}

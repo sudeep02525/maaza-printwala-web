@@ -52,14 +52,14 @@ export default function ProductCard({ product }) {
       {/* Image Container */}
       <div className="relative aspect-[9/10] bg-[var(--hover)] overflow-hidden rounded-md border border-[var(--border)]">
         {/* Sale Badge */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1 z-10">
+        <div className="absolute top-2 sm:top-3 left-2 sm:left-3 flex flex-col gap-1 z-10">
           {hasDiscount && discountPercent > 0 && (
-            <div className="bg-rose-500 text-white px-3 py-1 text-xs font-medium capitalize tracking-wide rounded-md shadow-sm">
+            <div className="bg-rose-500 text-white px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium capitalize tracking-wide rounded-md shadow-sm">
               {tProd('sale')} <span className="font-extrabold ml-0.5">-{discountPercent}%</span>
             </div>
           )}
           {product.featured && (
-            <div className="bg-blue-600 text-white px-2 py-0.5 text-[10px] font-bold rounded uppercase">
+            <div className="bg-blue-600 text-white px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-bold rounded uppercase">
               {tProd('bestseller')}
             </div>
           )}
@@ -83,33 +83,33 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-col text-left pt-3 flex-1">
+      <div className="flex flex-col text-left pt-2.5 sm:pt-3 flex-1">
         {/* Brand */}
-        <span className="text-[11px] text-[var(--text-muted)] font-medium mb-1">
+        <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-medium mb-0.5 sm:mb-1">
           {product.brand || categoryName || 'printvenue'}
         </span>
 
         {/* Product Name */}
         <Link href={`/products/${id}`} draggable={false}>
-          <h3 className="text-[14px] font-bold text-[var(--text-main)] leading-snug line-clamp-2 hover:text-[#0082CA] transition-colors">
+          <h3 className="text-[13px] sm:text-[14px] font-bold text-[var(--text-main)] leading-snug line-clamp-2 hover:text-[#0082CA] transition-colors">
             {name}
           </h3>
         </Link>
 
         {/* Rating — only show if product actually has verified reviews */}
         {product.reviewCount > 0 && product.averageRating > 0 ? (
-          <div className="flex items-center gap-0.5 mt-1.5">
+          <div className="flex items-center gap-0.5 mt-1 sm:mt-1.5">
             {[1, 2, 3, 4, 5].map((star) => (
               <Star
                 key={star}
-                className={`w-3.5 h-3.5 ${
+                className={`w-3 sm:w-3.5 h-3 sm:h-3.5 ${
                   star <= Math.round(product.averageRating)
                     ? 'fill-amber-400 text-amber-400'
                     : 'text-[var(--border-strong)]'
                 }`}
               />
             ))}
-            <span className="text-xs text-[var(--text-muted)] ml-1 font-medium">
+            <span className="text-[11px] sm:text-xs text-[var(--text-muted)] ml-1 font-medium">
               ({product.averageRating.toFixed(1)})
             </span>
           </div>
@@ -117,16 +117,16 @@ export default function ProductCard({ product }) {
 
         <div className="mt-auto">
           {/* Price Row */}
-          <div className="flex items-center flex-wrap gap-2 mt-2">
-            <span className="bg-[var(--text-main)] text-[var(--bg-card)] text-[13px] font-bold px-2.5 py-1 rounded shadow-sm">
+          <div className="flex items-center flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+            <span className="bg-[var(--text-main)] text-[var(--bg-card)] text-[12px] sm:text-[13px] font-bold px-2 sm:px-2.5 py-0.5 sm:py-1 rounded shadow-sm">
               ₹{currentPrice.toFixed(2)}
             </span>
             {hasDiscount && (
-              <span className="text-[11px] text-[var(--text-faint)] line-through">
+              <span className="text-[10px] sm:text-[11px] text-[var(--text-faint)] line-through">
                 ₹{oldPrice.toFixed(2)}
               </span>
             )}
-            <span className="text-[11px] font-bold text-[var(--text-main)] ml-0.5">
+            <span className="text-[10px] sm:text-[11px] font-bold text-[var(--text-main)] ml-0.5">
               {locale === 'hi' ? 'जीएसटी सहित' : locale === 'mr' ? 'जीएसटी समाविष्ट' : 'Incl. GST'}
             </span>
           </div>

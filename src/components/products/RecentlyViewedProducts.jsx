@@ -25,12 +25,12 @@ export default function RecentlyViewedProducts() {
 
   return (
     <section className="py-12 bg-[var(--bg-card)]">
-      <div className="max-w-[1520px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl sm:text-[28px] font-bold text-[var(--text-main)] tracking-tight mb-8">
           Recently viewed products
         </h2>
         
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
           {recentlyViewed.slice(0, 4).map((prod) => (
             <motion.div 
               key={prod._id || prod.slug}

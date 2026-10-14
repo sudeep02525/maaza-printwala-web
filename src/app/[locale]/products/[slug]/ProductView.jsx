@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, use, useRef } from 'react';
 import { Link } from '@/i18n/routing.js';
 import { useQuery } from '@tanstack/react-query';
-import { ChevronRight, Home, ShieldCheck, Truck, HelpCircle, FileText, CheckCircle2, Package, MapPin, Star, AlertCircle, RotateCcw, ChevronDown, Image, CloudUpload, Zap, Palette, Layers, Sparkles } from 'lucide-react';
+import { ChevronRight, Home, ShieldCheck, Truck, HelpCircle, FileText, CheckCircle2, Package, MapPin, Star, AlertCircle, RotateCcw, ChevronDown, Image, CloudUpload, Zap, Palette, Layers, Sparkles, ArrowRight } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
 import axiosInstance from '../../../../services/axiosInstance.js';
 import { useConfiguratorStore } from '@/store/configuratorStore.js';
@@ -318,10 +318,10 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
       )}
 
       {/* 3. Main Product Stage */}
-      <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start relative">
+      <div className="flex flex-col md:flex-row gap-8 lg:gap-14 items-start relative">
         
         {/* LEFT COL: Gallery */}
-        <div className="w-full lg:w-1/2 lg:sticky lg:top-24 self-start space-y-6 z-10">
+        <div className="w-full md:w-1/2 md:sticky md:top-24 self-start space-y-6 z-10">
           {/* Gallery Component */}
           <div className="w-full">
             <ProductGallery product={product} />
@@ -329,7 +329,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
         </div>
 
         {/* RIGHT COL: Detailed Information & Configurator */}
-        <div className="w-full lg:w-1/2 space-y-8 pb-10">
+        <div className="w-full md:w-1/2 space-y-8 pb-10">
           
           {/* Header Section */}
           <div>
@@ -531,12 +531,12 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                       }`}
                     >
                       {tier.popular && (
-                        <span className="absolute -top-2 bg-[#0082CA] text-white text-[8px] font-extrabold px-1.5 py-0.2 rounded-full uppercase tracking-tighter">
+                        <span className="absolute -top-2 bg-[#0082CA] text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-tight shadow-xs">
                           Popular
                         </span>
                       )}
                       {tier.bestValue && (
-                        <span className="absolute -top-2 bg-emerald-600 text-white text-[8px] font-extrabold px-1.5 py-0.2 rounded-full uppercase tracking-tighter">
+                        <span className="absolute -top-2 bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-tight shadow-xs">
                           Best Value
                         </span>
                       )}
@@ -544,7 +544,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                         {tier.quantity >= 1000 ? `${(tier.quantity / 1000).toLocaleString('en-IN')}k pcs` : `${tier.quantity} pcs`}
                       </span>
                       <span className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">₹{Number(tier.unitPrice).toFixed(2)}/ea</span>
-                      <span className={`text-[9px] font-bold mt-0.5 ${isCurrent ? 'text-[#0082CA]' : 'text-emerald-700'}`}>
+                      <span className={`text-[11px] font-bold mt-0.5 ${isCurrent ? 'text-[#0082CA]' : 'text-emerald-700'}`}>
                         {discountLabel}
                       </span>
                     </button>
@@ -821,6 +821,33 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
       <ProductReviews productId={product?._id} productName={product?.name} />
 
     </div>
+
+      {/* Mobile Sticky Buy Bar */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[var(--bg-card)]/95 backdrop-blur-md border-t border-[var(--border)] px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.12)] flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <div className="text-[11px] text-[var(--text-muted)] font-medium truncate">
+            Total ({quantity.toLocaleString('en-IN')} units)
+          </div>
+          <div className="text-lg font-black text-[#0082CA] flex items-baseline gap-1">
+            {isCalculating ? (
+              <span className="h-5 w-16 bg-[var(--border)] rounded animate-pulse inline-block" />
+            ) : (
+              <>
+                <span>₹{(priceResult?.totalPrice || product?.basePrice || 200).toFixed(2)}</span>
+                <span className="text-[10px] text-[var(--text-faint)] font-normal">incl. GST</span>
+              </>
+            )}
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsModalOpen(true)}
+          className="shrink-0 bg-[#0082CA] hover:bg-[#0068A2] active:scale-95 text-white font-bold text-sm py-2.5 px-5 rounded-lg flex items-center justify-center gap-1.5 shadow-md shadow-[#0082CA]/25 transition-all cursor-pointer"
+        >
+          <span>Select Design</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
 
       {/* Modal Drawer */}
       {product && (

@@ -197,7 +197,7 @@ export const TopRatedSection = ({ products = [] }) => {
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         <SectionHeader title={tHome('topRated')} subtitle={sub} />
         
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
           {products.slice(0, 8).map((p, i) => (
             <motion.div
               key={`tr-${p._id || 'x'}-${i}`}
