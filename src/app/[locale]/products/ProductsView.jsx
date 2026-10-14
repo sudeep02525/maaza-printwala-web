@@ -110,6 +110,18 @@ export function CatalogueContent() {
 
   useEffect(() => setIsMounted(true), []);
 
+  // Lock body scroll when mobile filter drawer is open
+  useEffect(() => {
+    if (showMobileFilters) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showMobileFilters]);
+
   // Derive active filters directly from URL searchParams - Pure, no state loops!
   const selectedFilters = useMemo(() => {
     const getArray = (key) => {
@@ -258,6 +270,63 @@ export function CatalogueContent() {
     router.replace(queryString ? `/products?${queryString}` : '/products', { scroll: false });
   };
 
+  // Reusable filter accordion content for desktop sidebar and mobile drawer
+  const renderFilterGroups = (idPrefix = 'filter') => (
+    <div className="space-y-1">
+      {FILTER_GROUPS.map((group) => {
+        const activeInGroup = (selectedFilters[group.id] || []).length;
+        return (
+          <details key={group.id} className="border-t border-[var(--border)] pt-3 group/det" open={group.defaultOpen || activeInGroup > 0}>
+            <summary className="flex items-center justify-between cursor-pointer list-none py-1 outline-none [&::-webkit-details-marker]:hidden">
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-[var(--text-main)] group-hover/det:text-[#0082CA] transition-colors">
+                  {group.name}
+                </span>
+                {activeInGroup > 0 && (
+                  <span className="bg-[#0082CA] text-white text-[10px] font-bold rounded-full px-1.5 py-0.2">
+                    {activeInGroup}
+                  </span>
+                )}
+              </div>
+              <ChevronDown className="w-3.5 h-3.5 text-[var(--text-faint)] group-hover/det:text-[#0082CA] group-open/det:rotate-180 transition-transform" />
+            </summary>
+            
+            <div className="flex flex-col gap-1.5 pt-2 pb-3 pl-0.5">
+              {group.options.map((opt) => {
+                const isChecked = (selectedFilters[group.id] || []).includes(opt.id);
+                const count = filterOptionCounts[group.id]?.[opt.id] ?? 0;
+                return (
+                  <label
+                    key={opt.id}
+                    className={`flex items-center justify-between gap-2 py-1 px-1.5 rounded cursor-pointer transition-colors group/opt ${
+                      isChecked ? 'bg-[#0082CA]/5' : 'hover:bg-[var(--bg-subtle)]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <input
+                        type="checkbox"
+                        id={`${idPrefix}-${group.id}-${opt.id}`}
+                        checked={isChecked}
+                        onChange={() => toggleFilter(group.id, opt.id)}
+                        className="w-4 h-4 rounded border-[var(--border-strong)] text-[#0082CA] focus:ring-[#0082CA] cursor-pointer accent-[#0082CA]"
+                      />
+                      <span className={`text-xs truncate transition-colors ${isChecked ? 'font-bold text-[#0082CA]' : 'text-[var(--text-muted)] group-hover/opt:text-[var(--text-main)]'}`}>
+                        {opt.label}
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-[var(--text-faint)] shrink-0">
+                      ({count})
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </details>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="bg-[var(--bg-subtle)] min-h-screen">
       <div className="max-w-[1550px] mx-auto px-4 md:px-8 py-8 select-none font-sans">
@@ -310,9 +379,9 @@ export function CatalogueContent() {
 
         <div className="flex flex-col lg:flex-row gap-8 items-start mt-4">
           
-          {/* LEFT SIDEBAR: FUNCTIONAL REAL ATTRIBUTE FILTERS */}
-          <div className={`w-full lg:w-64 shrink-0 space-y-6 ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          {/* DESKTOP SIDEBAR: Permanent left column on desktop (≥1024px), zero layout shift */}
+          <aside className="hidden lg:block w-64 shrink-0 space-y-6">
+            <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)] sticky top-24">
               <div className="flex items-center justify-between pb-3 border-b border-[var(--border)] mb-3">
                 <div className="flex items-center gap-2">
                   <Filter className="w-4 h-4 text-[#0082CA]" />
@@ -320,69 +389,17 @@ export function CatalogueContent() {
                 </div>
                 {totalActiveFilterCount > 0 && (
                   <button
+                    type="button"
                     onClick={handleResetFilters}
-                    className="text-[11px] font-bold text-[#0082CA] hover:underline"
+                    className="text-[11px] font-bold text-[#0082CA] hover:underline cursor-pointer"
                   >
                     Reset
                   </button>
                 )}
               </div>
-
-              <div className="space-y-1">
-                {FILTER_GROUPS.map((group) => {
-                  const activeInGroup = (selectedFilters[group.id] || []).length;
-                  return (
-                    <details key={group.id} className="border-t border-[var(--border)] pt-3 group/det" open={group.defaultOpen || activeInGroup > 0}>
-                      <summary className="flex items-center justify-between cursor-pointer list-none py-1 outline-none [&::-webkit-details-marker]:hidden">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-[var(--text-main)] group-hover/det:text-[#0082CA] transition-colors">
-                            {group.name}
-                          </span>
-                          {activeInGroup > 0 && (
-                            <span className="bg-[#0082CA] text-white text-[10px] font-bold rounded-full px-1.5 py-0.2">
-                              {activeInGroup}
-                            </span>
-                          )}
-                        </div>
-                        <ChevronDown className="w-3.5 h-3.5 text-[var(--text-faint)] group-hover/det:text-[#0082CA] group-open/det:rotate-180 transition-transform" />
-                      </summary>
-                      
-                      <div className="flex flex-col gap-1.5 pt-2 pb-3 pl-0.5">
-                        {group.options.map((opt) => {
-                          const isChecked = (selectedFilters[group.id] || []).includes(opt.id);
-                          const count = filterOptionCounts[group.id]?.[opt.id] ?? 0;
-                          return (
-                            <label
-                              key={opt.id}
-                              className={`flex items-center justify-between gap-2 py-1 px-1.5 rounded cursor-pointer transition-colors group/opt ${
-                                isChecked ? 'bg-[#0082CA]/5' : 'hover:bg-[var(--bg-subtle)]'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2 min-w-0">
-                                <input
-                                  type="checkbox"
-                                  id={`filter-${group.id}-${opt.id}`}
-                                  checked={isChecked}
-                                  onChange={() => toggleFilter(group.id, opt.id)}
-                                  className="w-4 h-4 rounded border-[var(--border-strong)] text-[#0082CA] focus:ring-[#0082CA] cursor-pointer accent-[#0082CA]"
-                                />
-                                <span className={`text-xs truncate transition-colors ${isChecked ? 'font-bold text-[#0082CA]' : 'text-[var(--text-muted)] group-hover/opt:text-[var(--text-main)]'}`}>
-                                  {opt.label}
-                                </span>
-                              </div>
-                              <span className="text-[10px] font-mono text-[var(--text-faint)] shrink-0">
-                                ({count})
-                              </span>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    </details>
-                  );
-                })}
-              </div>
+              {renderFilterGroups('desktop')}
             </div>
-          </div>
+          </aside>
 
           {/* RIGHT SIDE: PRODUCTS & TOOLBAR */}
           <div className="flex-1 min-w-0">
@@ -561,6 +578,78 @@ export function CatalogueContent() {
       
       {/* Quick View Modal */}
       {quickViewProduct && <QuickViewModal product={quickViewProduct} onClose={() => setQuickViewProduct(null)} />}
+
+      {/* MOBILE & TABLET SLIDE-IN FILTER DRAWER (<1024px) */}
+      <AnimatePresence>
+        {showMobileFilters && (
+          <div className="fixed inset-0 z-50 lg:hidden">
+            {/* Dark Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setShowMobileFilters(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs"
+            />
+
+            {/* Slide-in Panel from Left */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+              className="fixed inset-y-0 left-0 w-full max-w-xs sm:max-w-sm bg-[var(--bg-card)] shadow-2xl flex flex-col z-10 border-r border-[var(--border)]"
+            >
+              {/* Drawer Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] bg-[var(--bg-subtle)]">
+                <div className="flex items-center gap-2">
+                  <Filter className="w-4 h-4 text-[#0082CA]" />
+                  <span className="text-base font-extrabold text-[var(--text-main)]">Filters</span>
+                  {totalActiveFilterCount > 0 && (
+                    <span className="bg-[#0082CA] text-white text-[10px] font-bold rounded-full px-2 py-0.5">
+                      {totalActiveFilterCount}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowMobileFilters(false)}
+                  className="p-1.5 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--hover)] transition-colors cursor-pointer"
+                  aria-label="Close filters"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Drawer Body (Scrollable) */}
+              <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar">
+                {renderFilterGroups('mobile')}
+              </div>
+
+              {/* Drawer Sticky Footer */}
+              <div className="p-4 border-t border-[var(--border)] bg-[var(--bg-card)] flex items-center gap-3">
+                {totalActiveFilterCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleResetFilters}
+                    className="px-3 py-2.5 rounded-lg text-xs font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
+                  >
+                    Clear All
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setShowMobileFilters(false)}
+                  className="flex-1 bg-[#0082CA] hover:bg-[#0068A2] active:scale-98 text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-md shadow-[#0082CA]/20 transition-all text-center cursor-pointer"
+                >
+                  Show {filteredAndSortedProducts.length} Results
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
