@@ -16,6 +16,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import Skeleton from '@/components/ui/Skeleton.jsx';
 import CategoryNav from '@/components/ui/CategoryNav.jsx';
+import { FILTER_GROUPS, checkProductFilterMatch, getFilterLabel } from '@/utils/productFilters.js';
 
 // ---- QUICK VIEW MODAL COMPONENT ----
 function QuickViewModal({ product, onClose }) {
@@ -91,137 +92,14 @@ function QuickViewModal({ product, onClose }) {
   );
 }
 
-// ---- REAL CATALOGUE FILTER GROUPS ----
-const FILTER_GROUPS = [
-  {
-    id: 'availability',
-    name: 'Availability',
-    defaultOpen: true,
-    options: [
-      { id: 'in-stock', label: 'In Stock' },
-      { id: 'featured', label: 'Best Sellers' },
-    ],
-  },
-  {
-    id: 'price',
-    name: 'Price',
-    defaultOpen: true,
-    options: [
-      { id: 'under-250', label: 'Under ₹250' },
-      { id: '250-500', label: '₹250 - ₹500' },
-      { id: '500-1000', label: '₹500 - ₹1,000' },
-      { id: 'above-1000', label: 'Above ₹1,000' },
-    ],
-  },
-  {
-    id: 'finish',
-    name: 'Finish & Lamination',
-    defaultOpen: true,
-    options: [
-      { id: 'matte', label: 'Matte Finish' },
-      { id: 'glossy', label: 'Glossy Finish' },
-      { id: 'spot-uv', label: 'Spot UV Accent' },
-      { id: 'foil', label: 'Foil / Metallic' },
-      { id: 'velvet', label: 'Velvet Touch' },
-    ],
-  },
-  {
-    id: 'material',
-    name: 'Material & Stock',
-    defaultOpen: true,
-    options: [
-      { id: 'cardstock', label: 'Premium Cardstock' },
-      { id: 'cotton', label: '100% Combed Cotton' },
-      { id: 'flex', label: 'Heavy Duty Flex Vinyl' },
-      { id: 'bond', label: 'Executive Bond Paper' },
-      { id: 'kraft', label: 'Kraft & Corrugated' },
-      { id: 'pvc', label: 'Rigid PVC / Translucent' },
-      { id: 'ceramic', label: 'Grade-A Ceramic' },
-    ],
-  },
-  {
-    id: 'size',
-    name: 'Size & Shape',
-    defaultOpen: false,
-    options: [
-      { id: 'standard-card', label: 'Standard (89 × 51 mm)' },
-      { id: 'classic-card', label: 'Classic (90 × 54 mm)' },
-      { id: 'rounded', label: 'Rounded Corners' },
-      { id: 'square', label: 'Square' },
-      { id: 'a4-a5', label: 'A4 / A5 Standard' },
-      { id: 'apparel-sizes', label: 'Apparel (S-XXL)' },
-    ],
-  },
-];
-
-// Helper: Check whether a product satisfies a single filter option
-function checkProductFilterMatch(p, groupId, optionId) {
-  if (groupId === 'availability') {
-    if (optionId === 'in-stock') return p.status === 'ACTIVE' || p.isActive !== false;
-    if (optionId === 'featured') return Boolean(p.isFeatured);
-  }
-  if (groupId === 'price') {
-    const price = Number(p.basePrice) || 0;
-    if (optionId === 'under-250') return price < 250;
-    if (optionId === '250-500') return price >= 250 && price <= 500;
-    if (optionId === '500-1000') return price >= 500 && price <= 1000;
-    if (optionId === 'above-1000') return price > 1000;
-  }
-  if (groupId === 'finish') {
-    const str = [
-      ...(p.attributeMap?.finish || []),
-      p.name || '',
-      p.shortDescription || '',
-    ].join(' ').toLowerCase();
-    if (optionId === 'matte') return str.includes('matte');
-    if (optionId === 'glossy') return str.includes('gloss') || str.includes('mirror');
-    if (optionId === 'spot-uv') return str.includes('spot') || str.includes('uv');
-    if (optionId === 'foil') return str.includes('foil') || str.includes('metallic') || str.includes('gold') || str.includes('pearl') || str.includes('shimmer') || str.includes('diamond');
-    if (optionId === 'velvet') return str.includes('velvet') || str.includes('soft');
-  }
-  if (groupId === 'material') {
-    const str = [
-      ...(p.attributeMap?.material || []),
-      ...(p.attributeMap?.paper || []),
-      ...(p.attributeMap?.paperType || []),
-      ...(p.attributeMap?.filmType || []),
-      p.name || '',
-      p.shortDescription || '',
-    ].join(' ').toLowerCase();
-    if (optionId === 'cardstock') return str.includes('cardstock') || str.includes('card') || str.includes('gsm');
-    if (optionId === 'cotton') return str.includes('cotton') || str.includes('shirt') || str.includes('polo');
-    if (optionId === 'flex') return str.includes('flex') || str.includes('banner') || str.includes('standee');
-    if (optionId === 'bond') return str.includes('bond') || str.includes('royal') || str.includes('letterhead');
-    if (optionId === 'kraft') return str.includes('kraft') || str.includes('corrugated') || str.includes('box');
-    if (optionId === 'pvc') return str.includes('pvc') || str.includes('transparent') || str.includes('non-tearable');
-    if (optionId === 'ceramic') return str.includes('ceramic') || str.includes('mug') || str.includes('kit');
-  }
-  if (groupId === 'size') {
-    const str = [
-      ...(p.attributeMap?.size || []),
-      p.name || '',
-      p.shortDescription || '',
-    ].join(' ').toLowerCase();
-    if (optionId === 'standard-card') return str.includes('89') || str.includes('standard');
-    if (optionId === 'classic-card') return str.includes('90') || str.includes('classic');
-    if (optionId === 'rounded') return str.includes('rounded');
-    if (optionId === 'square') return str.includes('square');
-    if (optionId === 'a4-a5') return str.includes('a4') || str.includes('a5');
-    if (optionId === 'apparel-sizes') return str.includes('small') || str.includes('medium') || str.includes('large');
-  }
-  return false;
-}
-
 // ---- MAIN PAGE COMPONENT ----
 export function CatalogueContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const categoryParam = searchParams.get('category') || '';
-  const searchParam = searchParams.get('search') || '';
+  const selectedCategory = searchParams.get('category') || '';
+  const searchTerm = searchParams.get('search') || '';
 
-  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
-  const [searchTerm, setSearchTerm] = useState(searchParam);
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const [currentPage, setCurrentPage] = useState(1);
@@ -231,8 +109,10 @@ export function CatalogueContent() {
   
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
-  // Initialize filter state from URL parameters
-  const initialFiltersFromUrl = useMemo(() => {
+  useEffect(() => setIsMounted(true), []);
+
+  // Derive active filters directly from URL searchParams - Pure, no state loops!
+  const selectedFilters = useMemo(() => {
     const getArray = (key) => {
       const val = searchParams.get(key);
       return val ? val.split(',').filter(Boolean) : [];
@@ -245,13 +125,6 @@ export function CatalogueContent() {
       size: getArray('size'),
     };
   }, [searchParams]);
-
-  const [selectedFilters, setSelectedFilters] = useState(initialFiltersFromUrl);
-
-  useEffect(() => setIsMounted(true), []);
-  useEffect(() => setSelectedCategory(categoryParam), [categoryParam]);
-  useEffect(() => setSearchTerm(searchParam), [searchParam]);
-  useEffect(() => setSelectedFilters(initialFiltersFromUrl), [initialFiltersFromUrl]);
 
   // Fetching categories
   const { data: catData, isLoading: catLoading } = useQuery({
@@ -284,33 +157,21 @@ export function CatalogueContent() {
     return categories.find((c) => (c.slug || c._id) === selectedCategory || c._id === selectedCategory);
   }, [isMounted, categories, selectedCategory]);
 
-  // Push updated filter state to URL
-  const pushFiltersToUrl = (newFilters, newCategory = selectedCategory, newSearch = searchTerm) => {
-    const params = new URLSearchParams();
-    if (newCategory) params.set('category', newCategory);
-    if (newSearch) params.set('search', newSearch);
-
-    Object.entries(newFilters).forEach(([groupKey, values]) => {
-      if (values && values.length > 0) {
-        params.set(groupKey, values.join(','));
-      }
-    });
-
-    const queryString = params.toString();
-    router.push(queryString ? `/products?${queryString}` : '/products', { scroll: false });
-  };
-
-  // Toggle single filter checkbox
+  // Toggle single filter checkbox - directly updates URL (pure, no updater side-effect!)
   const toggleFilter = (group, optionId) => {
-    setSelectedFilters((prev) => {
-      const current = prev[group] || [];
-      const updated = current.includes(optionId)
-        ? current.filter((v) => v !== optionId)
-        : [...current, optionId];
-      const nextState = { ...prev, [group]: updated };
-      pushFiltersToUrl(nextState);
-      return nextState;
-    });
+    const current = selectedFilters[group] || [];
+    const updated = current.includes(optionId)
+      ? current.filter((v) => v !== optionId)
+      : [...current, optionId];
+
+    const params = new URLSearchParams(searchParams.toString());
+    if (updated.length > 0) {
+      params.set(group, updated.join(','));
+    } else {
+      params.delete(group);
+    }
+    const queryString = params.toString();
+    router.replace(queryString ? `/products?${queryString}` : '/products', { scroll: false });
   };
 
   // Remove single active filter pill
@@ -319,22 +180,18 @@ export function CatalogueContent() {
   };
 
   const handleCategoryChange = (slugOrId) => {
-    setSelectedCategory(slugOrId);
-    pushFiltersToUrl(selectedFilters, slugOrId, searchTerm);
+    const params = new URLSearchParams(searchParams.toString());
+    if (slugOrId) {
+      params.set('category', slugOrId);
+    } else {
+      params.delete('category');
+    }
+    const queryString = params.toString();
+    router.replace(queryString ? `/products?${queryString}` : '/products', { scroll: false });
   };
 
   const clearAllFilters = () => {
-    const emptyFilters = {
-      availability: [],
-      price: [],
-      finish: [],
-      material: [],
-      size: [],
-    };
-    setSelectedFilters(emptyFilters);
-    setSelectedCategory('');
-    setSearchTerm('');
-    router.push('/products');
+    router.replace('/products', { scroll: false });
   };
 
   // Total active filter items count for badges
@@ -386,15 +243,21 @@ export function CatalogueContent() {
     ...(activeCatObj ? [{ label: activeCatObj.name }] : searchTerm ? [{ label: `Search: ${searchTerm}` }] : [{ label: 'All Products' }])
   ];
 
-  // Helper to find human readable label for pill
-  const getFilterLabel = (group, id) => {
-    const g = FILTER_GROUPS.find((groupObj) => groupObj.id === group);
-    if (!g) return id;
-    const opt = g.options.find((o) => o.id === id);
-    return opt ? opt.label : id;
+  const hasAnyActiveFilter = Boolean(selectedCategory || searchTerm || totalActiveFilterCount > 0);
+
+  const handleRemoveSearch = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('search');
+    const queryString = params.toString();
+    router.replace(queryString ? `/products?${queryString}` : '/products', { scroll: false });
   };
 
-  const hasAnyActiveFilter = Boolean(selectedCategory || searchTerm || totalActiveFilterCount > 0);
+  const handleResetFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    FILTER_GROUPS.forEach((g) => params.delete(g.id));
+    const queryString = params.toString();
+    router.replace(queryString ? `/products?${queryString}` : '/products', { scroll: false });
+  };
 
   return (
     <div className="bg-[var(--bg-subtle)] min-h-screen">
@@ -452,10 +315,7 @@ export function CatalogueContent() {
             {searchTerm && (
               <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-indigo-200 dark:border-indigo-800">
                 <span>"{searchTerm}"</span>
-                <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500 transition-colors" onClick={() => {
-                  setSearchTerm('');
-                  pushFiltersToUrl(selectedFilters, selectedCategory, '');
-                }} />
+                <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500 transition-colors" onClick={handleRemoveSearch} />
               </span>
             )}
 
@@ -493,11 +353,7 @@ export function CatalogueContent() {
                 </div>
                 {totalActiveFilterCount > 0 && (
                   <button
-                    onClick={() => {
-                      const empty = { availability: [], price: [], finish: [], material: [], size: [] };
-                      setSelectedFilters(empty);
-                      pushFiltersToUrl(empty);
-                    }}
+                    onClick={handleResetFilters}
                     className="text-[11px] font-bold text-[#0082CA] hover:underline"
                   >
                     Reset

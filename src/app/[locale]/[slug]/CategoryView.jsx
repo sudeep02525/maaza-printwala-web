@@ -16,6 +16,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import Skeleton from '@/components/ui/Skeleton.jsx';
 import PageSkeleton from '@/components/ui/PageSkeleton.jsx';
+import { FILTER_GROUPS, checkProductFilterMatch, getFilterLabel } from '@/utils/productFilters.js';
 // removed categoryData import
 import { useTranslations, useLocale } from 'next-intl';
 
@@ -194,16 +195,91 @@ export function CategoryContent({ subSlug }) {
 
   const rawProducts = prodData?.data?.products || [];
 
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
+  // Derive active filters directly from URL searchParams - Pure, stateless!
+  const selectedFilters = useMemo(() => {
+    const getArray = (key) => {
+      const val = searchParams.get(key);
+      return val ? val.split(',').filter(Boolean) : [];
+    };
+    return {
+      availability: getArray('availability'),
+      price: getArray('price'),
+      finish: getArray('finish'),
+      material: getArray('material'),
+      size: getArray('size'),
+    };
+  }, [searchParams]);
+
+  const toggleFilter = (group, optionId) => {
+    const current = selectedFilters[group] || [];
+    const updated = current.includes(optionId)
+      ? current.filter((v) => v !== optionId)
+      : [...current, optionId];
+
+    const p = new URLSearchParams(searchParams.toString());
+    if (updated.length > 0) {
+      p.set(group, updated.join(','));
+    } else {
+      p.delete(group);
+    }
+    const q = p.toString();
+    router.replace(q ? `?${q}` : window.location.pathname, { scroll: false });
+  };
+
+  const removeFilter = (group, optionId) => {
+    toggleFilter(group, optionId);
+  };
+
+  const clearAllFilters = () => {
+    const p = new URLSearchParams();
+    if (activeSubcategory) p.set('sub', activeSubcategory);
+    const q = p.toString();
+    router.replace(q ? `?${q}` : window.location.pathname, { scroll: false });
+  };
+
+  const handleResetFilters = () => {
+    const p = new URLSearchParams(searchParams.toString());
+    FILTER_GROUPS.forEach((g) => p.delete(g.id));
+    const q = p.toString();
+    router.replace(q ? `?${q}` : window.location.pathname, { scroll: false });
+  };
+
+  const totalActiveFilterCount = useMemo(() => {
+    return Object.values(selectedFilters).reduce((acc, curr) => acc + (curr ? curr.length : 0), 0);
+  }, [selectedFilters]);
+
   // Client-side filtering & sorting
   const filteredAndSortedProducts = useMemo(() => {
     let list = [...rawProducts];
-    
+
+    // Filter by every active filter group
+    Object.entries(selectedFilters).forEach(([groupId, activeOptions]) => {
+      if (!activeOptions || activeOptions.length === 0) return;
+      list = list.filter((product) => {
+        return activeOptions.some((optId) => checkProductFilterMatch(product, groupId, optId));
+      });
+    });
+
     if (sortBy === 'price_asc') return list.sort((a, b) => Number(a.basePrice) - Number(b.basePrice));
     if (sortBy === 'price_desc') return list.sort((a, b) => Number(b.basePrice) - Number(a.basePrice));
     if (sortBy === 'name_asc') return list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
-    
+
     return list.sort((a, b) => (b.featured === a.featured ? 0 : b.featured ? 1 : -1));
-  }, [rawProducts, sortBy]);
+  }, [rawProducts, selectedFilters, sortBy]);
+
+  // Compute option counts based on raw products
+  const filterOptionCounts = useMemo(() => {
+    const counts = {};
+    for (const group of FILTER_GROUPS) {
+      counts[group.id] = {};
+      for (const opt of group.options) {
+        counts[group.id][opt.id] = rawProducts.filter((p) => checkProductFilterMatch(p, group.id, opt.id)).length;
+      }
+    }
+    return counts;
+  }, [rawProducts]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -222,17 +298,62 @@ export function CategoryContent({ subSlug }) {
     ...(searchTerm ? [{ label: `${t('common.search')}: ${searchTerm}` }] : [])
   ];
 
+  const hasAnyActiveFilter = Boolean(activeSubcategory || searchTerm || totalActiveFilterCount > 0);
+
   return (
     <div className="bg-[var(--bg-subtle)] min-h-screen">
       <div className="max-w-[1550px] mx-auto px-4 md:px-8 py-8 select-none font-sans">
         
         <Breadcrumbs items={breadcrumbItems} />
 
-
-
         {/* 3. PRODUCT GRID SECTION */}
         <div className="mb-16">
-          <div className="flex items-center justify-end mb-8">
+          <div className="flex items-center justify-between mb-4">
+            {/* Active Filters Pill Bar (Dynamic & Removable) */}
+            {hasAnyActiveFilter ? (
+              <div className="flex flex-wrap items-center gap-2 px-1">
+                <span className="text-xs font-bold text-[var(--text-faint)] uppercase tracking-wider mr-1">Active Filters:</span>
+                
+                {activeSubcategory && (
+                  <span className="bg-[#0082CA]/10 text-[#0082CA] px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-[#0082CA]/20">
+                    <span>Subcategory: {activeCatSubs.find(s => s.slug === activeSubcategory)?.name || activeSubcategory}</span>
+                    <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500 transition-colors" onClick={() => handleSubcategoryClick('')} />
+                  </span>
+                )}
+
+                {searchTerm && (
+                  <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 border border-indigo-200 dark:border-indigo-800">
+                    <span>"{searchTerm}"</span>
+                    <X className="w-3.5 h-3.5 cursor-pointer hover:text-red-500 transition-colors" onClick={() => {
+                      const p = new URLSearchParams(searchParams.toString());
+                      p.delete('search');
+                      const q = p.toString();
+                      router.replace(q ? `?${q}` : window.location.pathname, { scroll: false });
+                    }} />
+                  </span>
+                )}
+
+                {Object.entries(selectedFilters).map(([groupId, optIds]) =>
+                  (optIds || []).map((optId) => (
+                    <span
+                      key={`${groupId}-${optId}`}
+                      className="bg-[var(--bg-card)] text-[var(--text-main)] px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 border border-[var(--border)] shadow-xs"
+                    >
+                      <span>{getFilterLabel(groupId, optId)}</span>
+                      <X className="w-3.5 h-3.5 cursor-pointer text-[var(--text-muted)] hover:text-red-500 transition-colors" onClick={() => removeFilter(groupId, optId)} />
+                    </span>
+                  ))
+                )}
+
+                <button 
+                  onClick={clearAllFilters} 
+                  className="text-xs font-bold text-red-500 hover:text-red-700 hover:underline px-2 py-1 transition-colors ml-1"
+                >
+                  Clear All ({ (activeSubcategory ? 1 : 0) + (searchTerm ? 1 : 0) + totalActiveFilterCount })
+                </button>
+              </div>
+            ) : <div />}
+
             {activeSubcategory && (
               <button onClick={() => handleSubcategoryClick(activeSubcategory)} className="text-sm font-bold text-[#0082CA] hover:underline flex items-center gap-1">
                 {t('categoryPage.viewAll')} {activeCatObj?.name} <X className="w-4 h-4" />
@@ -242,40 +363,141 @@ export function CategoryContent({ subSlug }) {
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             
-            {/* LEFT SIDEBAR: FILTERS */}
-            <div className="w-full lg:w-72 shrink-0 space-y-6">
-                            <div className="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                <div className="space-y-2">
-                  {[
-                    { name: 'Availability', options: ['In Stock', 'Pre-order', 'Out of Stock'] },
-                    { name: 'Price', options: ['Under ₹500', '₹500 - ₹1000', '₹1000 - ₹5000', 'Above ₹5000'] },
-                    { name: 'Material', options: ['Standard Paper', 'Premium Cardstock', 'Matte Finish', 'Glossy'] },
-                    { name: 'Printing', options: ['Single Sided', 'Double Sided', 'Full Color', 'Black & White'] },
-                    { name: 'Finish', options: ['Gloss', 'Matte', 'Spot UV', 'Foil Stamping'] },
-                    { name: 'Size', options: ['Standard', 'Large', 'Custom Size'] },
-                    { name: 'Color', options: ['CMYK', 'Pantone', 'Grayscale'] },
-                  ].map((filter, idx) => (
-                    <details key={idx} className="border-t border-[var(--border)] pt-4 group" open={idx < 2}>
-                      <summary className="flex items-center justify-between cursor-pointer list-none mb-3 outline-none [&::-webkit-details-marker]:hidden">
-                        <span className="text-sm font-bold text-[var(--text-main)] group-hover:text-[#0082CA] transition-colors">{filter.name}</span>
-                        <ChevronDown className="w-4 h-4 text-[var(--text-faint)] group-hover:text-[#0082CA] group-open:rotate-180 transition-transform" />
-                      </summary>
-                      <div className="flex flex-col gap-2 pl-1 pb-2">
-                        {filter.options.map((opt, oIdx) => (
-                          <label key={oIdx} className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" className="w-4 h-4 rounded border-[var(--border-strong)] text-[#0082CA] focus:ring-[#0082CA]" />
-                            <span className="text-sm text-[var(--text-muted)]">{opt}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </details>
-                  ))}
+            {/* LEFT SIDEBAR: REAL ATTRIBUTE FILTERS */}
+            <div className={`w-full lg:w-72 shrink-0 space-y-6 ${showMobileFilters ? 'block' : 'hidden lg:block'}`}>
+              <div className="bg-[var(--bg-card)] p-5 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <div className="flex items-center justify-between pb-3 border-b border-[var(--border)] mb-3">
+                  <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-[#0082CA]" />
+                    <span className="text-sm font-extrabold text-[var(--text-main)]">Filter Products</span>
+                  </div>
+                  {totalActiveFilterCount > 0 && (
+                    <button
+                      onClick={handleResetFilters}
+                      className="text-[11px] font-bold text-[#0082CA] hover:underline"
+                    >
+                      Reset
+                    </button>
+                  )}
+                </div>
+
+                <div className="space-y-1">
+                  {FILTER_GROUPS.map((group) => {
+                    const activeInGroup = (selectedFilters[group.id] || []).length;
+                    return (
+                      <details key={group.id} className="border-t border-[var(--border)] pt-3 group/det" open={group.defaultOpen || activeInGroup > 0}>
+                        <summary className="flex items-center justify-between cursor-pointer list-none py-1 outline-none [&::-webkit-details-marker]:hidden">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-[var(--text-main)] group-hover/det:text-[#0082CA] transition-colors">
+                              {group.name}
+                            </span>
+                            {activeInGroup > 0 && (
+                              <span className="bg-[#0082CA] text-white text-[10px] font-bold rounded-full px-1.5 py-0.2">
+                                {activeInGroup}
+                              </span>
+                            )}
+                          </div>
+                          <ChevronDown className="w-3.5 h-3.5 text-[var(--text-faint)] group-hover/det:text-[#0082CA] group-open/det:rotate-180 transition-transform" />
+                        </summary>
+                        
+                        <div className="flex flex-col gap-1.5 pt-2 pb-3 pl-0.5">
+                          {group.options.map((opt) => {
+                            const isChecked = (selectedFilters[group.id] || []).includes(opt.id);
+                            const count = filterOptionCounts[group.id]?.[opt.id] ?? 0;
+                            return (
+                              <label
+                                key={opt.id}
+                                className={`flex items-center justify-between gap-2 py-1 px-1.5 rounded cursor-pointer transition-colors group/opt ${
+                                  isChecked ? 'bg-[#0082CA]/5' : 'hover:bg-[var(--bg-subtle)]'
+                                }`}
+                              >
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <input
+                                    type="checkbox"
+                                    id={`cat-filter-${group.id}-${opt.id}`}
+                                    checked={isChecked}
+                                    onChange={() => toggleFilter(group.id, opt.id)}
+                                    className="w-4 h-4 rounded border-[var(--border-strong)] text-[#0082CA] focus:ring-[#0082CA] cursor-pointer accent-[#0082CA]"
+                                  />
+                                  <span className={`text-xs truncate transition-colors ${isChecked ? 'font-bold text-[#0082CA]' : 'text-[var(--text-muted)] group-hover/opt:text-[var(--text-main)]'}`}>
+                                    {opt.label}
+                                  </span>
+                                </div>
+                                <span className="text-[10px] font-mono text-[var(--text-faint)] shrink-0">
+                                  ({count})
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </details>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
             {/* RIGHT SIDE: PRODUCTS */}
             <div className="flex-1 min-w-0">
+              {/* Products Toolbar */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[var(--border)]">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+                    {activeCatObj ? (t.has(`categories.${activeCatObj.slug}`) ? t(`categories.${activeCatObj.slug}`) : activeCatObj.name) : 'Products'}
+                  </h2>
+                  <p className="text-xs text-[var(--text-muted)] mt-1 font-medium">
+                    Showing {filteredAndSortedProducts.length} items
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
+                  {/* Mobile Filter Toggle */}
+                  <button
+                    onClick={() => setShowMobileFilters(!showMobileFilters)}
+                    className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] text-xs font-bold text-[var(--text-main)] hover:border-[#0082CA] transition-colors"
+                  >
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-[#0082CA]" />
+                    <span>Filters</span>
+                    {totalActiveFilterCount > 0 && (
+                      <span className="bg-[#0082CA] text-white text-[10px] font-bold rounded-full px-1.5 py-0.2">
+                        {totalActiveFilterCount}
+                      </span>
+                    )}
+                  </button>
+
+                  <div className="flex items-center gap-2 text-xs font-bold text-[var(--text-muted)]">
+                    <ArrowUpDown className="w-4 h-4 text-[var(--text-faint)]" />
+                    <span>Sort:</span>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-main)] rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-[#0082CA]"
+                    >
+                      <option value="popular">Recommended</option>
+                      <option value="price_asc">Price: Low to High</option>
+                      <option value="price_desc">Price: High to Low</option>
+                      <option value="name_asc">Name: A to Z</option>
+                    </select>
+                  </div>
+
+                  <div className="flex items-center border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--bg-card)]">
+                    <button
+                      onClick={() => setViewMode('grid')}
+                      className={`p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-[#0082CA] text-white' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'}`}
+                      title="Grid view"
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode('list')}
+                      className={`p-1.5 transition-colors ${viewMode === 'list' ? 'bg-[#0082CA] text-white' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'}`}
+                      title="List view"
+                    >
+                      <ListIcon className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
               
 
 
