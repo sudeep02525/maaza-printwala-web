@@ -165,14 +165,14 @@ export const CustomMerchSection = () => {
           {merch.map((item, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              viewport={{ once: true, margin: "0px" }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
             >
               <Link href={item.link} className="group flex flex-col items-center gap-4 w-full">
                 <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[var(--hover)] flex items-center justify-center relative">
-                  <img loading="lazy" src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.name} />
+                  <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.name} />
                 </div>
                 <span className="text-sm sm:text-base font-bold text-[var(--text-main)] text-center leading-tight group-hover:text-[#0082CA]">{item.name}</span>
               </Link>
@@ -184,80 +184,31 @@ export const CustomMerchSection = () => {
   );
 };
 
-// 5. TOP RATED LIST VIEW
+// 5. TOP RATED PRODUCTS (Consistent standard ProductCard grid)
 export const TopRatedSection = ({ products = [] }) => {
   const tHome = useTranslations('homeSections');
-  const tButtons = useTranslations('buttons');
-  const tCategory = useTranslations('categories');
   const locale = useLocale();
   const sub = locale === 'hi' ? 'हज़ारों व्यवसायों द्वारा पसंद किया गया' : locale === 'mr' ? 'हजारो व्यवसायांना आवडलेले' : 'Loved by thousands of businesses';
 
-  const productTranslations = {
-    'Premium Matte Visiting Card 30': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 30', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 30' },
-    'Premium Matte Visiting Card 10': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 10', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 10' },
-    'Premium Textured Visiting Card 15': { hi: 'प्रीमियम टेक्सचर्ड विजिटिंग कार्ड 15', mr: 'प्रीमियम टेक्स्चर्ड व्हिजिटिंग कार्ड 15' },
-    'Premium Matte Visiting Card 20': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 20', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 20' },
-    'Standard Visiting Cards': { hi: 'स्टैंडर्ड विजिटिंग कार्ड्स', mr: 'स्टँडर्ड व्हिजिटिंग कार्ड्स' }
-  };
-  const getProductName = (name) => {
-    if (!name) return 'Premium Print Item';
-    return productTranslations[name]?.[locale] || name;
-  };
+  if (!products?.length) return null;
 
   return (
-    <section className="py-20 relative overflow-hidden bg-[var(--bg-subtle)] border-t border-[var(--border)]">
-      <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 relative z-10">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
-          <div>
-            <h2 className="text-3xl sm:text-[36px] font-extrabold text-[var(--text-main)] tracking-tight mb-2">{tHome('topRated')}</h2>
-            <p className="text-base text-[var(--text-muted)]">{sub}</p>
-          </div>
-          <Link href="/products" className="inline-flex items-center gap-2 text-sm font-bold text-[var(--text-main)] bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[var(--bg-subtle)] hover:border-[var(--border-strong)] px-5 py-2.5 rounded-full transition-all shadow-sm hover:shadow">
-            {tButtons('viewAll')} <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
+    <section className="py-14 bg-[var(--bg-subtle)] border-t border-[var(--border)]">
+      <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
+        <SectionHeader title={tHome('topRated')} subtitle={sub} />
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {products.slice(0, 4).map((p, i) => {
-            const image = p?.images?.[0] || p?.images?.[0]?.url || getImageUrl('/images/cat_visiting_cards_new_1785478123231.png');
-            const price = p?.basePrice || 499;
-            return (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Link href={`/products/${p.slug || p._id}`} className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-full sm:w-40 h-48 sm:h-40 shrink-0 rounded-xl overflow-hidden bg-[var(--bg-card)] relative border border-[var(--border)] flex items-center justify-center p-2">
-                    <img loading="lazy" src={image} className="w-full h-full object-contain" alt={p.name} />
-                  </div>
-                  
-                  <div className="flex-1 min-w-0 w-full flex flex-col justify-center">
-                    <div className="flex items-center gap-0.5 mb-3">
-                      {[1,2,3,4].map(s => <Star key={s} className="w-4 h-4 fill-amber-400 text-amber-400" />)}
-                      <div className="relative w-4 h-4">
-                        <Star className="absolute top-0 left-0 w-4 h-4 text-amber-400" />
-                        <div className="absolute top-0 left-0 w-[50%] h-full overflow-hidden">
-                          <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                        </div>
-                      </div>
-                      <span className="text-xs text-[var(--text-muted)] ml-1.5 font-medium">(4.9)</span>
-                    </div>
-                    <h3 className="font-bold text-[var(--text-main)] text-lg sm:text-xl truncate mb-1.5 hover:text-[#0082CA] transition-colors">{getProductName(p.name)}</h3>
-                    <p className="text-sm text-[var(--text-muted)] line-clamp-1 mb-5">{p.category?.slug ? tCategory(p.category.slug) : (p.category?.name || 'High Quality Print')}</p>
-                    <div className="flex items-center justify-between mt-auto">
-                      <div className="text-[var(--text-main)] font-black text-xl sm:text-2xl">₹{price}</div>
-                      <div className="w-10 h-10 rounded-full bg-[var(--bg-subtle)] border border-[var(--border)] flex items-center justify-center hover:bg-[#0082CA] hover:border-[#0082CA] hover:text-white transition-colors text-[var(--text-faint)]">
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          {products.slice(0, 8).map((p, i) => (
+            <motion.div
+              key={`tr-${p._id || 'x'}-${i}`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+            >
+              <ProductCard product={p} />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

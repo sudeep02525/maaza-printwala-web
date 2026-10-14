@@ -96,19 +96,24 @@ export default function ProductCard({ product }) {
           </h3>
         </Link>
 
-        {/* Rating */}
-        <div className="flex items-center gap-0.5 mt-1.5">
-          {[1, 2, 3, 4].map((i) => (
-            <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-          ))}
-          <div className="relative w-4 h-4">
-            <Star className="absolute top-0 left-0 w-4 h-4 text-amber-400" />
-            <div className="absolute top-0 left-0 w-[50%] h-full overflow-hidden">
-              <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-            </div>
+        {/* Rating — only show if product actually has verified reviews */}
+        {product.reviewCount > 0 && product.averageRating > 0 ? (
+          <div className="flex items-center gap-0.5 mt-1.5">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star
+                key={star}
+                className={`w-3.5 h-3.5 ${
+                  star <= Math.round(product.averageRating)
+                    ? 'fill-amber-400 text-amber-400'
+                    : 'text-[var(--border-strong)]'
+                }`}
+              />
+            ))}
+            <span className="text-xs text-[var(--text-muted)] ml-1 font-medium">
+              ({product.averageRating.toFixed(1)})
+            </span>
           </div>
-          <span className="text-xs text-[var(--text-muted)] ml-1 hover:underline cursor-pointer">{tProd('reviews', { count: 3 })}</span>
-        </div>
+        ) : null}
 
         <div className="mt-auto">
           {/* Price Row */}
@@ -122,7 +127,7 @@ export default function ProductCard({ product }) {
               </span>
             )}
             <span className="text-[11px] font-bold text-[var(--text-main)] ml-0.5">
-              {locale === 'hi' ? 'कर सहित' : locale === 'mr' ? 'कर समाविष्ट' : 'Incl. VAT'}
+              {locale === 'hi' ? 'जीएसटी सहित' : locale === 'mr' ? 'जीएसटी समाविष्ट' : 'Incl. GST'}
             </span>
           </div>
 

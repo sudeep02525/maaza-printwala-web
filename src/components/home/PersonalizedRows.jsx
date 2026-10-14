@@ -31,7 +31,7 @@ export default function PersonalizedRows() {
 
   return (
     <section className="py-12 bg-[var(--bg-page)] border-t border-[var(--border)]">
-      <div className="max-w-[1520px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6">
+      <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
           

@@ -105,10 +105,9 @@ export default async function HomePage({ params }) {
 
   const categories = catData?.data?.categories || [];
   
-  // Create mock arrays for the vast number of sections by slicing the main products array
-  // If the array is too short, we'll repeat it for visual completeness.
+  // Create product arrays for sections — using 8 items to fully fill 4-column grids (2 complete rows)
   const baseProducts = prodData?.data?.products || [];
-  const getSlice = (start, length = 6) => {
+  const getSlice = (start, length = 8) => {
     if (baseProducts.length === 0) return [];
     const result = [];
     for (let i = 0; i < length; i++) {
@@ -117,15 +116,14 @@ export default async function HomePage({ params }) {
     return result;
   };
 
-  const bestSellers = getSlice(0, 6);
-  const newArrivals = getSlice(6, 6);
-  const businessEssentials = getSlice(12, 6);
-  const customClothing = getSlice(18, 6);
-  const packaging = getSlice(24, 6);
-  const marketingMaterials = getSlice(30, 6);
-  const corporateGifts = getSlice(36, 6);
-  const trendingProducts = getSlice(42, 6);
-  const recentlyViewed = getSlice(48, 6);
+  const bestSellers = getSlice(0, 8);
+  const newArrivals = getSlice(8, 8);
+  const businessEssentials = getSlice(16, 6);
+  const customClothing = getSlice(22, 6);
+  const packaging = getSlice(28, 6);
+  const marketingMaterials = getSlice(34, 6);
+  const corporateGifts = getSlice(40, 6);
+  const trendingProducts = getSlice(20, 8);
 
   return (
     <div className="bg-[var(--bg-page)] min-h-screen font-sans overflow-x-hidden">
@@ -141,12 +139,12 @@ export default async function HomePage({ params }) {
 
       <FeaturedSlider products={bestSellers} />
       
-      {/* BEST SELLING (Standard Grid) */}
+      {/* BEST SELLING (Standard Grid - 8 items = 2 complete 4-col rows) */}
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('bestSellers')} tButtons={tButtons} />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {newArrivals.map((p, i) => <FadeIn key={`bs-${p._id || 'x'}-${i}`} delay={i * 0.1}><ProductCard product={p} /></FadeIn>)}
+            {bestSellers.map((p, i) => <FadeIn key={`bs-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
         </FadeIn>
       </section>
@@ -155,12 +153,12 @@ export default async function HomePage({ params }) {
       <WeddingSection />
       <CustomMerchSection />
       
-      {/* RECENTLY ADDED (Standard Grid with 'New' implication) */}
+      {/* RECENTLY ADDED (Standard Grid - 8 items = 2 complete 4-col rows) */}
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <SectionHeader title={tHome('newArrivals')} subtitle={locale === 'hi' ? 'नए टेम्प्लेट और उत्पाद' : locale === 'mr' ? 'नवीन टेम्पलेट्स आणि उत्पादने' : 'Fresh new templates and products'} tButtons={tButtons} />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {recentlyViewed.map((p, i) => <FadeIn key={`new-${p._id || 'x'}-${i}`} delay={i * 0.1}><ProductCard product={p} /></FadeIn>)}
+            {newArrivals.map((p, i) => <FadeIn key={`new-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
         </FadeIn>
       </section>
