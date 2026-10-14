@@ -9,6 +9,16 @@ import { AuthHeader, AuthFooter } from '@/components/common/AuthChrome.jsx';
 import { track } from '@/lib/track.js';
 import { useAuthStore } from '@/store/authStore.js';
 
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  const originalError = console.error;
+  console.error = (...args) => {
+    if (typeof args[0] === 'string' && args[0].includes('Encountered a script tag')) {
+      return;
+    }
+    originalError.apply(console, args);
+  };
+}
+
 export default function LayoutClientWrapper({ children }) {
   const pathname = usePathname();
   const isCustomizer = pathname.includes('/design');

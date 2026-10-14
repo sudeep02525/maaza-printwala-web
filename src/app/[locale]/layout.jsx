@@ -63,16 +63,12 @@ export default async function RootLayout({ children, params }) {
   const messages = await getMessages();
   const cookieStore = await cookies();
   const hasConsent = cookieStore.get('cookieConsent')?.value === 'true';
+  const theme = cookieStore.get('theme')?.value;
+  const isDark = theme === 'dark';
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={isDark ? 'dark' : ''} suppressHydrationWarning>
       <head>
-        {/* Anti-flash inline script for dark mode */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.theme;var d=t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches);if(d){document.documentElement.classList.add('dark');}else{document.documentElement.classList.remove('dark');}}catch(e){}`,
-          }}
-        />
         {hasConsent && process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?

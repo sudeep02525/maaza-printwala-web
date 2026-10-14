@@ -34,18 +34,17 @@ axiosInstance.interceptors.response.use(
       }
     }
 
-    const isSilentAuthCheck =
-      error.response?.status === 401 &&
-      (originalRequest?.url?.includes('/auth/me') || originalRequest?.url?.includes('/auth/refresh'));
-
+    const isClientExpectedError = error.response && (error.response.status >= 400 && error.response.status < 500);
     const message = error.response?.data?.message || error.message || 'Network error occurred';
 
-    // Do not log noisy console errors for expected guest session checks
-    if (!isSilentAuthCheck) {
+    // Only log unexpected server errors (5xx/network) to console.error to avoid Next.js dev overlay on expected validation/auth errors
+    if (!isClientExpectedError) {
       console.error('Storefront API Error:', message);
     }
 
-    return Promise.reject(new Error(message));
+    const customErr = new Error(message);
+    customErr.response = error.response;
+    return Promise.reject(customErr);
   }
 );
 

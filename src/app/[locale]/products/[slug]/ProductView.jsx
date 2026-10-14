@@ -19,7 +19,7 @@ import ProductReviews from '@/components/products/ProductReviews.jsx';
 export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCategoryName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { setProductContext, designReadyState, quantity, updateQuantity, priceResult, configuration, setServerPriceResult } = useConfiguratorStore();
+  const { setProductContext, designReadyState, quantity, updateQuantity, priceResult, configuration, updateConfiguration, setServerPriceResult } = useConfiguratorStore();
   const [isCalculating, setIsCalculating] = useState(false);
   const tCategory = useTranslations('categories');
   const locale = useLocale();
@@ -32,10 +32,56 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   const [pincodeInput, setPincodeInput] = useState('110001');
   const [openSection, setOpenSection] = useState('specs');
 
+  // Query Delivery Rules from API for the entered PIN code
+  const { data: deliveryData, isLoading: deliveryLoading } = useQuery({
+    queryKey: ['deliveryMethods', pincode],
+    queryFn: async () => {
+      if (!pincode || !/^[1-9][0-9]{5}$/.test(pincode)) return [];
+      try {
+        const res = await axiosInstance.get(`/checkout/delivery-methods?pinCode=${pincode}`);
+        return res?.data?.data?.deliveryMethods || [];
+      } catch (err) {
+        return [];
+      }
+    },
+    enabled: !!pincode && pincode.length === 6,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const deliveryMethods = deliveryData || [];
+  const standardMethod = deliveryMethods.find(m => m.deliveryMethod === 'STANDARD');
+  const expressMethod = deliveryMethods.find(m => m.deliveryMethod === 'EXPRESS');
+  const sameDayMethod = deliveryMethods.find(m => m.deliveryMethod === 'SAME_DAY');
+  const expeditedMethod = sameDayMethod || expressMethod;
+
+  const activeDeliveryMethod = deliverySpeed === 'sameday' || deliverySpeed === 'express'
+    ? (expeditedMethod || standardMethod)
+    : standardMethod;
+
+  const orderTotal = priceResult?.totalPrice || 0;
+  const isFreeDelivery = activeDeliveryMethod
+    ? (activeDeliveryMethod.charge === 0 || (activeDeliveryMethod.freeDeliveryThreshold && orderTotal >= activeDeliveryMethod.freeDeliveryThreshold))
+    : false;
+
+  const deliveryChargeText = isFreeDelivery
+    ? 'FREE'
+    : (activeDeliveryMethod ? `₹${activeDeliveryMethod.charge}` : 'FREE');
+
   const getEstimatedDate = (days) => {
     const d = new Date();
     d.setDate(d.getDate() + days);
     return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+  };
+
+  const getDeliveryDateText = (method) => {
+    if (!method) {
+      return getEstimatedDate(deliverySpeed === 'sameday' ? 1 : 4);
+    }
+    if (method.deliveryMethod === 'SAME_DAY') {
+      return 'Tomorrow';
+    }
+    const days = method.estimatedDaysMin || 3;
+    return getEstimatedDate(days);
   };
 
   useEffect(() => {
@@ -51,7 +97,10 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
   const standardQuantities = [100, 200, 300, 400, 500, 1000, 1500, 2000, 3000, 5000];
 
   const getDisplayUnitPrice = (q) => {
-    if (priceResult?.unitPrice) return priceResult.unitPrice.toFixed(2);
+    const matchingTier = priceResult?.tiers?.find(t => t.quantity === q);
+    if (matchingTier?.unitPrice) return Number(matchingTier.unitPrice).toFixed(2);
+    if (priceResult?.finalUnitPrice) return Number(priceResult.finalUnitPrice).toFixed(2);
+    if (priceResult?.unitPrice) return Number(priceResult.unitPrice).toFixed(2);
     return "0.00";
   };
 
@@ -111,10 +160,13 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
   // Sync store context on load
   useEffect(() => {
-    if (product && schema) {
-      const defaultQty = schema.quantityTiers?.[0] || 100;
-      const defaultConfig = {};
-      if (schema.attributes) {
+    if (product) {
+      const defaultQty = schema?.quantityTiers?.[0] || 100;
+      const defaultConfig = {
+        corners: 'square',
+        deliverySpeed: 'standard',
+      };
+      if (schema?.attributes) {
         schema.attributes.forEach((attr) => {
           if (attr.options && attr.options.length > 0) {
             defaultConfig[attr.key] = attr.options[0].value;
@@ -324,14 +376,14 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               {isCalculating ? (
                 <span className="h-8 w-24 bg-[var(--border)] rounded animate-pulse block"></span>
               ) : (
-                `₹${(priceResult?.totalPrice || 200).toFixed(2)}`
+                `₹${(priceResult?.totalPrice || product?.basePrice || 200).toFixed(2)}`
               )}
             </div>
             <div className="text-[15px] text-[var(--text-muted)] flex items-center h-5">
               {isCalculating ? (
                 <span className="h-4 w-32 bg-[var(--border)] rounded animate-pulse block"></span>
               ) : (
-                `₹${priceResult?.unitPrice?.toFixed(2) || '2.00'} each / ${quantity} units`
+                `₹${(priceResult?.finalUnitPrice || priceResult?.unitPrice || 2.0).toFixed(2)} each / ${quantity} units`
               )}
             </div>
           </div>
@@ -377,9 +429,9 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             <div className="flex items-center gap-2 font-bold text-[var(--text-main)] text-sm">
               <Truck className="w-4 h-4 text-[#0082CA]" />
               <span>
-                Deliver by {deliverySpeed === 'sameday' ? 'Tomorrow' : getEstimatedDate(4)}{' '}
-                <span className="text-emerald-700 font-bold text-[11px] ml-1 bg-emerald-100 px-2 py-0.5 rounded-full">
-                  FREE
+                Deliver by <strong className="text-[var(--text-main)]">{getDeliveryDateText(activeDeliveryMethod)}</strong>{' '}
+                <span className={`text-[11px] ml-1 px-2 py-0.5 rounded-full font-bold ${isFreeDelivery ? 'text-emerald-700 bg-emerald-100 dark:bg-emerald-950/40 dark:text-emerald-300' : 'text-[var(--text-main)] bg-[var(--hover)]'}`}>
+                  {deliveryChargeText}
                 </span>
               </span>
             </div>
@@ -394,25 +446,39 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
               <div className="flex gap-2">
                 <button 
                   type="button"
-                  onClick={() => setDeliverySpeed('standard')}
-                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
+                  onClick={() => {
+                    setDeliverySpeed('standard');
+                    updateConfiguration('deliverySpeed', 'standard');
+                  }}
+                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer text-left sm:text-center ${
                     deliverySpeed === 'standard' 
                       ? 'bg-[#0082CA]/15 border-[#0082CA] text-[var(--text-main)]' 
                       : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
-                  Standard (3-4 Days)
+                  <div>Standard {standardMethod ? `(${standardMethod.estimatedDaysMin}-${standardMethod.estimatedDaysMax} Days)` : '(3-5 Days)'}</div>
+                  <div className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">
+                    {standardMethod ? (orderTotal >= (standardMethod.freeDeliveryThreshold || Infinity) ? 'FREE' : `₹${standardMethod.charge}`) : 'FREE'}
+                  </div>
                 </button>
                 <button 
                   type="button"
-                  onClick={() => setDeliverySpeed('sameday')}
-                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer ${
-                    deliverySpeed === 'sameday' 
+                  disabled={!expeditedMethod}
+                  onClick={() => {
+                    const speedVal = sameDayMethod ? 'sameday' : 'express';
+                    setDeliverySpeed(speedVal);
+                    updateConfiguration('deliverySpeed', speedVal);
+                  }}
+                  className={`flex-1 py-3 px-4 border rounded-md text-[13px] font-bold transition-colors cursor-pointer text-left sm:text-center disabled:opacity-50 disabled:cursor-not-allowed ${
+                    deliverySpeed === 'sameday' || deliverySpeed === 'express' 
                       ? 'bg-[#0082CA]/15 border-[#0082CA] text-[var(--text-main)]' 
                       : 'bg-[var(--bg-card)] border-[var(--border)] text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
                   }`}
                 >
-                  Express / Same Day
+                  <div>{sameDayMethod ? 'Same Day (1 Day)' : expressMethod ? 'Express (2-3 Days)' : 'Express / Same Day'}</div>
+                  <div className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">
+                    {expeditedMethod ? `₹${expeditedMethod.charge}` : 'Not available for this PIN'}
+                  </div>
                 </button>
               </div>
             </div>
@@ -421,9 +487,13 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
             <div className="space-y-1">
               <label className="text-[15px] font-bold text-[var(--text-main)] block">Corners</label>
               <div className="relative">
-                <select className="w-full appearance-none bg-[var(--bg-card)] border border-[var(--border)] rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-[var(--text-main)] focus:outline-hidden focus:border-[#0082CA] cursor-pointer">
-                  <option>Standard Square Corners</option>
-                  <option>Smooth Rounded Corners (6mm)</option>
+                <select
+                  value={configuration?.corners || 'square'}
+                  onChange={(e) => updateConfiguration('corners', e.target.value)}
+                  className="w-full appearance-none bg-[var(--bg-card)] border border-[var(--border)] rounded-md px-3 py-2.5 pr-10 text-[15px] font-bold text-[var(--text-main)] focus:outline-hidden focus:border-[#0082CA] cursor-pointer"
+                >
+                  <option value="square">Standard Square Corners</option>
+                  <option value="rounded">Smooth Rounded Corners (6mm) (+₹0.50/ea)</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
                   <ChevronDown className="w-5 h-5 text-[var(--text-main)]" strokeWidth={2.5} />
@@ -440,19 +510,20 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
               {/* Volume Discount Table */}
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-1">
-                {[
-                  { q: 100, label: '100 pcs', perUnit: (priceResult?.unitPrice || 2.5).toFixed(2), discount: 'Base' },
-                  { q: 250, label: '250 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.9).toFixed(2), discount: 'Save 10%' },
-                  { q: 500, label: '500 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.8).toFixed(2), discount: 'Save 20%', popular: true },
-                  { q: 1000, label: '1,000 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.65).toFixed(2), discount: 'Save 35%', bestValue: true },
-                  { q: 2500, label: '2,500 pcs', perUnit: ((priceResult?.unitPrice || 2.5) * 0.52).toFixed(2), discount: 'Save 48%' },
-                ].map((tier) => {
-                  const isCurrent = quantity === tier.q;
+                {(priceResult?.tiers || [
+                  { quantity: 100, unitPrice: (priceResult?.unitPrice || 2.0), discountPercent: 0 },
+                  { quantity: 250, unitPrice: (priceResult?.unitPrice || 2.0) * 0.9, discountPercent: 10 },
+                  { quantity: 500, unitPrice: (priceResult?.unitPrice || 2.0) * 0.8, discountPercent: 20, popular: true },
+                  { quantity: 1000, unitPrice: (priceResult?.unitPrice || 2.0) * 0.65, discountPercent: 35, bestValue: true },
+                  { quantity: 2500, unitPrice: (priceResult?.unitPrice || 2.0) * 0.52, discountPercent: 48 },
+                ]).map((tier) => {
+                  const isCurrent = quantity === tier.quantity;
+                  const discountLabel = tier.discountPercent > 0 ? `Save ${tier.discountPercent}%` : 'Base';
                   return (
                     <button
-                      key={tier.q}
+                      key={tier.quantity}
                       type="button"
-                      onClick={() => updateQuantity(tier.q)}
+                      onClick={() => updateQuantity(tier.quantity)}
                       className={`relative flex flex-col items-center justify-center p-2 rounded-lg border text-center transition-all cursor-pointer ${
                         isCurrent
                           ? 'bg-[#0082CA]/15 border-[#0082CA] shadow-xs ring-2 ring-[#0082CA]/20'
@@ -469,10 +540,12 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                           Best Value
                         </span>
                       )}
-                      <span className="text-xs font-bold text-[var(--text-main)]">{tier.label}</span>
-                      <span className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">₹{tier.perUnit}/ea</span>
+                      <span className="text-xs font-bold text-[var(--text-main)]">
+                        {tier.quantity >= 1000 ? `${(tier.quantity / 1000).toLocaleString('en-IN')}k pcs` : `${tier.quantity} pcs`}
+                      </span>
+                      <span className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">₹{Number(tier.unitPrice).toFixed(2)}/ea</span>
                       <span className={`text-[9px] font-bold mt-0.5 ${isCurrent ? 'text-[#0082CA]' : 'text-emerald-700'}`}>
-                        {tier.discount}
+                        {discountLabel}
                       </span>
                     </button>
                   );
@@ -499,7 +572,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                   onClick={() => setIsOpen(!isOpen)}
                   className="w-full bg-[var(--bg-card)] border border-[var(--border-strong)] rounded-md px-3 py-2 flex items-center justify-between focus:outline-hidden focus:border-[#0082CA] cursor-pointer text-sm font-semibold text-[var(--text-main)]"
                 >
-                  <span>Selected Quantity: {quantity.toLocaleString('en-IN')} units (₹{priceResult?.unitPrice?.toFixed(2) || '2.00'} / unit)</span>
+                  <span>Selected Quantity: {quantity.toLocaleString('en-IN')} units (₹{(priceResult?.finalUnitPrice || priceResult?.unitPrice || 2.0).toFixed(2)} / unit)</span>
                   <ChevronDown className={`w-4 h-4 text-[var(--text-muted)] transition-transform ${isOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
                 </button>
                 
