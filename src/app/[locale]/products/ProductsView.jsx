@@ -152,8 +152,8 @@ export function CatalogueContent() {
     if (sortBy === 'price_desc') return list.sort((a, b) => Number(b.basePrice) - Number(a.basePrice));
     if (sortBy === 'name_asc') return list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
     
-    // Default 'popular' - push featured to top
-    return list.sort((a, b) => (b.featured === a.featured ? 0 : b.featured ? 1 : -1));
+    // Default 'popular' - preserves server-side category-interleaved balanced order
+    return list;
   }, [rawProducts, sortBy]);
 
   useEffect(() => {
@@ -181,7 +181,7 @@ export function CatalogueContent() {
   };
 
   const breadcrumbItems = [
-    ...(activeCatObj ? [{ label: activeCatObj.name }] : searchTerm ? [{ label: `Search: ${searchTerm}` }] : [{ label: 'All' }])
+    ...(activeCatObj ? [{ label: activeCatObj.name }] : searchTerm ? [{ label: `Search: ${searchTerm}` }] : [{ label: 'All Products' }])
   ];
 
   return (
@@ -190,6 +190,38 @@ export function CatalogueContent() {
         
         <Breadcrumbs items={breadcrumbItems} />
 
+        {/* Category Filter Pills */}
+        <div className="my-6">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-2 px-1 w-full">
+            <button
+              onClick={() => handleCategoryChange('')}
+              className={`flex items-center px-4 py-2 rounded-full transition-all duration-200 text-xs sm:text-sm font-bold shrink-0 shadow-sm ${
+                !selectedCategory
+                  ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/20 scale-105'
+                  : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] border border-[var(--border)]'
+              }`}
+            >
+              <span>All Products</span>
+            </button>
+
+            {categories.map((cat) => {
+              const isSelected = selectedCategory === cat.slug || selectedCategory === cat._id;
+              return (
+                <button
+                  key={cat._id}
+                  onClick={() => handleCategoryChange(cat.slug || cat._id)}
+                  className={`flex items-center px-4 py-2 rounded-full transition-all duration-200 text-xs sm:text-sm font-bold shrink-0 shadow-sm ${
+                    isSelected
+                      ? 'bg-[#0082CA] text-white shadow-md shadow-[#0082CA]/20 scale-105'
+                      : 'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-subtle)] hover:text-[var(--text-main)] border border-[var(--border)]'
+                  }`}
+                >
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Active Filters Pill Bar */}
         {(selectedCategory || searchTerm) && (
@@ -208,8 +240,7 @@ export function CatalogueContent() {
           
           {/* LEFT SIDEBAR: MINIMAL FILTERS */}
           <div className="w-full lg:w-64 shrink-0 space-y-6">
-                        <div className="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-
+            <div className="bg-[var(--bg-card)] p-6 rounded-lg border border-[var(--border)] shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
               <div className="space-y-2">
                 {[
                   { name: 'Availability', options: ['In Stock', 'Pre-order', 'Out of Stock'] },
@@ -241,9 +272,51 @@ export function CatalogueContent() {
 
           {/* RIGHT SIDE: PRODUCTS & TOOLBAR */}
           <div className="flex-1 min-w-0">
-            
+            {/* Products Toolbar */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[var(--border)]">
+              <div>
+                <h1 className="text-xl sm:text-2xl font-extrabold text-[var(--text-main)] tracking-tight">
+                  {activeCatObj ? activeCatObj.name : searchTerm ? `Search results for "${searchTerm}"` : 'All Products'}
+                </h1>
+                <p className="text-xs text-[var(--text-muted)] mt-1 font-medium">
+                  Showing {filteredAndSortedProducts.length} items
+                </p>
+              </div>
 
-            
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex items-center gap-2 text-xs font-bold text-[var(--text-muted)]">
+                  <ArrowUpDown className="w-4 h-4 text-[var(--text-faint)]" />
+                  <span>Sort:</span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-main)] rounded-lg px-3 py-1.5 text-xs font-semibold focus:outline-none focus:border-[#0082CA]"
+                  >
+                    <option value="popular">Recommended</option>
+                    <option value="price_asc">Price: Low to High</option>
+                    <option value="price_desc">Price: High to Low</option>
+                    <option value="name_asc">Name: A to Z</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center border border-[var(--border)] rounded-lg overflow-hidden bg-[var(--bg-card)]">
+                  <button
+                    onClick={() => setViewMode('grid')}
+                    className={`p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-[#0082CA] text-white' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'}`}
+                    title="Grid view"
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode('list')}
+                    className={`p-1.5 transition-colors ${viewMode === 'list' ? 'bg-[#0082CA] text-white' : 'text-[var(--text-muted)] hover:text-[var(--text-main)]'}`}
+                    title="List view"
+                  >
+                    <ListIcon className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
 
 
             {/* Product Grid / List */}
