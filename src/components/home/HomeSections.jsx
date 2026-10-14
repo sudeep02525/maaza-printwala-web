@@ -114,7 +114,7 @@ export const WeddingSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-[#FFF5F5] border-y border-red-50">
+    <section className="py-16 bg-rose-50/70 dark:bg-rose-950/20 border-y border-red-100 dark:border-rose-900/30">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8 text-center mb-10">
         <h2 className="text-3xl sm:text-4xl font-serif text-[var(--text-main)] italic tracking-wide mb-3">{tHome('weddingBoutique')}</h2>
         <p className="text-[var(--text-muted)] text-sm">{sub}</p>
@@ -171,7 +171,7 @@ export const CustomMerchSection = () => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <Link href={item.link} className="group flex flex-col items-center gap-4 w-full">
-                <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
+                <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[var(--hover)] flex items-center justify-center relative">
                   <img loading="lazy" src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={item.name} />
                 </div>
                 <span className="text-sm sm:text-base font-bold text-[var(--text-main)] text-center leading-tight group-hover:text-[#0082CA]">{item.name}</span>

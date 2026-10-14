@@ -455,7 +455,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                       onClick={() => updateQuantity(tier.q)}
                       className={`relative flex flex-col items-center justify-center p-2 rounded-lg border text-center transition-all cursor-pointer ${
                         isCurrent
-                          ? 'bg-[#f0f7ff] border-[#0082CA] shadow-xs ring-2 ring-[#0082CA]/20'
+                          ? 'bg-[#0082CA]/15 border-[#0082CA] shadow-xs ring-2 ring-[#0082CA]/20'
                           : 'bg-[var(--bg-card)] border-[var(--border)] hover:border-[var(--border-strong)] hover:bg-[var(--bg-subtle)]'
                       }`}
                     >
@@ -516,7 +516,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
                           }}
                           className={`px-3 py-2 cursor-pointer flex items-center justify-between text-sm font-medium mx-1.5 my-0.5 rounded-md transition-colors ${
                             isSelected 
-                              ? 'bg-[#f0f7ff] text-[#0082CA] font-bold border border-[#0082CA]/30' 
+                              ? 'bg-[#0082CA]/15 text-[#0082CA] font-bold border border-[#0082CA]/30' 
                               : 'text-[var(--text-main)] hover:bg-[var(--hover)] border border-transparent'
                           }`}
                         >

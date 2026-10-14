@@ -67,7 +67,7 @@ export default function ExploreCategories({ categories = [] }) {
                     className="snap-start shrink-0 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-1rem)] md:w-[calc(20%-1.2rem)]"
                   >
                     <Link href={`/${cat.slug || cat._id}`} className="group flex flex-col items-center gap-4 w-full">
-                      <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[#f1f1f1] flex items-center justify-center relative">
+                      <div className="w-full aspect-square max-w-[280px] rounded-full border border-[var(--border)] overflow-hidden shadow-sm transition-colors bg-[var(--hover)] flex items-center justify-center relative">
                         <img src={displayImage} alt={cat.name} loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                       </div>
                       <span className="text-sm sm:text-base font-bold text-[var(--text-main)] text-center leading-tight group-hover:text-[#0082CA]">{t(`categories.${cat.slug}`) || cat.name}</span>

@@ -206,7 +206,16 @@ export default function Header() {
                 width={150}
                 height={40}
                 priority
-                className="h-10 w-auto object-contain"
+                className="h-10 w-auto object-contain dark:hidden"
+                style={{ width: 'auto', height: 'auto' }}
+              />
+              <Image
+                src="/logo-maaza-dark.png"
+                alt="Maza Printwala"
+                width={150}
+                height={40}
+                priority
+                className="h-10 w-auto object-contain hidden dark:block"
                 style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
@@ -221,7 +230,16 @@ export default function Header() {
                 width={120}
                 height={30}
                 priority
-                className="h-6 w-auto object-contain"
+                className="h-6 w-auto object-contain dark:hidden"
+                style={{ width: 'auto', height: 'auto' }}
+              />
+              <Image
+                src="/logo-maaza-dark.png"
+                alt="Maza Printwala"
+                width={120}
+                height={30}
+                priority
+                className="h-6 w-auto object-contain hidden dark:block"
                 style={{ width: 'auto', height: 'auto' }}
               />
             </Link>

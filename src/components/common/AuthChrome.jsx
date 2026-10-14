@@ -15,7 +15,15 @@ export function AuthHeader() {
           width={130}
           height={32}
           priority
-          className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-102"
+          className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-102 dark:hidden"
+        />
+        <Image
+          src="/logo-maaza-dark.png"
+          alt="Maza Printwala"
+          width={130}
+          height={32}
+          priority
+          className="h-7 sm:h-8 w-auto object-contain transition-transform group-hover:scale-102 hidden dark:block"
         />
       </Link>
       

@@ -175,7 +175,7 @@ export default function MegaMenu() {
                               >
                                 <span>{t.has(`categories.${sub.slug}`) ? t(`categories.${sub.slug}`) : sub.name}</span>
                                 {sub.isNew && (
-                                  <span className="bg-sky-300 text-[var(--text-main)] text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">NEW</span>
+                                  <span className="bg-sky-500/15 text-sky-600 dark:text-sky-400 border border-sky-500/30 text-[10px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">NEW</span>
                                 )}
                               </Link>
                             </li>
@@ -187,7 +187,7 @@ export default function MegaMenu() {
                 </div>
 
                 {/* Full Width Bottom Bar */}
-                <div className="w-full bg-[#f4f4f4] border-t border-[var(--border)]">
+                <div className="w-full bg-[var(--bg-subtle)] border-t border-[var(--border)]">
                   <div className="max-w-[1550px] mx-auto px-4 md:px-8">
                     <Link 
                       href={`/${cat.slug}`} 
