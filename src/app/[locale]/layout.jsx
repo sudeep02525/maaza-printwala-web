@@ -69,6 +69,11 @@ export default async function RootLayout({ children, params }) {
   return (
     <html lang={locale} className={isDark ? 'dark' : ''} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.theme;var d=t==='dark'||((t==='system'||!t)&&matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}`,
+          }}
+        />
         {hasConsent && process.env.NEXT_PUBLIC_META_PIXEL_ID && (
           <Script id="meta-pixel" strategy="afterInteractive">{`
             !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?

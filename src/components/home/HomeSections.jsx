@@ -13,14 +13,14 @@ const SectionHeader = ({ title, subtitle, linkText }) => {
   const tButtons = useTranslations('buttons');
   const text = linkText || tButtons('viewAll');
   return (
-    <div className="flex justify-between items-end mb-8">
+    <div className="flex justify-between items-end mb-5 sm:mb-8">
       <div>
-        <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight">{title}</h2>
-        {subtitle && <p className="text-sm text-[var(--text-muted)] mt-1">{subtitle}</p>}
+        <h2 className="text-xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight">{title}</h2>
+        {subtitle && <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1">{subtitle}</p>}
       </div>
       {text && (
-        <Link href="/products" className="hidden sm:inline-flex items-center gap-1 text-sm font-semibold text-[#0082CA] hover:underline">
-          {text} <ArrowRight className="w-4 h-4" />
+        <Link href="/products" className="inline-flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#0082CA] hover:underline shrink-0">
+          {text} <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </Link>
       )}
     </div>
@@ -36,10 +36,10 @@ export const FeaturedSlider = ({ products = [] }) => {
   if (!products?.length) return null;
 
   return (
-    <section className="py-14 bg-[var(--bg-card)] border-b border-[var(--border)]">
+    <section className="py-8 sm:py-14 bg-[var(--bg-card)] border-b border-[var(--border)] overflow-hidden">
       <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
         <SectionHeader title={tHome('featuredProducts')} subtitle={sub} />
-        <HorizontalSlider cardWidthClass="w-[280px] sm:w-[300px] lg:w-[calc(25%-18px)]">
+        <HorizontalSlider cardWidthClass="w-[calc(50%-6px)] sm:w-[260px] lg:w-[calc(25%-18px)]">
           {products.map((p) => (
             <ProductCard key={p._id || p.slug} product={p} />
           ))}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useRouter, usePathname } from '@/i18n/routing.js';
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +23,8 @@ import {
   TrendingUp,
   Sun,
   Moon,
+  Monitor,
+  Check,
 } from "lucide-react";
 import { useCartStore } from '@/store/cartStore.js';
 import { useAuthStore } from '@/store/authStore.js';
@@ -33,6 +35,7 @@ import axiosInstance from '@/services/axiosInstance.js';
 import { useRecentSearches } from '@/hooks/useRecentSearches.js';
 import { Clock } from 'lucide-react';
 import { track } from '@/lib/track.js';
+import { useTheme } from '@/hooks/useTheme.js';
 
 
 export default function Header() {
@@ -133,25 +136,15 @@ export default function Header() {
     else if (e.key === 'Escape') setIsSearchFocused(false);
   };
   const [isMounted, setIsMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const { theme, isDark, setTheme } = useTheme();
+  const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
+  const themeDropdownRef = useRef(null);
   const { items, fetchCart } = useCartStore();
   const { user, isAuthenticated, logout } = useAuthStore();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    const storedTheme = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
-    const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isCurrentlyDark = document.documentElement.classList.contains('dark') || storedTheme === 'dark' || (!storedTheme && prefersDark);
-
-    setIsDark(isCurrentlyDark);
-    if (isCurrentlyDark) {
-      document.documentElement.classList.add('dark');
-      try { document.cookie = 'theme=dark; path=/; max-age=31536000; SameSite=Lax'; } catch (e) {}
-    } else {
-      document.documentElement.classList.remove('dark');
-      try { document.cookie = 'theme=light; path=/; max-age=31536000; SameSite=Lax'; } catch (e) {}
-    }
     fetchCart();
     
     const handleScroll = () => {
@@ -165,23 +158,46 @@ export default function Header() {
     };
   }, [fetchCart]);
 
-  const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    if (nextDark) {
-      document.documentElement.classList.add('dark');
-      try { 
-        localStorage.setItem('theme', 'dark'); 
-        document.cookie = 'theme=dark; path=/; max-age=31536000; SameSite=Lax';
-      } catch (e) {}
-    } else {
-      document.documentElement.classList.remove('dark');
-      try { 
-        localStorage.setItem('theme', 'light'); 
-        document.cookie = 'theme=light; path=/; max-age=31536000; SameSite=Lax';
-      } catch (e) {}
-    }
-  };
+  // Close theme dropdown on outside click or Escape key
+  useEffect(() => {
+    if (!isThemeDropdownOpen) return;
+    const handleClickOutside = (e) => {
+      if (themeDropdownRef.current && !themeDropdownRef.current.contains(e.target)) {
+        setIsThemeDropdownOpen(false);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsThemeDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isThemeDropdownOpen]);
+
+  const themeOptions = [
+    {
+      id: 'light',
+      label: t.has('header.themeLight') ? t('header.themeLight') : 'Light',
+      icon: Sun,
+    },
+    {
+      id: 'dark',
+      label: t.has('header.themeDark') ? t('header.themeDark') : 'Dark',
+      icon: Moon,
+    },
+    {
+      id: 'system',
+      label: t.has('header.themeSystem') ? t('header.themeSystem') : 'System',
+      icon: Monitor,
+    },
+  ];
+
+  const currentThemeOption = themeOptions.find((opt) => opt.id === theme) || themeOptions[2];
 
   const cartCount = items?.length || 0;
 
@@ -516,20 +532,75 @@ export default function Header() {
               </Link>
             )}
 
-            {/* Theme Toggle Button (Light / Dark) */}
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-[var(--hover)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors cursor-pointer"
-              title={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              aria-label={isDark ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5 text-amber-400 transition-transform rotate-0 scale-100" />
-              ) : (
-                <Moon className="w-5 h-5 text-[var(--text-main)] transition-transform rotate-0 scale-100" />
-              )}
-            </button>
+            {/* Theme Toggle Dropdown (Light / Dark / System) - Hidden on mobile (<640px), accessible via drawer Appearance */}
+            <div className="relative hidden sm:block" ref={themeDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setIsThemeDropdownOpen((prev) => !prev)}
+                className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-[var(--hover)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors cursor-pointer"
+                title={`Theme: ${currentThemeOption.label} (${isDark ? 'Dark' : 'Light'})`}
+                aria-label={`Theme: ${currentThemeOption.label}`}
+                aria-expanded={isThemeDropdownOpen}
+                aria-haspopup="true"
+              >
+                {theme === 'system' ? (
+                  <Monitor className="w-5 h-5 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-transform" />
+                ) : isDark ? (
+                  <Moon className="w-5 h-5 text-amber-400 transition-transform" />
+                ) : (
+                  <Sun className="w-5 h-5 text-amber-500 transition-transform" />
+                )}
+              </button>
+
+              <AnimatePresence>
+                {isThemeDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-2 w-36 bg-[var(--bg-card)] rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[var(--border)] p-1.5 z-[9999] overflow-hidden"
+                  >
+                    <div className="space-y-0.5" role="menu" aria-orientation="vertical">
+                      {themeOptions.map((opt) => {
+                        const Icon = opt.icon;
+                        const isSelected = theme === opt.id;
+                        return (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            role="menuitem"
+                            onClick={() => {
+                              setTheme(opt.id);
+                              setIsThemeDropdownOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#0082CA]/10 text-[#0082CA] dark:text-[#38BDF8]'
+                                : 'text-[var(--text-main)] hover:bg-[var(--bg-subtle)]'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <Icon
+                                className={`w-4 h-4 ${
+                                  isSelected
+                                    ? 'text-[#0082CA] dark:text-[#38BDF8]'
+                                    : 'text-[var(--text-muted)]'
+                                }`}
+                              />
+                              <span>{opt.label}</span>
+                            </div>
+                            {isSelected && (
+                              <Check className="w-3.5 h-3.5 text-[#0082CA] dark:text-[#38BDF8]" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Cart Icon with Live Count */}
             <Link
@@ -620,6 +691,46 @@ export default function Header() {
                   <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
                 </Link>
               ))}
+            </div>
+          </div>
+
+          {/* Theme / Appearance Segmented Control */}
+          <div className="pt-4 border-t border-[var(--border)] space-y-2">
+            <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              {t.has('header.appearance') ? t('header.appearance') : 'Appearance'}
+            </span>
+            <div
+              role="radiogroup"
+              aria-label="Appearance Theme"
+              className="grid grid-cols-3 gap-1 p-1 bg-[var(--bg-subtle)] rounded-xl border border-[var(--border)]"
+            >
+              {themeOptions.map((opt) => {
+                const Icon = opt.icon;
+                const isSelected = theme === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    onClick={() => setTheme(opt.id)}
+                    className={`flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                      isSelected
+                        ? 'bg-[var(--bg-card)] text-[#0082CA] dark:text-[#38BDF8] shadow-xs border border-[var(--border)] font-bold'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--hover)]/50 border border-transparent'
+                    }`}
+                  >
+                    <Icon
+                      className={`w-3.5 h-3.5 ${
+                        isSelected
+                          ? 'text-[#0082CA] dark:text-[#38BDF8]'
+                          : 'text-[var(--text-muted)]'
+                      }`}
+                    />
+                    <span>{opt.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 

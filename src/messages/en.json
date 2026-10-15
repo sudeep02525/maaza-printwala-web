@@ -12,7 +12,11 @@
     "printCategories": "Print Categories",
     "allProducts": "All Products",
     "customerSupport": "Customer Support",
-    "supportNote": "Standard commercial printing assistance available during normal working hours."
+    "supportNote": "Standard commercial printing assistance available during normal working hours.",
+    "appearance": "Appearance",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
   },
   "hero": {
     "heading1": "Design the perfect piece with our custom-ized prints.",
