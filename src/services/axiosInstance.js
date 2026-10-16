@@ -29,7 +29,10 @@ axiosInstance.interceptors.response.use(
         await axios.post(`${BASE_URL}/api/auth/refresh`, {}, { withCredentials: true });
         return axiosInstance(originalRequest);
       } catch (refreshErr) {
-        // If refresh fails, user is simply an unauthenticated guest
+        // If refresh fails, session is dead -> clear session hint
+        if (typeof window !== 'undefined') {
+          try { localStorage.removeItem('has_session'); } catch (e) {}
+        }
         return Promise.reject(refreshErr);
       }
     }

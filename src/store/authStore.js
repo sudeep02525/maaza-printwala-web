@@ -11,6 +11,9 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const res = await axiosInstance.post('/auth/login', { email, password });
+      if (typeof window !== 'undefined') {
+        try { localStorage.setItem('has_session', '1'); } catch (e) {}
+      }
       set({ user: res.data.user, isAuthenticated: true, isLoading: false });
       return res.data;
     } catch (error) {
@@ -23,6 +26,9 @@ export const useAuthStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const res = await axiosInstance.post('/auth/register', { name, email, password, phone });
+      if (typeof window !== 'undefined') {
+        try { localStorage.setItem('has_session', '1'); } catch (e) {}
+      }
       set({ user: res.data.user, isAuthenticated: true, isLoading: false });
       return res.data;
     } catch (error) {
@@ -37,15 +43,26 @@ export const useAuthStore = create((set) => ({
     } catch (e) {
       console.error('Logout error', e);
     } finally {
+      if (typeof window !== 'undefined') {
+        try { localStorage.removeItem('has_session'); } catch (e) {}
+      }
       set({ user: null, isAuthenticated: false });
     }
   },
 
   checkAuth: async () => {
+    // Guest hint: if no session hint, skip probe to prevent 401 noise in console
+    if (typeof window === 'undefined' || !localStorage.getItem('has_session')) {
+      set({ user: null, isAuthenticated: false, isLoading: false });
+      return;
+    }
     try {
       const res = await axiosInstance.get('/auth/me');
       set({ user: res.data?.user || res.user, isAuthenticated: true, isLoading: false });
     } catch (error) {
+      if (typeof window !== 'undefined') {
+        try { localStorage.removeItem('has_session'); } catch (e) {}
+      }
       set({ user: null, isAuthenticated: false, isLoading: false });
     }
   },
