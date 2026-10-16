@@ -5,6 +5,7 @@ import { Link } from '@/i18n/routing.js';
 import { ShoppingBag, Trash2, ArrowLeft, CheckCircle2, AlertCircle, FileText, LayoutTemplate, Sparkles, ShieldCheck, RefreshCw, Plus, Minus, ArrowRight, Tag, Percent, X, Check } from 'lucide-react';
 import axiosInstance from '@/services/axiosInstance.js';
 import { useCartStore } from '@/store/cartStore.js';
+import { useSettingsStore } from '@/store/settingsStore.js';
 import Button from '@/components/ui/Button.jsx';
 import Card from '@/components/ui/Card.jsx';
 import Badge from '@/components/ui/Badge.jsx';
@@ -29,9 +30,14 @@ const formatFieldLabel = (key) => {
 
 export default function CartPage() {
   const { items, cartTotal, isLoading, error, fetchCart, updateItemQuantity, removeItem, clearCart } = useCartStore();
+  const { settings, fetchSettings } = useSettingsStore();
   const [updatingId, setUpdatingId] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
 
   // Coupon state
   const [couponInput, setCouponInput] = useState('');
@@ -417,15 +423,16 @@ export default function CartPage() {
                 )}
 
                 {(() => {
+                  const gstRate = settings?.gstRate ?? 18;
                   const discount = appliedCoupon?.discountAmount || 0;
                   const taxable = Math.max(0, (cartTotal || 0) - discount);
-                  const gst = Math.round(taxable * 0.18);
+                  const gst = Math.round(taxable * (gstRate / 100));
                   const estimatedTotal = taxable + gst;
 
                   return (
                     <>
                       <div className="flex justify-between text-[var(--text-muted)] font-semibold">
-                        <span>Est. GST (18% commercial rate)</span>
+                        <span>Est. GST ({gstRate}% commercial rate)</span>
                         <span className="font-bold text-[var(--text-main)]">₹{gst.toLocaleString('en-IN')}</span>
                       </div>
                       <div className="flex justify-between text-[var(--text-faint)] text-xs font-normal">
@@ -436,7 +443,7 @@ export default function CartPage() {
                       <div className="border-t border-[var(--border)] pt-4 flex justify-between items-baseline">
                         <div>
                           <span className="text-base font-black text-[var(--text-main)] block">Estimated Total</span>
-                          <span className="text-[10px] font-semibold text-[var(--text-faint)]">Includes 18% GST</span>
+                          <span className="text-[10px] font-semibold text-[var(--text-faint)]">Includes {gstRate}% GST</span>
                         </div>
                         <span className="text-2xl font-black text-[#0082CA]">₹{estimatedTotal.toLocaleString('en-IN')}</span>
                       </div>

@@ -38,6 +38,7 @@ import {
 import { useSearchParams, useRouter } from 'next/navigation';
 import { templateEngine } from '../engines/TemplateEngine.js';
 import axiosInstance from '../../../services/axiosInstance.js';
+import { useSettingsStore } from '@/store/settingsStore.js';
 import * as fabric from 'fabric';
 
 /**
@@ -83,6 +84,12 @@ export default function DesignStudio({ slug }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const templateId = searchParams.get('templateId');
+
+  const { settings, fetchSettings } = useSettingsStore();
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
 
   // Active Tool for the Left Sidebar Panel: 'customize' | 'templates' | 'uploads' | 'text' | 'shapes'
   const [activeTool, setActiveTool] = useState('customize');
@@ -530,8 +537,9 @@ export default function DesignStudio({ slug }) {
         const testImg = new Image();
         testImg.src = dataUrl;
         testImg.onload = () => {
+          const minDpi = settings?.defaultDpiCheck || 300;
           if (testImg.naturalWidth < 400 || testImg.naturalHeight < 400) {
-            setUploadDpiWarning(`Low resolution (${testImg.naturalWidth}×${testImg.naturalHeight}px). For sharp print quality, 800px+ is recommended.`);
+            setUploadDpiWarning(`Low resolution (${testImg.naturalWidth}×${testImg.naturalHeight}px). For sharp print quality, minimum ${minDpi} DPI (800px+) is recommended.`);
           } else {
             setUploadDpiWarning(null);
           }

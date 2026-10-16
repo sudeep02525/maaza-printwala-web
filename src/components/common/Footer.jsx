@@ -9,6 +9,27 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/services/axiosInstance.js';
 
+function FooterAccordionItem({ title, isOpen, onToggle, children }) {
+  return (
+    <div className="flex flex-col border-b border-[var(--border)] md:border-none py-4 md:py-0">
+      <button 
+        onClick={onToggle}
+        className="flex items-center justify-between w-full md:cursor-default md:pointer-events-none group outline-none"
+      >
+        <h4 className="text-sm font-bold text-[var(--text-main)] uppercase tracking-wider">{title}</h4>
+        <ChevronDown className={`w-5 h-5 text-[var(--text-faint)] transition-transform duration-300 md:hidden ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      <div className={`grid transition-all duration-300 ease-in-out md:!grid-rows-[1fr] md:!opacity-100 ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+        <div className="overflow-hidden">
+          <div className="pt-4 md:pt-6">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Footer() {
   const t = useTranslations();
   const locale = useLocale();
@@ -20,32 +41,22 @@ export default function Footer() {
     }
   });
   const categories = Array.isArray(categoriesData) ? categoriesData : (categoriesData?.data || categoriesData?.categories || []);
+
+  const { data: settingsData } = useQuery({
+    queryKey: ['storeSettings'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/settings');
+      return res.data?.settings || res.settings || {};
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+  const storePhone = settingsData?.supportPhone || '1800-PRINT-NOW';
+  const storeEmail = settingsData?.supportEmail || 'support@maazaprintwala.in';
+
   const [openSection, setOpenSection] = useState(null);
 
   const toggleSection = (section) => {
     setOpenSection(prev => prev === section ? null : section);
-  };
-
-  const FooterAccordionItem = ({ title, id, children }) => {
-    const isOpen = openSection === id;
-    return (
-      <div className="flex flex-col border-b border-[var(--border)] md:border-none py-4 md:py-0">
-        <button 
-          onClick={() => toggleSection(id)}
-          className="flex items-center justify-between w-full md:cursor-default md:pointer-events-none group outline-none"
-        >
-          <h4 className="text-sm font-bold text-[var(--text-main)] uppercase tracking-wider">{title}</h4>
-          <ChevronDown className={`w-5 h-5 text-[var(--text-faint)] transition-transform duration-300 md:hidden ${isOpen ? 'rotate-180' : ''}`} />
-        </button>
-        <div className={`grid transition-all duration-300 ease-in-out md:!grid-rows-[1fr] md:!opacity-100 ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
-          <div className="overflow-hidden">
-            <div className="pt-4 md:pt-6">
-              {children}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -129,7 +140,11 @@ export default function Footer() {
           </div>
 
           {/* Column 2: Products */}
-          <FooterAccordionItem title={t('footer.products')} id="products">
+          <FooterAccordionItem 
+            title={t('footer.products')} 
+            isOpen={openSection === 'products'} 
+            onToggle={() => toggleSection('products')}
+          >
             <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium">
               {categories.slice(0, 6).map(cat => (
                 <li key={cat.slug}><Link href={`/${cat.slug}`} className="hover:text-[#0082CA] transition-colors">{t.has(`categories.${cat.slug}`) ? t(`categories.${cat.slug}`) : cat.name}</Link></li>
@@ -139,7 +154,11 @@ export default function Footer() {
           </FooterAccordionItem>
 
           {/* Column 3: Resources */}
-          <FooterAccordionItem title={t('footer.resources')} id="resources">
+          <FooterAccordionItem 
+            title={t('footer.resources')} 
+            isOpen={openSection === 'resources'} 
+            onToggle={() => toggleSection('resources')}
+          >
             <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium">
               <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'डिज़ाइन टेम्प्लेट' : locale === 'mr' ? 'डिझाईन टेम्पलेट्स' : 'Design Templates'}</Link></li>
               <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'थोक एवं कॉर्पोरेट ऑर्डर' : locale === 'mr' ? 'मोठ्या प्रमाणात ऑर्डर्स' : 'Bulk & B2B Inquiries'}</Link></li>
@@ -150,7 +169,11 @@ export default function Footer() {
           </FooterAccordionItem>
 
           {/* Column 4: Support */}
-          <FooterAccordionItem title={t('footer.support')} id="support">
+          <FooterAccordionItem 
+            title={t('footer.support')} 
+            isOpen={openSection === 'support'} 
+            onToggle={() => toggleSection('support')}
+          >
             <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
               <li><Link href="/support" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'सहायता केंद्र / अक्सर पूछे जाने वाले प्रश्न' : locale === 'mr' ? 'मदत केंद्र / वारंवार विचारले जाणारे प्रश्न' : 'Help Center / FAQs'}</Link></li>
               <li><Link href="/track-order" className="hover:text-[#0082CA] transition-colors">{t('header.trackOrder')}</Link></li>
@@ -159,13 +182,13 @@ export default function Footer() {
               <li>
                 <div className="pt-2 flex items-start justify-start gap-2">
                   <Phone className="w-4 h-4 shrink-0 text-[#0082CA] mt-0.5" />
-                  <span className="text-[var(--text-main)] font-bold">1800-PRINT-NOW</span>
+                  <span className="text-[var(--text-main)] font-bold">{storePhone}</span>
                 </div>
               </li>
               <li>
                 <div className="flex items-start justify-start gap-2">
                   <Mail className="w-4 h-4 shrink-0 text-[#0082CA] mt-0.5" />
-                  <span className="text-[var(--text-main)] font-bold break-all">support@maazaprintwala.in</span>
+                  <span className="text-[var(--text-main)] font-bold break-all">{storeEmail}</span>
                 </div>
               </li>
             </ul>
@@ -173,7 +196,11 @@ export default function Footer() {
 
           {/* Column 5: Company & Legal */}
           <div className="flex flex-col">
-            <FooterAccordionItem title={t('footer.company')} id="company">
+            <FooterAccordionItem 
+              title={t('footer.company')} 
+              isOpen={openSection === 'company'} 
+              onToggle={() => toggleSection('company')}
+            >
               <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.about')}</Link></li>
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'करियर' : locale === 'mr' ? 'करिअर' : 'Careers'}</Link></li>
@@ -183,7 +210,11 @@ export default function Footer() {
             </FooterAccordionItem>
             
             <div className="mt-0 md:mt-8">
-              <FooterAccordionItem title={t('footer.legal')} id="legal">
+              <FooterAccordionItem 
+                title={t('footer.legal')} 
+                isOpen={openSection === 'legal'} 
+                onToggle={() => toggleSection('legal')}
+              >
                 <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
                   <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.privacy')}</Link></li>
                   <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.terms')}</Link></li>

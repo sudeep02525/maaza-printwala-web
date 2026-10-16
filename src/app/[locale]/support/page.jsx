@@ -1,11 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HelpCircle, Mail, MessageSquare, Phone, Send, CheckCircle2, FileQuestion, ArrowRight } from 'lucide-react';
 import axiosInstance from '@/services/axiosInstance.js';
+import { useSettingsStore } from '@/store/settingsStore.js';
 import { Link } from '@/i18n/routing.js';
 
 export default function SupportPage() {
+  const { settings, fetchSettings } = useSettingsStore();
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
   const [formData, setFormData] = useState({
     email: '',
     subject: '',
@@ -36,7 +43,7 @@ export default function SupportPage() {
 
   const faqs = [
     { q: 'How long does printing and dispatch take?', a: 'Standard orders dispatch in 2-3 business days. Same-day dispatch is available for select business cards and promotional items in metro regions.' },
-    { q: 'What artwork format should I upload?', a: 'We accept high-resolution PDF, AI, PSD, PNG, and JPEG files. We recommend 300+ DPI at 1:1 print scale with a 3mm bleed margin.' },
+    { q: 'What artwork format should I upload?', a: `We accept high-resolution PDF, AI, PSD, PNG, and JPEG files. We recommend ${settings?.defaultDpiCheck || 300}+ DPI at 1:1 print scale with a 3mm bleed margin.` },
     { q: 'Can I reorder from a past design?', a: 'Yes! Navigate to My Orders and click Reorder, or reload saved design project drafts from your account dashboard.' },
     { q: 'How can I track my shipment?', a: 'Visit our Track Order page and enter your 10-character Order ID (e.g. MW-10023) along with your registered mobile or email.' },
   ];
@@ -166,6 +173,21 @@ export default function SupportPage() {
               >
                 Track My Order <ArrowRight className="w-3.5 h-3.5" />
               </Link>
+            </div>
+
+            <div className="bg-[var(--bg-card)] rounded-xl p-5 border border-[var(--border)] text-xs text-[var(--text-main)] space-y-3">
+              <span className="font-bold text-[var(--text-main)] block">Direct Support Helpline</span>
+              <p className="text-[var(--text-muted)] font-normal">Connect directly with our pre-press customer assistance desk:</p>
+              <div className="space-y-2 pt-1 font-bold text-[#0082CA]">
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
+                  <Phone className="w-4 h-4 text-[#0082CA] shrink-0" />
+                  <span>{settings?.supportPhone || '1800-PRINT-NOW'}</span>
+                </div>
+                <div className="flex items-center gap-2 text-[var(--text-main)]">
+                  <Mail className="w-4 h-4 text-[#0082CA] shrink-0" />
+                  <span className="break-all">{settings?.supportEmail || 'support@maazaprintwala.in'}</span>
+                </div>
+              </div>
             </div>
           </div>
 
