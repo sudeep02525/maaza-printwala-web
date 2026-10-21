@@ -1,8 +1,9 @@
 import React from 'react';
 import { cn } from '@/lib/utils.js';
+import { slugify } from '@/lib/devkit';
 
 export default function Select({ label, error, helperText, options = [], className, id, children, ...props }) {
-  const selectId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
+  const selectId = id || (label ? slugify(label) : undefined);
 
   return (
     <div className="space-y-1 w-full">

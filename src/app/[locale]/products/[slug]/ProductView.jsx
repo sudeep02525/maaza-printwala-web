@@ -15,6 +15,7 @@ import DesignReadySummary from '@/components/configurator/DesignReadySummary.jsx
 import PopularTemplates from '@/components/configurator/PopularTemplates.jsx';
 import RecentlyViewedProducts from '@/components/products/RecentlyViewedProducts.jsx';
 import ProductReviews from '@/components/products/ProductReviews.jsx';
+import { safeJsonParse, pick } from '@/lib/devkit';
 
 export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCategoryName }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -204,18 +205,15 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
     if (product) {
       try {
         const stored = localStorage.getItem('recentlyViewedProducts');
-        let viewed = stored ? JSON.parse(stored) : [];
+        const parseRes = safeJsonParse(stored);
+        let viewed = parseRes.success && Array.isArray(parseRes.data) ? parseRes.data : [];
         
         // Remove if already exists
         viewed = viewed.filter(p => p._id !== product._id);
         
         // Create a lightweight version of the product to save storage space
         const lightProduct = {
-          _id: product._id,
-          slug: product.slug,
-          name: product.name,
-          category: product.category,
-          basePrice: product.basePrice,
+          ...pick(product, ['_id', 'slug', 'name', 'category', 'basePrice']),
           images: product.images?.slice(0, 1) || []
         };
         

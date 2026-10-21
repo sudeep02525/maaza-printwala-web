@@ -40,6 +40,7 @@ import { templateEngine } from '../engines/TemplateEngine.js';
 import axiosInstance from '../../../services/axiosInstance.js';
 import { useSettingsStore } from '@/store/settingsStore.js';
 import * as fabric from 'fabric';
+import { deepClone, safeJsonParse } from '@/lib/devkit';
 
 /**
  * Normalizes Canvas JSON for Fabric v7 compatibility:
@@ -48,7 +49,8 @@ import * as fabric from 'fabric';
  */
 function normalizeCanvasJson(rawJson) {
   if (!rawJson) return null;
-  const json = typeof rawJson === 'string' ? JSON.parse(rawJson) : JSON.parse(JSON.stringify(rawJson));
+  const json = typeof rawJson === 'string' ? (safeJsonParse(rawJson).data || null) : deepClone(rawJson);
+  if (!json) return null;
 
   if (Array.isArray(json.objects)) {
     json.objects = json.objects.map(obj => {

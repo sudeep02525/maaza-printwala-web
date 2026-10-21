@@ -1,8 +1,9 @@
 import React from 'react';
 import { cn } from '@/lib/utils.js';
+import { slugify } from '@/lib/devkit';
 
 export default function Input({ label, error, helperText, className, id, ...props }) {
-  const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
+  const inputId = id || (label ? slugify(label) : undefined);
 
   return (
     <div className="space-y-1 w-full">

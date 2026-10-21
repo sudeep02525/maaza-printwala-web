@@ -1,12 +1,14 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { safeJsonParse, isBlank } from '@/lib/devkit';
 
 const KEY = 'maaza_recent_searches';
 const MAX = 6;
 
 const read = () => {
   if (typeof window === 'undefined') return [];
-  try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; }
+  const res = safeJsonParse(localStorage.getItem(KEY));
+  return res.success && Array.isArray(res.data) ? res.data : [];
 };
 
 export function useRecentSearches() {
@@ -14,8 +16,8 @@ export function useRecentSearches() {
   useEffect(() => { setRecent(read()); }, []);
 
   const add = useCallback((term) => {
-    const t = (term || '').trim();
-    if (!t) return;
+    if (isBlank(term)) return;
+    const t = term.trim();
     const next = [t, ...read().filter((x) => x.toLowerCase() !== t.toLowerCase())].slice(0, MAX);
     localStorage.setItem(KEY, JSON.stringify(next));
     setRecent(next);

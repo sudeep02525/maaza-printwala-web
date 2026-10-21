@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ProductCard from '../products/ProductCard.jsx';
 import { Clock, PenTool } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { safeJsonParse } from '@/lib/devkit';
 
 export default function PersonalizedRows() {
   const [isMounted, setIsMounted] = useState(false);
@@ -18,10 +19,13 @@ export default function PersonalizedRows() {
 
   useEffect(() => {
     setIsMounted(true);
-    try {
-      const stored = localStorage.getItem('recentlyViewedProducts');
-      if (stored) setRecentlyViewed(JSON.parse(stored));
-    } catch(e) {}
+    const stored = localStorage.getItem('recentlyViewedProducts');
+    if (stored) {
+      const res = safeJsonParse(stored);
+      if (res.success && Array.isArray(res.data)) {
+        setRecentlyViewed(res.data);
+      }
+    }
   }, []);
 
   if (!isMounted) return null;

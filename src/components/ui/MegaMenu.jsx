@@ -6,6 +6,7 @@ import { ArrowRight } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/services/axiosInstance.js';
 import { useTranslations, useLocale } from 'next-intl';
+import { slugify } from '@/lib/devkit';
 
 const demoFallbackProducts = {
   'standard-cards': 'standard-card',
@@ -163,7 +164,7 @@ export default function MegaMenu() {
                     {cat.subcategoryGroups?.map(group => (
                       <div key={group._id || group.name} className="space-y-4">
                         <h4 className="font-bold text-[var(--text-main)] text-[15px]">
-                          {t.has(`groups.${group.name.toLowerCase().replace(/\s+/g, '-')}`) ? t(`groups.${group.name.toLowerCase().replace(/\s+/g, '-')}`) : group.name}
+                          {t.has(`groups.${slugify(group.name)}`) ? t(`groups.${slugify(group.name)}`) : group.name}
                         </h4>
                         <ul className="space-y-3">
                           {group.items?.map(sub => (

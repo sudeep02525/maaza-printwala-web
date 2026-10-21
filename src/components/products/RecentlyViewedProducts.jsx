@@ -4,6 +4,7 @@ import { getImageUrl } from '@/utils/getImageUrl.js';
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from '@/i18n/routing.js';
+import { safeJsonParse } from '@/lib/devkit';
 
 export default function RecentlyViewedProducts() {
   const [isMounted, setIsMounted] = useState(false);
@@ -11,13 +12,12 @@ export default function RecentlyViewedProducts() {
 
   useEffect(() => {
     setIsMounted(true);
-    try {
-      const stored = localStorage.getItem('recentlyViewedProducts');
-      if (stored) {
-        setRecentlyViewed(JSON.parse(stored));
+    const stored = localStorage.getItem('recentlyViewedProducts');
+    if (stored) {
+      const res = safeJsonParse(stored);
+      if (res.success && Array.isArray(res.data)) {
+        setRecentlyViewed(res.data);
       }
-    } catch (e) {
-      console.error("Failed to parse recently viewed products", e);
     }
   }, []);
 

@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { Link } from '@/i18n/routing.js';
 import { Package, Star, Info } from 'lucide-react';
 import { useTranslations, useLocale } from 'next-intl';
+import { slugify } from '@/lib/devkit';
 
 export default function ProductCard({ product }) {
   const tProd = useTranslations('productCard');
@@ -33,7 +34,7 @@ export default function ProductCard({ product }) {
   if (product.category?.slug && t.has(`categories.${product.category.slug}`)) {
     categoryName = t(`categories.${product.category.slug}`);
   } else if (product.category?.name) {
-    const slugFromName = product.category.name.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-');
+    const slugFromName = slugify(product.category.name);
     if (t.has(`categories.${slugFromName}`)) {
       categoryName = t(`categories.${slugFromName}`);
     }
