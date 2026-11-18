@@ -23,11 +23,11 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'api.maazaprintwala.com',
+        hostname: 'api.maazaprintwala.in',
       },
       {
         protocol: 'https',
-        hostname: 'maazaprintwala.com',
+        hostname: 'maazaprintwala.in',
       },
       {
         protocol: 'http',

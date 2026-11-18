@@ -129,10 +129,43 @@ export const useCheckoutStore = create((set, get) => ({
       const draftId = get().draft?._id;
       const response = await axiosInstance.post('/checkout/prepare-payment', { draftId });
       const draft = response.data?.draft || null;
+      const order = response.data?.order || null;
       set({ draft, isLoading: false });
-      return { success: true, draft };
+      return { success: true, draft, order };
     } catch (err) {
       const msg = err.response?.data?.message || err.message || 'Failed to validate checkout for payment';
+      set({ isLoading: false, error: msg });
+      return { success: false, error: msg };
+    }
+  },
+
+  initiateOnlinePayment: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const draftId = get().draft?._id;
+      const idempotencyKey = `pay_${draftId}_${Date.now()}`;
+      const response = await axiosInstance.post('/payments/initiate', {
+        draftId,
+        idempotencyKey,
+        paymentProvider: 'RAZORPAY',
+      });
+      set({ isLoading: false });
+      return { success: true, data: response.data?.data || response.data };
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Failed to initiate online payment';
+      set({ isLoading: false, error: msg });
+      return { success: false, error: msg };
+    }
+  },
+
+  verifyOnlinePayment: async (payload) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axiosInstance.post('/payments/verify-razorpay', payload);
+      set({ isLoading: false });
+      return { success: true, data: response.data?.data || response.data };
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Payment verification failed';
       set({ isLoading: false, error: msg });
       return { success: false, error: msg };
     }
