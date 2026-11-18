@@ -121,7 +121,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
         <div className="mt-6 p-6 rounded-lg bg-emerald-50 text-[var(--text-main)] space-y-4 border border-emerald-300 shadow-sm">
           <div className="flex items-center space-x-2 text-emerald-800 font-black text-sm">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
-            <span>Order Successfully Registered</span>
+            <span>Order Successfully Registered {draft.orderNumber ? `(#${draft.orderNumber})` : ''}</span>
           </div>
           <p className="text-xs text-[var(--text-main)] leading-relaxed font-normal">
             Your commercial printing specifications, Indian delivery address, and logistics method have been validated and recorded on our production server.
@@ -143,7 +143,7 @@ export default function CheckoutSummary({ draft, isLoading, onPreparePayment, cu
               className="w-full py-3.5 bg-emerald-600 text-white font-bold rounded-lg text-xs cursor-not-allowed border border-emerald-600 flex items-center justify-center gap-2 shadow-xs opacity-90"
             >
               <CheckCircle2 className="w-4 h-4 text-white" />
-              <span>Order Captured - Payment Pending Offline</span>
+              <span>{draft.orderNumber ? `Order #${draft.orderNumber} Captured - Payment Pending` : 'Order Captured - Payment Pending Offline'}</span>
             </button>
           </div>
         </div>
