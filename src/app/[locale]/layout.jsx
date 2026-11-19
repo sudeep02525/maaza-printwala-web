@@ -1,4 +1,5 @@
 import '../globals.css';
+import { fontDisplay, fontBody } from '@/app/fonts.js';
 import QueryProvider from '@/providers/QueryProvider.jsx';
 import LayoutClientWrapper from '@/components/common/LayoutClientWrapper.jsx';
 import { NextIntlClientProvider } from 'next-intl';
@@ -67,7 +68,11 @@ export default async function RootLayout({ children, params }) {
   const isDark = theme === 'dark';
 
   return (
-    <html lang={locale} className={isDark ? 'dark' : ''} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${fontDisplay.variable} ${fontBody.variable} ${isDark ? 'dark' : ''}`}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
