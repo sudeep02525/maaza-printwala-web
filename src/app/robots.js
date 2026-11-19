@@ -5,6 +5,6 @@ export default function robots() {
       allow: '/',
       disallow: ['/admin/', '/private/'],
     },
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://maazaprintwala.in'}/sitemap.xml`,
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://mazaprintwala.com'}/sitemap.xml`,
   };
 }

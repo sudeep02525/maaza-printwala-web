@@ -269,7 +269,7 @@ export default function DesignStudio({ slug }) {
               objects: [
                 { type: "Rect", left: 0, top: 0, width: 600, height: 350, fill: bgFill, selectable: false, originX: "left", originY: "top" },
                 { type: "Textbox", left: 100, top: 120, width: 400, fontSize: 36, fontWeight: "bold", fontFamily: "Arial", fill: "#ffffff", text: customFields.company_name || template.name || 'PRINTWALA', textAlign: "center", originX: "left", originY: "top", id: "company_name" },
-                { type: "Textbox", left: 100, top: 200, width: 400, fontSize: 14, fontFamily: "Arial", fill: "#94a3b8", text: customFields.website || 'www.maazaprintwala.in', textAlign: "center", originX: "left", originY: "top", id: "website" }
+                { type: "Textbox", left: 100, top: 200, width: 400, fontSize: 14, fontFamily: "Arial", fill: "#94a3b8", text: customFields.website || 'www.mazaprintwala.com', textAlign: "center", originX: "left", originY: "top", id: "website" }
               ]
             };
           }

@@ -51,7 +51,7 @@ export default function Footer() {
     staleTime: 5 * 60 * 1000,
   });
   const storePhone = settingsData?.supportPhone || '1800-PRINT-NOW';
-  const storeEmail = settingsData?.supportEmail || 'support@maazaprintwala.in';
+  const storeEmail = settingsData?.supportEmail || 'support@mazaprintwala.com';
 
   const [openSection, setOpenSection] = useState(null);
 

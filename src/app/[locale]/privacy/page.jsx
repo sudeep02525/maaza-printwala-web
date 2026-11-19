@@ -72,7 +72,7 @@ export default function PrivacyPolicyPage() {
         {/* Footer info */}
         <div className="pt-6 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-xs text-[var(--text-muted)]">
-            Questions regarding our policy? Contact <span className="font-semibold text-[var(--text-main)]">support@maazaprintwala.in</span>
+            Questions regarding our policy? Contact <span className="font-semibold text-[var(--text-main)]">support@mazaprintwala.com</span>
           </div>
           <Link
             href="/products"

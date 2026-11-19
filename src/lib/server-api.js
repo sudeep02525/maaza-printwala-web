@@ -30,7 +30,7 @@ export async function fetchServerApi(endpoint, options = {}) {
   }
 }
 
-// Helper methods with default revalidation times for MaazaPrintwala
+// Helper methods with default revalidation times for MazaPrintwala
 export const serverApi = {
   // Categories: 1 day revalidate
   getCategories: () => fetchServerApi('/categories', { revalidate: 86400 }),

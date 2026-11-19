@@ -185,7 +185,7 @@ export default function SupportPage() {
                 </div>
                 <div className="flex items-center gap-2 text-[var(--text-main)]">
                   <Mail className="w-4 h-4 text-[#0082CA] shrink-0" />
-                  <span className="break-all">{settings?.supportEmail || 'support@maazaprintwala.in'}</span>
+                  <span className="break-all">{settings?.supportEmail || 'support@mazaprintwala.com'}</span>
                 </div>
               </div>
             </div>

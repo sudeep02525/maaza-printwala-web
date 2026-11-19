@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
     const title = t('title');
     const description = t('description');
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://maazaprintwala.in';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://mazaprintwala.com';
     return {
       metadataBase: new URL(baseUrl),
       title: title,
