@@ -2,7 +2,7 @@ import { getImageUrl } from '@/utils/getImageUrl.js';
 import React from 'react';
 import { Link } from '@/i18n/routing.js';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Heart, Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight } from 'lucide-react';
 
 import { serverApi } from '@/lib/server-api.js';
 import ExploreCategories from '@/components/home/ExploreCategories.jsx';
@@ -64,14 +64,7 @@ const getPopularSearches = (locale) => {
   return ['Business Cards', 'Custom Tshirt', 'Sticker Printing', 'Packaging', 'Mug Printing', 'Standee', 'Letterhead', 'ID Cards', 'Lanyards', 'Flyers', 'Brochure Design', 'Corporate Gifts'];
 };
 
-const INSTAGRAM_POSTS = [
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-  getImageUrl('/images/cat_visiting_cards_1785433645262.png'),
-];
+
 
 
 
@@ -182,29 +175,7 @@ export default async function HomePage({ params }) {
         </FadeIn>
       </section>
 
-      {/* 18. CUSTOMER GALLERY */}
-      <section className="py-10 bg-[var(--bg-card)] border-y border-[var(--border)]">
-        <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8 text-center">
-          <h2 className="text-2xl sm:text-[28px] font-extrabold text-[var(--text-main)] tracking-tight mb-2">{tHome('customerGallery')}</h2>
-          <p className="text-sm text-[var(--text-muted)] mb-8 font-medium">
-            {locale === 'hi' ? 'फ़ीचर होने के लिए हमें Instagram ' : locale === 'mr' ? 'वैशिष्ट्यीकृत होण्यासाठी आम्हाला Instagram वर ' : 'Tag us on Instagram '}
-            <span className="font-bold text-[#0082CA]">@MaazaPrintwala</span> 
-            {locale === 'hi' ? ' पर टैग करें।' : locale === 'mr' ? ' टॅग करा.' : ' to get featured.'}
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {INSTAGRAM_POSTS.map((img, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative aspect-square rounded-lg overflow-hidden group border border-[var(--border)]">
-                  <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="Gallery" />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Heart className="w-8 h-8 text-white fill-white shadow-sm" />
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </FadeIn>
-      </section>
+
 
       {/* 19. WHY CHOOSE US & PROCESS (Testimonials) */}
       <TestimonialCarousel />
