@@ -14,7 +14,7 @@ export default function NotFoundPage() {
         
         {/* Large Gradient 404 Number */}
         <div className="relative inline-block mb-2">
-          <span className="text-8xl sm:text-9xl font-black bg-gradient-to-br from-[#0082CA] via-[#00A3FF] to-indigo-600 bg-clip-text text-transparent tracking-tighter select-none">
+          <span className="font-display text-8xl sm:text-9xl font-black bg-gradient-to-br from-[#0082CA] via-[#00A3FF] to-indigo-600 bg-clip-text text-transparent tracking-tighter select-none">
             404
           </span>
           <div className="absolute -bottom-2 right-2 w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500">
@@ -22,7 +22,7 @@ export default function NotFoundPage() {
           </div>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight mb-3">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-main)] tracking-tight mb-3">
           Page Not Found or Moved
         </h1>
         

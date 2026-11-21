@@ -286,7 +286,7 @@ export default function Header() {
                 commitSearch(searchQuery.trim());
               }
             }}
-            className="hidden md:flex flex-1 max-w-3xl mx-6"
+            className="hidden md:flex flex-1 max-w-3xl mx-4 lg:mx-6"
           >
             <div className="relative w-full flex items-center">
               <input
@@ -444,7 +444,7 @@ export default function Header() {
           </form>
 
           {/* User Actions & Support */}
-          <div className="flex items-center gap-5 sm:gap-8 shrink-0">
+          <div className="flex items-center gap-4 sm:gap-6 lg:gap-6 xl:gap-8 shrink-0">
             {/* Language Selector */}
             <div className="relative hidden lg:block group w-[90px]">
               <div className="flex items-center justify-between gap-1 text-[var(--text-main)] hover:text-[var(--text-main)] transition-colors cursor-pointer p-2 rounded-lg hover:bg-[var(--bg-subtle)] font-bold text-sm">
@@ -478,17 +478,23 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="hidden lg:flex items-center gap-3 text-[var(--text-main)] hover:text-[#0082CA] transition-colors cursor-pointer p-2 rounded-lg hover:bg-[var(--bg-subtle)]">
+            <Link
+              href="/support"
+              className="hidden lg:flex items-center gap-2.5 text-[var(--text-main)] hover:text-[#0082CA] transition-colors cursor-pointer px-2.5 py-1.5 rounded-lg hover:bg-[var(--bg-subtle)] shrink-0"
+              title={t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}
+            >
               <div className="w-9 h-9 shrink-0 rounded-full bg-[var(--hover)] flex items-center justify-center">
                 <PhoneCall className="w-4 h-4 text-[var(--text-muted)]" />
               </div>
-              <div className="w-[155px]">
-                <p className="font-bold text-[var(--text-main)] truncate">{t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}</p>
-                <p className="text-[11px] text-[var(--text-muted)] font-medium truncate">
+              <div className="w-[175px] shrink-0 text-left">
+                <p className="font-bold text-sm text-[var(--text-main)] whitespace-nowrap leading-tight">
+                  {t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}
+                </p>
+                <p className="text-[11px] text-[var(--text-muted)] font-medium whitespace-nowrap mt-0.5">
                   {t.has('header.standardBusinessHours') ? t('header.standardBusinessHours') : 'Mon-Sat 10am-7pm'}
                 </p>
               </div>
-            </div>
+            </Link>
 
             {/* Auth / Account */}
             {!isMounted ? (
@@ -528,7 +534,7 @@ export default function Header() {
                 className="flex items-center gap-2 text-[var(--text-main)] hover:text-[#0082CA] transition-colors font-bold text-sm w-[90px]"
               >
                 <User className="w-5 h-5 shrink-0" />
-                <span className="hidden sm:inline truncate">{t('header.account')}</span>
+                <span className="hidden sm:inline whitespace-nowrap">{t('header.account')}</span>
               </Link>
             )}
 

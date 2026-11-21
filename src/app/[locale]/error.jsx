@@ -79,7 +79,7 @@ export default function ErrorPage({ error, reset }) {
         )}
 
         {/* Main Heading */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight mb-3">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--text-main)] tracking-tight mb-3">
           Unable to Load This Page
         </h1>
         
@@ -199,7 +199,7 @@ export default function ErrorPage({ error, reset }) {
         <div className="mt-8 pt-4 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--text-muted)] font-medium">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span>Support: support@mazaprintwala.com</span>
+            <span>Support: imagemazaprintwala@gmail.com</span>
           </div>
           <a
             href="https://wa.me/919876543210?text=Hello%20Maaza%20Printwala%20Team%2C%20I%20faced%20an%20issue%20loading%20the%20website."

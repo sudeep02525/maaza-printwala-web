@@ -1,28 +1,54 @@
+import './globals.css';
+import { fontDisplay, fontBody } from '@/app/fonts.js';
+
 export default function RootNotFound() {
   return (
-    <html lang="en">
-      <body style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif', margin: 0, padding: 0 }}>
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', backgroundColor: '#FAFCFF', color: '#1e293b', padding: '1rem' }}>
-          <div style={{ textAlign: 'center', maxWidth: '28rem' }}>
-            <h1 style={{ fontSize: '4rem', fontWeight: 900, color: '#e2e8f0', margin: '0 0 1.5rem 0' }}>404</h1>
-            <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#1e293b', margin: '0 0 1rem 0' }}>Page Not Found</h2>
-            <p style={{ color: '#64748b', marginBottom: '2rem', fontWeight: 500 }}>
-              The page you are looking for doesn't exist, has been moved, or is temporarily unavailable.
-            </p>
+    <html lang="en" className={`${fontDisplay.variable} ${fontBody.variable}`}>
+      <body className="font-sans antialiased bg-[var(--bg-page)] text-[var(--text-main)] min-h-screen flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-[var(--bg-card)] p-8 sm:p-10 rounded-2xl shadow-sm border border-[var(--border)] text-center transition-all">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <a href="/" className="inline-block">
+              <img
+                src="/logo-maaza.png"
+                alt="Maza Printwala"
+                className="h-10 w-auto object-contain dark:hidden"
+              />
+              <img
+                src="/logo-maaza-dark.png"
+                alt="Maza Printwala"
+                className="h-10 w-auto object-contain hidden dark:block"
+              />
+            </a>
+          </div>
+
+          {/* 404 Display */}
+          <div className="mb-2">
+            <span className="font-display font-black text-7xl sm:text-8xl tracking-tight text-[#0082CA]/20 dark:text-[#38BDF8]/20 select-none">
+              404
+            </span>
+          </div>
+
+          <h1 className="font-display font-bold text-2xl sm:text-3xl text-[var(--text-main)] tracking-tight mb-3">
+            Page Not Found
+          </h1>
+
+          <p className="font-sans text-sm sm:text-base text-[var(--text-muted)] font-normal leading-relaxed mb-8 max-w-sm mx-auto">
+            The page you are looking for doesn't exist, has been moved, or is temporarily unavailable.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="/"
-              style={{
-                display: 'inline-flex',
-                padding: '0.75rem 2rem',
-                backgroundColor: '#0082CA',
-                color: '#ffffff',
-                fontWeight: 700,
-                borderRadius: '0.5rem',
-                textDecoration: 'none',
-                boxShadow: '0 4px 6px -1px rgba(0, 130, 202, 0.2)'
-              }}
+              className="inline-flex items-center justify-center px-6 py-3 bg-[#0082CA] hover:bg-[#006EA8] text-white font-bold text-sm rounded-xl transition-all shadow-sm"
             >
               Return to Homepage
+            </a>
+            <a
+              href="/products"
+              className="inline-flex items-center justify-center px-6 py-3 bg-[var(--bg-subtle)] hover:bg-[var(--hover)] text-[var(--text-main)] border border-[var(--border)] font-bold text-sm rounded-xl transition-all"
+            >
+              Explore Products
             </a>
           </div>
         </div>
