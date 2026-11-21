@@ -6,7 +6,7 @@ export const useSettingsStore = create((set, get) => ({
     storeName: 'Maza Printwala',
     tagline: 'Enterprise Commercial Printing & Merchandising',
     supportEmail: 'imagemazaprintwala@gmail.com',
-    supportPhone: '1800-PRINT-NOW',
+    supportPhone: '+91 7700054984',
     dispatchCity: 'Mumbai, Maharashtra',
     gstRate: 18,
     freeShippingThreshold: 999,

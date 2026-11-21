@@ -54,13 +54,13 @@ export default function SupportPage() {
 
         {/* Header */}
         <div className="text-center space-y-3">
-          <span className="px-3 py-1 rounded-full bg-blue-100 text-[#0082CA] text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
+          <span className="px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-[#0082CA] text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-2xs">
             <HelpCircle className="w-3.5 h-3.5" /> Customer Assistance
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black text-[var(--text-main)] tracking-tight">
+          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-extrabold text-[var(--text-main)] tracking-tight">
             How can our printing experts help you?
           </h1>
-          <p className="text-sm text-[var(--text-muted)] max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-[var(--text-muted)] max-w-xl mx-auto leading-relaxed">
             Have questions about design resolution, paper stock weights, delivery tracking, or an existing order? Send us a ticket below.
           </p>
         </div>
@@ -70,36 +70,38 @@ export default function SupportPage() {
           
           {/* Submit Ticket Card */}
           <div className="bg-[var(--bg-card)] rounded-2xl border border-[var(--border)] p-6 sm:p-8 shadow-sm">
-            <h2 className="text-lg font-black text-[var(--text-main)] mb-1">Open a Support Request</h2>
-            <p className="text-xs text-[var(--text-muted)] mb-6">Our pre-press support specialists reply promptly.</p>
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-main)] mb-1.5">Open a Support Request</h2>
+            <p className="text-sm text-[var(--text-muted)] mb-6">Our pre-press support specialists reply promptly during business hours.</p>
 
             {isSubmitted ? (
-              <div className="text-center py-10 space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
-                <h3 className="text-lg font-black text-[var(--text-main)]">Ticket Logged!</h3>
-                <p className="text-xs text-[var(--text-muted)] font-normal">
-                  We have logged your ticket and sent a confirmation to <strong>{formData.email}</strong>. Our support team will assist you shortly.
+              <div className="text-center py-12 space-y-4">
+                <CheckCircle2 className="w-14 h-14 text-emerald-500 mx-auto" />
+                <h3 className="font-display text-2xl font-bold text-[var(--text-main)]">Ticket Logged!</h3>
+                <p className="text-sm text-[var(--text-muted)] font-normal max-w-sm mx-auto leading-relaxed">
+                  We have logged your ticket and sent a confirmation to <strong className="text-[var(--text-main)]">{formData.email}</strong>. Our support team will assist you shortly.
                 </p>
                 <button
                   onClick={() => {
                     setIsSubmitted(false);
                     setFormData({ email: '', subject: '', message: '' });
                   }}
-                  className="mt-4 px-4 py-2 text-xs font-bold text-[#0082CA] hover:underline cursor-pointer"
+                  className="mt-4 px-5 py-2.5 text-sm font-bold text-[#0082CA] hover:underline cursor-pointer"
                 >
                   Submit another inquiry
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-5">
                 {errorMsg && (
-                  <div className="p-3 text-xs bg-red-500/10 text-red-400 border border-red-500/20 rounded-lg border border-red-200">
+                  <div className="p-3.5 text-sm bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20 rounded-xl font-medium">
                     {errorMsg}
                   </div>
                 )}
 
                 <div>
-                  <label className="text-xs font-bold text-[var(--text-main)] block mb-1">Your Email Address *</label>
+                  <label className="block text-xs sm:text-sm font-bold text-[var(--text-main)] mb-1.5">
+                    Your Email Address *
+                  </label>
                   <input
                     type="email"
                     name="email"
@@ -107,12 +109,14 @@ export default function SupportPage() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="name@company.com"
-                    className="w-full text-xs p-3 border border-[var(--border-strong)] rounded-lg focus:outline-none focus:border-[#0082CA]"
+                    className="w-full px-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] focus:border-[#0082CA] rounded-xl text-sm text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-[var(--text-main)] block mb-1">Subject / Order ID *</label>
+                  <label className="block text-xs sm:text-sm font-bold text-[var(--text-main)] mb-1.5">
+                    Subject / Order ID *
+                  </label>
                   <input
                     type="text"
                     name="subject"
@@ -120,12 +124,14 @@ export default function SupportPage() {
                     value={formData.subject}
                     onChange={handleChange}
                     placeholder="e.g. Order #MW-2001 or Question about 350 GSM Finish"
-                    className="w-full text-xs p-3 border border-[var(--border-strong)] rounded-lg focus:outline-none focus:border-[#0082CA]"
+                    className="w-full px-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] focus:border-[#0082CA] rounded-xl text-sm text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-[var(--text-main)] block mb-1">Message Description *</label>
+                  <label className="block text-xs sm:text-sm font-bold text-[var(--text-main)] mb-1.5">
+                    Message Description *
+                  </label>
                   <textarea
                     rows={4}
                     name="message"
@@ -133,16 +139,16 @@ export default function SupportPage() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Explain your inquiry in detail..."
-                    className="w-full text-xs p-3 border border-[var(--border-strong)] rounded-lg focus:outline-none focus:border-[#0082CA]"
+                    className="w-full px-4 py-3 bg-[var(--bg-subtle)] border border-[var(--border)] focus:border-[#0082CA] rounded-xl text-sm text-[var(--text-main)] placeholder-[var(--text-faint)] focus:outline-none transition-colors resize-y"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 bg-[#0082CA] hover:bg-[#006da8] text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 cursor-pointer"
+                  className="w-full py-3.5 bg-[#0082CA] hover:bg-[#006EA8] text-white text-sm font-bold rounded-xl transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
-                  <Send className="w-3.5 h-3.5" />
+                  <Send className="w-4 h-4" />
                   <span>{isSubmitting ? 'Submitting...' : 'Send Support Request'}</span>
                 </button>
               </form>
@@ -151,41 +157,45 @@ export default function SupportPage() {
 
           {/* FAQ Column */}
           <div className="space-y-4">
-            <h2 className="text-lg font-black text-[var(--text-main)] flex items-center gap-2">
+            <h2 className="font-display text-xl sm:text-2xl font-bold text-[var(--text-main)] flex items-center gap-2">
               <FileQuestion className="w-5 h-5 text-[#0082CA]" /> Frequently Asked Questions
             </h2>
 
             <div className="space-y-3">
               {faqs.map((faq, i) => (
-                <div key={i} className="bg-[var(--bg-card)] p-4 rounded-xl border border-[var(--border)] shadow-2xs space-y-1.5">
-                  <h3 className="text-xs font-bold text-[var(--text-main)]">{faq.q}</h3>
-                  <p className="text-xs text-[var(--text-muted)] leading-relaxed font-normal">{faq.a}</p>
+                <div key={i} className="bg-[var(--bg-card)] p-4 sm:p-5 rounded-xl border border-[var(--border)] shadow-2xs space-y-2">
+                  <h3 className="text-sm sm:text-base font-bold text-[var(--text-main)]">{faq.q}</h3>
+                  <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-normal">{faq.a}</p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-blue-50/70 rounded-xl p-5 border border-blue-200 text-xs text-[var(--text-main)] space-y-2">
-              <span className="font-bold text-[#0082CA] block">Need to track an existing shipment?</span>
-              <p className="text-[var(--text-muted)] font-normal">Use our self-service order tracking dashboard for live courier transit status.</p>
+            <div className="bg-blue-50/70 dark:bg-blue-950/30 rounded-xl p-5 sm:p-6 border border-blue-200 dark:border-blue-900/60 text-xs sm:text-sm text-[var(--text-main)] space-y-2">
+              <span className="font-bold text-[#0082CA] block text-sm sm:text-base">Need to track an existing shipment?</span>
+              <p className="text-[var(--text-muted)] font-normal leading-relaxed">Use our self-service order tracking dashboard for live courier transit status.</p>
               <Link
                 href="/track-order"
-                className="inline-flex items-center gap-1 font-bold text-[#0082CA] hover:underline pt-1"
+                className="inline-flex items-center gap-1.5 font-bold text-[#0082CA] hover:underline pt-1 text-sm"
               >
-                Track My Order <ArrowRight className="w-3.5 h-3.5" />
+                Track My Order <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
-            <div className="bg-[var(--bg-card)] rounded-xl p-5 border border-[var(--border)] text-xs text-[var(--text-main)] space-y-3">
-              <span className="font-bold text-[var(--text-main)] block">Direct Support Helpline</span>
+            <div className="bg-[var(--bg-card)] rounded-xl p-5 sm:p-6 border border-[var(--border)] text-xs sm:text-sm text-[var(--text-main)] space-y-3 shadow-2xs">
+              <span className="font-bold text-[var(--text-main)] block text-sm sm:text-base">Direct Support Helpline</span>
               <p className="text-[var(--text-muted)] font-normal">Connect directly with our pre-press customer assistance desk:</p>
-              <div className="space-y-2 pt-1 font-bold text-[#0082CA]">
-                <div className="flex items-center gap-2 text-[var(--text-main)]">
+              <div className="space-y-2.5 pt-1 font-bold">
+                <div className="flex items-center gap-2.5 text-sm sm:text-base text-[var(--text-main)]">
                   <Phone className="w-4 h-4 text-[#0082CA] shrink-0" />
-                  <span>{settings?.supportPhone || '1800-PRINT-NOW'}</span>
+                  <a href={`tel:${(settings?.supportPhone || '+91 7700054984').replace(/\s+/g, '')}`} className="hover:text-[#0082CA] transition-colors">
+                    {settings?.supportPhone || '+91 7700054984'}
+                  </a>
                 </div>
-                <div className="flex items-center gap-2 text-[var(--text-main)]">
+                <div className="flex items-center gap-2.5 text-sm sm:text-base text-[var(--text-main)]">
                   <Mail className="w-4 h-4 text-[#0082CA] shrink-0" />
-                  <span className="break-all">{settings?.supportEmail || 'imagemazaprintwala@gmail.com'}</span>
+                  <a href={`mailto:${settings?.supportEmail || 'imagemazaprintwala@gmail.com'}`} className="break-all text-[#0082CA] hover:underline">
+                    {settings?.supportEmail || 'imagemazaprintwala@gmail.com'}
+                  </a>
                 </div>
               </div>
             </div>

@@ -56,6 +56,25 @@ export default async function sitemap() {
         });
       });
     });
+    // Product Routes
+    try {
+      const prodRes = await serverApi.get('/products?limit=500', 86400);
+      const products = prodRes?.data?.products || prodRes?.products || [];
+      products.forEach((prod) => {
+        const prodSlug = prod.slug || prod._id;
+        if (prodSlug) {
+          routes.push({
+            url: `${baseUrl}/products/${prodSlug}`,
+            lastModified: prod.updatedAt ? new Date(prod.updatedAt) : new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+            alternates: getAlternates(`/products/${prodSlug}`)
+          });
+        }
+      });
+    } catch (e) {
+      console.warn('Could not fetch products for sitemap:', e.message);
+    }
   } catch (error) {
     console.error('Failed to fetch categories for sitemap:', error);
   }

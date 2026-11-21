@@ -50,7 +50,7 @@ export default function Footer() {
     },
     staleTime: 5 * 60 * 1000,
   });
-  const storePhone = settingsData?.supportPhone || '1800-PRINT-NOW';
+  const storePhone = settingsData?.supportPhone || '+91 7700054984';
   const storeEmail = settingsData?.supportEmail || 'imagemazaprintwala@gmail.com';
 
   const [openSection, setOpenSection] = useState(null);
@@ -182,13 +182,13 @@ export default function Footer() {
               <li>
                 <div className="pt-2 flex items-start justify-start gap-2">
                   <Phone className="w-4 h-4 shrink-0 text-[#0082CA] mt-0.5" />
-                  <span className="text-[var(--text-main)] font-bold">{storePhone}</span>
+                  <a href={`tel:${storePhone.replace(/\s+/g, '')}`} className="text-[var(--text-main)] hover:text-[#0082CA] font-bold transition-colors">{storePhone}</a>
                 </div>
               </li>
               <li>
                 <div className="flex items-start justify-start gap-2">
                   <Mail className="w-4 h-4 shrink-0 text-[#0082CA] mt-0.5" />
-                  <span className="text-[var(--text-main)] font-bold break-all">{storeEmail}</span>
+                  <a href={`mailto:${storeEmail}`} className="text-[var(--text-main)] hover:text-[#0082CA] font-bold break-all transition-colors">{storeEmail}</a>
                 </div>
               </li>
             </ul>

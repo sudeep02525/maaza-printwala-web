@@ -11,12 +11,6 @@ export default function PersonalizedRows() {
   const [isMounted, setIsMounted] = useState(false);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   
-  // Mock recently customized templates
-  const RECENTLY_CUSTOMIZED = [
-    { id: 1, name: 'My Corporate Card v2', category: 'Business Card', date: 'Edited 2 hrs ago', image: 'https://images.unsplash.com/photo-1574751508226-f40445d31599?auto=format&fit=crop&w=400&q=80' },
-    { id: 2, name: 'Diwali Gifting Box', category: 'Packaging', date: 'Edited yesterday', image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=400&q=80' },
-  ];
-
   useEffect(() => {
     setIsMounted(true);
     const stored = localStorage.getItem('recentlyViewedProducts');
@@ -30,8 +24,8 @@ export default function PersonalizedRows() {
 
   if (!isMounted) return null;
 
-  // Don't render if there's no data
-  if (recentlyViewed.length === 0 && RECENTLY_CUSTOMIZED.length === 0) return null;
+  // Only render when the user has actually viewed products
+  if (recentlyViewed.length === 0) return null;
 
   return (
     <section className="py-12 bg-[var(--bg-page)] border-t border-[var(--border)]">

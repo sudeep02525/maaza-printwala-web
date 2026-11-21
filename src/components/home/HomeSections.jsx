@@ -76,7 +76,7 @@ export const CorporateSection = ({ products = [] }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent p-8 flex flex-col justify-end">
               <h3 className="text-3xl font-extrabold text-white mb-3">{title}</h3>
               <p className="text-white/80 text-sm mb-6">{desc}</p>
-              <Link href="/corporate-gifts" className="w-fit px-6 py-2.5 bg-[var(--bg-card)] text-[var(--text-main)] font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
+              <Link href="/products?search=corporate" className="w-fit px-6 py-2.5 bg-[var(--bg-card)] text-[var(--text-main)] font-bold rounded-lg text-sm hover:bg-[#0082CA] hover:text-white transition-colors">
                 {btn}
               </Link>
             </div>

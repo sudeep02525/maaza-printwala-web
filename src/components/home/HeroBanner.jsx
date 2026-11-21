@@ -59,7 +59,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/corporate-gifts" className="relative w-full h-full block">
+                <Link href="/products?search=corporate" className="relative w-full h-full block">
                   <Image 
                     src={corpGiftingBanner} 
                     alt="Corporate Gifting" 
@@ -86,7 +86,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/visiting-cards" className="relative w-full h-full block">
+                <Link href="/business-printing" className="relative w-full h-full block">
                   <Image 
                     src={visitingCardsBanner} 
                     alt="Business Cards" 

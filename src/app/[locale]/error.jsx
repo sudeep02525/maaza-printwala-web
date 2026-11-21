@@ -202,13 +202,13 @@ export default function ErrorPage({ error, reset }) {
             <span>Support: imagemazaprintwala@gmail.com</span>
           </div>
           <a
-            href="https://wa.me/919876543210?text=Hello%20Maaza%20Printwala%20Team%2C%20I%20faced%20an%20issue%20loading%20the%20website."
+            href="https://wa.me/917700054984?text=Hello%20Maza%20Printwala%20Team%2C%20I%20faced%20an%20issue%20loading%20the%20website."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 font-bold hover:bg-emerald-500/20 transition-colors"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            <span>WhatsApp Support</span>
+            <span>WhatsApp (+91 7700054984)</span>
           </a>
         </div>
 

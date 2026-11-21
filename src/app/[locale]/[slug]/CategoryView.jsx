@@ -4,11 +4,11 @@ import { getImageUrl } from '@/utils/getImageUrl.js';
 import React, { useState, useEffect, Suspense, useMemo, use } from 'react';
 import { Link, useRouter, usePathname } from '@/i18n/routing.js';
 import { useSearchParams, useParams, notFound } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Package, Filter, Search, X, SlidersHorizontal, ArrowUpDown, 
-  LayoutGrid, List as ListIcon, Star, Eye, ShoppingCart, ChevronDown, ChevronRight, CheckCircle2, ShieldCheck, Plus, Minus
+  LayoutGrid, List as ListIcon, Star, Eye, ShoppingCart, ChevronDown, ChevronRight, CheckCircle2, ShieldCheck, Plus, Minus, RotateCcw
 } from 'lucide-react';
 import axiosInstance from '@/services/axiosInstance.js';
 import DOMPurify from 'isomorphic-dompurify';
@@ -57,12 +57,18 @@ function QuickViewModal({ product, onClose }) {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight mb-2">{product.name}</h2>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-sm font-bold text-[var(--text-main)]">4.9</span>
-                <span className="text-xs text-[var(--text-muted)]">(128 Reviews)</span>
-              </div>
-              <div className="w-1 h-1 rounded-full bg-[var(--border-strong)]" />
+              {product.rating > 0 ? (
+                <>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <span className="text-sm font-bold text-[var(--text-main)]">{product.rating}</span>
+                    {product.numReviews > 0 && (
+                      <span className="text-xs text-[var(--text-muted)]">({product.numReviews} Reviews)</span>
+                    )}
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-[var(--border-strong)]" />
+                </>
+              ) : null}
               <span className="text-sm font-bold text-[#0082CA]">From ₹{product.basePrice}</span>
             </div>
 
@@ -169,24 +175,35 @@ export function CategoryContent({ subSlug }) {
     };
   }, [showMobileFilters]);
 
+  const queryClient = useQueryClient();
   const selectedCategorySlug = params?.slug || '';
   const activeSubcategory = searchParams.get('sub') || '';
   const searchTerm = searchParams.get('search') || '';
 
-  const { data: activeCatObj, isLoading: catLoading } = useQuery({
+  const {
+    data: activeCatObj,
+    isLoading: catLoading,
+    isError: catIsError,
+    error: catError,
+    refetch: refetchCategory
+  } = useQuery({
     queryKey: ['category', selectedCategorySlug],
     queryFn: async () => {
       if (!selectedCategorySlug) return null;
-      try {
-        const res = await axiosInstance.get(`/categories/${selectedCategorySlug}`);
-        return res.data?.category || null;
-      } catch (e) {
-        return null;
-      }
-    }
+      const res = await axiosInstance.get(`/categories/${selectedCategorySlug}`);
+      return res.data?.category || null;
+    },
+    enabled: Boolean(selectedCategorySlug),
+    retry: 1,
   });
 
-  if (!catLoading && !activeCatObj) {
+  // Only true 404 from server means the category genuinely does not exist
+  const isMissing = catIsError
+    ? catError?.response?.status === 404
+    : (!catLoading && !activeCatObj);
+
+  if (!catLoading && isMissing) {
+    queryClient.invalidateQueries({ queryKey: ['categories'] });
     notFound();
   }
 
@@ -518,7 +535,25 @@ export function CategoryContent({ subSlug }) {
 
 
               {/* Product Grid / List */}
-              {!isMounted || prodLoading ? (
+              {catIsError && !isMissing ? (
+                <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-12 text-center shadow-sm flex flex-col items-center justify-center min-h-[400px]">
+                  <div className="w-14 h-14 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mb-4">
+                    <RotateCcw className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[var(--text-main)] mb-2">
+                    {locale === 'hi' ? 'श्रेणी लोड नहीं हो सकी' : locale === 'mr' ? 'श्रेणी लोड होऊ शकली नाही' : 'Unable to Load Category'}
+                  </h3>
+                  <p className="text-sm text-[var(--text-muted)] max-w-md mx-auto mb-6">
+                    {locale === 'hi' ? 'सर्वर से कनेक्ट करने में समस्या हुई। कृपया दोबारा प्रयास करें।' : locale === 'mr' ? 'सर्व्हरशी कनेक्ट करताना समस्या आली. कृपया पुन्हा प्रयत्न करा.' : 'We encountered an issue connecting to the server. Please check your connection and try again.'}
+                  </p>
+                  <button
+                    onClick={() => refetchCategory()}
+                    className="px-6 py-2.5 bg-[#0082CA] hover:bg-[#0068A2] text-white font-bold rounded-xl transition-all shadow-sm cursor-pointer"
+                  >
+                    {locale === 'hi' ? 'दोबारा कोशिश करें' : locale === 'mr' ? 'पुन्हा प्रयत्न करा' : 'Try Again'}
+                  </button>
+                </div>
+              ) : !isMounted || prodLoading ? (
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                   {[1, 2, 3, 4, 5, 6].map((i) => <Skeleton key={i} className="h-[380px] rounded-lg" />)}
                 </div>

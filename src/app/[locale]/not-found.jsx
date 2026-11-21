@@ -56,9 +56,9 @@ export default function NotFoundPage() {
           </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {[
-              { label: 'Visiting Cards', href: '/visiting-cards' },
-              { label: 'Custom Apparel', href: '/custom-apparel' },
-              { label: 'Signage & Banners', href: '/signage-banners' },
+              { label: 'Visiting Cards', href: '/business-printing' },
+              { label: 'Custom Apparel', href: '/products?search=apparel' },
+              { label: 'Signage & Banners', href: '/products?search=banner' },
               { label: 'Packaging Boxes', href: '/packaging' },
               { label: 'Labels & Stickers', href: '/labels-stickers' },
             ].map((cat) => (
