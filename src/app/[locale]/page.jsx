@@ -70,9 +70,7 @@ export default async function HomePage({ params }) {
   const baseProducts = prodData?.data?.products || [];
   const getSlice = (start, length = 8) => {
     if (!baseProducts || baseProducts.length === 0) return [];
-    const sliced = baseProducts.slice(start, start + length);
-    // If start is beyond length, fall back to initial items if available
-    return sliced.length > 0 ? sliced : baseProducts.slice(0, length);
+    return baseProducts.slice(start, start + length);
   };
 
   const bestSellers = getSlice(0, 8);
