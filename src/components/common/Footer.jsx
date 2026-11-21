@@ -61,13 +61,24 @@ export default function Footer() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: contactCms } = useQuery({
+    queryKey: ['cms-contact-info'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/contact_info');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const cmsSocial = footerCms?.social || {};
   const cmsColumns = Array.isArray(footerCms?.columns)
     ? footerCms.columns.filter((c) => c && c.title && (c.links || []).some((l) => l && l.label && l.href))
     : [];
 
-  const storePhone = footerCms?.supportPhone || settingsData?.supportPhone || '+91 7700054984';
-  const storeEmail = footerCms?.supportEmail || settingsData?.supportEmail || 'imagemazaprintwala@gmail.com';
+  const storePhone = contactCms?.supportPhone || footerCms?.supportPhone || settingsData?.supportPhone || '+91 7700054984';
+  const storeEmail = contactCms?.supportEmail || footerCms?.supportEmail || settingsData?.supportEmail || 'imagemazaprintwala@gmail.com';
+  const rawAddress = [contactCms?.addressLine1, contactCms?.addressLine2, contactCms?.city, contactCms?.state, contactCms?.pincode].filter(Boolean).join(', ');
+  const storeAddress = contactCms?.physicalAddress || (rawAddress.length > 5 ? rawAddress : 'Commercial Printing Hub, Mumbai, India 400001');
 
   const [openSection, setOpenSection] = useState(null);
 
@@ -195,7 +206,7 @@ export default function Footer() {
             <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
               <li><Link href="/support" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'सहायता केंद्र / अक्सर पूछे जाने वाले प्रश्न' : locale === 'mr' ? 'मदत केंद्र / वारंवार विचारले जाणारे प्रश्न' : 'Help Center / FAQs'}</Link></li>
               <li><Link href="/track-order" className="hover:text-[#0082CA] transition-colors">{t('header.trackOrder')}</Link></li>
-              <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.returnPolicy')}</Link></li>
+              <li><Link href="/refund-policy" className="hover:text-[#0082CA] transition-colors">{t('footer.returnPolicy')}</Link></li>
               <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'कॉर्पोरेट कोटेशन' : locale === 'mr' ? 'कॉर्पोरेट कोटेशन' : 'Corporate Quotations'}</Link></li>
               <li>
                 <div className="pt-2 flex items-start justify-start gap-2">
@@ -270,8 +281,9 @@ export default function Footer() {
                 onToggle={() => toggleSection('legal')}
               >
                 <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
-                  <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.privacy')}</Link></li>
-                  <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.terms')}</Link></li>
+                  <li><Link href="/privacy" className="hover:text-[#0082CA] transition-colors">{t('footer.privacy')}</Link></li>
+                  <li><Link href="/terms" className="hover:text-[#0082CA] transition-colors">{t('footer.terms')}</Link></li>
+                  <li><Link href="/shipping-policy" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'शिपिंग नीति' : locale === 'mr' ? 'शिपिंग धोरण' : 'Shipping Policy'}</Link></li>
                 </ul>
               </FooterAccordionItem>
             </div>
@@ -284,7 +296,7 @@ export default function Footer() {
           
           <div className="text-xs text-[var(--text-muted)] font-medium text-center md:text-left">
             <p>© {new Date().getFullYear()} Maza Printwala. {locale === 'hi' ? 'सर्वाधिकार सुरक्षित।' : locale === 'mr' ? 'सर्व हक्क राखीव.' : 'All rights reserved.'}</p>
-            <p className="mt-1 text-[var(--text-faint)]">Commercial Printing Hub, Mumbai, India 400001</p>
+            <p className="mt-1 text-[var(--text-faint)]">{storeAddress}</p>
           </div>
 
           {/* Payment Icons */}

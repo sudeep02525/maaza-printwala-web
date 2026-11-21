@@ -51,6 +51,15 @@ export default function Header() {
     }
   });
 
+  const { data: contactCms } = useQuery({
+    queryKey: ['cms-contact-info'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/contact_info');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const categories = Array.isArray(categoriesData) ? categoriesData : (categoriesData?.data || categoriesData?.categories || []);
 
   const changeLanguage = (nextLocale) => {
@@ -490,7 +499,7 @@ export default function Header() {
                   {t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}
                 </p>
                 <p className="text-[11px] text-[var(--text-muted)] font-medium whitespace-nowrap mt-0.5">
-                  {t.has('header.standardBusinessHours') ? t('header.standardBusinessHours') : 'Mon-Sat 10am-7pm'}
+                  {contactCms?.workingHours || contactCms?.businessHours || (t.has('header.standardBusinessHours') ? t('header.standardBusinessHours') : 'Mon-Sat 10am-7pm')}
                 </p>
               </div>
             </Link>
@@ -826,8 +835,8 @@ export default function Header() {
                 <PhoneCall className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs font-bold text-[var(--text-main)]">+91 7700054984</p>
-                <p className="text-[11px] text-[var(--text-muted)] font-medium">Mon-Sat 10am-7pm</p>
+                <p className="text-xs font-bold text-[var(--text-main)]">{contactCms?.supportPhone || '+91 7700054984'}</p>
+                <p className="text-[11px] text-[var(--text-muted)] font-medium">{contactCms?.workingHours || contactCms?.businessHours || 'Mon-Sat 10am-7pm'}</p>
               </div>
             </Link>
           </div>

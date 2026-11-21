@@ -67,6 +67,14 @@ export default async function HomePage({ params }) {
   const categories = catData?.data?.categories || [];
   const cmsHero = cmsData?.data?.content?.find((c) => c.key === 'homepage_hero')?.content;
   const cmsBanners = cmsData?.data?.content?.find((c) => c.key === 'homepage_banners')?.content?.banners || [];
+  const cmsTrust = cmsData?.data?.content?.find((c) => c.key === 'homepage_trust')?.content;
+  const cmsFaqDoc = cmsData?.data?.content?.find((c) => c.key === 'homepage_faq');
+  const rawCmsFaqs = cmsFaqDoc?.content?.items;
+  const cmsFaqs = Array.isArray(rawCmsFaqs)
+    ? rawCmsFaqs
+        .filter((f) => f && f.active !== false && f.question?.trim() && f.answer?.trim())
+        .map((f) => ({ q: f.question.trim(), a: f.answer.trim() }))
+    : [];
   
   // Create product arrays for sections without duplicate repetitions
   const baseProducts = prodData?.data?.products || [];
@@ -88,7 +96,7 @@ export default async function HomePage({ params }) {
     <div className="bg-[var(--bg-page)] min-h-screen font-sans overflow-x-hidden">
       
       {/* 3. HERO & TRUST STRIP */}
-      <HeroBanner cmsHero={cmsHero} />
+      <HeroBanner cmsHero={cmsHero} cmsTrust={cmsTrust} />
 
       {/* 3b. PROMOTIONAL BANNERS (admin CMS) - hidden until content exists */}
       <CmsBanners banners={cmsBanners} />
@@ -153,7 +161,7 @@ export default async function HomePage({ params }) {
       <section className="py-10 bg-[var(--bg-card)]">
         <FadeIn className="w-full max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-[28px] font-bold text-[var(--text-main)] mb-6 text-left">{tHome('faq')} (FAQs)</h2>
-          <FaqAccordion faqs={[
+          <FaqAccordion faqs={cmsFaqs.length > 0 ? cmsFaqs : [
             { 
               q: locale === 'hi' ? 'Maza Printwala क्या सेवाएँ प्रदान करता है?' : locale === 'mr' ? 'Maza Printwala कोणत्या सेवा देते?' : 'What services does Maza Printwala offer?', 
               a: locale === 'hi' ? 'हम व्यवसाय मुद्रण, कस्टम परिधान, पैकेजिंग और बहुत कुछ प्रदान करते हैं।' : locale === 'mr' ? 'आम्ही व्यवसाय छपाई, सानुकूल पोशाख, पॅकेजिंग आणि बरेच काही प्रदान करतो.' : 'We offer a wide range of services including business printing, custom apparel, packaging, corporate gifts, and personalized items.' 

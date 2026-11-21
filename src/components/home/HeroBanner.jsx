@@ -3,15 +3,26 @@
 import React from 'react';
 import { Link } from '@/i18n/routing.js';
 import Image from 'next/image';
-import { ShieldCheck, Star, Zap, CreditCard } from 'lucide-react';
+import { ShieldCheck, Star, Zap, CreditCard, Truck, CheckCircle2, Clock, Headphones } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+
+const TRUST_ICON_MAP = {
+  ShieldCheck,
+  Zap,
+  Star,
+  CreditCard,
+  Truck,
+  CheckCircle2,
+  Clock,
+  Headphones,
+};
 
 const HERO_BANNER_MAIN = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262687/maaza-printwala/images/hero_banner_main.jpg';
 const CORP_GIFTING_BANNER = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262681/maaza-printwala/images/corp_gifting_banner.jpg';
 const VISITING_CARDS_BANNER = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262734/maaza-printwala/images/visiting_cards_banner.jpg';
 
-export default function HeroBanner({ cmsHero }) {
+export default function HeroBanner({ cmsHero, cmsTrust }) {
   const tHero = useTranslations('hero');
   const tTrust = useTranslations('trustStrip');
 
@@ -124,31 +135,51 @@ export default function HeroBanner({ cmsHero }) {
       <div className="bg-[var(--bg-subtle)] border-y border-[var(--border)] py-8">
         <div className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-4 divide-x-0 md:divide-x md:divide-[var(--border)]">
-            
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} className="flex flex-col items-center text-center px-4">
-              <ShieldCheck className="w-8 h-8 text-[var(--text-main)] mb-3" />
-              <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('qualityTitle')}</h4>
-              <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('qualityDesc')}</p>
-            </motion.div>
-            
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }} className="flex flex-col items-center text-center px-4">
-              <Zap className="w-8 h-8 text-[var(--text-main)] mb-3" />
-              <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('fastTitle')}</h4>
-              <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('fastDesc')}</p>
-            </motion.div>
-            
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.3 }} className="flex flex-col items-center text-center px-4">
-              <Star className="w-8 h-8 text-[var(--text-main)] mb-3" />
-              <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('satisfactionTitle')}</h4>
-              <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('satisfactionDesc')}</p>
-            </motion.div>
-            
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.4 }} className="flex flex-col items-center text-center px-4">
-              <CreditCard className="w-8 h-8 text-[var(--text-main)] mb-3" />
-              <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('secureTitle')}</h4>
-              <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('secureDesc')}</p>
-            </motion.div>
-
+            {cmsTrust?.items && cmsTrust.items.length > 0 ? (
+              cmsTrust.items.map((item, idx) => {
+                const IconComp = TRUST_ICON_MAP[item.icon] || ShieldCheck;
+                return (
+                  <motion.div
+                    key={`trust-${idx}`}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.1 * (idx + 1) }}
+                    className="flex flex-col items-center text-center px-4"
+                  >
+                    <IconComp className="w-8 h-8 text-[var(--text-main)] mb-3" />
+                    <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{item.title}</h4>
+                    <p className="text-xs text-[var(--text-muted)] font-medium">{item.description}</p>
+                  </motion.div>
+                );
+              })
+            ) : (
+              <>
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} className="flex flex-col items-center text-center px-4">
+                  <ShieldCheck className="w-8 h-8 text-[var(--text-main)] mb-3" />
+                  <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('qualityTitle')}</h4>
+                  <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('qualityDesc')}</p>
+                </motion.div>
+                
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }} className="flex flex-col items-center text-center px-4">
+                  <Zap className="w-8 h-8 text-[var(--text-main)] mb-3" />
+                  <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('fastTitle')}</h4>
+                  <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('fastDesc')}</p>
+                </motion.div>
+                
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.3 }} className="flex flex-col items-center text-center px-4">
+                  <Star className="w-8 h-8 text-[var(--text-main)] mb-3" />
+                  <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('satisfactionTitle')}</h4>
+                  <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('satisfactionDesc')}</p>
+                </motion.div>
+                
+                <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.4 }} className="flex flex-col items-center text-center px-4">
+                  <CreditCard className="w-8 h-8 text-[var(--text-main)] mb-3" />
+                  <h4 className="font-bold text-[var(--text-main)] text-sm mb-1">{tTrust('secureTitle')}</h4>
+                  <p className="text-xs text-[var(--text-muted)] font-medium">{tTrust('secureDesc')}</p>
+                </motion.div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -1,13 +1,31 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { HelpCircle, Mail, MessageSquare, Phone, Send, CheckCircle2, FileQuestion, ArrowRight } from 'lucide-react';
+import { HelpCircle, Mail, MessageSquare, Phone, Send, CheckCircle2, FileQuestion, ArrowRight, MapPin, Clock } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/services/axiosInstance.js';
 import { useSettingsStore } from '@/store/settingsStore.js';
 import { Link } from '@/i18n/routing.js';
 
 export default function SupportPage() {
   const { settings, fetchSettings } = useSettingsStore();
+
+  const { data: contactCms } = useQuery({
+    queryKey: ['cms-contact-info'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/contact_info');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const supportPhone = contactCms?.supportPhone || settings?.supportPhone || '+91 7700054984';
+  const whatsappPhone = contactCms?.whatsappNumber || contactCms?.whatsappPhone || supportPhone;
+  const supportEmail = contactCms?.supportEmail || settings?.supportEmail || 'imagemazaprintwala@gmail.com';
+  const businessHours = contactCms?.workingHours || contactCms?.businessHours || 'Mon - Sat: 9:00 AM - 7:00 PM IST';
+  const rawAddress = [contactCms?.addressLine1, contactCms?.addressLine2, contactCms?.city, contactCms?.state, contactCms?.pincode].filter(Boolean).join(', ');
+  const physicalAddress = contactCms?.physicalAddress || (rawAddress.length > 5 ? rawAddress : 'Commercial Printing Hub, Mumbai, India 400001');
+  const gstin = contactCms?.gstin;
 
   useEffect(() => {
     fetchSettings();
@@ -187,16 +205,45 @@ export default function SupportPage() {
               <div className="space-y-2.5 pt-1 font-bold">
                 <div className="flex items-center gap-2.5 text-sm sm:text-base text-[var(--text-main)]">
                   <Phone className="w-4 h-4 text-[#0082CA] shrink-0" />
-                  <a href={`tel:${(settings?.supportPhone || '+91 7700054984').replace(/\s+/g, '')}`} className="hover:text-[#0082CA] transition-colors">
-                    {settings?.supportPhone || '+91 7700054984'}
+                  <a href={`tel:${supportPhone.replace(/\s+/g, '')}`} className="hover:text-[#0082CA] transition-colors">
+                    {supportPhone}
                   </a>
                 </div>
+                {whatsappPhone && (
+                  <div className="flex items-center gap-2.5 text-sm sm:text-base text-[var(--text-main)]">
+                    <MessageSquare className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <a
+                      href={`https://wa.me/${whatsappPhone.replace(/[^0-9]/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-emerald-500 transition-colors"
+                    >
+                      WhatsApp: {whatsappPhone}
+                    </a>
+                  </div>
+                )}
                 <div className="flex items-center gap-2.5 text-sm sm:text-base text-[var(--text-main)]">
                   <Mail className="w-4 h-4 text-[#0082CA] shrink-0" />
-                  <a href={`mailto:${settings?.supportEmail || 'imagemazaprintwala@gmail.com'}`} className="break-all text-[#0082CA] hover:underline">
-                    {settings?.supportEmail || 'imagemazaprintwala@gmail.com'}
+                  <a href={`mailto:${supportEmail}`} className="break-all text-[#0082CA] hover:underline">
+                    {supportEmail}
                   </a>
                 </div>
+              </div>
+
+              <div className="pt-3 border-t border-[var(--border)] space-y-1.5 text-xs text-[var(--text-muted)] font-medium">
+                <div className="flex items-start gap-2">
+                  <Clock className="w-3.5 h-3.5 text-[#0082CA] mt-0.5 shrink-0" />
+                  <span>Hours: <strong className="text-[var(--text-main)]">{businessHours}</strong></span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <MapPin className="w-3.5 h-3.5 text-[#0082CA] mt-0.5 shrink-0" />
+                  <span>Facility: <strong className="text-[var(--text-main)]">{physicalAddress}</strong></span>
+                </div>
+                {gstin && (
+                  <div className="text-[11px] text-[var(--text-muted)] pt-1">
+                    GSTIN: <span className="font-semibold text-[var(--text-main)]">{gstin}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

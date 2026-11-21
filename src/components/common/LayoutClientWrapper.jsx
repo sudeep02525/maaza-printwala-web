@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Header from '@/components/common/Header.jsx';
+import OfferStrip from '@/components/common/OfferStrip.jsx';
 import Footer from '@/components/common/Footer.jsx';
 import CookieConsentBanner from '@/components/common/CookieConsentBanner.jsx';
 import { AuthHeader, AuthFooter } from '@/components/common/AuthChrome.jsx';
@@ -54,6 +55,7 @@ export default function LayoutClientWrapper({ children }) {
 
   return (
     <>
+      <OfferStrip />
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
