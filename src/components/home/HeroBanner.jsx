@@ -48,14 +48,14 @@ export default function HeroBanner({ cmsHero }) {
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/10 to-transparent p-6 sm:p-12 flex flex-col justify-center">
-                  <h2 className="text-2xl sm:text-[34px] font-bold text-white leading-tight mb-2 max-w-md drop-shadow-md">
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/10 to-transparent p-5 sm:p-12 flex flex-col justify-center">
+                  <h2 className="text-xl sm:text-2xl lg:text-[34px] font-bold text-white leading-tight mb-2 max-w-[270px] sm:max-w-md drop-shadow-md">
                     {activeCmsSlide?.title || tHero('heading1')}
                   </h2>
-                  <p className="text-white text-sm font-medium mb-6 drop-shadow-sm">
+                  <p className="text-white text-xs sm:text-sm font-medium mb-4 sm:mb-6 drop-shadow-sm max-w-[270px] sm:max-w-md">
                     {activeCmsSlide?.subtitle || tHero('subheading1')}
                   </p>
-                  <span className="inline-block bg-[var(--bg-card)] text-[var(--text-main)] font-bold px-6 py-2.5 rounded-sm text-sm w-fit shadow-md hover:bg-[var(--hover)] transition-colors cursor-pointer">
+                  <span className="inline-block bg-[var(--bg-card)] text-[var(--text-main)] font-bold px-5 sm:px-6 py-2 sm:py-2.5 rounded-md text-xs sm:text-sm w-fit shadow-md hover:bg-[var(--hover)] transition-colors cursor-pointer">
                     {activeCmsSlide?.ctaText || tHero('explore')}
                   </span>
                 </div>
