@@ -61,6 +61,7 @@ export default function RootNotFound() {
               {[
                 { label: 'Visiting Cards', href: '/visiting-cards' },
                 { label: 'Custom Apparel', href: '/custom-apparel' },
+                { label: 'Signage & Banners', href: '/signage-banners' },
                 { label: 'Packaging', href: '/packaging' },
                 { label: 'Labels & Stickers', href: '/labels-stickers' },
               ].map((cat) => (
