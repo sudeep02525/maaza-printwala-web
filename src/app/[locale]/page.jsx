@@ -68,6 +68,8 @@ export default async function HomePage({ params }) {
   const cmsHero = cmsData?.data?.content?.find((c) => c.key === 'homepage_hero')?.content;
   const cmsBanners = cmsData?.data?.content?.find((c) => c.key === 'homepage_banners')?.content?.banners || [];
   const cmsTrust = cmsData?.data?.content?.find((c) => c.key === 'homepage_trust')?.content;
+  const cmsCategoryTiles = cmsData?.data?.content?.find((c) => c.key === 'homepage_categories')?.content;
+  const cmsHeadings = cmsData?.data?.content?.find((c) => c.key === 'homepage_headings')?.content;
   const cmsFaqDoc = cmsData?.data?.content?.find((c) => c.key === 'homepage_faq');
   const rawCmsFaqs = cmsFaqDoc?.content?.items;
   const cmsFaqs = Array.isArray(rawCmsFaqs)
@@ -105,14 +107,18 @@ export default async function HomePage({ params }) {
       <ExploreCategories categories={categories} />
 
       {/* 5. VISUAL CATEGORY BLOCKS (VistaPrint Square Style) */}
-      <VisualCategories />
+      <VisualCategories cmsCategoryTiles={cmsCategoryTiles} />
 
       <FeaturedSlider products={bestSellers} />
       
       {/* BEST SELLING (Standard Grid - 8 items = 2 complete 4-col rows) */}
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-          <SectionHeader title={tHome('bestSellers')} tButtons={tButtons} />
+          <SectionHeader
+            title={cmsHeadings?.bestSellersTitle || tHome('bestSellers')}
+            subtitle={cmsHeadings?.bestSellersSubtitle}
+            tButtons={tButtons}
+          />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {bestSellers.map((p, i) => <FadeIn key={`bs-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
@@ -126,7 +132,11 @@ export default async function HomePage({ params }) {
       {/* RECENTLY ADDED (Standard Grid - 8 items = 2 complete 4-col rows) */}
       <section className="py-14 bg-[var(--bg-page)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-          <SectionHeader title={tHome('newArrivals')} subtitle={locale === 'hi' ? 'नए टेम्प्लेट और उत्पाद' : locale === 'mr' ? 'नवीन टेम्पलेट्स आणि उत्पादने' : 'Fresh new templates and products'} tButtons={tButtons} />
+          <SectionHeader
+            title={cmsHeadings?.newArrivalsTitle || tHome('newArrivals')}
+            subtitle={cmsHeadings?.newArrivalsSubtitle || (locale === 'hi' ? 'नए टेम्प्लेट और उत्पाद' : locale === 'mr' ? 'नवीन टेम्पलेट्स आणि उत्पादने' : 'Fresh new templates and products')}
+            tButtons={tButtons}
+          />
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {newArrivals.map((p, i) => <FadeIn key={`new-${p._id || 'x'}-${i}`} delay={i * 0.05}><ProductCard product={p} /></FadeIn>)}
           </div>
@@ -138,7 +148,11 @@ export default async function HomePage({ params }) {
       {/* 17. POPULAR SEARCHES (SEO) */}
       <section className="py-10 bg-[var(--bg-subtle)]">
         <FadeIn className="w-full max-w-[1550px] mx-auto px-4 md:px-8">
-          <SectionHeader title={tHome('popularSearches')} linkText={null} tButtons={tButtons} />
+          <SectionHeader
+            title={cmsHeadings?.popularSearchesTitle || tHome('popularSearches')}
+            linkText={null}
+            tButtons={tButtons}
+          />
           <div className="flex flex-wrap gap-3">
             {getPopularSearches(locale).map((search, i) => (
               <FadeIn key={i} delay={i * 0.05} y={10}>

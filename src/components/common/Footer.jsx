@@ -70,6 +70,15 @@ export default function Footer() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: paymentCms } = useQuery({
+    queryKey: ['cms-payment-strip'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/payment_strip');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   const cmsSocial = footerCms?.social || {};
   const cmsColumns = Array.isArray(footerCms?.columns)
     ? footerCms.columns.filter((c) => c && c.title && (c.links || []).some((l) => l && l.label && l.href))
@@ -300,20 +309,54 @@ export default function Footer() {
           </div>
 
           {/* Payment Icons */}
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] hover:scale-105 transition-transform">
-              <CreditCard className="w-5 h-5 text-[var(--text-main)]" />
+          {paymentCms?.enabled !== false && (
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {paymentCms?.badges && paymentCms.badges.length > 0 ? (
+                <>
+                  <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] hover:scale-105 transition-transform">
+                    <CreditCard className="w-5 h-5 text-[var(--text-main)]" />
+                  </div>
+                  {paymentCms.badges
+                    .filter((b) => b && b.enabled)
+                    .map((badge) => {
+                      const badgeStyles = {
+                        visa: 'text-[#003A70] font-bold text-xs',
+                        mc: 'text-[#EB001B] font-bold italic text-xs',
+                        upi: 'text-[var(--text-main)] font-bold text-xs',
+                        rupay: 'text-[#0082CA] font-extrabold text-xs tracking-tight',
+                        netbanking: 'text-[var(--text-main)] font-semibold text-[10px]',
+                        cod: 'text-emerald-600 dark:text-emerald-400 font-bold text-[10px]',
+                      };
+                      return (
+                        <div
+                          key={badge.id}
+                          className={`flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 min-w-12 border border-[var(--border)] hover:scale-105 transition-transform tracking-tighter ${
+                            badgeStyles[badge.id] || 'text-[var(--text-main)] font-bold text-xs'
+                          }`}
+                        >
+                          {badge.label}
+                        </div>
+                      );
+                    })}
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] hover:scale-105 transition-transform">
+                    <CreditCard className="w-5 h-5 text-[var(--text-main)]" />
+                  </div>
+                  <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[#003A70] tracking-tighter hover:scale-105 transition-transform text-xs">
+                    VISA
+                  </div>
+                  <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[#EB001B] tracking-tighter italic hover:scale-105 transition-transform text-xs">
+                    MC
+                  </div>
+                  <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[var(--text-main)] tracking-tighter hover:scale-105 transition-transform text-xs">
+                    UPI
+                  </div>
+                </>
+              )}
             </div>
-            <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[#003A70] tracking-tighter hover:scale-105 transition-transform text-xs">
-              VISA
-            </div>
-            <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[#EB001B] tracking-tighter italic hover:scale-105 transition-transform text-xs">
-              MC
-            </div>
-            <div className="flex items-center justify-center bg-[var(--bg-card)] rounded px-2 shadow-sm h-8 w-12 border border-[var(--border)] font-bold text-[var(--text-main)] tracking-tighter hover:scale-105 transition-transform text-xs">
-              UPI
-            </div>
-          </div>
+          )}
 
         </div>
 
