@@ -4,11 +4,12 @@ import React from 'react';
 import { Link } from '@/i18n/routing.js';
 import Image from 'next/image';
 import { ShieldCheck, Star, Zap, CreditCard } from 'lucide-react';
-import heroBannerMain from '../../../public/images/hero_banner_main.png';
-import corpGiftingBanner from '../../../public/images/corp_gifting_banner.png';
-import visitingCardsBanner from '../../../public/images/visiting_cards_banner.png';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
+
+const HERO_BANNER_MAIN = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262687/maaza-printwala/images/hero_banner_main.jpg';
+const CORP_GIFTING_BANNER = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262681/maaza-printwala/images/corp_gifting_banner.jpg';
+const VISITING_CARDS_BANNER = 'https://res.cloudinary.com/kz2pddnr/image/upload/v1795262734/maaza-printwala/images/visiting_cards_banner.jpg';
 
 export default function HeroBanner({ cmsHero }) {
   const tHero = useTranslations('hero');
@@ -39,11 +40,10 @@ export default function HeroBanner({ cmsHero }) {
                   />
                 ) : (
                   <Image 
-                    src={heroBannerMain} 
+                    src={HERO_BANNER_MAIN} 
                     alt="Main Promotion" 
                     fill
                     priority
-                    placeholder="blur"
                     sizes="(max-width: 1024px) 100vw, 66vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -73,11 +73,10 @@ export default function HeroBanner({ cmsHero }) {
               >
                 <Link href="/products?search=corporate" className="relative w-full h-full block">
                   <Image 
-                    src={corpGiftingBanner} 
+                    src={CORP_GIFTING_BANNER} 
                     alt="Corporate Gifting" 
                     fill
                     priority
-                    placeholder="blur"
                     sizes="(max-width: 1024px) 100vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
@@ -100,11 +99,10 @@ export default function HeroBanner({ cmsHero }) {
               >
                 <Link href="/visiting-cards" className="relative w-full h-full block">
                   <Image 
-                    src={visitingCardsBanner} 
+                    src={VISITING_CARDS_BANNER} 
                     alt="Business Cards" 
                     fill
                     priority
-                    placeholder="blur"
                     sizes="(max-width: 1024px) 100vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />

@@ -19,7 +19,6 @@ import {
   Tag,
   Package,
   Sparkles,
-  Truck,
   TrendingUp,
   Sun,
   Moon,
@@ -719,16 +718,17 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center justify-between p-3 rounded bg-[var(--hover)] hover:bg-[#0082CA] text-[var(--text-main)] hover:text-white font-bold text-sm transition-colors group"
               >
-                <div className="flex items-center gap-2.5">
-                  <Grid className="w-4 h-4 text-[#0082CA] group-hover:text-white" />
-                  <span>{t('header.allProducts')}</span>
-                </div>
+                <span>{t('header.allProducts')}</span>
                 <ChevronRight className="w-4 h-4 text-[var(--text-faint)] group-hover:text-white" />
               </Link>
               
-              <Link href="/track-order" className="flex items-center gap-2 p-3 text-[var(--text-main)] hover:bg-[var(--bg-subtle)] rounded font-semibold text-sm transition-colors group">
-                <Truck className="w-4 h-4 text-amber-500" />
+              <Link
+                href="/track-order"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded hover:bg-[var(--bg-subtle)] text-[var(--text-main)] hover:text-[var(--text-main)] font-semibold text-sm transition-colors"
+              >
                 <span>{t('header.trackOrder')}</span>
+                <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
               </Link>
 
               {categories.map((cat) => (
