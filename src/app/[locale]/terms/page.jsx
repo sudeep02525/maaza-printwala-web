@@ -8,10 +8,14 @@ export const metadata = {
   description: 'Review our print manufacturing, artwork review, dispatch, and ordering terms of service at Maza Printwala.',
 };
 
-export default async function TermsOfServicePage() {
+export default async function TermsOfServicePage({ params }) {
+  const { locale } = await params;
   const cmsRes = await serverApi.get('/cms/key/policy_terms', 60).catch(() => null);
   const policy = cmsRes?.data?.content?.content;
-  const policyText = policy?.body || policy?.content;
+  const policyTitle = policy?.[`title_${locale}`] || policy?.title || (
+    locale === 'hi' ? 'सेवा की शर्तें' : locale === 'mr' ? 'सेवा अटी' : 'Terms of Service'
+  );
+  const policyText = policy?.[`body_${locale}`] || policy?.body || policy?.content;
   const hasCustomContent = Boolean(policyText && policyText.trim().length > 0);
 
   return (
@@ -25,7 +29,7 @@ export default async function TermsOfServicePage() {
             <span>Customer Agreement</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-            {policy?.title || 'Terms of Service'}
+            {policyTitle}
           </h1>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Effective Date: {policy?.lastUpdated || 'October 2026'}

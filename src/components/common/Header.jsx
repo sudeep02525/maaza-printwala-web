@@ -740,6 +740,24 @@ export default function Header() {
                 <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
               </Link>
 
+              <Link
+                href="/bulk-enquiry"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded hover:bg-[var(--bg-subtle)] text-[var(--text-main)] hover:text-[var(--text-main)] font-semibold text-sm transition-colors"
+              >
+                <span>{locale === 'hi' ? 'थोक प्रिंटिंग कोटेशन' : locale === 'mr' ? 'मोठी मागणी कोटेशन' : 'Bulk & Corporate Quote'}</span>
+                <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
+              </Link>
+
+              <Link
+                href="/about"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3 rounded hover:bg-[var(--bg-subtle)] text-[var(--text-main)] hover:text-[var(--text-main)] font-semibold text-sm transition-colors"
+              >
+                <span>{locale === 'hi' ? 'हमारे बारे में' : locale === 'mr' ? 'आमच्याबद्दल' : 'About Us'}</span>
+                <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
+              </Link>
+
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}

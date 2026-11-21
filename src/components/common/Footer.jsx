@@ -276,7 +276,8 @@ export default function Footer() {
               onToggle={() => toggleSection('company')}
             >
               <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium flex flex-col items-start">
-                <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{t('footer.about')}</Link></li>
+                <li><Link href="/about" className="hover:text-[#0082CA] transition-colors">{t('footer.about')}</Link></li>
+                <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'थोक मुद्रण पूछताछ' : locale === 'mr' ? 'मोठ्या प्रमाणावर चौकशी' : 'Bulk & Corporate Printing'}</Link></li>
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'करियर' : locale === 'mr' ? 'करिअर' : 'Careers'}</Link></li>
                 <li><Link href="/products" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'प्रेस और मीडिया' : locale === 'mr' ? 'प्रेस आणि मीडिया' : 'Press & Media'}</Link></li>
                 <li><Link href="/bulk-enquiry" className="hover:text-[#0082CA] transition-colors">{locale === 'hi' ? 'पार्टनर प्रोग्राम' : locale === 'mr' ? 'पार्टनर प्रोग्राम' : 'Partner Program'}</Link></li>

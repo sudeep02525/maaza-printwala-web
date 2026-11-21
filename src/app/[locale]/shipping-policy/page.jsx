@@ -8,10 +8,14 @@ export const metadata = {
   description: 'Understand shipping timelines, Pan-India courier partners, order tracking, and delivery terms for Maza Printwala.',
 };
 
-export default async function ShippingPolicyPage() {
+export default async function ShippingPolicyPage({ params }) {
+  const { locale } = await params;
   const cmsRes = await serverApi.get('/cms/key/policy_shipping', 60).catch(() => null);
   const policy = cmsRes?.data?.content?.content;
-  const policyText = policy?.body || policy?.content;
+  const policyTitle = policy?.[`title_${locale}`] || policy?.title || (
+    locale === 'hi' ? 'शिपिंग एवं डिलीवरी नीति' : locale === 'mr' ? 'शिपिंग आणि वितरण धोरण' : 'Shipping & Delivery Policy'
+  );
+  const policyText = policy?.[`body_${locale}`] || policy?.body || policy?.content;
   const hasCustomContent = Boolean(policyText && policyText.trim().length > 0);
 
   return (
@@ -25,7 +29,7 @@ export default async function ShippingPolicyPage() {
             <span>Pan-India Logistics</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-            {policy?.title || 'Shipping & Delivery Policy'}
+            {policyTitle}
           </h1>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Last updated: {policy?.lastUpdated || 'October 2026'}

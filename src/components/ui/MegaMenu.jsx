@@ -29,7 +29,37 @@ export default function MegaMenu() {
     }
   });
 
-  const categories = Array.isArray(categoriesData) ? categoriesData : (categoriesData?.data || categoriesData?.categories || []);
+  const { data: menuCmsData } = useQuery({
+    queryKey: ['cms-navigation-menu'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/navigation_menu');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const rawCategories = Array.isArray(categoriesData) ? categoriesData : (categoriesData?.data || categoriesData?.categories || []);
+
+  const categories = React.useMemo(() => {
+    if (!menuCmsData?.orderedSlugs || !Array.isArray(menuCmsData.orderedSlugs) || menuCmsData.orderedSlugs.length === 0) {
+      return rawCategories;
+    }
+    const slugMap = new Map(rawCategories.map(c => [c.slug, c]));
+    const ordered = [];
+    menuCmsData.orderedSlugs.forEach(slug => {
+      const cat = slugMap.get(slug);
+      if (cat && (!menuCmsData.hiddenSlugs || !menuCmsData.hiddenSlugs.includes(slug))) {
+        ordered.push(cat);
+        slugMap.delete(slug);
+      }
+    });
+    for (const [slug, cat] of slugMap.entries()) {
+      if (!menuCmsData.hiddenSlugs || !menuCmsData.hiddenSlugs.includes(slug)) {
+        ordered.push(cat);
+      }
+    }
+    return ordered;
+  }, [rawCategories, menuCmsData]);
 
   return (
     <nav className="bg-[var(--bg-subtle)] text-[var(--text-main)] text-sm border-t border-b border-[var(--border)] relative select-none">

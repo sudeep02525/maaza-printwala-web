@@ -8,10 +8,14 @@ export const metadata = {
   description: 'Learn how Maza Printwala protects your personal data and uses cookies to enhance your printing and design experience.',
 };
 
-export default async function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage({ params }) {
+  const { locale } = await params;
   const cmsRes = await serverApi.get('/cms/key/policy_privacy', 60).catch(() => null);
   const policy = cmsRes?.data?.content?.content;
-  const policyText = policy?.body || policy?.content;
+  const policyTitle = policy?.[`title_${locale}`] || policy?.title || (
+    locale === 'hi' ? 'गोपनीयता एवं कुकी नीति' : locale === 'mr' ? 'गोपनीयता आणि कुकी धोरण' : 'Privacy & Cookie Policy'
+  );
+  const policyText = policy?.[`body_${locale}`] || policy?.body || policy?.content;
   const hasCustomContent = Boolean(policyText && policyText.trim().length > 0);
 
   return (
@@ -25,7 +29,7 @@ export default async function PrivacyPolicyPage() {
             <span>Transparency & Compliance</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[var(--text-main)] tracking-tight">
-            {policy?.title || 'Privacy & Cookie Policy'}
+            {policyTitle}
           </h1>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
             Last updated: {policy?.lastUpdated || 'October 2026'}

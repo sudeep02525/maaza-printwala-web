@@ -74,8 +74,11 @@ export default async function HomePage({ params }) {
   const rawCmsFaqs = cmsFaqDoc?.content?.items;
   const cmsFaqs = Array.isArray(rawCmsFaqs)
     ? rawCmsFaqs
-        .filter((f) => f && f.active !== false && f.question?.trim() && f.answer?.trim())
-        .map((f) => ({ q: f.question.trim(), a: f.answer.trim() }))
+        .filter((f) => f && f.active !== false && (f[`question_${locale}`]?.trim() || f.question?.trim()))
+        .map((f) => ({
+          q: (f[`question_${locale}`] || f.question || '').trim(),
+          a: (f[`answer_${locale}`] || f.answer || '').trim(),
+        }))
     : [];
   
   // Create product arrays for sections without duplicate repetitions
