@@ -109,21 +109,6 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
     return priceResult?.quantity || quantity;
   };
 
-  // Demo fallback to fix missing category in DB
-  const demoProductToCategory = {
-    'premium-matte-visiting-card-30': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-standard-business-cards': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-glossy-visiting-card-11': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-spot-uv-visiting-card-2': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-gold-foil-visiting-card-23': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-textured-visiting-card-5': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-velvet-touch-visiting-card-24': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-transparent-visiting-card-6': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-square-visiting-card-7': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-rounded-corners-visiting-card-8': { slug: 'visiting-cards', name: 'Visiting Cards' },
-    'premium-die-cut-visiting-card-9': { slug: 'visiting-cards', name: 'Visiting Cards' },
-  };
-
   const productTranslations = {
     'Premium Matte Visiting Card 30': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 30', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 30' },
     'Premium Matte Visiting Card 10': { hi: 'प्रीमियम मैट विजिटिंग कार्ड 10', mr: 'प्रीमियम मॅट व्हिजिटिंग कार्ड 10' },
@@ -147,7 +132,7 @@ export function ProductDetailContent({ slug, fallbackCategorySlug, fallbackCateg
 
   const product = prodData?.data?.product || null;
 
-  const actualCategory = product?.category || demoProductToCategory[slug];
+  const actualCategory = product?.category;
 
   // 2. Fetch Schema
   const { data: schemaData, isLoading: schemaLoading } = useQuery({

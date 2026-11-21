@@ -108,9 +108,9 @@ export const WeddingSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'सुंदर निमंत्रण, सेव-द-डेट्स, और व्यक्तिगत रिटर्न गिफ़्ट्स।' : locale === 'mr' ? 'सुंदर आमंत्रणे, सेव-द-डेट्स आणि वैयक्तिकृत रिटर्न गिफ्ट्स.' : 'Elegant invitations, save-the-dates, and personalized return gifts.';
   const cards = [
-    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80", link: "/visiting-cards" },
-    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80", link: "/signage-banners" },
-    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80", link: "/corporate-gifts" }
+    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: getImageUrl('/images/products/v2_premium_card_1785948535781.png'), link: "/visiting-cards" },
+    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: getImageUrl('/images/products/standee_lifestyle_event.jpg'), link: "/signage-banners" },
+    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: getImageUrl('/images/corporate_welcome_kit.png'), link: "/corporate-gifts" }
   ];
 
   return (
@@ -152,7 +152,7 @@ export const CustomMerchSection = () => {
   const merch = [
     { name: locale === 'hi' ? "पोलो टी-शर्ट" : locale === 'mr' ? "पोलो टी-शर्ट" : "Polo T-Shirts", img: getImageUrl('/images/cat_polo_new_1785478171451.png'), link: "/custom-apparel/polo-t-shirts" },
     { name: locale === 'hi' ? "कॉटन टीज़" : locale === 'mr' ? "कॉटन टीज़" : "Cotton Tees", img: getImageUrl('/images/cat_tshirt_new_1785478181285.png'), link: "/custom-apparel/t-shirts" },
-    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: getImageUrl('/images/cat_mugs_new_1785478141544.png'), link: "/drinkware/coffee-mugs" },
+    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: getImageUrl('/images/cat_mugs_new_1785478141544.png'), link: "/corporate-gifts/coffee-mugs" },
     { name: locale === 'hi' ? "इको पैकेजिंग" : locale === 'mr' ? "इको पॅकेजिंग" : "Eco Packaging", img: getImageUrl('/images/cat_packaging_1785433687115.png'), link: "/packaging" }
   ];
 

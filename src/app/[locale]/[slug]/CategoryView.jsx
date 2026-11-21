@@ -177,7 +177,7 @@ export function CategoryContent({ subSlug }) {
 
   const queryClient = useQueryClient();
   const selectedCategorySlug = params?.slug || '';
-  const activeSubcategory = searchParams.get('sub') || '';
+  const activeSubcategory = searchParams.get('sub') || subSlug || '';
   const searchTerm = searchParams.get('search') || '';
 
   const {

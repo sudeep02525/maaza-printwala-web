@@ -8,32 +8,7 @@ import axiosInstance from '@/services/axiosInstance.js';
 import { useTranslations, useLocale } from 'next-intl';
 import { slugify } from '@/lib/devkit';
 
-const demoFallbackProducts = {
-  'standard-cards': 'standard-card',
-  'premium-cards': 'premium-card',
-  'matte-cards': 'matte-card',
-  'glossy-cards': 'glossy-card',
-  'velvet-cards': 'velvet-card',
-  'kraft-cards': 'kraft-visiting-card',
-  'pearl-cards': 'premium-card',
-  'spot-uv-cards': 'spot-uv-card',
-  'raised-foil-cards': 'premium-card',
-  'rounded-corner-cards': 'rounded-visiting-card',
-  'square-cards': 'square-visiting-card',
-  'circle-cards': 'rounded-visiting-card',
-  'oval-cards': 'rounded-visiting-card',
-  'custom-shape-cards': 'diamond-visiting-card',
-  'transparent-cards': 'transparent-visiting-card',
-  'magnetic-cards': 'magnetic-visiting-card',
-  'qr-visiting-cards': 'qrcode-card',
-};
-
-const getDirectLink = (catSlug, subSlug) => {
-  if (demoFallbackProducts[subSlug]) {
-    return `/products/${demoFallbackProducts[subSlug]}`;
-  }
-  return `/${catSlug}/${subSlug}`;
-};
+const getDirectLink = (catSlug, subSlug) => `/${catSlug}/${subSlug}`;
 
 export default function MegaMenu() {
   const [activeCategory, setActiveCategory] = useState(null);

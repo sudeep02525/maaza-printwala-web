@@ -18,43 +18,28 @@ export default function TestimonialCarousel() {
     locale === 'mr' ? 'उच्च दर्जा, विश्वासार्ह डिलिव्हरी आणि पारदर्शक इनव्हॉइसिंगसह तुमच्या सर्व व्यावसायिक छपाईच्या गरजा.' :
     'Commercial print reliability, verified pre-flight checks, and nationwide dispatch built for growing enterprises.';
 
-  const stats = [
-    {
-      value: '50,000+',
-      label: locale === 'hi' ? 'सफलतापूर्वक मुद्रित ऑर्डर्स' : locale === 'mr' ? 'यशस्वीरित्या मुद्रित ऑर्डर्स' : 'Orders Printed',
-    },
-    {
-      value: '25,000+',
-      label: locale === 'hi' ? 'पिन कोड्स पर डिलीवरी' : locale === 'mr' ? 'पिन कोडवर डिलिव्हरी' : 'Pin Codes Covered',
-    },
-    {
-      value: '99.4%',
-      label: locale === 'hi' ? 'समय पर डिस्पैच दर' : locale === 'mr' ? 'वेळेवर डिस्पॅच दर' : 'On-Time Dispatch',
-    },
-    {
-      value: '100%',
-      label: locale === 'hi' ? 'गुणवत्ता आश्वासन गारंटी' : locale === 'mr' ? 'गुणवत्ता हमी' : 'Quality Guaranteed',
-    },
-  ];
-
   const pillars = [
     {
       icon: ShieldCheck,
+      badge: locale === 'hi' ? 'सटीक रंग' : locale === 'mr' ? 'अचूक रंग' : 'Precision Colors',
       title: locale === 'hi' ? 'सटीक CMYK प्रिंटिंग' : locale === 'mr' ? 'अचूक CMYK छपाई' : 'Calibrated CMYK Printing',
       desc: locale === 'hi' ? 'कैलिब्रेटेड डिजिटल और ऑफसेट तकनीक के साथ जीवंत रंग और प्रीमियम पेपर स्टॉक्स।' : locale === 'mr' ? 'कॅलिब्रेटेड डिजिटल आणि ऑफसेट तंत्रज्ञानासह चमकदार रंग आणि दर्जेदार कागद.' : 'Rigorous color accuracy, high-DPI resolution, and certified paper stocks for professional impressions.',
     },
     {
       icon: Truck,
+      badge: locale === 'hi' ? 'सुरक्षित डिलीवरी' : locale === 'mr' ? 'सुरक्षित डिलिव्हरी' : 'Tracked Transit',
       title: locale === 'hi' ? 'अखिल भारतीय एक्सप्रेस डिलीवरी' : locale === 'mr' ? 'अखिल भारतीय एक्सप्रेस डिलिव्हरी' : 'Pan-India Express Dispatch',
       desc: locale === 'hi' ? 'सुरक्षित पैकेजिंग और लाइव ट्रैकिंग के साथ पूरे भारत में तेज़ डिलीवरी।' : locale === 'mr' ? 'सुरक्षित पॅकेजिंग आणि थेट ट्रॅकिंगसह संपूर्ण भारतात जलद डिलिव्हरी.' : 'Transit-safe packaging and reliable surface/air courier integration covering metro & regional zones.',
     },
     {
       icon: FileText,
+      badge: locale === 'hi' ? '100% अनुपालक' : locale === 'mr' ? '100% अनुपालक' : '100% Compliant',
       title: locale === 'hi' ? 'त्वरित B2B GST इनवॉइस' : locale === 'mr' ? 'त्वरित B2B GST इनव्हॉइस' : 'Instant B2B GST Invoicing',
       desc: locale === 'hi' ? 'अपनी कंपनी के इनपुट टैक्स क्रेडिट (ITC) के लिए वैध GST इनवॉइस तुरंत प्राप्त करें।' : locale === 'mr' ? 'तुमच्या कंपनीच्या इनपुट टॅक्स क्रेडिटसाठी (ITC) वैध GST इनव्हॉइस लगेच मिळवा.' : 'Full tax compliance with automatic GSTIN capture for complete input tax credit on corporate spending.',
     },
     {
       icon: Headphones,
+      badge: locale === 'hi' ? 'विशेषज्ञ सहायता' : locale === 'mr' ? 'तज्ज्ञ सहाय्य' : 'Expert Help',
       title: locale === 'hi' ? 'समर्पित प्री-प्रेस सहायता' : locale === 'mr' ? 'समर्पित प्री-प्रेस सहाय्य' : 'Expert Pre-Press Support',
       desc: locale === 'hi' ? 'ब्लीड, मार्जिन और रिज़ॉल्यूशन की अनुभवी तकनीशियनों द्वारा प्रिंट-पूर्व जांच।' : locale === 'mr' ? 'ब्लीड, मार्जिन आणि रिझोल्यूशनची छपाई-पूर्व तज्ज्ञांकडून पडताळणी.' : 'Direct telephone, email, and WhatsApp file assistance before any job heads to the printing plate.',
     },
@@ -72,7 +57,7 @@ export default function TestimonialCarousel() {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0082CA]/10 text-[#0082CA] text-xs font-bold uppercase tracking-wider mb-3">
             <CheckCircle2 className="w-3.5 h-3.5" />
-            <span>Verified Commercial Printing</span>
+            <span>Commercial Print Standards</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[var(--text-main)] tracking-tight mb-3">
             {title}
@@ -80,27 +65,6 @@ export default function TestimonialCarousel() {
           <p className="text-[var(--text-muted)] text-sm sm:text-base leading-relaxed">
             {subtitle}
           </p>
-        </div>
-
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-5 text-center shadow-xs hover:border-[#0082CA]/40 transition-colors"
-            >
-              <div className="text-2xl sm:text-3xl font-black text-[#0082CA] tracking-tight mb-1">
-                {stat.value}
-              </div>
-              <div className="text-xs sm:text-sm font-semibold text-[var(--text-main)]">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
         </div>
 
         {/* 4 Trust Pillars */}
@@ -114,10 +78,15 @@ export default function TestimonialCarousel() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 flex flex-col hover:shadow-md transition-shadow"
+                className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 flex flex-col hover:shadow-md hover:border-[#0082CA]/30 transition-all"
               >
-                <div className="w-12 h-12 rounded-xl bg-[#0082CA]/10 flex items-center justify-center text-[#0082CA] mb-4 shrink-0">
-                  <Icon className="w-6 h-6" />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-[#0082CA]/10 flex items-center justify-center text-[#0082CA] shrink-0">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <span className="text-[11px] font-bold text-[#0082CA] bg-[#0082CA]/5 px-2.5 py-1 rounded-full">
+                    {pillar.badge}
+                  </span>
                 </div>
                 <h3 className="font-bold text-[var(--text-main)] text-base mb-2">
                   {pillar.title}

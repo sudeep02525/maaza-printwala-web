@@ -66,15 +66,13 @@ export default async function HomePage({ params }) {
   const categories = catData?.data?.categories || [];
   const cmsHero = cmsData?.data?.content?.find((c) => c.key === 'homepage_hero')?.content;
   
-  // Create product arrays for sections — using 8 items to fully fill 4-column grids (2 complete rows)
+  // Create product arrays for sections without duplicate repetitions
   const baseProducts = prodData?.data?.products || [];
   const getSlice = (start, length = 8) => {
-    if (baseProducts.length === 0) return [];
-    const result = [];
-    for (let i = 0; i < length; i++) {
-      result.push(baseProducts[(start + i) % baseProducts.length]);
-    }
-    return result;
+    if (!baseProducts || baseProducts.length === 0) return [];
+    const sliced = baseProducts.slice(start, start + length);
+    // If start is beyond length, fall back to initial items if available
+    return sliced.length > 0 ? sliced : baseProducts.slice(0, length);
   };
 
   const bestSellers = getSlice(0, 8);
