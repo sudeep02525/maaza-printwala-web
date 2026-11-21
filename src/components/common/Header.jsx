@@ -255,7 +255,7 @@ export default function Header() {
           </div>
 
           {/* Mobile Logo (Centered) */}
-          <div className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+          <div className="md:hidden absolute left-1/2 -translate-x-1/2 flex items-center justify-center max-w-[calc(100vw-180px)] pointer-events-auto">
             <Link href="/" className="flex items-center">
               <Image
                 src="/logo-maaza.png"
@@ -263,7 +263,7 @@ export default function Header() {
                 width={120}
                 height={30}
                 priority
-                className="h-6 w-auto object-contain dark:hidden"
+                className="h-6 max-w-full w-auto object-contain dark:hidden"
                 style={{ width: 'auto', height: 'auto' }}
               />
               <Image
@@ -272,7 +272,7 @@ export default function Header() {
                 width={120}
                 height={30}
                 priority
-                className="h-6 w-auto object-contain hidden dark:block"
+                className="h-6 max-w-full w-auto object-contain hidden dark:block"
                 style={{ width: 'auto', height: 'auto' }}
               />
             </Link>
@@ -444,7 +444,7 @@ export default function Header() {
           </form>
 
           {/* User Actions & Support */}
-          <div className="flex items-center gap-4 sm:gap-6 lg:gap-6 xl:gap-8 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-6 lg:gap-6 xl:gap-8 shrink-0">
             {/* Language Selector */}
             <div className="relative hidden lg:block group w-[90px]">
               <div className="flex items-center justify-between gap-1 text-[var(--text-main)] hover:text-[var(--text-main)] transition-colors cursor-pointer p-2 rounded-lg hover:bg-[var(--bg-subtle)] font-bold text-sm">
@@ -498,9 +498,9 @@ export default function Header() {
 
             {/* Auth / Account */}
             {!isMounted ? (
-              <div className="w-20 h-9 rounded animate-pulse bg-[var(--hover)]" />
+              <div className="w-9 sm:w-[90px] h-9 rounded animate-pulse bg-[var(--hover)]" />
             ) : isAuthenticated ? (
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 <Link
                   href="/account"
                   className="flex flex-col items-end hidden sm:flex w-[110px] group text-right"
@@ -515,14 +515,15 @@ export default function Header() {
                 </Link>
                 <Link
                   href="/account"
-                  className="sm:hidden flex items-center justify-center w-9 h-9 rounded-full bg-[var(--hover)] text-[var(--text-main)] hover:text-[#0082CA] transition-colors"
+                  className="sm:hidden flex items-center justify-center w-9 h-9 rounded-full hover:bg-[var(--hover)] text-[var(--text-main)] hover:text-[#0082CA] transition-colors"
                   aria-label="My Account"
+                  title="My Account"
                 >
-                  <User className="w-4 h-4" />
+                  <User className="w-5 h-5" />
                 </Link>
                 <button
                   onClick={logout}
-                  className="flex items-center justify-center w-10 h-10 shrink-0 rounded-full hover:bg-[var(--border)] text-[var(--text-main)] hover:text-red-600 transition-colors cursor-pointer"
+                  className="hidden sm:flex items-center justify-center w-10 h-10 shrink-0 rounded-full hover:bg-[var(--border)] text-[var(--text-main)] hover:text-red-600 transition-colors cursor-pointer"
                   aria-label="Logout"
                 >
                   <LogOut className="w-5 h-5" />
@@ -531,7 +532,9 @@ export default function Header() {
             ) : (
               <Link
                 href="/login"
-                className="flex items-center gap-2 text-[var(--text-main)] hover:text-[#0082CA] transition-colors font-bold text-sm w-[90px]"
+                className="flex items-center justify-center sm:justify-start gap-2 text-[var(--text-main)] hover:text-[#0082CA] transition-colors font-bold text-sm w-9 sm:w-[90px] h-9 sm:h-auto rounded-full sm:rounded-none hover:bg-[var(--hover)] sm:hover:bg-transparent"
+                title={t('header.account')}
+                aria-label={t('header.account')}
               >
                 <User className="w-5 h-5 shrink-0" />
                 <span className="hidden sm:inline whitespace-nowrap">{t('header.account')}</span>
@@ -640,6 +643,48 @@ export default function Header() {
         side="left"
       >
         <div className="space-y-6">
+          {/* Mobile User Profile / Auth */}
+          <div className="p-3 bg-[var(--bg-subtle)] rounded-xl border border-[var(--border)]">
+            {isAuthenticated ? (
+              <div className="flex items-center justify-between">
+                <Link
+                  href="/account"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 flex-1 min-w-0"
+                >
+                  <div className="w-10 h-10 rounded-full bg-[#0082CA]/10 text-[#0082CA] flex items-center justify-center shrink-0 font-bold">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold text-[var(--text-main)] truncate">{user?.name || 'My Account'}</p>
+                    <p className="text-xs text-[var(--text-muted)] truncate">{user?.email}</p>
+                  </div>
+                </Link>
+                <button
+                  onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+                  className="p-2 text-[var(--text-muted)] hover:text-red-500 rounded-lg hover:bg-red-500/10 transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-5 h-5" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-between p-1.5 text-[var(--text-main)] hover:text-[#0082CA] font-bold text-sm"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-full bg-[#0082CA]/10 text-[#0082CA] flex items-center justify-center">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <span>{t('header.account')} / Sign In</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[var(--text-faint)]" />
+              </Link>
+            )}
+          </div>
+
           {/* Mobile Search */}
           <form onSubmit={handleSearchSubmit} className="space-y-2">
             <label className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
@@ -740,14 +785,51 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Mobile Support Note */}
+          {/* Mobile Language Switcher */}
           <div className="pt-4 border-t border-[var(--border)] space-y-2">
             <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              {t.has('header.customerSupport') ? t('header.customerSupport') : 'Customer Support'}
+              {t.has('header.language') ? t('header.language') : 'Language'}
             </span>
-            <div className="p-3 bg-[var(--bg-subtle)] rounded text-xs text-[var(--text-main)] font-medium">
-              {t.has('header.supportNote') ? t('header.supportNote') : 'Standard commercial printing assistance available during normal working hours.'}
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { code: 'en', label: 'English' },
+                { code: 'hi', label: 'हिंदी' },
+                { code: 'mr', label: 'मराठी' }
+              ].map((lang) => (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => { changeLanguage(lang.code); setIsMobileMenuOpen(false); }}
+                  className={`py-2 px-1 text-center rounded-lg text-xs font-semibold border transition-all ${
+                    locale === lang.code
+                      ? 'bg-[#0082CA] text-white border-[#0082CA]'
+                      : 'bg-[var(--bg-subtle)] text-[var(--text-main)] border-[var(--border)] hover:bg-[var(--hover)]'
+                  }`}
+                >
+                  {lang.label}
+                </button>
+              ))}
             </div>
+          </div>
+
+          {/* Mobile Customer Assistance */}
+          <div className="pt-4 border-t border-[var(--border)] space-y-2">
+            <span className="block text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              {t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}
+            </span>
+            <Link
+              href="/support"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 p-3 bg-[var(--bg-subtle)] hover:bg-[var(--hover)] rounded-xl border border-[var(--border)] text-[var(--text-main)] transition-colors"
+            >
+              <div className="w-9 h-9 rounded-full bg-[#0082CA]/10 text-[#0082CA] flex items-center justify-center shrink-0">
+                <PhoneCall className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-[var(--text-main)]">+91 7700054984</p>
+                <p className="text-[11px] text-[var(--text-muted)] font-medium">Mon-Sat 10am-7pm</p>
+              </div>
+            </Link>
           </div>
         </div>
       </Drawer>
