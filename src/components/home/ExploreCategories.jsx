@@ -48,12 +48,12 @@ export default function ExploreCategories({ categories = [] }) {
             ) : (
               categories.slice(0, 10).map((cat, index) => {
                 const exploreImages = [
-                  getImageUrl('/images/explore_business_cards_1785478383406.png'),
-                  getImageUrl('/images/explore_tshirts_1785478392413.png'),
-                  getImageUrl('/images/cat_visiting_cards_new_1785478123231.png'),
-                  getImageUrl('/images/cat_notebooks_new_1785478132458.png'),
-                  getImageUrl('/images/cat_clothing_new_1785478162007.png'),
-                  getImageUrl('/images/cat_mugs_new_1785478141544.png')
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262684/maaza-printwala/images/explore_business_cards_1785478383406.jpg'),
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262687/maaza-printwala/images/explore_tshirts_1785478392413.jpg'),
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262678/maaza-printwala/images/cat_visiting_cards_new_1785478123231.jpg'),
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262673/maaza-printwala/images/cat_notebooks_new_1785478132458.jpg'),
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262671/maaza-printwala/images/cat_clothing_new_1785478162007.jpg'),
+                  getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262674/maaza-printwala/images/cat_mugs_new_1785478141544.jpg')
                 ];
                 const displayImage = exploreImages[index % exploreImages.length];
 

@@ -72,7 +72,7 @@ export const CorporateSection = ({ products = [] }) => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-5 relative rounded-lg overflow-hidden group"
           >
-            <img loading="lazy" src={getImageUrl('/images/cat_corporate_gifts_1785433724640.png')} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Corporate Gifting" />
+            <img loading="lazy" src={getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262666/maaza-printwala/images/cat_corporate_gifts_1785433724640.jpg')} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Corporate Gifting" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/10 to-transparent p-8 flex flex-col justify-end">
               <h3 className="text-3xl font-extrabold text-white mb-3">{title}</h3>
               <p className="text-white/80 text-sm mb-6">{desc}</p>
@@ -108,9 +108,9 @@ export const WeddingSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'सुंदर निमंत्रण, सेव-द-डेट्स, और व्यक्तिगत रिटर्न गिफ़्ट्स।' : locale === 'mr' ? 'सुंदर आमंत्रणे, सेव-द-डेट्स आणि वैयक्तिकृत रिटर्न गिफ्ट्स.' : 'Elegant invitations, save-the-dates, and personalized return gifts.';
   const cards = [
-    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: getImageUrl('/images/products/v2_premium_card_1785948535781.png'), link: "/visiting-cards" },
-    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: getImageUrl('/images/products/standee_lifestyle_event.jpg'), link: "/signage-banners" },
-    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: getImageUrl('/images/corporate_welcome_kit.png'), link: "/corporate-gifts" }
+    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262693/maaza-printwala/images/products/diamond_visiting_card.jpg'), link: "/visiting-cards" },
+    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262702/maaza-printwala/images/products/standee_lifestyle_event.jpg'), link: "/signage-banners" },
+    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262680/maaza-printwala/images/corporate_welcome_kit.jpg'), link: "/corporate-gifts" }
   ];
 
   return (
@@ -150,10 +150,10 @@ export const CustomMerchSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'गर्व के साथ अपना ब्रांड पहनें' : locale === 'mr' ? 'अभिमानाने तुमचा ब्रँड परिधान करा' : 'Wear your brand with pride';
   const merch = [
-    { name: locale === 'hi' ? "पोलो टी-शर्ट" : locale === 'mr' ? "पोलो टी-शर्ट" : "Polo T-Shirts", img: getImageUrl('/images/cat_polo_new_1785478171451.png'), link: "/custom-apparel/polo-t-shirts" },
-    { name: locale === 'hi' ? "कॉटन टीज़" : locale === 'mr' ? "कॉटन टीज़" : "Cotton Tees", img: getImageUrl('/images/cat_tshirt_new_1785478181285.png'), link: "/custom-apparel/t-shirts" },
-    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: getImageUrl('/images/cat_mugs_new_1785478141544.png'), link: "/corporate-gifts/coffee-mugs" },
-    { name: locale === 'hi' ? "इको पैकेजिंग" : locale === 'mr' ? "इको पॅकेजिंग" : "Eco Packaging", img: getImageUrl('/images/cat_packaging_1785433687115.png'), link: "/packaging" }
+    { name: locale === 'hi' ? "पोलो टी-शर्ट" : locale === 'mr' ? "पोलो टी-शर्ट" : "Polo T-Shirts", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262676/maaza-printwala/images/cat_polo_new_1785478171451.jpg'), link: "/custom-apparel/polo-t-shirts" },
+    { name: locale === 'hi' ? "कॉटन टीज़" : locale === 'mr' ? "कॉटन टीज़" : "Cotton Tees", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262677/maaza-printwala/images/cat_tshirt_new_1785478181285.jpg'), link: "/custom-apparel/t-shirts" },
+    { name: locale === 'hi' ? "कस्टम मग" : locale === 'mr' ? "कस्टम मग" : "Custom Mugs", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262674/maaza-printwala/images/cat_mugs_new_1785478141544.jpg'), link: "/corporate-gifts/coffee-mugs" },
+    { name: locale === 'hi' ? "इको पैकेजिंग" : locale === 'mr' ? "इको पॅकेजिंग" : "Eco Packaging", img: getImageUrl('https://res.cloudinary.com/kz2pddnr/image/upload/v1795262675/maaza-printwala/images/cat_packaging_1785433687115.jpg'), link: "/packaging" }
   ];
 
   return (
