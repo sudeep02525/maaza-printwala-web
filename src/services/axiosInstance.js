@@ -11,6 +11,8 @@ const axiosInstance = axios.create({
   },
 });
 
+let refreshPromise = null;
+
 axiosInstance.interceptors.response.use(
   (response) => response.data,
   async (error) => {
@@ -27,7 +29,14 @@ axiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
+        if (!refreshPromise) {
+          refreshPromise = axios
+            .post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true })
+            .finally(() => {
+              refreshPromise = null;
+            });
+        }
+        await refreshPromise;
         return axiosInstance(originalRequest);
       } catch (refreshErr) {
         // If refresh fails, session is dead -> clear session hint
