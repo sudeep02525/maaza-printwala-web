@@ -54,12 +54,18 @@ function QuickViewModal({ product, onClose }) {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--text-main)] tracking-tight mb-2">{product.name}</h2>
             
             <div className="flex items-center gap-4 mb-6">
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-sm font-bold text-[var(--text-main)]">4.9</span>
-                <span className="text-xs text-[var(--text-muted)]">(128 Reviews)</span>
-              </div>
-              <div className="w-1 h-1 rounded-full bg-[var(--border-strong)]" />
+              {product.rating > 0 ? (
+                <>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    <span className="text-sm font-bold text-[var(--text-main)]">{product.rating}</span>
+                    {product.numReviews > 0 && (
+                      <span className="text-xs text-[var(--text-muted)]">({product.numReviews} Reviews)</span>
+                    )}
+                  </div>
+                  <div className="w-1 h-1 rounded-full bg-[var(--border-strong)]" />
+                </>
+              ) : null}
               <span className="text-sm font-bold text-[#0082CA]">From ₹{product.basePrice}</span>
             </div>
 

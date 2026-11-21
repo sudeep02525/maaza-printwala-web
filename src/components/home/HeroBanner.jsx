@@ -10,9 +10,11 @@ import visitingCardsBanner from '../../../public/images/visiting_cards_banner.pn
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 
-export default function HeroBanner() {
+export default function HeroBanner({ cmsHero }) {
   const tHero = useTranslations('hero');
   const tTrust = useTranslations('trustStrip');
+
+  const activeCmsSlide = cmsHero?.slides?.find(s => s.image && s.title);
 
   return (
     <>
@@ -28,23 +30,33 @@ export default function HeroBanner() {
               transition={{ duration: 0.6 }}
               className="lg:col-span-2 relative block rounded-lg overflow-hidden group aspect-[2/1] lg:aspect-auto h-[250px] sm:h-[350px] lg:h-[420px]"
             >
-              <Link href="/products" className="relative w-full h-full block">
-                <Image 
-                  src={heroBannerMain} 
-                  alt="Main Promotion" 
-                  fill
-                  priority
-                  placeholder="blur"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+              <Link href={activeCmsSlide?.ctaLink || "/products"} className="relative w-full h-full block">
+                {activeCmsSlide?.image ? (
+                  <img
+                    src={activeCmsSlide.image}
+                    alt={activeCmsSlide.title || "Main Promotion"}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <Image 
+                    src={heroBannerMain} 
+                    alt="Main Promotion" 
+                    fill
+                    priority
+                    placeholder="blur"
+                    sizes="(max-width: 1024px) 100vw, 66vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/10 to-transparent p-6 sm:p-12 flex flex-col justify-center">
                   <h2 className="text-2xl sm:text-[34px] font-bold text-white leading-tight mb-2 max-w-md drop-shadow-md">
-                    {tHero('heading1')}
+                    {activeCmsSlide?.title || tHero('heading1')}
                   </h2>
-                  <p className="text-white text-sm font-medium mb-6 drop-shadow-sm">{tHero('subheading1')}</p>
+                  <p className="text-white text-sm font-medium mb-6 drop-shadow-sm">
+                    {activeCmsSlide?.subtitle || tHero('subheading1')}
+                  </p>
                   <span className="inline-block bg-[var(--bg-card)] text-[var(--text-main)] font-bold px-6 py-2.5 rounded-sm text-sm w-fit shadow-md hover:bg-[var(--hover)] transition-colors cursor-pointer">
-                    {tHero('explore')}
+                    {activeCmsSlide?.ctaText || tHero('explore')}
                   </span>
                 </div>
               </Link>
@@ -86,7 +98,7 @@ export default function HeroBanner() {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="relative flex-1 rounded-lg overflow-hidden group block"
               >
-                <Link href="/business-printing" className="relative w-full h-full block">
+                <Link href="/visiting-cards" className="relative w-full h-full block">
                   <Image 
                     src={visitingCardsBanner} 
                     alt="Business Cards" 

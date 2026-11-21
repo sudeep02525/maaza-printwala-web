@@ -1,127 +1,133 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Star, BadgeCheck } from 'lucide-react';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ShieldCheck, Truck, FileText, Headphones, CheckCircle2 } from 'lucide-react';
 import { useLocale } from 'next-intl';
 
-const TESTIMONIALS = [
-  { 
-    id: 1,
-    name: 'Rajesh K.', 
-    company: 'TechNova Solutions', 
-    role: 'Operations Head',
-    text: 'Maza Printwala delivered our corporate onboarding kits 2 days early. The premium boxes were flawless, and the GST invoicing was completely seamless.',
-    avatar: 'https://i.pravatar.cc/150?img=11',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg'
-  },
-  { 
-    id: 2,
-    name: 'Sneha P.', 
-    company: 'Creative Studio', 
-    role: 'Art Director',
-    text: 'The spot UV business cards are the best we have seen in India. The print accuracy and paper quality make us look incredibly professional.',
-    avatar: 'https://i.pravatar.cc/150?img=9',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg'
-  },
-  { 
-    id: 3,
-    name: 'Amit M.', 
-    company: 'Real Estate Builders', 
-    role: 'Marketing Manager',
-    text: 'Ordered 5,000 brochures for our new launch. Consistent colors, exact GSM as promised, and their pre-press team caught a bleed error before printing!',
-    avatar: 'https://i.pravatar.cc/150?img=12',
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg'
-  }
-];
-
 export default function TestimonialCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const locale = useLocale();
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+  const title = 
+    locale === 'hi' ? 'व्यवसाय Maza Printwala पर भरोसा क्यों करते हैं' :
+    locale === 'mr' ? 'व्यवसाय Maza Printwala वर का विश्वास ठेवतात' :
+    'Why Businesses Trust Maza Printwala';
+
+  const subtitle = 
+    locale === 'hi' ? 'उच्च गुणवत्ता, विश्वसनीय डिलीवरी और पारदर्शी इनवॉइसिंग के साथ आपकी सभी कमर्शियल प्रिंटिंग आवश्यकताएँ।' :
+    locale === 'mr' ? 'उच्च दर्जा, विश्वासार्ह डिलिव्हरी आणि पारदर्शक इनव्हॉइसिंगसह तुमच्या सर्व व्यावसायिक छपाईच्या गरजा.' :
+    'Commercial print reliability, verified pre-flight checks, and nationwide dispatch built for growing enterprises.';
+
+  const stats = [
+    {
+      value: '50,000+',
+      label: locale === 'hi' ? 'सफलतापूर्वक मुद्रित ऑर्डर्स' : locale === 'mr' ? 'यशस्वीरित्या मुद्रित ऑर्डर्स' : 'Orders Printed',
+    },
+    {
+      value: '25,000+',
+      label: locale === 'hi' ? 'पिन कोड्स पर डिलीवरी' : locale === 'mr' ? 'पिन कोडवर डिलिव्हरी' : 'Pin Codes Covered',
+    },
+    {
+      value: '99.4%',
+      label: locale === 'hi' ? 'समय पर डिस्पैच दर' : locale === 'mr' ? 'वेळेवर डिस्पॅच दर' : 'On-Time Dispatch',
+    },
+    {
+      value: '100%',
+      label: locale === 'hi' ? 'गुणवत्ता आश्वासन गारंटी' : locale === 'mr' ? 'गुणवत्ता हमी' : 'Quality Guaranteed',
+    },
+  ];
+
+  const pillars = [
+    {
+      icon: ShieldCheck,
+      title: locale === 'hi' ? 'सटीक CMYK प्रिंटिंग' : locale === 'mr' ? 'अचूक CMYK छपाई' : 'Calibrated CMYK Printing',
+      desc: locale === 'hi' ? 'कैलिब्रेटेड डिजिटल और ऑफसेट तकनीक के साथ जीवंत रंग और प्रीमियम पेपर स्टॉक्स।' : locale === 'mr' ? 'कॅलिब्रेटेड डिजिटल आणि ऑफसेट तंत्रज्ञानासह चमकदार रंग आणि दर्जेदार कागद.' : 'Rigorous color accuracy, high-DPI resolution, and certified paper stocks for professional impressions.',
+    },
+    {
+      icon: Truck,
+      title: locale === 'hi' ? 'अखिल भारतीय एक्सप्रेस डिलीवरी' : locale === 'mr' ? 'अखिल भारतीय एक्सप्रेस डिलिव्हरी' : 'Pan-India Express Dispatch',
+      desc: locale === 'hi' ? 'सुरक्षित पैकेजिंग और लाइव ट्रैकिंग के साथ पूरे भारत में तेज़ डिलीवरी।' : locale === 'mr' ? 'सुरक्षित पॅकेजिंग आणि थेट ट्रॅकिंगसह संपूर्ण भारतात जलद डिलिव्हरी.' : 'Transit-safe packaging and reliable surface/air courier integration covering metro & regional zones.',
+    },
+    {
+      icon: FileText,
+      title: locale === 'hi' ? 'त्वरित B2B GST इनवॉइस' : locale === 'mr' ? 'त्वरित B2B GST इनव्हॉइस' : 'Instant B2B GST Invoicing',
+      desc: locale === 'hi' ? 'अपनी कंपनी के इनपुट टैक्स क्रेडिट (ITC) के लिए वैध GST इनवॉइस तुरंत प्राप्त करें।' : locale === 'mr' ? 'तुमच्या कंपनीच्या इनपुट टॅक्स क्रेडिटसाठी (ITC) वैध GST इनव्हॉइस लगेच मिळवा.' : 'Full tax compliance with automatic GSTIN capture for complete input tax credit on corporate spending.',
+    },
+    {
+      icon: Headphones,
+      title: locale === 'hi' ? 'समर्पित प्री-प्रेस सहायता' : locale === 'mr' ? 'समर्पित प्री-प्रेस सहाय्य' : 'Expert Pre-Press Support',
+      desc: locale === 'hi' ? 'ब्लीड, मार्जिन और रिज़ॉल्यूशन की अनुभवी तकनीशियनों द्वारा प्रिंट-पूर्व जांच।' : locale === 'mr' ? 'ब्लीड, मार्जिन आणि रिझोल्यूशनची छपाई-पूर्व तज्ज्ञांकडून पडताळणी.' : 'Direct telephone, email, and WhatsApp file assistance before any job heads to the printing plate.',
+    },
+  ];
 
   return (
-    <section className="py-10 bg-[var(--bg-subtle)] relative overflow-hidden border-t border-[var(--border)]">
+    <section className="py-14 bg-[var(--bg-subtle)] relative overflow-hidden border-t border-[var(--border)]">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/50 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
-      
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-blue-100/40 dark:bg-blue-900/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[350px] h-[350px] bg-emerald-100/30 dark:bg-emerald-900/10 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 text-[var(--text-main)]">
-          {locale === 'hi' ? 'व्यवसायों द्वारा पसंद किया गया' : locale === 'mr' ? 'व्यवसायांची पसंती' : 'Loved by Businesses'}
-        </h2>
-        <p className="text-[var(--text-muted)] mb-16 text-base font-medium">
-          {locale === 'hi' ? '10,000+ कंपनियों से जुड़ें जो अपनी कमर्शियल प्रिंटिंग के लिए Maza Printwala पर भरोसा करती हैं।' : locale === 'mr' ? '10,000+ कंपन्यांमध्ये सामील व्हा ज्या त्यांच्या व्यावसायिक छपाईसाठी Maza Printwala वर विश्वास ठेवतात.' : 'Join 10,000+ companies that trust Maza Printwala for their commercial printing.'}
-        </p>
-
-        <div className="relative w-full max-w-3xl mx-auto min-h-[350px] sm:min-h-[280px] flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="w-full"
-            >
-              <div className="bg-[var(--bg-card)] border border-[var(--border)] p-8 sm:p-10 rounded-2xl shadow-lg flex flex-col items-center text-center">
-                
-                {/* Rating & Verified */}
-                <div className="flex items-center justify-between w-full mb-8">
-                  <div className="flex gap-1 bg-[var(--bg-subtle)] border border-[var(--border)] px-3 py-1.5 rounded-full">
-                    {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400"/>)}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
-                    <BadgeCheck className="w-4 h-4" />
-                    <span>Verified Buyer</span>
-                  </div>
-                </div>
-
-                {/* Text */}
-                <p className="text-lg sm:text-2xl text-[var(--text-main)] font-semibold leading-relaxed mb-10 italic flex-1">
-                  &quot;{TESTIMONIALS[currentIndex].text}&quot;
-                </p>
-
-                {/* User Info & Logo */}
-                <div className="flex items-center justify-between w-full border-t border-[var(--border)] pt-6">
-                  <div className="flex items-center gap-4">
-                    <img src={TESTIMONIALS[currentIndex].avatar} alt={TESTIMONIALS[currentIndex].name} className="w-12 h-12 rounded-full border-2 border-[var(--border)]" />
-                    <div className="text-left">
-                      <p className="font-bold text-[var(--text-main)] text-base">{TESTIMONIALS[currentIndex].name}</p>
-                      <p className="text-xs text-[var(--text-muted)]">{TESTIMONIALS[currentIndex].role}, <span className="text-[var(--text-main)] font-medium">{TESTIMONIALS[currentIndex].company}</span></p>
-                    </div>
-                  </div>
-                  
-                  {/* Company Logo */}
-                  <div className="hidden sm:block">
-                    <img src={TESTIMONIALS[currentIndex].logo} alt="Company Logo" className="h-6 opacity-40 grayscale" />
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
-          </AnimatePresence>
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0082CA]/10 text-[#0082CA] text-xs font-bold uppercase tracking-wider mb-3">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Verified Commercial Printing</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[var(--text-main)] tracking-tight mb-3">
+            {title}
+          </h2>
+          <p className="text-[var(--text-muted)] text-sm sm:text-base leading-relaxed">
+            {subtitle}
+          </p>
         </div>
 
-        {/* Dots indicator */}
-        <div className="flex justify-center gap-2 mt-8">
-          {TESTIMONIALS.map((_, i) => (
-            <button
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-12">
+          {stats.map((stat, i) => (
+            <motion.div
               key={i}
-              onClick={() => setCurrentIndex(i)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === i ? 'bg-[#0082CA] w-8' : 'bg-[var(--border-strong)] w-2.5 hover:bg-[var(--text-muted)]'
-              }`}
-              aria-label={`Go to slide ${i + 1}`}
-            />
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
+              className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl p-5 text-center shadow-xs hover:border-[#0082CA]/40 transition-colors"
+            >
+              <div className="text-2xl sm:text-3xl font-black text-[#0082CA] tracking-tight mb-1">
+                {stat.value}
+              </div>
+              <div className="text-xs sm:text-sm font-semibold text-[var(--text-main)]">
+                {stat.label}
+              </div>
+            </motion.div>
           ))}
+        </div>
+
+        {/* 4 Trust Pillars */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {pillars.map((pillar, i) => {
+            const Icon = pillar.icon;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-6 flex flex-col hover:shadow-md transition-shadow"
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#0082CA]/10 flex items-center justify-center text-[#0082CA] mb-4 shrink-0">
+                  <Icon className="w-6 h-6" />
+                </div>
+                <h3 className="font-bold text-[var(--text-main)] text-base mb-2">
+                  {pillar.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  {pillar.desc}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

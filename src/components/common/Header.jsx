@@ -486,7 +486,7 @@ export default function Header() {
               <div className="w-9 h-9 shrink-0 rounded-full bg-[var(--hover)] flex items-center justify-center">
                 <PhoneCall className="w-4 h-4 text-[var(--text-muted)]" />
               </div>
-              <div className="w-[175px] shrink-0 text-left">
+              <div className="w-[185px] shrink-0 text-left">
                 <p className="font-bold text-sm text-[var(--text-main)] whitespace-nowrap leading-tight">
                   {t.has('header.customerAssistance') ? t('header.customerAssistance') : 'Customer Assistance'}
                 </p>

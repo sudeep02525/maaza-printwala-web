@@ -108,9 +108,9 @@ export const WeddingSection = () => {
   const locale = useLocale();
   const sub = locale === 'hi' ? 'सुंदर निमंत्रण, सेव-द-डेट्स, और व्यक्तिगत रिटर्न गिफ़्ट्स।' : locale === 'mr' ? 'सुंदर आमंत्रणे, सेव-द-डेट्स आणि वैयक्तिकृत रिटर्न गिफ्ट्स.' : 'Elegant invitations, save-the-dates, and personalized return gifts.';
   const cards = [
-    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80", link: "/visiting-cards/premium-cards" },
-    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80", link: "/signage/foam-boards" },
-    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80", link: "/photo-gifts/personalized-gifts" }
+    { title: locale === 'hi' ? "प्रीमियम निमंत्रण" : locale === 'mr' ? "प्रीमियम आमंत्रणे" : "Premium Invitations", img: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=800&q=80", link: "/visiting-cards" },
+    { title: locale === 'hi' ? "वेलकम बोर्ड्स" : locale === 'mr' ? "वेलकम बोर्ड्स" : "Welcome Boards", img: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=800&q=80", link: "/signage-banners" },
+    { title: locale === 'hi' ? "पर्सनलाइज्ड गिफ़्ट्स" : locale === 'mr' ? "पर्सनलाइज्ड गिफ्ट्स" : "Personalised Gifts", img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80", link: "/corporate-gifts" }
   ];
 
   return (

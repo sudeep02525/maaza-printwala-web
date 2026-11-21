@@ -20,40 +20,6 @@ import {
 } from '@/components/home/HomeSections.jsx';
 import FadeIn from '@/components/ui/FadeIn.jsx';
 
-// --- MOCK DATA ---
-const SHOP_BY_PRODUCT = [
-  { name: 'Visiting Cards', image: getImageUrl('/images/cat_flyers_brochures_1785433655247.png') },
-  { name: 'Flyers', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Brochure', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Letterhead', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Envelope', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Sticker', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Labels', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Packaging Box', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Mug', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Bottle', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'T-Shirt', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Hoodie', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-];
-
-const INDUSTRIES = [
-  { name: 'Restaurant', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'School', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Hospital', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Real Estate', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Manufacturing', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Startup', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-];
-
-const OCCASIONS = [
-  { name: 'Wedding', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Festival', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Corporate Events', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-  { name: 'Exhibition', image: getImageUrl('/images/cat_visiting_cards_1785433645262.png') },
-];
-
-const BRANDS = ['HP', 'Dell', 'Puma', 'Adidas', 'Samsung', 'Boat', 'Reliance', 'Tata'];
-
 const getPopularSearches = (locale) => {
   if (locale === 'hi') {
     return ['विजिटिंग कार्ड', 'कस्टम टी-शर्ट', 'स्टिकर प्रिंटिंग', 'पैकेजिंग', 'मग प्रिंटिंग', 'स्टैंडी', 'लेटरहेड', 'आईडी कार्ड', 'लैनयार्ड', 'फ्लायर्स', 'ब्रोशर डिज़ाइन', 'कॉर्पोरेट गिफ़्ट्स'];
@@ -95,8 +61,10 @@ export default async function HomePage({ params }) {
 
   const catData = await serverApi.getCategories().catch(() => ({ data: { categories: [] } }));
   const prodData = await serverApi.getFeaturedProducts().catch(() => ({ data: { products: [] } }));
+  const cmsData = await serverApi.get('/cms/homepage', 60).catch(() => null);
 
   const categories = catData?.data?.categories || [];
+  const cmsHero = cmsData?.data?.content?.find((c) => c.key === 'homepage_hero')?.content;
   
   // Create product arrays for sections — using 8 items to fully fill 4-column grids (2 complete rows)
   const baseProducts = prodData?.data?.products || [];
@@ -122,7 +90,7 @@ export default async function HomePage({ params }) {
     <div className="bg-[var(--bg-page)] min-h-screen font-sans overflow-x-hidden">
       
       {/* 3. HERO & TRUST STRIP */}
-      <HeroBanner />
+      <HeroBanner cmsHero={cmsHero} />
 
       {/* 4. EXPLORE ALL CATEGORIES (PrintVenue Circular Style) */}
       <ExploreCategories categories={categories} />

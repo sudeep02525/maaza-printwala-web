@@ -124,11 +124,11 @@ export default function ErrorPage({ error, reset }) {
           </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {[
-              { label: 'Visiting Cards', href: '/products?category=business-printing' },
-              { label: 'Custom Apparel', href: '/products?category=apparel' },
-              { label: 'Packaging Boxes', href: '/products?category=packaging' },
-              { label: 'Flyers & Leaflets', href: '/products?category=marketing' },
-              { label: 'Labels & Stickers', href: '/products?category=stickers' },
+              { label: 'Visiting Cards', href: '/visiting-cards' },
+              { label: 'Custom Apparel', href: '/custom-apparel' },
+              { label: 'Packaging Boxes', href: '/packaging' },
+              { label: 'Flyers & Brochures', href: '/flyers-brochures' },
+              { label: 'Labels & Stickers', href: '/labels-stickers' },
             ].map((cat) => (
               <Link
                 key={cat.label}

@@ -26,7 +26,7 @@ export default function VisualCategories() {
           <SectionHeader title={t.has('categories.business-essentials') ? t('categories.business-essentials') : 'Business Essentials'} linkText="" />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mt-8">
             {[
-              { name: t.has('categories.visiting-cards') ? t('categories.visiting-cards') : 'Visiting Cards', img: getImageUrl('/images/cat_visiting_cards_new_1785478123231.png'), link: '/business-printing' },
+              { name: t.has('categories.visiting-cards') ? t('categories.visiting-cards') : 'Visiting Cards', img: getImageUrl('/images/cat_visiting_cards_new_1785478123231.png'), link: '/visiting-cards' },
               { name: t.has('categories.notebooks') ? t('categories.notebooks') : 'Notebooks', img: getImageUrl('/images/cat_notebooks_new_1785478132458.png'), link: '/stationery?sub=notebooks' },
               { name: t.has('categories.custom-mugs') ? t('categories.custom-mugs') : 'Custom Mugs', img: getImageUrl('/images/cat_mugs_new_1785478141544.png'), link: '/products?search=mug' },
               { name: t.has('categories.custom-clothing-bags-caps') ? t('categories.custom-clothing-bags-caps') : 'Custom Clothing, Bags & Caps', img: getImageUrl('/images/cat_clothing_new_1785478162007.png'), link: '/products?search=apparel' }
