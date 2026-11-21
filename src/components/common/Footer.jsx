@@ -50,8 +50,24 @@ export default function Footer() {
     },
     staleTime: 5 * 60 * 1000,
   });
-  const storePhone = settingsData?.supportPhone || '+91 7700054984';
-  const storeEmail = settingsData?.supportEmail || 'imagemazaprintwala@gmail.com';
+  // Footer content managed from the admin panel (CMS -> Footer Links & Policies).
+  // Anything left blank there falls back to the built-in text below.
+  const { data: footerCms } = useQuery({
+    queryKey: ['cms-footer'],
+    queryFn: async () => {
+      const res = await axiosInstance.get('/cms/key/footer_links');
+      return res.data?.content?.content || null;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const cmsSocial = footerCms?.social || {};
+  const cmsColumns = Array.isArray(footerCms?.columns)
+    ? footerCms.columns.filter((c) => c && c.title && (c.links || []).some((l) => l && l.label && l.href))
+    : [];
+
+  const storePhone = footerCms?.supportPhone || settingsData?.supportPhone || '+91 7700054984';
+  const storeEmail = footerCms?.supportEmail || settingsData?.supportEmail || 'imagemazaprintwala@gmail.com';
 
   const [openSection, setOpenSection] = useState(null);
 
@@ -116,23 +132,23 @@ export default function Footer() {
               />
             </div>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed font-medium">
-              {t('footer.companyDesc')}
+              {footerCms?.tagline || t('footer.companyDesc')}
             </p>
             
             {/* Social Links */}
             <div className="pt-2">
               <h5 className="text-xs font-bold text-[var(--text-main)] uppercase tracking-wider mb-4">{t('footer.connectWithUs')}</h5>
               <div className="flex items-center justify-start gap-3">
-                <a href="#" className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#0082CA] hover:border-[#0082CA] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
+                <a href={cmsSocial.facebook || '#'} className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#0082CA] hover:border-[#0082CA] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
                   <Share2 className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#E1306C] hover:border-[#E1306C] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
+                <a href={cmsSocial.instagram || '#'} className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#E1306C] hover:border-[#E1306C] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
                   <AtSign className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#1DA1F2] hover:border-[#1DA1F2] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
+                <a href={cmsSocial.twitter || '#'} className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#1DA1F2] hover:border-[#1DA1F2] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
                   <MessageCircle className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#0A66C2] hover:border-[#0A66C2] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
+                <a href={cmsSocial.linkedin || '#'} className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] hover:bg-[#0A66C2] hover:border-[#0A66C2] text-[var(--text-muted)] hover:text-white flex items-center justify-center transition-all shadow-sm">
                   <Globe className="w-4 h-4" />
                 </a>
               </div>
@@ -153,6 +169,8 @@ export default function Footer() {
             </ul>
           </FooterAccordionItem>
 
+          {cmsColumns.length === 0 && (
+            <>
           {/* Column 3: Resources */}
           <FooterAccordionItem 
             title={t('footer.resources')} 
@@ -193,6 +211,42 @@ export default function Footer() {
               </li>
             </ul>
           </FooterAccordionItem>
+
+            </>
+          )}
+
+          {/* Columns managed in the admin CMS (Footer Links & Policies) */}
+          {cmsColumns.map((col, ci) => (
+            <FooterAccordionItem
+              key={`cms-col-${ci}`}
+              title={col.title}
+              isOpen={openSection === `cms-col-${ci}`}
+              onToggle={() => toggleSection(`cms-col-${ci}`)}
+            >
+              <ul className="space-y-3 text-sm text-[var(--text-muted)] font-medium">
+                {(col.links || [])
+                  .filter((l) => l && l.label && l.href)
+                  .map((l, li) => (
+                    <li key={li}>
+                      {l.href.startsWith('http') ? (
+                        <a
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-[#0082CA] transition-colors"
+                        >
+                          {l.label}
+                        </a>
+                      ) : (
+                        <Link href={l.href} className="hover:text-[#0082CA] transition-colors">
+                          {l.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+            </FooterAccordionItem>
+          ))}
 
           {/* Column 5: Company & Legal */}
           <div className="flex flex-col">

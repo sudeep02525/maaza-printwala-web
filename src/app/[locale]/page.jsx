@@ -10,6 +10,7 @@ import VisualCategories from '@/components/home/VisualCategories.jsx';
 import FaqAccordion from '@/components/home/FaqAccordion.jsx';
 import ProductCard from '@/components/products/ProductCard.jsx';
 import HeroBanner from '@/components/home/HeroBanner.jsx';
+import CmsBanners from '@/components/home/CmsBanners.jsx';
 import TestimonialCarousel from '@/components/home/TestimonialCarousel.jsx';
 import { 
   FeaturedSlider, 
@@ -65,6 +66,7 @@ export default async function HomePage({ params }) {
 
   const categories = catData?.data?.categories || [];
   const cmsHero = cmsData?.data?.content?.find((c) => c.key === 'homepage_hero')?.content;
+  const cmsBanners = cmsData?.data?.content?.find((c) => c.key === 'homepage_banners')?.content?.banners || [];
   
   // Create product arrays for sections without duplicate repetitions
   const baseProducts = prodData?.data?.products || [];
@@ -87,6 +89,9 @@ export default async function HomePage({ params }) {
       
       {/* 3. HERO & TRUST STRIP */}
       <HeroBanner cmsHero={cmsHero} />
+
+      {/* 3b. PROMOTIONAL BANNERS (admin CMS) - hidden until content exists */}
+      <CmsBanners banners={cmsBanners} />
 
       {/* 4. EXPLORE ALL CATEGORIES (PrintVenue Circular Style) */}
       <ExploreCategories categories={categories} />
